@@ -1,5 +1,6 @@
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://source.thequietframe.com';
-const API_KEY = process.env.EXPO_PUBLIC_TQF_API_KEY || '';
+// Read from EXPO_PUBLIC_TQF_API_KEY which is set from TQF_MOBILE_API_KEY
+const API_KEY = process.env.EXPO_PUBLIC_TQF_API_KEY || process.env.TQF_MOBILE_API_KEY || '';
 
 export interface PlanetaryData {
   lunar: {
