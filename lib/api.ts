@@ -1,6 +1,11 @@
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://source.thequietframe.com';
-// Read from EXPO_PUBLIC_TQF_API_KEY which is set from TQF_MOBILE_API_KEY
 const API_KEY = process.env.EXPO_PUBLIC_TQF_API_KEY || process.env.TQF_MOBILE_API_KEY || '';
+
+console.log('🔑 API Config:', {
+  baseUrl: API_BASE_URL,
+  hasApiKey: !!API_KEY,
+  apiKeyLength: API_KEY.length,
+});
 
 export interface PlanetaryData {
   lunar: {
@@ -62,22 +67,43 @@ class EchoesAPI {
   }
 
   private getHeaders() {
-    return {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...(this.apiKey && { 'x-api-key': this.apiKey }),
     };
+    
+    if (this.apiKey) {
+      headers['x-api-key'] = this.apiKey;
+    }
+    
+    return headers;
   }
 
   async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
-    const response = await fetch(
-      `${this.baseUrl}/api/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`,
-      {
+    try {
+      const url = `${this.baseUrl}/api/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`;
+      console.log('📡 Fetching planetary data from:', url);
+      
+      const response = await fetch(url, {
         headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`HTTP ${response.status}: ${text}`);
       }
-    );
-    const data = await response.json();
-    if (!data.success) throw new Error('Failed to fetch planetary data');
-    return data.data;
+      
+      const data = await response.json();
+      console.log('✅ Planetary data received:', data);
+      
+      if (!data.success) throw new Error('Failed to fetch planetary data');
+      return data.data;
+    } catch (error) {
+      console.error('❌ Planetary data error:', {
+        message: error instanceof Error ? error.message : String(error),
+        error,
+      });
+      throw error;
+    }
   }
 
   async getDailyEchoes(
@@ -87,26 +113,60 @@ class EchoesAPI {
     localHour: number = new Date().getHours(),
     language: string = 'en'
   ): Promise<StreamResponse> {
-    const response = await fetch(`${this.baseUrl}/api/companion-simple/stream`, {
-      method: 'POST',
-      headers: this.getHeaders(),
-      body: JSON.stringify({
-        companionId,
-        userLocation: { lat, lng },
-        localHour,
-        language
-      })
-    });
-    return response.json();
+    try {
+      const url = `${this.baseUrl}/api/companion-simple/stream`;
+      console.log('📡 Fetching daily echoes from:', url);
+      
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: this.getHeaders(),
+        body: JSON.stringify({
+          companionId,
+          userLocation: { lat, lng },
+          localHour,
+          language
+        })
+      });
+      
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`HTTP ${response.status}: ${text}`);
+      }
+      
+      const data = await response.json();
+      console.log('✅ Daily echoes received:', data);
+      return data;
+    } catch (error) {
+      console.error('❌ Daily echoes error:', {
+        message: error instanceof Error ? error.message : String(error),
+        error,
+      });
+      throw error;
+    }
   }
 
   async getConsciousnessAnalysis(): Promise<ConsciousnessData> {
-    const response = await fetch(`${this.baseUrl}/api/consciousness-analysis/raw-analysis`, {
-      headers: this.getHeaders(),
-    });
-    const data = await response.json();
-    if (!data.success) throw new Error('Failed to fetch consciousness data');
-    return data.data;
+    try {
+      const url = `${this.baseUrl}/api/consciousness-analysis/raw-analysis`;
+      console.log('📡 Fetching consciousness analysis from:', url);
+      
+      const response = await fetch(url, {
+        headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log('✅ Consciousness data received:', data);
+      
+      if (!data.success) throw new Error('Failed to fetch consciousness data');
+      return data.data;
+    } catch (error) {
+      console.error('❌ Consciousness analysis error:', error);
+      throw error;
+    }
   }
 
   async getDailyBundle(
@@ -115,13 +175,25 @@ class EchoesAPI {
     lang: string = 'en',
     tz: string = 'UTC'
   ): Promise<any> {
-    const response = await fetch(
-      `${this.baseUrl}/api/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`,
-      {
+    try {
+      const url = `${this.baseUrl}/api/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`;
+      console.log('📡 Fetching daily bundle from:', url);
+      
+      const response = await fetch(url, {
         headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-    );
-    return response.json();
+      
+      const data = await response.json();
+      console.log('✅ Daily bundle received:', data);
+      return data;
+    } catch (error) {
+      console.error('❌ Daily bundle error:', error);
+      throw error;
+    }
   }
 }
 
