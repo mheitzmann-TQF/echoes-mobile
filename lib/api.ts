@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://tqf-planetary-awareness.replit.app';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://source.thequietframe.com';
 
 export interface PlanetaryData {
   lunar: {
