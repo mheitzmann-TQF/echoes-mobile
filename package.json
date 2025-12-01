@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "dev": "expo start --web --port 5000",
-    "dev:client": "expo start --web --port 5000",
+    "dev:client": "expo start --web --port 5000 & expo start --port 8081",
     "build": "tsx script/build.ts",
     "check": "tsc",
     "db:push": "drizzle-kit push"
