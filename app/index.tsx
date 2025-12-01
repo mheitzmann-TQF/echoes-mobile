@@ -7,6 +7,7 @@ import {
   RefreshControl,
   Dimensions,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -91,6 +92,21 @@ export default function HomeScreen() {
   }
 
   if (error) {
+    if (Platform.OS === 'web') {
+      return (
+        <SafeAreaView style={styles.container}>
+          <View style={styles.loadingContainer}>
+            <Text style={[styles.errorText, { fontSize: 20, textAlign: 'center' }]}>📱 Mobile App Ready</Text>
+            <Text style={[styles.loadingText, { textAlign: 'center', paddingHorizontal: 20 }]}>
+              The data cannot load here due to browser security (CORS).
+              {'\n\n'}
+              Please scan the QR code with your phone to see the app working with real data!
+            </Text>
+          </View>
+        </SafeAreaView>
+      );
+    }
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
