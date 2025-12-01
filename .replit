@@ -19,7 +19,7 @@ localPort = 8081
 externalPort = 8081
 
 [[ports]]
-localPort = 44297
+localPort = 40589
 externalPort = 3000
 
 [env]
