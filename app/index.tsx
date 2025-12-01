@@ -30,9 +30,11 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     try {
+      setError(null);
       const lat = 40.7128;
       const lng = -74.006;
       const companionId = 'mobile-user-' + Date.now();
@@ -48,6 +50,7 @@ export default function HomeScreen() {
       }
     } catch (error) {
       console.error('Failed to fetch data:', error);
+      setError('Failed to load data');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -82,6 +85,17 @@ export default function HomeScreen() {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#FFFFFF" />
           <Text style={styles.loadingText}>Aligning with the cosmos...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (error) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <Text style={styles.errorText}>⚠️ {error}</Text>
+          <Text style={styles.loadingText}>Pull to refresh and try again</Text>
         </View>
       </SafeAreaView>
     );
@@ -187,6 +201,11 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.6)',
     fontSize: 15,
     marginTop: 16,
+  },
+  errorText: {
+    color: '#ff6b6b',
+    fontSize: 16,
+    marginBottom: 8,
   },
   scrollContent: {
     paddingHorizontal: 20,

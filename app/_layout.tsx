@@ -60,7 +60,7 @@ function YouIcon({ color }: { color: string }) {
   );
 }
 
-export default function Layout() {
+export default function RootLayout() {
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
