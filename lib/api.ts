@@ -1,4 +1,5 @@
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://source.thequietframe.com';
+const API_KEY = process.env.EXPO_PUBLIC_TQF_API_KEY || '';
 
 export interface PlanetaryData {
   lunar: {
@@ -52,14 +53,26 @@ export interface ConsciousnessData {
 
 class EchoesAPI {
   private baseUrl: string;
+  private apiKey: string;
 
-  constructor(baseUrl: string = API_BASE_URL) {
+  constructor(baseUrl: string = API_BASE_URL, apiKey: string = API_KEY) {
     this.baseUrl = baseUrl;
+    this.apiKey = apiKey;
+  }
+
+  private getHeaders() {
+    return {
+      'Content-Type': 'application/json',
+      ...(this.apiKey && { 'x-api-key': this.apiKey }),
+    };
   }
 
   async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
     const response = await fetch(
-      `${this.baseUrl}/api/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`
+      `${this.baseUrl}/api/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`,
+      {
+        headers: this.getHeaders(),
+      }
     );
     const data = await response.json();
     if (!data.success) throw new Error('Failed to fetch planetary data');
@@ -75,7 +88,7 @@ class EchoesAPI {
   ): Promise<StreamResponse> {
     const response = await fetch(`${this.baseUrl}/api/companion-simple/stream`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders(),
       body: JSON.stringify({
         companionId,
         userLocation: { lat, lng },
@@ -87,7 +100,9 @@ class EchoesAPI {
   }
 
   async getConsciousnessAnalysis(): Promise<ConsciousnessData> {
-    const response = await fetch(`${this.baseUrl}/api/consciousness-analysis/raw-analysis`);
+    const response = await fetch(`${this.baseUrl}/api/consciousness-analysis/raw-analysis`, {
+      headers: this.getHeaders(),
+    });
     const data = await response.json();
     if (!data.success) throw new Error('Failed to fetch consciousness data');
     return data.data;
@@ -100,7 +115,10 @@ class EchoesAPI {
     tz: string = 'UTC'
   ): Promise<any> {
     const response = await fetch(
-      `${this.baseUrl}/api/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`
+      `${this.baseUrl}/api/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`,
+      {
+        headers: this.getHeaders(),
+      }
     );
     return response.json();
   }
