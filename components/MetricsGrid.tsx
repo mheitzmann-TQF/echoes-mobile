@@ -4,10 +4,11 @@ import { PlanetaryData } from '../lib/api';
 
 interface MetricsGridProps {
   planetary: PlanetaryData;
+  selectedMetric?: string;
+  onSelectMetric?: (metric: string) => void;
 }
 
-export default function MetricsGrid({ planetary }: MetricsGridProps) {
-  const [selectedMetric, setSelectedMetric] = useState<string>('lunar');
+export default function MetricsGrid({ planetary, selectedMetric = 'lunar', onSelectMetric }: MetricsGridProps) {
 
   const lunarIllumination = Math.round(planetary.lunar.illumination);
   const geoKpIndex = planetary.geomagnetic.kpIndex || 2;
@@ -51,7 +52,7 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
               styles.numberBox,
               selectedMetric === metric.id && styles.numberBoxActive
             ]}
-            onPress={() => setSelectedMetric(metric.id)}
+            onPress={() => onSelectMetric?.(metric.id)}
           >
             <Text style={styles.number}>{metric.number}</Text>
             <Text style={[

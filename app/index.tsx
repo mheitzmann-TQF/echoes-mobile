@@ -25,6 +25,7 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedMetric, setSelectedMetric] = useState<string>('lunar');
 
   // Default mock data for fallbacks
   const getMockPlanetaryData = (): PlanetaryData => ({
@@ -225,13 +226,20 @@ export default function HomeScreen() {
 
           <CalendarCarousel calendars={calendars} />
 
-          {planetary && <MetricsGrid planetary={planetary} />}
+          {planetary && (
+            <MetricsGrid 
+              planetary={planetary}
+              selectedMetric={selectedMetric}
+              onSelectMetric={setSelectedMetric}
+            />
+          )}
 
           <EchoStack 
             echoes={echoes}
             currentIndex={currentIndex}
             onSwipeLeft={handleSwipeLeft}
             onSwipeRight={handleSwipeRight}
+            selectedMetric={selectedMetric}
           />
 
         </ScrollView>

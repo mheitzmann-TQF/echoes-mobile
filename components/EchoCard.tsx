@@ -173,9 +173,6 @@ export default function EchoCard({
 
           <View style={styles.footer}>
             <Text style={styles.title}>{echo.title}</Text>
-            {echo.source_metrics && echo.source_metrics.length > 0 && (
-              <Text style={styles.source}>Based on: {echo.source_metrics.join(' + ')}</Text>
-            )}
           </View>
         </View>
 
@@ -259,13 +256,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textTransform: 'uppercase',
     letterSpacing: 1,
-  },
-  source: {
-    color: 'rgba(255,255,255,0.4)',
-    fontSize: 11,
-    fontWeight: '400',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
   },
   actions: {
     flexDirection: 'row',

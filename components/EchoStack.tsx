@@ -8,10 +8,16 @@ interface EchoStackProps {
   currentIndex: number;
   onSwipeLeft: () => void;
   onSwipeRight: () => void;
+  selectedMetric?: string;
 }
 
-export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRight }: EchoStackProps) {
-  const visibleEchoes = echoes.slice(currentIndex, currentIndex + 3);
+export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRight, selectedMetric }: EchoStackProps) {
+  // Filter echoes based on selected metric if provided
+  const filteredEchoes = selectedMetric 
+    ? echoes.filter(echo => echo.source_metrics?.includes(selectedMetric === 'geomagnetism' ? 'Geomagnetism' : selectedMetric.charAt(0).toUpperCase() + selectedMetric.slice(1)))
+    : echoes;
+  
+  const visibleEchoes = (filteredEchoes.length > 0 ? filteredEchoes : echoes).slice(currentIndex, currentIndex + 3);
 
   return (
     <View style={styles.container}>
@@ -37,7 +43,7 @@ export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRi
       </View>
 
       <View style={styles.indicatorContainer}>
-        {echoes.map((_, index) => (
+        {(filteredEchoes.length > 0 ? filteredEchoes : echoes).map((_, index) => (
           <View
             key={index}
             style={[
