@@ -71,7 +71,7 @@ export default function MetricsGrid({ planetary, selectedMetric = 'lunar', onSel
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginBottom: 24,
+    marginBottom: 20,
   },
   metricsRow: {
     flexDirection: 'row',

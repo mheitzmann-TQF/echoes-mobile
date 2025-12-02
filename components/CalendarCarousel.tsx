@@ -48,7 +48,7 @@ export default function CalendarCarousel({ calendars, onSelect }: CalendarCarous
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
   scrollContent: {
     paddingHorizontal: 20,
