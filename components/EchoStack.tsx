@@ -47,13 +47,6 @@ export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRi
           />
         ))}
       </View>
-
-      <TouchableOpacity 
-        style={styles.ctaButton}
-        onPress={() => Linking.openURL('https://thequietframe.com')}
-      >
-        <Text style={styles.ctaText}>Take this into The Quiet Frame</Text>
-      </TouchableOpacity>
     </View>
   );
 }

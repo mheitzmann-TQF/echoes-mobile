@@ -212,6 +212,72 @@ class EchoesAPI {
       throw error;
     }
   }
+
+  async getPlanetaryEvents(limit: number = 10): Promise<any[]> {
+    try {
+      const url = `${this.baseUrl}/api/planetary/events?limit=${limit}`;
+      console.log('📡 Fetching planetary events from:', url);
+      
+      const response = await fetch(url, {
+        headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('❌ Events error:', error);
+      return [];
+    }
+  }
+
+  async getBiologicalRhythms(lat?: number, lng?: number, tz: string = 'UTC'): Promise<any> {
+    try {
+      let url = `${this.baseUrl}/api/planetary/biological-rhythms?tz=${tz}`;
+      if (lat && lng) {
+        url += `&lat=${lat}&lng=${lng}`;
+      }
+      console.log('📡 Fetching biological rhythms from:', url);
+      
+      const response = await fetch(url, {
+        headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('❌ Biological rhythms error:', error);
+      return null;
+    }
+  }
+
+  async getCulturalContent(limit: number = 5): Promise<any[]> {
+    try {
+      const url = `${this.baseUrl}/api/cultural/content/high-alignment?limit=${limit}`;
+      console.log('📡 Fetching cultural content from:', url);
+      
+      const response = await fetch(url, {
+        headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('❌ Cultural content error:', error);
+      return [];
+    }
+  }
 }
 
 export const api = new EchoesAPI();
