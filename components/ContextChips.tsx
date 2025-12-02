@@ -25,56 +25,12 @@ export default function ContextChips({ planetary, onPressChip }: ContextChipsPro
 
       <TouchableOpacity 
         style={styles.chip}
-        onPress={() => onPressChip?.('solar')}
-      >
-        <Text style={styles.emoji}>☀️</Text>
-        <View>
-          <Text style={styles.label}>Solar</Text>
-          <Text style={styles.value}>{planetary.solar.currentPhase}</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-        style={styles.chip}
         onPress={() => onPressChip?.('geomagnetic')}
       >
         <Text style={styles.emoji}>⚡</Text>
         <View>
           <Text style={styles.label}>Field</Text>
           <Text style={styles.value}>{planetary.geomagnetic.activity}</Text>
-        </View>
-      </TouchableOpacity>
-      
-       <TouchableOpacity 
-        style={styles.chip}
-        onPress={() => onPressChip?.('seasonal')}
-      >
-        <Text style={styles.emoji}>🍂</Text>
-        <View>
-          <Text style={styles.label}>Season</Text>
-          <Text style={styles.value}>{planetary.seasonal.season}</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-        style={styles.chip}
-        onPress={() => onPressChip?.('weather')}
-      >
-        <Text style={styles.emoji}>🌡️</Text>
-        <View>
-          <Text style={styles.label}>Weather</Text>
-          <Text style={styles.value}>12°C · Clear</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-        style={styles.chip}
-        onPress={() => onPressChip?.('culture')}
-      >
-        <Text style={styles.emoji}>🗓</Text>
-        <View>
-          <Text style={styles.label}>Culture</Text>
-          <Text style={styles.value}>2 Observances</Text>
         </View>
       </TouchableOpacity>
     </View>
