@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 12,
+    paddingVertical: 16,
   },
   metricBox: {
     flex: 1,
