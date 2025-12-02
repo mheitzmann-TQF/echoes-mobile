@@ -9,13 +9,6 @@ interface HeroProps {
 export default function Hero({ title, subtitle }: HeroProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.date}>
-        {new Date().toLocaleDateString('en-US', { 
-          weekday: 'long', 
-          month: 'long', 
-          day: 'numeric' 
-        })}
-      </Text>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>
     </View>
@@ -25,14 +18,7 @@ export default function Hero({ title, subtitle }: HeroProps) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginTop: 16,
-    marginBottom: 12,
-  },
-  date: {
-    fontSize: 13,
-    color: 'rgba(255,255,255,0.5)',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
+    marginTop: 8,
     marginBottom: 12,
   },
   title: {
