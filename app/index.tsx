@@ -14,6 +14,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import EchoCard from '../components/EchoCard';
 import MoonPhase from '../components/MoonPhase';
 import api, { Echo, PlanetaryData, StreamResponse } from '../lib/api';
+import { useLocation } from '../lib/LocationContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -26,6 +27,7 @@ const getGreeting = (): string => {
 };
 
 export default function HomeScreen() {
+  const { location } = useLocation();
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -70,8 +72,7 @@ export default function HomeScreen() {
   const fetchData = useCallback(async () => {
     try {
       setError(null);
-      const lat = 40.7128;
-      const lng = -74.006;
+      const { lat, lng } = location;
       const companionId = 'mobile-user-' + Date.now();
 
       try {

@@ -2,6 +2,7 @@ import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet } from 'react-native';
 import { Svg, Path, Circle } from 'react-native-svg';
+import { LocationProvider } from '../lib/LocationContext';
 
 function HomeIcon({ color }: { color: string }) {
   return (
@@ -62,9 +63,10 @@ function YouIcon({ color }: { color: string }) {
 
 export default function RootLayout() {
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" />
-      <Tabs
+    <LocationProvider>
+      <View style={styles.container}>
+        <StatusBar style="light" />
+        <Tabs
         screenOptions={{
           headerShown: false,
           tabBarStyle: {
@@ -112,7 +114,8 @@ export default function RootLayout() {
           }}
         />
       </Tabs>
-    </View>
+      </View>
+    </LocationProvider>
   );
 }
 

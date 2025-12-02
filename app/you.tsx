@@ -7,14 +7,16 @@ import {
   TouchableOpacity,
   Switch,
   Alert,
+  TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocation } from '../lib/LocationContext';
 
 export default function YouScreen() {
+  const { userLocationInput, setUserLocationInput, setLocation } = useLocation();
   const [notifications, setNotifications] = useState(true);
   const [dawnEchoes, setDawnEchoes] = useState(true);
   const [lunarAlerts, setLunarAlerts] = useState(true);
-  const [location, setLocation] = useState('New York, USA');
   const [language, setLanguage] = useState('English');
   const [calendar, setCalendar] = useState('Gregorian');
 
@@ -22,10 +24,14 @@ export default function YouScreen() {
   const languages = ['English', 'Spanish', 'French', 'German', 'Japanese'];
   const calendars = ['Gregorian', 'Lunar', 'Hindu', 'Hebrew'];
 
-  const cycleLocation = () => {
-    const currentIndex = locations.indexOf(location);
-    const nextIndex = (currentIndex + 1) % locations.length;
-    setLocation(locations[nextIndex]);
+  const handleLocationChange = (text: string) => {
+    setUserLocationInput(text);
+    const coords = getCoordinates(text);
+    setLocation({
+      name: coords.name,
+      lat: coords.lat,
+      lng: coords.lng,
+    });
   };
 
   const cycleLanguage = () => {
@@ -38,6 +44,22 @@ export default function YouScreen() {
     const currentIndex = calendars.indexOf(calendar);
     const nextIndex = (currentIndex + 1) % calendars.length;
     setCalendar(calendars[nextIndex]);
+  };
+
+  const locationCoordinates: Record<string, { lat: number; lng: number; name: string }> = {
+    'new york': { lat: 40.7128, lng: -74.006, name: 'New York, USA' },
+    'london': { lat: 51.5074, lng: -0.1278, name: 'London, UK' },
+    'tokyo': { lat: 35.6762, lng: 139.6503, name: 'Tokyo, Japan' },
+    'sydney': { lat: -33.8688, lng: 151.2093, name: 'Sydney, Australia' },
+    'paris': { lat: 48.8566, lng: 2.3522, name: 'Paris, France' },
+    'berlin': { lat: 52.52, lng: 13.405, name: 'Berlin, Germany' },
+    'dubai': { lat: 25.2048, lng: 55.2708, name: 'Dubai, UAE' },
+    'singapore': { lat: 1.3521, lng: 103.8198, name: 'Singapore' },
+  };
+
+  const getCoordinates = (locationName: string) => {
+    const key = locationName.toLowerCase().trim();
+    return locationCoordinates[key] || { lat: 40.7128, lng: -74.006, name: locationName };
   };
 
   const handleAbout = () => {
@@ -80,16 +102,25 @@ export default function YouScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Preferences</Text>
 
-          <TouchableOpacity style={styles.settingRow} onPress={cycleLocation}>
+          <View style={[styles.settingRow, { paddingVertical: 12 }]}>
             <View style={styles.settingInfo}>
               <Text style={styles.settingIcon}>📍</Text>
-              <View>
+              <View style={{ flex: 1 }}>
                 <Text style={styles.settingLabel}>Location</Text>
-                <Text style={styles.settingValue}>{location}</Text>
+                <TextInput
+                  style={styles.locationInput}
+                  placeholder="Enter city name..."
+                  placeholderTextColor="rgba(255,255,255,0.4)"
+                  value={userLocationInput}
+                  onChangeText={handleLocationChange}
+                  editable={true}
+                />
+                <Text style={styles.settingDescription}>
+                  {getCoordinates(userLocationInput).name} · {getCoordinates(userLocationInput).lat.toFixed(2)}°, {getCoordinates(userLocationInput).lng.toFixed(2)}°
+                </Text>
               </View>
             </View>
-            <Text style={styles.chevron}>›</Text>
-          </TouchableOpacity>
+          </View>
 
           <TouchableOpacity style={styles.settingRow} onPress={cycleLanguage}>
             <View style={styles.settingInfo}>
@@ -310,6 +341,15 @@ const styles = StyleSheet.create({
   chevron: {
     fontSize: 24,
     color: 'rgba(255,255,255,0.3)',
+  },
+  locationInput: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    paddingVertical: 8,
+    paddingHorizontal: 0,
+    marginVertical: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.2)',
   },
   version: {
     textAlign: 'center',
