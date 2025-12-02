@@ -205,12 +205,10 @@ export default function HomeScreen() {
           }
           showsVerticalScrollIndicator={false}
         >
-          {echoes.length > 0 && (
-            <Hero 
-              title={echoes[0].title} 
-              subtitle={echoes[0].message.substring(0, 60) + "..."} 
-            />
-          )}
+          <Hero 
+            title="Echoes" 
+            subtitle="Today's wisdom from cosmos, earth, and body" 
+          />
 
           <MoodTemperature 
             value={Math.round(planetary?.consciousness?.global_coherence || 68)} 
