@@ -17,7 +17,7 @@ export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRi
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Today's Echoes</Text>
+      <Text style={styles.label}>Echoes</Text>
       
       <View style={styles.stackContainer}>
         {visibleEchoes.length > 0 ? (
@@ -55,6 +55,7 @@ export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRi
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 8,
     marginBottom: 40,
   },
   label: {

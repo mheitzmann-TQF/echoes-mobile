@@ -238,7 +238,7 @@ export default function HomeScreen() {
           scrollEnabled={false}
         >
           <Hero 
-            title="Echoes" 
+            title="Today" 
             subtitle="" 
           />
 
