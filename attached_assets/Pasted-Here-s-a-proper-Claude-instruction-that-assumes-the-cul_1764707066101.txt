@@ -1,0 +1,88 @@
+Here’s a proper Claude instruction that assumes the cultural API may return blank sometimes, and makes Learn still feel premium, alive, and non-broken — without inventing new endpoints or repeating Today.
+
+Copy/paste this to Claude:
+
+⸻
+
+Claude Instruction — Fix “Learn” tab (Calm, Museum-like, Works When API Is Blank)
+
+Goal
+Redesign the Learn tab so it feels rich and “sticky” even when the cultural API returns an empty response. Learn must not repeat Today’s content (no Today tiles, no lunar/coherence/geomagnetism tiles, no echo cards).
+
+Data sources (use existing only)
+	•	Calendar systems: GET /api/planetary/traditional-calendars?lat&lng&lang&tz
+	•	Living calendar: GET /api/sacred-geography/living-calendars?lat&lng&lang&tz
+	•	Cultural item (optional): GET /api/cultural/content/high-alignment?lat&lng&lang&tz
+IMPORTANT: This endpoint may return blank/empty. Build for that gracefully.
+(Endpoints are defined in the TQF API documentation.)
+
+⸻
+
+Learn tab UI structure (3–4 sections)
+
+1) Calendar Systems (Hero section)
+
+UI
+	•	Build a swipeable carousel of large cards (one per calendar system).
+	•	Each card shows:
+	•	Calendar name (e.g., “Islamic Calendar”)
+	•	Type tag (Civil / Lunar / Lunisolar / Sacred)
+	•	1-line explainer of what it tracks (educational, not a date)
+	•	Do not show “today’s date” on the face of the card to avoid duplicating Today.
+
+Interaction
+	•	Tapping a calendar opens a bottom sheet: “Today in this system”
+	•	Show today’s date in that calendar (allowed here)
+	•	2–4 short lines: what the system is and how it counts time
+	•	If any observance exists (optional): show max 1
+
+2) Living Calendar (2–3 items max)
+
+UI
+	•	A short stack of 2–3 cards (“Seasonal Pattern”, “Light Shift”, etc.) from living-calendars.
+	•	Each card shows:
+	•	Title
+	•	1 sentence
+	•	A small “Why now” line
+	•	Tap opens a detail sheet (short, calm).
+
+3) Cultural Offering (optional, must survive blank API)
+
+UI
+	•	Replace “Discovering cultural artifacts…” with a real card container that always renders.
+	•	States:
+	1.	Loading → skeleton card (not a spinner)
+	2.	Success (has item) → render the item:
+	•	Title
+	•	1–2 lines excerpt/summary
+	•	Tag
+	•	“Why this surfaced today” (1 short line)
+	•	Save (local) + Open (detail sheet)
+	3.	Empty (blank return) → render a calm fallback (NOT an error):
+	•	Title: “No cultural offering surfaced today.”
+	•	Subtext: “The field is quiet here. Try again later.”
+	•	Small action: “Refresh” (rate limit to e.g. once every 30–60 seconds)
+	4.	Network error → similar calm fallback (“Couldn’t reach the source.”)
+
+4) Saved (local-only, tiny strip)
+	•	Saved cultural items and saved calendar notes (localStorage only).
+	•	No accounts.
+
+⸻
+
+Anti-repeat rules (enforce)
+	•	Learn must not re-render Today’s calendar tiles or Today’s metric tiles.
+	•	Learn must not show Echo cards here.
+	•	Any “today date” appears only inside calendar detail sheets, not in the main Learn feed.
+
+⸻
+
+Implementation notes
+	•	Use device context: lat,lng,lang,tz.
+	•	Cache responses until expires_at if provided; otherwise cache for 30 minutes.
+	•	Keep copy minimal, non-directive (“windows” not “instructions”).
+	•	Use consistent card design (premium, minimal, spacious).
+
+⸻
+
+If you want, I can also write the fallback copy variants (3–5 options) so “empty cultural offering” doesn’t feel repetitive day after day.

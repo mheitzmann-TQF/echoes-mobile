@@ -140,18 +140,22 @@ export default function LearnScreen() {
   const { coordinates, timezone } = useLocation();
   const [calendars, setCalendars] = useState<any>(null);
   const [culture, setCulture] = useState<any[]>([]);
+  const [cultureLoading, setCultureLoading] = useState(true);
+  const [cultureEmpty, setCultureEmpty] = useState(false);
   const [living, setLiving] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [savedIds, setSavedIds] = useState<string[]>([]);
+  const [lastCultureRefresh, setLastCultureRefresh] = useState<number>(0);
   
   // Detail Modal State
   const [selectedSystem, setSelectedSystem] = useState<string | null>(null);
   const [selectedLiving, setSelectedLiving] = useState<any | null>(null);
 
+  // Load initial data
   useEffect(() => {
     async function loadData() {
       try {
-        const [calData, cultureData, livingData] = await Promise.all([
+        const [calData, livingData] = await Promise.all([
           api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone)
             .catch(() => ({
               gregorian: { name: "Gregorian", day: 2, month: 12, year: 2025 },
@@ -160,13 +164,6 @@ export default function LearnScreen() {
               hebrew: { name: "Hebrew", day: 29, month: "Kislev", year: 5785 },
               islamic: { name: "Islamic", day: 1, month: "Jumada al-Awwal", year: 1446 }
             })),
-          api.getCulturalContent(1) // Just one featured
-            .catch(() => [{
-              id: 'default',
-              title: "Daily Wisdom",
-              summary: "Explore the patterns that shape our days.",
-              region: "Universal"
-            }]),
           api.getLivingCalendars()
             .catch(() => [
               {
@@ -185,7 +182,6 @@ export default function LearnScreen() {
         ]);
 
         setCalendars(calData);
-        setCulture(cultureData);
         setLiving(livingData);
       } finally {
         setLoading(false);
@@ -193,6 +189,58 @@ export default function LearnScreen() {
     }
     loadData();
   }, [coordinates, timezone]);
+
+  // Load cultural content separately
+  useEffect(() => {
+    async function loadCulture() {
+      setCultureLoading(true);
+      setCultureEmpty(false);
+      try {
+        const data = await api.getCulturalContent(1);
+        if (Array.isArray(data) && data.length > 0) {
+          setCulture(data);
+          setCultureEmpty(false);
+        } else {
+          setCulture([]);
+          setCultureEmpty(true);
+        }
+      } catch {
+        setCulture([]);
+        setCultureEmpty(true);
+      } finally {
+        setCultureLoading(false);
+      }
+    }
+    loadCulture();
+  }, []);
+
+  const handleRefreshCulture = async () => {
+    const now = Date.now();
+    if (now - lastCultureRefresh < 30000) {
+      // Rate limit: only allow refresh every 30 seconds
+      return;
+    }
+    
+    setLastCultureRefresh(now);
+    setCultureLoading(true);
+    setCultureEmpty(false);
+    
+    try {
+      const data = await api.getCulturalContent(1);
+      if (Array.isArray(data) && data.length > 0) {
+        setCulture(data);
+        setCultureEmpty(false);
+      } else {
+        setCulture([]);
+        setCultureEmpty(true);
+      }
+    } catch {
+      setCulture([]);
+      setCultureEmpty(true);
+    } finally {
+      setCultureLoading(false);
+    }
+  };
 
   const handleSave = (id: string) => {
     setSavedIds(prev => 
@@ -263,7 +311,21 @@ export default function LearnScreen() {
         {/* 2. Artifact of the Day */}
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>ARTIFACT OF THE DAY</Text>
-          {culture.length > 0 ? (
+          
+          {cultureLoading ? (
+            <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 20 }} />
+          ) : cultureEmpty ? (
+            <View style={styles.fallbackCard}>
+              <Text style={styles.fallbackCardTitle}>No cultural offering surfaced today.</Text>
+              <Text style={styles.fallbackCardSub}>The field is quiet here. Try again later.</Text>
+              <TouchableOpacity 
+                style={styles.fallbackRefreshButton} 
+                onPress={handleRefreshCulture}
+              >
+                <Text style={styles.fallbackRefreshText}>Refresh</Text>
+              </TouchableOpacity>
+            </View>
+          ) : culture.length > 0 ? (
             <ArtifactCard 
               artifact={culture[0]} 
               isSaved={savedIds.includes(culture[0].id || 'art1')}
@@ -271,7 +333,14 @@ export default function LearnScreen() {
             />
           ) : (
             <View style={styles.fallbackCard}>
-              <Text style={styles.fallbackText}>No artifact surfaced today.</Text>
+              <Text style={styles.fallbackCardTitle}>No cultural offering surfaced today.</Text>
+              <Text style={styles.fallbackCardSub}>The field is quiet here. Try again later.</Text>
+              <TouchableOpacity 
+                style={styles.fallbackRefreshButton} 
+                onPress={handleRefreshCulture}
+              >
+                <Text style={styles.fallbackRefreshText}>Refresh</Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -526,17 +595,39 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   fallbackCard: {
-    padding: 30,
+    padding: 32,
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 20,
-    borderStyle: 'dashed',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(255,255,255,0.08)',
+    minHeight: 180,
+    justifyContent: 'center',
   },
-  fallbackText: {
+  fallbackCardTitle: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  fallbackCardSub: {
     color: 'rgba(255,255,255,0.4)',
     fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 20,
+  },
+  fallbackRefreshButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 8,
+  },
+  fallbackRefreshText: {
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 13,
+    fontWeight: '500',
   },
   // Living Calendar
   livingCard: {
