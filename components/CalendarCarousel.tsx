@@ -29,9 +29,6 @@ export default function CalendarCarousel({ calendars, onSelect }: CalendarCarous
             <Text style={styles.cardDate}>{cal.date}</Text>
             <View style={styles.typeContainer}>
               <Text style={styles.cardType}>{cal.type}</Text>
-              <View style={styles.infoIcon}>
-                <Text style={styles.infoText}>i</Text>
-              </View>
             </View>
           </TouchableOpacity>
         ))}
@@ -60,6 +57,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.05)',
     minHeight: 90,
+    marginBottom: 8,
   },
   cardName: {
     fontSize: 12,
@@ -73,9 +71,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   typeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     marginTop: 8,
   },
   cardType: {
@@ -86,20 +81,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 3,
-  },
-  infoIcon: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  infoText: {
-    fontSize: 9,
-    color: 'rgba(255,255,255,0.6)',
-    fontStyle: 'italic',
-    fontFamily: 'serif',
+    alignSelf: 'flex-start',
   },
 });
