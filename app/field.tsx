@@ -158,7 +158,7 @@ export default function FieldScreen() {
             icon="⚡"
             title="Geomagnetic Activity"
             value={ctx?.consciousness_index.global_coherence && ctx.consciousness_index.global_coherence > 60 ? 'Coherent' : 'Quiet'}
-            detail="Kp Index: 2 (Estimated)"
+            detail={`Regional Resonance: ${Math.round(ctx?.consciousness_index.regional_resonance || 0)}%`}
             message="Geomagnetic field variations can influence human nervous system activity."
             isExpanded={expandedCards['geo']}
             onToggle={() => toggleCard('geo')}
