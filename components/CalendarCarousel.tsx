@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface CalendarData {
   id: string;
@@ -17,13 +17,7 @@ interface CalendarCarouselProps {
 export default function CalendarCarousel({ calendars, onSelect }: CalendarCarouselProps) {
   return (
     <View style={styles.container}>
-      <ScrollView 
-        horizontal 
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-        snapToInterval={160} // approximate card width + gap
-        decelerationRate="fast"
-      >
+      <View style={styles.grid}>
         {calendars.map((cal) => (
           <TouchableOpacity 
             key={cal.id} 
@@ -41,36 +35,39 @@ export default function CalendarCarousel({ calendars, onSelect }: CalendarCarous
             </View>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 20,
     marginBottom: 16,
   },
-  scrollContent: {
-    paddingHorizontal: 20,
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 12,
+    justifyContent: 'space-between',
   },
   card: {
-    width: 150,
-    height: 100,
+    width: '48%',
     backgroundColor: 'rgba(255,255,255,0.08)',
     borderRadius: 16,
-    padding: 16,
+    padding: 12,
     justifyContent: 'space-between',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.05)',
+    minHeight: 90,
   },
   cardName: {
-    fontSize: 13,
+    fontSize: 12,
     color: 'rgba(255,255,255,0.6)',
     fontWeight: '500',
   },
   cardDate: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
     color: '#FFFFFF',
     marginTop: 4,
@@ -82,27 +79,27 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   cardType: {
-    fontSize: 10,
+    fontSize: 9,
     color: 'rgba(255,255,255,0.8)',
     textTransform: 'capitalize',
     backgroundColor: 'rgba(255,255,255,0.1)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 3,
   },
   infoIcon: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.3)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   infoText: {
-    fontSize: 10,
+    fontSize: 9,
     color: 'rgba(255,255,255,0.6)',
     fontStyle: 'italic',
-    fontFamily: 'serif', // Using serif for 'i' to look more informational
+    fontFamily: 'serif',
   },
 });
