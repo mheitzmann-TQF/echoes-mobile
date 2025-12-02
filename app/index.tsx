@@ -226,7 +226,7 @@ export default function HomeScreen() {
             />
           }
           showsVerticalScrollIndicator={false}
-          scrollEnabled={false}
+          scrollEnabled={true}
         >
           <Hero 
             title="Today" 
