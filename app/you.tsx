@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Switch,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -13,12 +14,47 @@ export default function YouScreen() {
   const [notifications, setNotifications] = useState(true);
   const [dawnEchoes, setDawnEchoes] = useState(true);
   const [lunarAlerts, setLunarAlerts] = useState(true);
+  const [location, setLocation] = useState('New York, USA');
+  const [language, setLanguage] = useState('English');
+  const [calendar, setCalendar] = useState('Gregorian');
+
+  const locations = ['New York, USA', 'London, UK', 'Tokyo, Japan', 'Sydney, Australia'];
+  const languages = ['English', 'Spanish', 'French', 'German', 'Japanese'];
+  const calendars = ['Gregorian', 'Lunar', 'Hindu', 'Hebrew'];
+
+  const cycleLocation = () => {
+    const currentIndex = locations.indexOf(location);
+    const nextIndex = (currentIndex + 1) % locations.length;
+    setLocation(locations[nextIndex]);
+  };
+
+  const cycleLanguage = () => {
+    const currentIndex = languages.indexOf(language);
+    const nextIndex = (currentIndex + 1) % languages.length;
+    setLanguage(languages[nextIndex]);
+  };
+
+  const cycleCalendar = () => {
+    const currentIndex = calendars.indexOf(calendar);
+    const nextIndex = (currentIndex + 1) % calendars.length;
+    setCalendar(calendars[nextIndex]);
+  };
+
+  const handleAbout = () => {
+    Alert.alert('About Echoes', 'A meditation app that aligns your consciousness with cosmic rhythms and lunar cycles.');
+  };
+
+  const handlePrivacy = () => {
+    Alert.alert('Privacy Policy', 'Your data is private and never shared. All echoes remain yours alone.');
+  };
+
+  const handleFeedback = () => {
+    Alert.alert('Send Feedback', 'Your thoughts help us evolve. Thank you for sharing your journey with us.');
+  };
 
   const profile = {
     name: 'Seeker',
     joinedDays: 14,
-    location: 'New York, USA',
-    language: 'English',
   };
 
   return (
@@ -44,34 +80,34 @@ export default function YouScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Preferences</Text>
 
-          <TouchableOpacity style={styles.settingRow}>
+          <TouchableOpacity style={styles.settingRow} onPress={cycleLocation}>
             <View style={styles.settingInfo}>
               <Text style={styles.settingIcon}>📍</Text>
               <View>
                 <Text style={styles.settingLabel}>Location</Text>
-                <Text style={styles.settingValue}>{profile.location}</Text>
+                <Text style={styles.settingValue}>{location}</Text>
               </View>
             </View>
             <Text style={styles.chevron}>›</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingRow}>
+          <TouchableOpacity style={styles.settingRow} onPress={cycleLanguage}>
             <View style={styles.settingInfo}>
               <Text style={styles.settingIcon}>🌐</Text>
               <View>
                 <Text style={styles.settingLabel}>Language</Text>
-                <Text style={styles.settingValue}>{profile.language}</Text>
+                <Text style={styles.settingValue}>{language}</Text>
               </View>
             </View>
             <Text style={styles.chevron}>›</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingRow}>
+          <TouchableOpacity style={styles.settingRow} onPress={cycleCalendar}>
             <View style={styles.settingInfo}>
               <Text style={styles.settingIcon}>📅</Text>
               <View>
                 <Text style={styles.settingLabel}>Cultural Calendars</Text>
-                <Text style={styles.settingValue}>Gregorian</Text>
+                <Text style={styles.settingValue}>{calendar}</Text>
               </View>
             </View>
             <Text style={styles.chevron}>›</Text>
@@ -139,7 +175,7 @@ export default function YouScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>About</Text>
 
-          <TouchableOpacity style={styles.settingRow}>
+          <TouchableOpacity style={styles.settingRow} onPress={handleAbout}>
             <View style={styles.settingInfo}>
               <Text style={styles.settingIcon}>📖</Text>
               <Text style={styles.settingLabel}>About Echoes</Text>
@@ -147,7 +183,7 @@ export default function YouScreen() {
             <Text style={styles.chevron}>›</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingRow}>
+          <TouchableOpacity style={styles.settingRow} onPress={handlePrivacy}>
             <View style={styles.settingInfo}>
               <Text style={styles.settingIcon}>🔒</Text>
               <Text style={styles.settingLabel}>Privacy Policy</Text>
@@ -155,7 +191,7 @@ export default function YouScreen() {
             <Text style={styles.chevron}>›</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingRow}>
+          <TouchableOpacity style={styles.settingRow} onPress={handleFeedback}>
             <View style={styles.settingInfo}>
               <Text style={styles.settingIcon}>💬</Text>
               <Text style={styles.settingLabel}>Send Feedback</Text>
