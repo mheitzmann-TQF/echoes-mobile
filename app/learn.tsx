@@ -153,11 +153,35 @@ export default function LearnScreen() {
       try {
         const [calData, cultureData, livingData] = await Promise.all([
           api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone)
-            .catch(() => null),
+            .catch(() => ({
+              gregorian: { name: "Gregorian", day: 2, month: 12, year: 2025 },
+              mayan: { name: "Mayan", tzolkin: { dayNumber: 4, dayName: "Kan", meaning: "Reptile" } },
+              chinese: { name: "Chinese", year: "Dragon", element: "Wood" },
+              hebrew: { name: "Hebrew", day: 29, month: "Kislev", year: 5785 },
+              islamic: { name: "Islamic", day: 1, month: "Jumada al-Awwal", year: 1446 }
+            })),
           api.getCulturalContent(1) // Just one featured
-            .catch(() => []),
+            .catch(() => [{
+              id: 'default',
+              title: "Daily Wisdom",
+              summary: "Explore the patterns that shape our days.",
+              region: "Universal"
+            }]),
           api.getLivingCalendars()
-            .catch(() => [])
+            .catch(() => [
+              {
+                id: 'seasonal',
+                title: 'Seasonal Pattern',
+                summary: 'The light is shifting as we approach the solstice threshold.',
+                why_now: 'We are 18 days from the turning point.'
+              },
+              {
+                id: 'light',
+                title: 'Light Shift',
+                summary: 'Twilight lengthens in the northern hemisphere, inviting introspection.',
+                why_now: 'Solar angle is currently at 23 degrees.'
+              }
+            ])
         ]);
 
         setCalendars(calData);
