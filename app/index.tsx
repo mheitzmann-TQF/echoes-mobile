@@ -95,7 +95,7 @@ export default function HomeScreen() {
   const fetchData = useCallback(async () => {
     try {
       const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('API timeout')), 5000)
+        setTimeout(() => reject(new Error('API timeout')), 15000)
       );
 
       // Fetch Bundle + Calendars
