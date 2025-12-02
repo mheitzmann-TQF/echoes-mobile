@@ -25,8 +25,8 @@ export default function Hero({ title, subtitle }: HeroProps) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginTop: 24,
-    marginBottom: 24,
+    marginTop: 16,
+    marginBottom: 12,
   },
   date: {
     fontSize: 13,
@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   title: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: '700',
     color: '#FFFFFF',
-    lineHeight: 42,
-    marginBottom: 12,
+    lineHeight: 38,
+    marginBottom: 0,
     letterSpacing: -0.5,
   },
   subtitle: {

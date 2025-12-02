@@ -11,7 +11,7 @@ import { Svg, Path, Circle } from 'react-native-svg';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH - 40;
-const CARD_HEIGHT = 480;
+const CARD_HEIGHT = 320;
 
 interface EchoCardProps {
   echo: {

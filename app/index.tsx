@@ -204,10 +204,11 @@ export default function HomeScreen() {
             />
           }
           showsVerticalScrollIndicator={false}
+          scrollEnabled={false}
         >
           <Hero 
             title="Echoes" 
-            subtitle="Today's wisdom from cosmos, earth, and body" 
+            subtitle="" 
           />
 
           <MoodTemperature 

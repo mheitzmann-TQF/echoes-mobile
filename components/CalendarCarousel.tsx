@@ -49,7 +49,7 @@ export default function CalendarCarousel({ calendars, onSelect }: CalendarCarous
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 24,
+    marginBottom: 12,
   },
   label: {
     fontSize: 13,

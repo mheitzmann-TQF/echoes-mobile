@@ -39,7 +39,7 @@ export default function MoodTemperature({ value, label }: MoodTemperatureProps) 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginBottom: 32,
+    marginBottom: 16,
   },
   header: {
     flexDirection: 'row',
