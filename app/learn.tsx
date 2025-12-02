@@ -79,9 +79,9 @@ function ArtifactCard({ artifact, onSave, isSaved }: { artifact: any, onSave: ()
   );
 }
 
-function LivingCard({ item }: { item: any }) {
+function LivingCard({ item, onPress }: { item: any, onPress: () => void }) {
   return (
-    <TouchableOpacity style={styles.livingCard} activeOpacity={0.8}>
+    <TouchableOpacity style={styles.livingCard} activeOpacity={0.8} onPress={onPress}>
       <View>
         <Text style={styles.livingTitle}>{item.title}</Text>
         <Text style={styles.livingSummary}>{item.summary}</Text>
@@ -115,6 +115,7 @@ export default function LearnScreen() {
   
   // Detail Modal State
   const [selectedSystem, setSelectedSystem] = useState<string | null>(null);
+  const [selectedLiving, setSelectedLiving] = useState<any | null>(null);
 
   useEffect(() => {
     async function loadData() {
@@ -204,7 +205,11 @@ export default function LearnScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>LIVING CALENDAR</Text>
           {living.map((item, i) => (
-            <LivingCard key={i} item={item} />
+            <LivingCard 
+              key={i} 
+              item={item} 
+              onPress={() => setSelectedLiving(item)}
+            />
           ))}
         </View>
 
@@ -213,7 +218,7 @@ export default function LearnScreen() {
       {/* 4. Saved Strip */}
       <SavedStrip count={savedIds.length} />
 
-      {/* Detail Bottom Sheet (Modal) */}
+      {/* Detail Bottom Sheet (System Modal) */}
       <Modal
         visible={!!selectedSystem}
         transparent={true}
@@ -257,6 +262,46 @@ export default function LearnScreen() {
                 <Text style={styles.modalDescription}>
                   {CALENDAR_EXPLAINERS[selectedSystem]} This system offers a unique lens on the passage of time, emphasizing {CALENDAR_TYPES[selectedSystem].toLowerCase()} rhythms.
                 </Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </Modal>
+
+      {/* Living Calendar Detail Modal */}
+      <Modal
+        visible={!!selectedLiving}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setSelectedLiving(null)}
+      >
+        <View style={styles.modalOverlay}>
+          <TouchableOpacity style={styles.modalBackdrop} onPress={() => setSelectedLiving(null)} />
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <View style={styles.modalHandle} />
+              <TouchableOpacity style={styles.closeButton} onPress={() => setSelectedLiving(null)}>
+                <X size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+            </View>
+            
+            {selectedLiving && (
+              <View style={styles.modalBody}>
+                <Text style={styles.modalTitle}>Living Rhythm</Text>
+                <Text style={styles.modalDateMain}>{selectedLiving.title}</Text>
+                
+                <Text style={styles.modalDescription}>
+                  {selectedLiving.summary}
+                </Text>
+
+                <View style={styles.whySurfaced}>
+                  <Text style={styles.whyText}>{selectedLiving.why_now}</Text>
+                </View>
+
+                <TouchableOpacity style={styles.actionButton} onPress={() => setSelectedLiving(null)}>
+                  <Text style={styles.actionButtonText}>Carry into Quiet Frame</Text>
+                  <ArrowRight size={16} color="#FFFFFF" />
+                </TouchableOpacity>
               </View>
             )}
           </View>
@@ -539,5 +584,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'rgba(255,255,255,0.8)',
     lineHeight: 24,
+  },
+  actionButton: {
+    marginTop: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingVertical: 16,
+    borderRadius: 12,
+    gap: 8,
+  },
+  actionButtonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+    fontSize: 15,
   },
 });
