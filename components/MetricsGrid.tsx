@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { PlanetaryData } from '../lib/api';
 
 interface MetricsGridProps {
   planetary: PlanetaryData;
-  selectedMetric?: string;
-  onSelectMetric?: (metric: string) => void;
 }
 
-export default function MetricsGrid({ planetary, selectedMetric = 'lunar', onSelectMetric }: MetricsGridProps) {
+export default function MetricsGrid({ planetary }: MetricsGridProps) {
 
   const lunarIllumination = Math.round(planetary.lunar.illumination);
   const geoKpIndex = planetary.geomagnetic.kpIndex || 2;
@@ -45,23 +43,16 @@ export default function MetricsGrid({ planetary, selectedMetric = 'lunar', onSel
     <View style={styles.container}>
       <View style={styles.metricsRow}>
         {metrics.map((metric) => (
-          <TouchableOpacity 
+          <View 
             key={metric.id}
-            style={[
-              styles.metricBox,
-              selectedMetric === metric.id && styles.metricBoxActive
-            ]}
-            onPress={() => onSelectMetric?.(metric.id)}
+            style={styles.metricBox}
           >
             <Text style={styles.emoji}>{metric.emoji}</Text>
             <Text style={styles.number}>{metric.number}</Text>
-            <Text style={[
-              styles.label,
-              selectedMetric === metric.id && styles.labelActive
-            ]}>
+            <Text style={styles.label}>
               {metric.numberLabel}
             </Text>
-          </TouchableOpacity>
+          </View>
         ))}
       </View>
     </View>
@@ -89,10 +80,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.05)',
     backgroundColor: 'rgba(255,255,255,0.02)',
   },
-  metricBoxActive: {
-    borderColor: 'rgba(255,255,255,0.2)',
-    backgroundColor: 'rgba(255,255,255,0.08)',
-  },
   emoji: {
     fontSize: 24,
     marginBottom: 8,
@@ -110,9 +97,5 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     fontWeight: '500',
-  },
-  labelActive: {
-    color: '#FFFFFF',
-    fontWeight: '600',
   },
 });
