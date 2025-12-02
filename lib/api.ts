@@ -1,11 +1,16 @@
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://source.thequietframe.com';
 const API_KEY = process.env.EXPO_PUBLIC_TQF_API_KEY || process.env.TQF_MOBILE_API_KEY || '';
 
-console.log('🔑 API Config:', {
-  baseUrl: API_BASE_URL,
-  hasApiKey: !!API_KEY,
-  apiKeyLength: API_KEY.length,
-});
+// Log config after module loads
+if (typeof console !== 'undefined' && console.log) {
+  setTimeout(() => {
+    console.log('🔑 API Config:', {
+      baseUrl: API_BASE_URL,
+      hasApiKey: !!API_KEY,
+      apiKeyLength: API_KEY.length,
+    });
+  }, 0);
+}
 
 export interface PlanetaryData {
   lunar: {
