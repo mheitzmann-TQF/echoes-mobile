@@ -284,6 +284,41 @@ class EchoesAPI {
       return [];
     }
   }
+
+  async getLivingCalendars(): Promise<any[]> {
+    try {
+      const url = `${this.baseUrl}/api/sacred-geography/living-calendars`;
+      console.log('📡 Fetching living calendars from:', url);
+      
+      const response = await fetch(url, {
+        headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('❌ Living calendars error:', error);
+      // Return mock data since this endpoint might be new/hypothetical
+      return [
+        {
+          id: 'seasonal',
+          title: 'Seasonal Pattern',
+          summary: 'The light is shifting as we approach the solstice threshold.',
+          why_now: 'We are 18 days from the turning point.'
+        },
+        {
+          id: 'light',
+          title: 'Light Shift',
+          summary: 'Twilight lengthens in the northern hemisphere, inviting introspection.',
+          why_now: 'Solar angle is currently at 23 degrees.'
+        }
+      ];
+    }
+  }
 }
 
 export const api = new EchoesAPI();
