@@ -64,6 +64,24 @@ export default function HomeScreen() {
       relevance_score: 0.91,
       source_metrics: ['Lunar', 'Coherence'],
     },
+    {
+      id: '4',
+      type: 'solar_rhythm',
+      title: 'Peak Hours',
+      message: 'Solar energy peaks this afternoon. Use this window for decisive action and implementation.',
+      background_theme: 'solar',
+      relevance_score: 0.87,
+      source_metrics: ['Coherence'],
+    },
+    {
+      id: '5',
+      type: 'ancestral_echo',
+      title: 'Ancient Knowing',
+      message: 'Ancestral wisdom flows through this moment. Trust the patterns that have sustained your lineage.',
+      background_theme: 'ancestral',
+      relevance_score: 0.89,
+      source_metrics: ['Lunar', 'Geomagnetism'],
+    },
   ];
 
   const getMockCalendars = () => [
