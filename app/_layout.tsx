@@ -73,15 +73,16 @@ export default function RootLayout() {
             backgroundColor: '#000000',
             borderTopColor: 'rgba(255,255,255,0.1)',
             borderTopWidth: 1,
-            height: 84,
-            paddingBottom: 28,
-            paddingTop: 12,
+            height: 80,
+            paddingBottom: 16,
+            paddingTop: 8,
           },
           tabBarActiveTintColor: '#FFFFFF',
           tabBarInactiveTintColor: 'rgba(255,255,255,0.4)',
           tabBarLabelStyle: {
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: '600',
+            marginTop: 4,
           },
         }}
       >
