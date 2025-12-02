@@ -65,6 +65,7 @@ export interface ConsciousnessData {
 class EchoesAPI {
   private baseUrl: string;
   private apiKey: string;
+  private timeout = 5000; // 5 second timeout
 
   constructor(baseUrl: string = API_BASE_URL, apiKey: string = API_KEY) {
     this.baseUrl = baseUrl;
@@ -83,12 +84,29 @@ class EchoesAPI {
     return headers;
   }
 
+  private async fetchWithTimeout(url: string, options: RequestInit = {}): Promise<Response> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      return response;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      throw error;
+    }
+  }
+
   async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
     try {
       const url = `${this.baseUrl}/api/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`;
       console.log('📡 Fetching planetary data from:', url);
       
-      const response = await fetch(url, {
+      const response = await this.fetchWithTimeout(url, {
         headers: this.getHeaders(),
       });
       
@@ -122,7 +140,7 @@ class EchoesAPI {
       const url = `${this.baseUrl}/api/companion-simple/stream`;
       console.log('📡 Fetching daily echoes from:', url);
       
-      const response = await fetch(url, {
+      const response = await this.fetchWithTimeout(url, {
         method: 'POST',
         headers: this.getHeaders(),
         body: JSON.stringify({
@@ -155,7 +173,7 @@ class EchoesAPI {
       const url = `${this.baseUrl}/api/consciousness-analysis/raw-analysis`;
       console.log('📡 Fetching consciousness analysis from:', url);
       
-      const response = await fetch(url, {
+      const response = await this.fetchWithTimeout(url, {
         headers: this.getHeaders(),
       });
       
@@ -184,7 +202,7 @@ class EchoesAPI {
       const url = `${this.baseUrl}/api/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`;
       console.log('📡 Fetching daily bundle from:', url);
       
-      const response = await fetch(url, {
+      const response = await this.fetchWithTimeout(url, {
         headers: this.getHeaders(),
       });
       
