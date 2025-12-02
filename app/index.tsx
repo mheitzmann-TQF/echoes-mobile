@@ -89,6 +89,7 @@ export default function HomeScreen() {
     { id: 'mayan', name: 'Mayan Tzolkin', date: '7 Manik', type: 'Sacred' },
     { id: 'chinese', name: 'Chinese', date: 'Month 10 · Dragon', type: 'Lunisolar' },
     { id: 'hebrew', name: 'Hebrew', date: '20 Kislev', type: 'Lunisolar' },
+    { id: 'islamic', name: 'Islamic', date: '16 Jumada I', type: 'Lunar' },
   ];
 
   const fetchData = useCallback(async () => {
