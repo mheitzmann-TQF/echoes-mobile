@@ -67,6 +67,8 @@ export default function HomeScreen() {
     { id: 'gregorian', name: 'Gregorian', date: new Date().toLocaleDateString(), type: 'Civil' },
     { id: 'mayan', name: 'Mayan Tzolkin', date: '7 Manik', type: 'Sacred' },
     { id: 'chinese', name: 'Chinese', date: 'Dragon Year', type: 'Lunisolar' },
+    { id: 'hebrew', name: 'Hebrew', date: '20 Kislev', type: 'Lunisolar' },
+    { id: 'islamic', name: 'Islamic', date: '16 Jumada I', type: 'Lunar' },
   ];
 
   const fetchData = useCallback(async () => {
@@ -140,6 +142,14 @@ export default function HomeScreen() {
             name: 'Hebrew',
             date: `${calendarsData.hebrew.day} ${calendarsData.hebrew.month}`,
             type: 'Lunisolar'
+          });
+        }
+        if (calendarsData.islamic) {
+          formattedCalendars.push({
+            id: 'islamic',
+            name: 'Islamic',
+            date: `${calendarsData.islamic.day} ${calendarsData.islamic.month}`,
+            type: 'Lunar'
           });
         }
         
