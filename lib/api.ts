@@ -188,6 +188,30 @@ class EchoesAPI {
       throw error;
     }
   }
+
+  async getTraditionalCalendars(lat?: number, lng?: number, tz: string = 'UTC'): Promise<any> {
+    try {
+      let url = `${this.baseUrl}/api/planetary/traditional-calendars?tz=${tz}`;
+      if (lat && lng) {
+        url += `&lat=${lat}&lng=${lng}`;
+      }
+      console.log('📡 Fetching calendars from:', url);
+      
+      const response = await fetch(url, {
+        headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('❌ Calendars error:', error);
+      throw error;
+    }
+  }
 }
 
 export const api = new EchoesAPI();

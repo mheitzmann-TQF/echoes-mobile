@@ -1,0 +1,97 @@
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+
+interface CalendarData {
+  id: string;
+  name: string;
+  date: string;
+  type: string;
+  description?: string;
+}
+
+interface CalendarCarouselProps {
+  calendars: CalendarData[];
+  onSelect?: (calendar: CalendarData) => void;
+}
+
+export default function CalendarCarousel({ calendars, onSelect }: CalendarCarouselProps) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.label}>Today across calendars</Text>
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+        snapToInterval={160} // approximate card width + gap
+        decelerationRate="fast"
+      >
+        {calendars.map((cal) => (
+          <TouchableOpacity 
+            key={cal.id} 
+            style={styles.card}
+            onPress={() => onSelect?.(cal)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.cardName}>{cal.name}</Text>
+            <Text style={styles.cardDate}>{cal.date}</Text>
+            <View style={styles.typeContainer}>
+              <Text style={styles.cardType}>{cal.type}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 24,
+  },
+  label: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.5)',
+    marginBottom: 12,
+    paddingHorizontal: 20,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  scrollContent: {
+    paddingHorizontal: 20,
+    gap: 12,
+  },
+  card: {
+    width: 150,
+    height: 100,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 16,
+    padding: 16,
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  cardName: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.6)',
+    fontWeight: '500',
+  },
+  cardDate: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginTop: 4,
+  },
+  typeContainer: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    marginTop: 8,
+  },
+  cardType: {
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.8)',
+    textTransform: 'capitalize',
+  },
+});
