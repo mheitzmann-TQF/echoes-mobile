@@ -59,12 +59,13 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   label: {
-    fontSize: 13,
-    color: 'rgba(255,255,255,0.5)',
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    lineHeight: 38,
+    letterSpacing: -0.5,
     marginBottom: 16,
     paddingHorizontal: 20,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
   },
   stackContainer: {
     height: 500,
