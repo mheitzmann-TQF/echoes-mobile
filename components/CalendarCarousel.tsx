@@ -17,7 +17,6 @@ interface CalendarCarouselProps {
 export default function CalendarCarousel({ calendars, onSelect }: CalendarCarouselProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Today across calendars</Text>
       <ScrollView 
         horizontal 
         showsHorizontalScrollIndicator={false}
@@ -50,14 +49,6 @@ export default function CalendarCarousel({ calendars, onSelect }: CalendarCarous
 const styles = StyleSheet.create({
   container: {
     marginBottom: 12,
-  },
-  label: {
-    fontSize: 13,
-    color: 'rgba(255,255,255,0.5)',
-    marginBottom: 12,
-    paddingHorizontal: 20,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
   },
   scrollContent: {
     paddingHorizontal: 20,
