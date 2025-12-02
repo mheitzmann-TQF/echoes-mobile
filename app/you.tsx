@@ -14,26 +14,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 
 export default function YouScreen() {
-  const { userLocationInput, setUserLocationInput, setLocation, useCurrentLocation, setUseCurrentLocation, locationLoading, locationError } = useLocation();
+  const { locationName, setLocationName, useCurrentLocation, setUseCurrentLocation, locationLoading, locationError } = useLocation();
   const [notifications, setNotifications] = useState(true);
   const [dawnEchoes, setDawnEchoes] = useState(true);
   const [lunarAlerts, setLunarAlerts] = useState(true);
   const [language, setLanguage] = useState('English');
   const [calendar, setCalendar] = useState('Gregorian');
 
-  const locations = ['New York, USA', 'London, UK', 'Tokyo, Japan', 'Sydney, Australia'];
   const languages = ['English', 'Spanish', 'French', 'German', 'Japanese'];
   const calendars = ['Gregorian', 'Lunar', 'Hindu', 'Hebrew'];
-
-  const handleLocationChange = (text: string) => {
-    setUserLocationInput(text);
-    const coords = getCoordinates(text);
-    setLocation({
-      name: coords.name,
-      lat: coords.lat,
-      lng: coords.lng,
-    });
-  };
 
   const cycleLanguage = () => {
     const currentIndex = languages.indexOf(language);
@@ -45,22 +34,6 @@ export default function YouScreen() {
     const currentIndex = calendars.indexOf(calendar);
     const nextIndex = (currentIndex + 1) % calendars.length;
     setCalendar(calendars[nextIndex]);
-  };
-
-  const locationCoordinates: Record<string, { lat: number; lng: number; name: string }> = {
-    'new york': { lat: 40.7128, lng: -74.006, name: 'New York, USA' },
-    'london': { lat: 51.5074, lng: -0.1278, name: 'London, UK' },
-    'tokyo': { lat: 35.6762, lng: 139.6503, name: 'Tokyo, Japan' },
-    'sydney': { lat: -33.8688, lng: 151.2093, name: 'Sydney, Australia' },
-    'paris': { lat: 48.8566, lng: 2.3522, name: 'Paris, France' },
-    'berlin': { lat: 52.52, lng: 13.405, name: 'Berlin, Germany' },
-    'dubai': { lat: 25.2048, lng: 55.2708, name: 'Dubai, UAE' },
-    'singapore': { lat: 1.3521, lng: 103.8198, name: 'Singapore' },
-  };
-
-  const getCoordinates = (locationName: string) => {
-    const key = locationName.toLowerCase().trim();
-    return locationCoordinates[key] || { lat: 40.7128, lng: -74.006, name: locationName };
   };
 
   const handleAbout = () => {
@@ -129,15 +102,12 @@ export default function YouScreen() {
                   <Text style={styles.settingLabel}>Manual Location</Text>
                   <TextInput
                     style={styles.locationInput}
-                    placeholder="Enter city name..."
+                    placeholder="Enter city, country..."
                     placeholderTextColor="rgba(255,255,255,0.4)"
-                    value={userLocationInput}
-                    onChangeText={handleLocationChange}
+                    value={locationName}
+                    onChangeText={setLocationName}
                     editable={true}
                   />
-                  <Text style={styles.settingDescription}>
-                    {getCoordinates(userLocationInput).name} · {getCoordinates(userLocationInput).lat.toFixed(2)}°, {getCoordinates(userLocationInput).lng.toFixed(2)}°
-                  </Text>
                 </View>
               </View>
             </View>

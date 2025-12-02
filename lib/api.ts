@@ -83,9 +83,9 @@ class EchoesAPI {
     return headers;
   }
 
-  async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
+  async getInstantPlanetary(location: string, tz: string = 'UTC'): Promise<PlanetaryData> {
     try {
-      const url = `${this.baseUrl}/api/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`;
+      const url = `${this.baseUrl}/api/echoes/instant?location=${encodeURIComponent(location)}&tz=${tz}`;
       console.log('📡 Fetching planetary data from:', url);
       
       const response = await fetch(url, {
@@ -113,8 +113,7 @@ class EchoesAPI {
 
   async getDailyEchoes(
     companionId: string,
-    lat: number,
-    lng: number,
+    location: string,
     localHour: number = new Date().getHours(),
     language: string = 'en'
   ): Promise<StreamResponse> {
@@ -127,7 +126,7 @@ class EchoesAPI {
         headers: this.getHeaders(),
         body: JSON.stringify({
           companionId,
-          userLocation: { lat, lng },
+          location,
           localHour,
           language
         })
@@ -150,9 +149,11 @@ class EchoesAPI {
     }
   }
 
-  async getConsciousnessAnalysis(): Promise<ConsciousnessData> {
+  async getConsciousnessAnalysis(location?: string): Promise<ConsciousnessData> {
     try {
-      const url = `${this.baseUrl}/api/consciousness-analysis/raw-analysis`;
+      const url = location 
+        ? `${this.baseUrl}/api/consciousness-analysis/raw-analysis?location=${encodeURIComponent(location)}`
+        : `${this.baseUrl}/api/consciousness-analysis/raw-analysis`;
       console.log('📡 Fetching consciousness analysis from:', url);
       
       const response = await fetch(url, {

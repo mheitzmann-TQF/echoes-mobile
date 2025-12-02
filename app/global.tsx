@@ -12,12 +12,12 @@ import api, { ConsciousnessData } from '../lib/api';
 import { useLocation } from '../lib/LocationContext';
 
 export default function GlobalScreen() {
-  const { location } = useLocation();
+  const { locationName } = useLocation();
   const [consciousness, setConsciousness] = useState<ConsciousnessData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const getMockConsciousness = (locationName: string = 'New York'): ConsciousnessData => ({
+  const getMockConsciousness = (location: string = 'New York'): ConsciousnessData => ({
     rawCoherence: 72,
     filteredCoherence: 68,
     transformationalContent: 85,
@@ -33,14 +33,14 @@ export default function GlobalScreen() {
       );
 
       const data = await Promise.race([
-        api.getConsciousnessAnalysis({ lat: location.lat, lng: location.lng }),
+        api.getConsciousnessAnalysis(locationName),
         timeoutPromise,
       ]) as ConsciousnessData;
 
       setConsciousness(data);
     } catch (error) {
       console.error('Failed to fetch consciousness data, using fallback:', error);
-      setConsciousness(getMockConsciousness(location.name));
+      setConsciousness(getMockConsciousness(locationName));
     } finally {
       setLoading(false);
       setRefreshing(false);

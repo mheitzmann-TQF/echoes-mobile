@@ -27,7 +27,7 @@ const getGreeting = (): string => {
 };
 
 export default function HomeScreen() {
-  const { location } = useLocation();
+  const { locationName } = useLocation();
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,7 +72,6 @@ export default function HomeScreen() {
   const fetchData = useCallback(async () => {
     try {
       setError(null);
-      const { lat, lng } = location;
       const companionId = 'mobile-user-' + Date.now();
 
       try {
@@ -82,8 +81,8 @@ export default function HomeScreen() {
 
         const results = await Promise.race([
           Promise.all([
-            api.getInstantPlanetary(lat, lng),
-            api.getDailyEchoes(companionId, lat, lng),
+            api.getInstantPlanetary(locationName),
+            api.getDailyEchoes(companionId, locationName),
           ]),
           timeoutPromise,
         ]) as [PlanetaryData, StreamResponse];

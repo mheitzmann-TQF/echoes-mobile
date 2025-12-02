@@ -1,17 +1,9 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import * as Location from 'expo-location';
 
-interface LocationData {
-  name: string;
-  lat: number;
-  lng: number;
-}
-
 interface LocationContextType {
-  location: LocationData;
-  setLocation: (location: LocationData) => void;
-  userLocationInput: string;
-  setUserLocationInput: (input: string) => void;
+  locationName: string;
+  setLocationName: (name: string) => void;
   useCurrentLocation: boolean;
   setUseCurrentLocation: (use: boolean) => void;
   locationLoading: boolean;
@@ -27,22 +19,17 @@ const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
       const { city, country } = results[0];
       return `${city || 'Location'}, ${country || ''}`.trim();
     }
-    return `${lat.toFixed(2)}°, ${lng.toFixed(2)}°`;
+    return 'Current Location';
   } catch (e) {
-    return `${lat.toFixed(2)}°, ${lng.toFixed(2)}°`;
+    return 'Current Location';
   }
 };
 
 export function LocationProvider({ children }: { children: ReactNode }) {
-  const [userLocationInput, setUserLocationInput] = useState('New York');
+  const [locationName, setLocationName] = useState('New York');
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
-  const [location, setLocation] = useState<LocationData>({
-    name: 'New York, USA',
-    lat: 40.7128,
-    lng: -74.006,
-  });
 
   useEffect(() => {
     if (useCurrentLocation) {
@@ -64,13 +51,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
       const currentLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
       const { latitude, longitude } = currentLocation.coords;
       const name = await reverseGeocode(latitude, longitude);
-
-      setLocation({
-        name,
-        lat: latitude,
-        lng: longitude,
-      });
-      setUserLocationInput(name);
+      setLocationName(name);
     } catch (error) {
       setLocationError('Failed to get location');
       console.error('Location error:', error);
@@ -82,10 +63,8 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   return (
     <LocationContext.Provider
       value={{
-        location,
-        setLocation,
-        userLocationInput,
-        setUserLocationInput,
+        locationName,
+        setLocationName,
         useCurrentLocation,
         setUseCurrentLocation,
         locationLoading,
