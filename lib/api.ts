@@ -41,15 +41,39 @@ export interface Echo {
   relevance_score: number;
 }
 
-export interface StreamResponse {
+export interface DailyBundleResponse {
   success: boolean;
-  echoes: Echo[];
-  metadata: {
-    companionId: string;
-    timestamp: string;
-    responseTime: string;
-    lunar_phase: string;
-    time_of_day: string;
+  generated_at: string;
+  expires_at: string;
+  cache_status: string;
+  response_time_ms: number;
+  data: {
+    echo_cards: Echo[];
+    planetary_context: {
+      lunar: {
+        phase: string;
+        illumination: number;
+        message: string;
+      };
+      solar: {
+        phase: string;
+        time_to_sunset: number;
+        message: string;
+      };
+      consciousness_index: {
+        global_coherence: number;
+        regional_resonance: number;
+        trend: string;
+      };
+    };
+    location: {
+      timezone: string;
+      local_time: string;
+      coordinates: {
+        lat: number;
+        lng: number;
+      };
+    };
   };
 }
 
@@ -83,9 +107,9 @@ class EchoesAPI {
     return headers;
   }
 
-  async getInstantPlanetary(location: string, tz: string = 'UTC'): Promise<PlanetaryData> {
+  async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
     try {
-      const url = `${this.baseUrl}/api/echoes/instant?location=${encodeURIComponent(location)}&tz=${tz}`;
+      const url = `${this.baseUrl}/api/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`;
       console.log('📡 Fetching planetary data from:', url);
       
       const response = await fetch(url, {
@@ -104,44 +128,6 @@ class EchoesAPI {
       return data.data;
     } catch (error) {
       console.error('❌ Planetary data error:', {
-        message: error instanceof Error ? error.message : String(error),
-        error,
-      });
-      throw error;
-    }
-  }
-
-  async getDailyEchoes(
-    companionId: string,
-    location: string,
-    localHour: number = new Date().getHours(),
-    language: string = 'en'
-  ): Promise<StreamResponse> {
-    try {
-      const url = `${this.baseUrl}/api/companion-simple/stream`;
-      console.log('📡 Fetching daily echoes from:', url);
-      
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: this.getHeaders(),
-        body: JSON.stringify({
-          companionId,
-          location,
-          localHour,
-          language
-        })
-      });
-      
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`HTTP ${response.status}: ${text}`);
-      }
-      
-      const data = await response.json();
-      console.log('✅ Daily echoes received:', data);
-      return data;
-    } catch (error) {
-      console.error('❌ Daily echoes error:', {
         message: error instanceof Error ? error.message : String(error),
         error,
       });
@@ -180,7 +166,7 @@ class EchoesAPI {
     lng: number,
     lang: string = 'en',
     tz: string = 'UTC'
-  ): Promise<any> {
+  ): Promise<DailyBundleResponse> {
     try {
       const url = `${this.baseUrl}/api/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`;
       console.log('📡 Fetching daily bundle from:', url);
@@ -195,6 +181,7 @@ class EchoesAPI {
       
       const data = await response.json();
       console.log('✅ Daily bundle received:', data);
+      if (!data.success) throw new Error('Failed to fetch daily bundle');
       return data;
     } catch (error) {
       console.error('❌ Daily bundle error:', error);

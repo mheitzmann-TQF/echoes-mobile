@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import EchoCard from '../components/EchoCard';
 import MoonPhase from '../components/MoonPhase';
-import api, { Echo, PlanetaryData, StreamResponse } from '../lib/api';
+import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
 import { useLocation } from '../lib/LocationContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -27,7 +27,7 @@ const getGreeting = (): string => {
 };
 
 export default function HomeScreen() {
-  const { locationName } = useLocation();
+  const { locationName, coordinates, timezone } = useLocation();
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,24 +72,34 @@ export default function HomeScreen() {
   const fetchData = useCallback(async () => {
     try {
       setError(null);
-      const companionId = 'mobile-user-' + Date.now();
 
       try {
         const timeoutPromise = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('API timeout')), 3000)
         );
 
-        const results = await Promise.race([
-          Promise.all([
-            api.getInstantPlanetary(locationName),
-            api.getDailyEchoes(companionId, locationName),
-          ]),
+        const bundleData = await Promise.race([
+          api.getDailyBundle(coordinates.lat, coordinates.lng, 'en', timezone),
           timeoutPromise,
-        ]) as [PlanetaryData, StreamResponse];
+        ]) as DailyBundleResponse;
 
-        setPlanetary(results[0]);
-        if (results[1].success && results[1].echoes) {
-          setEchoes(results[1].echoes);
+        if (bundleData.success && bundleData.data) {
+          setPlanetary({
+            lunar: bundleData.data.planetary_context.lunar,
+            solar: {
+              sunrise: bundleData.data.planetary_context.solar.phase,
+              sunset: bundleData.data.planetary_context.solar.phase,
+              currentPhase: bundleData.data.planetary_context.solar.phase,
+            },
+            geomagnetic: { activity: 'stable', kpIndex: 2 },
+            seasonal: { season: 'current', progress: 50 },
+          });
+          
+          if (bundleData.data.echo_cards && bundleData.data.echo_cards.length > 0) {
+            setEchoes(bundleData.data.echo_cards);
+          } else {
+            setEchoes(getMockEchoes());
+          }
         }
       } catch (apiError) {
         console.error('API fetch failed, using fallback data:', apiError);
@@ -104,7 +114,7 @@ export default function HomeScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  }, []);
+  }, [coordinates, timezone]);
 
   useEffect(() => {
     fetchData();
