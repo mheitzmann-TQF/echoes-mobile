@@ -33,6 +33,7 @@ export default function HomeScreen() {
     solar: { sunrise: '07:15 AM', sunset: '04:45 PM', currentPhase: 'Afternoon light' },
     geomagnetic: { activity: 'Quiet', kpIndex: 2 },
     seasonal: { season: 'Winter', progress: 35 },
+    consciousness: { global_coherence: 68, regional_resonance: 65, trend: 'stable' }
   });
 
   const getMockEchoes = (): Echo[] => [
@@ -101,6 +102,7 @@ export default function HomeScreen() {
             kpIndex: 2 
           },
           seasonal: { season: 'Current', progress: 50 },
+          consciousness: ctx.consciousness_index
         });
         
         if (bundleData.data.echo_cards && bundleData.data.echo_cards.length > 0) {
@@ -210,7 +212,10 @@ export default function HomeScreen() {
             />
           )}
 
-          <MoodTemperature value={68} label="Warm" />
+          <MoodTemperature 
+            value={Math.round(planetary?.consciousness?.global_coherence || 68)} 
+            label={planetary?.consciousness?.global_coherence && planetary.consciousness.global_coherence > 60 ? 'Coherent' : 'Quiet'} 
+          />
 
           <CalendarCarousel calendars={calendars} />
 

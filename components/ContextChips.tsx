@@ -55,6 +55,28 @@ export default function ContextChips({ planetary, onPressChip }: ContextChipsPro
           <Text style={styles.value}>{planetary.seasonal.season}</Text>
         </View>
       </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.chip}
+        onPress={() => onPressChip?.('weather')}
+      >
+        <Text style={styles.emoji}>🌡️</Text>
+        <View>
+          <Text style={styles.label}>Weather</Text>
+          <Text style={styles.value}>12°C · Clear</Text>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.chip}
+        onPress={() => onPressChip?.('culture')}
+      >
+        <Text style={styles.emoji}>🗓</Text>
+        <View>
+          <Text style={styles.label}>Culture</Text>
+          <Text style={styles.value}>2 Observances</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }

@@ -81,8 +81,8 @@ export default function FieldScreen() {
           <View style={styles.row}>
             <View style={[styles.card, styles.halfCard]}>
               <Text style={styles.cardTitle}>Geomagnetic</Text>
-              <Text style={styles.cardValue}>{ctx?.planetary_context?.geomagnetic?.activity || 'Quiet'}</Text>
-              <Text style={styles.cardDetail}>Kp Index: {ctx?.planetary_context?.geomagnetic?.kp_index || 2}</Text>
+              <Text style={styles.cardValue}>{ctx?.geomagnetic?.activity || 'Quiet'}</Text>
+              <Text style={styles.cardDetail}>Kp Index: {ctx?.geomagnetic?.kp_index || 2}</Text>
             </View>
 
             <View style={[styles.card, styles.halfCard]}>

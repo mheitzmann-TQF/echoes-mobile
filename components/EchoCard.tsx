@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -7,6 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useSharedValue } from 'react-native-reanimated';
+import { Svg, Path, Circle } from 'react-native-svg';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH - 40;
@@ -24,6 +25,35 @@ interface EchoCardProps {
   totalCards: number;
   onSwipeLeft?: () => void;
   onSwipeRight?: () => void;
+}
+
+// Icons
+function ShareIcon({ color = '#FFFFFF' }) {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+      <Path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+      <Path d="M16 6 12 2 8 6" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+      <Path d="M12 2v13" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+    </Svg>
+  );
+}
+
+function SaveIcon({ color = '#FFFFFF' }) {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+      <Path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+    </Svg>
+  );
+}
+
+function InfoIcon({ color = '#FFFFFF' }) {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+      <Circle cx={12} cy={12} r={10} stroke={color} strokeWidth={2} />
+      <Path d="M12 16v-4" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+      <Path d="M12 8h.01" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+    </Svg>
+  );
 }
 
 const getTypeEmoji = (type: string): string => {
@@ -130,17 +160,37 @@ export default function EchoCard({
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View style={[styles.card, animatedStyle]}>
-        <View style={styles.typeBadge}>
-          <Text style={styles.typeEmoji}>{getTypeEmoji(echo.type)}</Text>
-          <Text style={styles.typeLabel}>{getTypeLabel(echo.type)}</Text>
+        <View style={styles.content}>
+          <View style={styles.typeBadge}>
+            <Text style={styles.typeEmoji}>{getTypeEmoji(echo.type)}</Text>
+            <Text style={styles.typeLabel}>{getTypeLabel(echo.type)}</Text>
+          </View>
+
+          <View style={styles.messageContainer}>
+            <Text style={styles.message}>{echo.message}</Text>
+          </View>
+
+          <View style={styles.footer}>
+            <Text style={styles.title}>{echo.title}</Text>
+          </View>
         </View>
 
-        <View style={styles.messageContainer}>
-          <Text style={styles.message}>{echo.message}</Text>
-        </View>
+        {/* Actions Toolbar */}
+        <View style={styles.actions}>
+          <TouchableOpacity style={styles.actionButton}>
+            <SaveIcon color="rgba(255,255,255,0.6)" />
+            <Text style={styles.actionText}>Save</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionButton}>
+            <ShareIcon color="rgba(255,255,255,0.6)" />
+            <Text style={styles.actionText}>Share</Text>
+          </TouchableOpacity>
 
-        <View style={styles.footer}>
-          <Text style={styles.title}>{echo.title}</Text>
+          <TouchableOpacity style={styles.actionButton}>
+            <InfoIcon color="rgba(255,255,255,0.6)" />
+            <Text style={styles.actionText}>Why?</Text>
+          </TouchableOpacity>
         </View>
       </Animated.View>
     </GestureDetector>
@@ -153,10 +203,14 @@ const styles = StyleSheet.create({
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
     backgroundColor: '#000000',
-    borderRadius: 20,
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.1)',
-    padding: 20,
+    overflow: 'hidden',
+  },
+  content: {
+    flex: 1,
+    padding: 24,
     justifyContent: 'space-between',
   },
   typeBadge: {
@@ -176,25 +230,48 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '600',
+    letterSpacing: 0.5,
   },
   messageContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    paddingVertical: 20,
   },
   message: {
     color: '#FFFFFF',
     fontSize: 24,
     fontWeight: '500',
-    textAlign: 'center',
+    textAlign: 'left',
     lineHeight: 34,
+    letterSpacing: -0.5,
   },
   footer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   title: {
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: 14,
+    fontWeight: '500',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  actions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 20,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.05)',
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 4,
+  },
+  actionText: {
     color: 'rgba(255,255,255,0.6)',
     fontSize: 13,
-    fontWeight: '400',
+    fontWeight: '500',
   },
 });

@@ -30,6 +30,11 @@ export interface PlanetaryData {
     season: string;
     progress: number;
   };
+  consciousness?: {
+    global_coherence: number;
+    regional_resonance: number;
+    trend: string;
+  };
 }
 
 export interface Echo {
