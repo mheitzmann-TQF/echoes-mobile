@@ -102,7 +102,7 @@ export default function YouScreen() {
                   <Text style={styles.settingLabel}>Manual Location</Text>
                   <TextInput
                     style={styles.locationInput}
-                    placeholder="Enter city, country..."
+                    placeholder="e.g., Geneva, Switzerland"
                     placeholderTextColor="rgba(255,255,255,0.4)"
                     value={locationName}
                     onChangeText={setLocationName}
