@@ -16,6 +16,7 @@ import Hero from '../components/Hero';
 import CalendarCarousel from '../components/CalendarCarousel';
 import MetricsGrid from '../components/MetricsGrid';
 import EchoStack from '../components/EchoStack';
+import DailyAffirmation from '../components/DailyAffirmation';
 
 export default function HomeScreen() {
   const { locationName, coordinates, timezone } = useLocation();
@@ -259,6 +260,8 @@ export default function HomeScreen() {
             onSwipeRight={handleSwipeRight}
             selectedMetric={selectedMetric}
           />
+
+          <DailyAffirmation affirmation="Trust the rhythm of your becoming." />
 
         </ScrollView>
       </SafeAreaView>
