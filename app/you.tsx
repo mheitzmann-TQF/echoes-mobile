@@ -8,12 +8,13 @@ import {
   Switch,
   Alert,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 
 export default function YouScreen() {
-  const { userLocationInput, setUserLocationInput, setLocation } = useLocation();
+  const { userLocationInput, setUserLocationInput, setLocation, useCurrentLocation, setUseCurrentLocation, locationLoading, locationError } = useLocation();
   const [notifications, setNotifications] = useState(true);
   const [dawnEchoes, setDawnEchoes] = useState(true);
   const [lunarAlerts, setLunarAlerts] = useState(true);
@@ -102,25 +103,62 @@ export default function YouScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Preferences</Text>
 
-          <View style={[styles.settingRow, { paddingVertical: 12 }]}>
+          <View style={styles.toggleRow}>
             <View style={styles.settingInfo}>
               <Text style={styles.settingIcon}>📍</Text>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.settingLabel}>Location</Text>
-                <TextInput
-                  style={styles.locationInput}
-                  placeholder="Enter city name..."
-                  placeholderTextColor="rgba(255,255,255,0.4)"
-                  value={userLocationInput}
-                  onChangeText={handleLocationChange}
-                  editable={true}
-                />
+              <View>
+                <Text style={styles.settingLabel}>Current Location</Text>
                 <Text style={styles.settingDescription}>
-                  {getCoordinates(userLocationInput).name} · {getCoordinates(userLocationInput).lat.toFixed(2)}°, {getCoordinates(userLocationInput).lng.toFixed(2)}°
+                  Use device location
                 </Text>
               </View>
             </View>
+            <Switch
+              value={useCurrentLocation}
+              onValueChange={setUseCurrentLocation}
+              trackColor={{ false: 'rgba(255,255,255,0.1)', true: 'rgba(255,255,255,0.3)' }}
+              thumbColor={useCurrentLocation ? '#FFFFFF' : 'rgba(255,255,255,0.5)'}
+            />
           </View>
+
+          {!useCurrentLocation && (
+            <View style={[styles.settingRow, { paddingVertical: 12 }]}>
+              <View style={styles.settingInfo}>
+                <Text style={styles.settingIcon}>✏️</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.settingLabel}>Manual Location</Text>
+                  <TextInput
+                    style={styles.locationInput}
+                    placeholder="Enter city name..."
+                    placeholderTextColor="rgba(255,255,255,0.4)"
+                    value={userLocationInput}
+                    onChangeText={handleLocationChange}
+                    editable={true}
+                  />
+                  <Text style={styles.settingDescription}>
+                    {getCoordinates(userLocationInput).name} · {getCoordinates(userLocationInput).lat.toFixed(2)}°, {getCoordinates(userLocationInput).lng.toFixed(2)}°
+                  </Text>
+                </View>
+              </View>
+            </View>
+          )}
+
+          {useCurrentLocation && locationLoading && (
+            <View style={styles.settingRow}>
+              <View style={styles.settingInfo}>
+                <ActivityIndicator color="#FFFFFF" size="small" />
+                <Text style={[styles.settingLabel, { marginLeft: 12 }]}>Getting location...</Text>
+              </View>
+            </View>
+          )}
+
+          {useCurrentLocation && locationError && (
+            <View style={styles.settingRow}>
+              <Text style={[styles.settingDescription, { color: '#FF6B6B' }]}>
+                {locationError}
+              </Text>
+            </View>
+          )}
 
           <TouchableOpacity style={styles.settingRow} onPress={cycleLanguage}>
             <View style={styles.settingInfo}>
