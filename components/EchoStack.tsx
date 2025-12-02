@@ -56,7 +56,7 @@ export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRi
 const styles = StyleSheet.create({
   container: {
     marginTop: 8,
-    marginBottom: 40,
+    marginBottom: 20,
   },
   label: {
     fontSize: 32,
