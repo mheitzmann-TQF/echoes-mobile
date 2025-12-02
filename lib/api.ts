@@ -65,7 +65,6 @@ export interface ConsciousnessData {
 class EchoesAPI {
   private baseUrl: string;
   private apiKey: string;
-  private timeout = 5000; // 5 second timeout
 
   constructor(baseUrl: string = API_BASE_URL, apiKey: string = API_KEY) {
     this.baseUrl = baseUrl;
@@ -84,21 +83,12 @@ class EchoesAPI {
     return headers;
   }
 
-  private fetchWithTimeout(url: string, options: RequestInit = {}): Promise<Response> {
-    return Promise.race([
-      fetch(url, options),
-      new Promise<Response>((_, reject) =>
-        setTimeout(() => reject(new Error('Request timeout')), this.timeout)
-      ),
-    ]);
-  }
-
   async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
     try {
       const url = `${this.baseUrl}/api/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`;
       console.log('📡 Fetching planetary data from:', url);
       
-      const response = await this.fetchWithTimeout(url, {
+      const response = await fetch(url, {
         headers: this.getHeaders(),
       });
       
@@ -132,7 +122,7 @@ class EchoesAPI {
       const url = `${this.baseUrl}/api/companion-simple/stream`;
       console.log('📡 Fetching daily echoes from:', url);
       
-      const response = await this.fetchWithTimeout(url, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: this.getHeaders(),
         body: JSON.stringify({
@@ -165,7 +155,7 @@ class EchoesAPI {
       const url = `${this.baseUrl}/api/consciousness-analysis/raw-analysis`;
       console.log('📡 Fetching consciousness analysis from:', url);
       
-      const response = await this.fetchWithTimeout(url, {
+      const response = await fetch(url, {
         headers: this.getHeaders(),
       });
       
@@ -194,7 +184,7 @@ class EchoesAPI {
       const url = `${this.baseUrl}/api/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`;
       console.log('📡 Fetching daily bundle from:', url);
       
-      const response = await this.fetchWithTimeout(url, {
+      const response = await fetch(url, {
         headers: this.getHeaders(),
       });
       
