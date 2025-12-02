@@ -1,0 +1,151 @@
+Yes — and we can rewrite the Field tab using only what your API already gives, mainly from the planetary_context inside /api/echoes/daily-bundle plus optional enrichment from /api/echoes/instant and /api/planetary/current.  ￼
+
+Below is a Claude-ready rewrite of the Field tab that avoids repeating Today.
+
+⸻
+
+Field tab: new job
+
+Today = values + cards.
+Field = “how to read + what changed + what inputs fed today’s Echoes.”
+
+Non-repetition rule
+
+On Field collapsed rows:
+	•	show meaning + trend/delta only
+	•	do not repeat: phase names, illumination %, time_to_sunset, coherence %
+
+On Field expanded:
+	•	you may show the value once, plus the explanation.
+
+⸻
+
+Field tab layout (final)
+
+1) Header
+
+Field
+Cosmos · Earth · Body
+Subtext: “How today’s signal is shaped”
+
+⸻
+
+2) “Since you last opened” (sticky + non-repeating)
+
+A small card at top:
+
+Shifts
+	•	Coherence: Stable (or ▲ / ▼)
+	•	Light: Deepening (derived from solar.phase only)
+	•	Moon: Rising / Falling (derived from cached last illumination vs current, not displaying %)
+
+Implementation:
+	•	Store last snapshot locally from either daily-bundle.planetary_context or /api/echoes/instant.  ￼
+
+⸻
+
+3) Cosmos section (2 rows)
+
+Row A — Lunar signal (collapsed)
+
+Title: Lunar
+One-liner (use planetary_context.lunar.message but rewrite short):
+Example: “A phase that favors release and integration.”
+Right side: chevron
+
+Expanded view shows:
+	•	Phase + illumination (now allowed): lunar.phase, lunar.illumination  ￼
+	•	“How to read this” (2 bullets)
+	•	“Common misread” (1 bullet)
+	•	“Used in Echoes” (chips): phase, illumination
+
+Row B — Solar signal (collapsed)
+
+Title: Solar
+One-liner from solar.message (shortened):
+Example: “Attention narrows; closure energy rises.”
+Expanded:
+	•	solar.phase
+	•	“Time to sunset” rendered nicely from time_to_sunset inside expanded only  ￼
+	•	“How to read”
+	•	“Used in Echoes” chips: current phase, sunset timing
+
+⸻
+
+4) Earth section (2 rows but no duplication)
+
+Row C — Coherence (collapsed)
+
+Title: Coherence
+One-liner: interpret the trend not the number:
+	•	rising → “Signal clarity is increasing.”
+	•	falling → “Noise is rising; signals blur.”
+	•	stable → “The field holds steady.”
+
+Right microtext: Trend: rising/stable/falling (no %)
+
+Expanded:
+	•	Global coherence % + regional resonance % + trend (show here):
+consciousness_index.global_coherence, regional_resonance, trend  ￼
+	•	“How to read coherence” (ranges)
+	•	“What it is in this system” (2 lines, no grand claims)
+	•	“Used in Echoes” chips: global, regional, trend
+
+Row D — Geomagnetic conditions (collapsed)
+
+Title: Geomagnetic
+One-liner derived from /api/echoes/instant.geomagnetic.activity or /api/planetary/current.geomagnetic.activity:
+	•	Quiet → “Low disturbance.”
+	•	Active → “Higher background friction.”  ￼
+Right microtext: “Quiet / Active” (no kp index)
+
+Expanded:
+	•	show kp_index + activity + description (from /api/planetary/current)  ￼
+	•	“How to read KP” (simple 3-step)
+	•	“Used in Echoes” chips
+
+Important: don’t label geomagnetism as “Coherent” (that collides with coherence).
+
+⸻
+
+5) Body section (1 row)
+
+Row E — Biological rhythms (collapsed)
+
+Title: Body
+One-liner from /api/planetary/biological-rhythms.circadian.description but shortened.  ￼
+Expanded:
+	•	circadian phase + ultradian minutes remaining  ￼
+	•	“How to read”
+	•	“Gentle windows” list (avoid imperative “do this now”)
+
+⸻
+
+6) “Signals used today” (transparency block)
+
+This is the anti-repetition clincher: it doesn’t restate results, it lists inputs.
+
+Display as chips:
+	•	Moon: phase, illumination
+	•	Sun: phase, time to sunset
+	•	Coherence: global, regional, trend
+	•	Geomagnetic: activity, kp
+	•	Seasonal: season, progress (from /api/echoes/instant.seasonal)  ￼
+
+⸻
+
+Copy rules (Claude must follow)
+	•	Collapsed rows: no numbers and no repeating Today’s exact phrase (“Waxing gibbous”, “Sunset in 3h”, “68%”).
+	•	Expanded panels: numbers are OK, but only once.
+	•	Tone: descriptive, not directive (no “review your intentions”).
+
+⸻
+
+API plumbing (exact)
+	•	Primary: /api/echoes/daily-bundle for lunar/solar/coherence messages and base context.  ￼
+	•	Fast support: /api/echoes/instant for geomagnetic activity + seasonal.  ￼
+	•	Deeper expansion (optional): /api/planetary/current + /api/planetary/biological-rhythms when user expands those rows.  ￼
+
+⸻
+
+If you want, I’ll now write the exact collapsed and expanded microcopy templates (like 2–3 canonical phrasings per state: rising/falling/stable, quiet/active, morning/afternoon/evening) so Claude can drop them in without inventing tone.
