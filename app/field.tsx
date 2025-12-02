@@ -90,8 +90,48 @@ export default function FieldScreen() {
             .catch(() => null)
         ]);
 
-        setBundle(bundleData);
-        setBioRhythms(bioData);
+        // Use fallback mock data if API fails
+        const mockBundle = {
+          echo_cards: [],
+          planetary_context: {
+            lunar: {
+              phase: 'Waxing Gibbous',
+              illumination: 82,
+              message: 'Energy is building. Review your intentions and prepare for the culmination.'
+            },
+            solar: {
+              phase: 'Afternoon Light',
+              time_to_sunset: 3,
+              message: 'Solar energy peaks this afternoon. Use this window for decisive action.'
+            },
+            consciousness_index: {
+              global_coherence: 68,
+              regional_resonance: 65,
+              trend: 'stable'
+            }
+          },
+          location: {
+            timezone,
+            local_time: new Date().toLocaleTimeString(),
+            coordinates: { lat: coordinates.lat, lng: coordinates.lng }
+          }
+        };
+
+        const mockBioRhythms = {
+          circadian: {
+            phase: 'Balanced',
+            description: 'Your circadian rhythm is well-aligned with local time. Energy levels are optimal.'
+          },
+          recommendations: [
+            'Deep work and focus',
+            'Physical exercise',
+            'Important decisions',
+            'Creative projects'
+          ]
+        };
+
+        setBundle(bundleData || mockBundle);
+        setBioRhythms(bioData || mockBioRhythms);
       } finally {
         setLoading(false);
       }

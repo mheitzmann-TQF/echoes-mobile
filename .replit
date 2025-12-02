@@ -27,15 +27,11 @@ localPort = 8082
 externalPort = 3001
 
 [[ports]]
-localPort = 37789
-externalPort = 4200
-
-[[ports]]
 localPort = 40589
 externalPort = 3000
 
 [[ports]]
-localPort = 41993
+localPort = 42811
 externalPort = 3003
 
 [env]
