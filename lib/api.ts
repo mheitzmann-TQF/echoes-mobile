@@ -44,6 +44,7 @@ export interface Echo {
   message: string;
   background_theme: string;
   relevance_score: number;
+  source_metrics?: string[];
 }
 
 export interface DailyBundleResponse {
