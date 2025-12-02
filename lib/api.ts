@@ -84,21 +84,13 @@ class EchoesAPI {
     return headers;
   }
 
-  private async fetchWithTimeout(url: string, options: RequestInit = {}): Promise<Response> {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-
-    try {
-      const response = await fetch(url, {
-        ...options,
-        signal: controller.signal,
-      });
-      clearTimeout(timeoutId);
-      return response;
-    } catch (error) {
-      clearTimeout(timeoutId);
-      throw error;
-    }
+  private fetchWithTimeout(url: string, options: RequestInit = {}): Promise<Response> {
+    return Promise.race([
+      fetch(url, options),
+      new Promise<Response>((_, reject) =>
+        setTimeout(() => reject(new Error('Request timeout')), this.timeout)
+      ),
+    ]);
   }
 
   async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
