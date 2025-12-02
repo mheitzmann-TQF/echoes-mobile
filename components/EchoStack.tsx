@@ -37,18 +37,6 @@ export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRi
           </View>
         )}
       </View>
-
-      <View style={styles.indicatorContainer}>
-        {echoes.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.dot,
-              index === currentIndex && styles.dotActive,
-            ]}
-          />
-        ))}
-      </View>
     </View>
   );
 }
@@ -82,22 +70,6 @@ const styles = StyleSheet.create({
   emptyText: {
     color: 'rgba(255,255,255,0.5)',
     fontSize: 16,
-  },
-  indicatorContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20,
-    gap: 8,
-  },
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-  },
-  dotActive: {
-    backgroundColor: '#FFFFFF',
-    width: 12,
   },
   ctaButton: {
     marginHorizontal: 20,
