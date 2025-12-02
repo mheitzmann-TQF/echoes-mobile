@@ -1,65 +1,84 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { PlanetaryData } from '../lib/api';
 
 interface MetricsGridProps {
   planetary: PlanetaryData;
-  onPressMetric?: (type: string) => void;
 }
 
-export default function MetricsGrid({ planetary, onPressMetric }: MetricsGridProps) {
+export default function MetricsGrid({ planetary }: MetricsGridProps) {
+  const [selectedMetric, setSelectedMetric] = useState<string>('lunar');
+
   const lunarIllumination = Math.round(planetary.lunar.illumination);
   const geoKpIndex = planetary.geomagnetic.kpIndex || 2;
   const coherence = planetary.consciousness?.global_coherence || 68;
 
+  const metrics = [
+    {
+      id: 'lunar',
+      number: `${lunarIllumination}%`,
+      numberLabel: 'Lunar',
+      emoji: '🌙',
+      cardTitle: planetary.lunar.phase,
+      cardDesc: 'Lunar Phase',
+    },
+    {
+      id: 'geomagnetism',
+      number: `${geoKpIndex}`,
+      numberLabel: 'Geomagnetism',
+      emoji: '⚡',
+      cardTitle: planetary.geomagnetic.activity,
+      cardDesc: 'Geomagnetic',
+    },
+    {
+      id: 'coherence',
+      number: `${Math.round(coherence)}%`,
+      numberLabel: 'Coherence',
+      emoji: '🌐',
+      cardTitle: 'Active',
+      cardDesc: 'Field Strength',
+    },
+  ];
+
   return (
     <View style={styles.container}>
-      {/* Top Row: Numbers */}
+      {/* Top Row: Numbers - Tappable */}
       <View style={styles.numbersRow}>
-        <View style={styles.numberBox}>
-          <Text style={styles.number}>{lunarIllumination}%</Text>
-          <Text style={styles.numberLabel}>Lunar</Text>
-        </View>
-        
-        <View style={styles.numberBox}>
-          <Text style={styles.number}>{geoKpIndex}</Text>
-          <Text style={styles.numberLabel}>Geomagnetism</Text>
-        </View>
-        
-        <View style={styles.numberBox}>
-          <Text style={styles.number}>{Math.round(coherence)}%</Text>
-          <Text style={styles.numberLabel}>Coherence</Text>
-        </View>
+        {metrics.map((metric) => (
+          <TouchableOpacity 
+            key={metric.id}
+            style={[
+              styles.numberBox,
+              selectedMetric === metric.id && styles.numberBoxActive
+            ]}
+            onPress={() => setSelectedMetric(metric.id)}
+          >
+            <Text style={styles.number}>{metric.number}</Text>
+            <Text style={[
+              styles.numberLabel,
+              selectedMetric === metric.id && styles.numberLabelActive
+            ]}>
+              {metric.numberLabel}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
-      {/* Bottom Row: Detail Cards */}
+      {/* Bottom Row: Detail Cards - Aligned with numbers */}
       <View style={styles.cardsRow}>
-        <TouchableOpacity 
-          style={styles.card}
-          onPress={() => onPressMetric?.('lunar')}
-        >
-          <Text style={styles.emoji}>🌙</Text>
-          <Text style={styles.cardTitle}>{planetary.lunar.phase}</Text>
-          <Text style={styles.cardDesc}>Lunar Phase</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={styles.card}
-          onPress={() => onPressMetric?.('geomagnetism')}
-        >
-          <Text style={styles.emoji}>⚡</Text>
-          <Text style={styles.cardTitle}>{planetary.geomagnetic.activity}</Text>
-          <Text style={styles.cardDesc}>Geomagnetic</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={styles.card}
-          onPress={() => onPressMetric?.('coherence')}
-        >
-          <Text style={styles.emoji}>🌐</Text>
-          <Text style={styles.cardTitle}>Active</Text>
-          <Text style={styles.cardDesc}>Field Strength</Text>
-        </TouchableOpacity>
+        {metrics.map((metric) => (
+          <View 
+            key={metric.id}
+            style={[
+              styles.card,
+              selectedMetric === metric.id && styles.cardActive
+            ]}
+          >
+            <Text style={styles.emoji}>{metric.emoji}</Text>
+            <Text style={styles.cardTitle}>{metric.cardTitle}</Text>
+            <Text style={styles.cardDesc}>{metric.cardDesc}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -80,6 +99,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 12,
+    paddingHorizontal: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  numberBoxActive: {
+    borderColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'rgba(255,255,255,0.02)',
   },
   number: {
     fontSize: 24,
@@ -94,6 +121,10 @@ const styles = StyleSheet.create({
     marginTop: 4,
     letterSpacing: 0.5,
   },
+  numberLabelActive: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
   cardsRow: {
     flexDirection: 'row',
     gap: 12,
@@ -106,6 +137,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.05)',
+    opacity: 0.5,
+  },
+  cardActive: {
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(255,255,255,0.2)',
+    opacity: 1,
   },
   emoji: {
     fontSize: 20,
