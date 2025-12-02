@@ -27,6 +27,37 @@ const CALENDAR_TYPES: Record<string, string> = {
 
 // --- Components ---
 
+function SkeletonCard({ style }: { style?: any }) {
+  const opacity = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacity, {
+          toValue: 0.7,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacity, {
+          toValue: 0.3,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, []);
+
+  return (
+    <Animated.View 
+      style={[
+        styles.skeleton, 
+        { opacity }, 
+        style
+      ]} 
+    />
+  );
+}
+
 function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: () => void }) {
   const type = CALENDAR_TYPES[id] || 'System';
   const explainer = CALENDAR_EXPLAINERS[id] || 'A traditional system of timekeeping.';
@@ -153,9 +184,29 @@ export default function LearnScreen() {
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.center}>
-          <ActivityIndicator size="large" color="#FFFFFF" />
-        </View>
+        <ScrollView contentContainerStyle={styles.content} scrollEnabled={false}>
+          <Text style={styles.headerTitle}>Calendar Systems</Text>
+          
+          {/* Carousel Skeleton */}
+          <View style={styles.carouselContainer}>
+            <View style={styles.carouselScroll}>
+              <SkeletonCard style={{ width: width * 0.85, height: 200, borderRadius: 24 }} />
+            </View>
+          </View>
+
+          {/* Artifact Skeleton */}
+          <View style={styles.section}>
+            <Text style={styles.sectionLabel}>ARTIFACT OF THE DAY</Text>
+            <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 20 }} />
+          </View>
+
+          {/* Living Calendar Skeleton */}
+          <View style={styles.section}>
+            <Text style={styles.sectionLabel}>LIVING CALENDAR</Text>
+            <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16, marginBottom: 12 }} />
+            <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16 }} />
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -584,6 +635,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'rgba(255,255,255,0.8)',
     lineHeight: 24,
+  },
+  skeleton: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
   },
   actionButton: {
     marginTop: 24,
