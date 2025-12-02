@@ -14,8 +14,7 @@ import { useLocation } from '../lib/LocationContext';
 // Components
 import Hero from '../components/Hero';
 import CalendarCarousel from '../components/CalendarCarousel';
-import ContextChips from '../components/ContextChips';
-import GlobalCoherence from '../components/GlobalCoherence';
+import MetricsGrid from '../components/MetricsGrid';
 import EchoStack from '../components/EchoStack';
 
 export default function HomeScreen() {
@@ -223,11 +222,7 @@ export default function HomeScreen() {
 
           <CalendarCarousel calendars={calendars} />
 
-          {planetary && <ContextChips planetary={planetary} />}
-
-          <GlobalCoherence 
-            value={Math.round(planetary?.consciousness?.global_coherence || 68)} 
-          />
+          {planetary && <MetricsGrid planetary={planetary} />}
 
           <EchoStack 
             echoes={echoes}
