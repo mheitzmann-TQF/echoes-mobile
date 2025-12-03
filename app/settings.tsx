@@ -1,8 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, ActivityIndicator, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState } from 'react';
-import { MapPin, Clock, AlertCircle } from 'lucide-react-native';
+import { MapPin, Clock, AlertCircle, ChevronRight, Check } from 'lucide-react-native';
+
+const LANGUAGES = ['English', 'Français', 'Deutsch', 'Español', '中文'];
+const THEMES = ['Dark', 'Light'];
 
 export default function SettingsScreen() {
   const { 
@@ -19,6 +22,10 @@ export default function SettingsScreen() {
 
   const [manualInput, setManualInput] = useState(locationName);
   const [showManualInput, setShowManualInput] = useState(false);
+  const [language, setLanguage] = useState('English');
+  const [theme, setTheme] = useState('Dark');
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [showThemeModal, setShowThemeModal] = useState(false);
 
   const handleSetLocation = () => {
     if (manualInput.trim()) {
@@ -113,15 +120,91 @@ export default function SettingsScreen() {
         {/* Display Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Display</Text>
-          <View style={styles.row}>
+          
+          {/* Language Selector */}
+          <TouchableOpacity 
+            style={styles.row}
+            onPress={() => setShowLanguageModal(true)}
+          >
             <Text style={styles.label}>Language</Text>
-            <Text style={styles.value}>English</Text>
-          </View>
-          <View style={styles.row}>
+            <View style={styles.valueRow}>
+              <Text style={styles.value}>{language}</Text>
+              <ChevronRight size={16} color="rgba(255,255,255,0.3)" />
+            </View>
+          </TouchableOpacity>
+
+          {/* Theme Selector */}
+          <TouchableOpacity 
+            style={styles.row}
+            onPress={() => setShowThemeModal(true)}
+          >
             <Text style={styles.label}>Theme</Text>
-            <Text style={styles.value}>Dark</Text>
-          </View>
+            <View style={styles.valueRow}>
+              <Text style={styles.value}>{theme}</Text>
+              <ChevronRight size={16} color="rgba(255,255,255,0.3)" />
+            </View>
+          </TouchableOpacity>
         </View>
+
+        {/* Language Modal */}
+        <Modal visible={showLanguageModal} transparent animationType="fade">
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Select Language</Text>
+              {LANGUAGES.map((lang) => (
+                <TouchableOpacity
+                  key={lang}
+                  style={styles.modalOption}
+                  onPress={() => {
+                    setLanguage(lang);
+                    setShowLanguageModal(false);
+                  }}
+                >
+                  <Text style={[styles.modalOptionText, language === lang && styles.modalOptionTextActive]}>
+                    {lang}
+                  </Text>
+                  {language === lang && <Check size={18} color="#4DB8FF" />}
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity 
+                style={styles.modalCloseButton}
+                onPress={() => setShowLanguageModal(false)}
+              >
+                <Text style={styles.modalCloseText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Theme Modal */}
+        <Modal visible={showThemeModal} transparent animationType="fade">
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Select Theme</Text>
+              {THEMES.map((t) => (
+                <TouchableOpacity
+                  key={t}
+                  style={styles.modalOption}
+                  onPress={() => {
+                    setTheme(t);
+                    setShowThemeModal(false);
+                  }}
+                >
+                  <Text style={[styles.modalOptionText, theme === t && styles.modalOptionTextActive]}>
+                    {t}
+                  </Text>
+                  {theme === t && <Check size={18} color="#4DB8FF" />}
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity 
+                style={styles.modalCloseButton}
+                onPress={() => setShowThemeModal(false)}
+              >
+                <Text style={styles.modalCloseText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
         {/* Privacy Section */}
         <View style={styles.section}>
@@ -170,6 +253,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
+    paddingVertical: 4,
+  },
+  valueRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   tzHeader: {
     flexDirection: 'row',
@@ -279,5 +368,56 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'rgba(255,255,255,0.5)',
     lineHeight: 20,
+  },
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#111',
+    borderRadius: 16,
+    padding: 20,
+    width: '80%',
+    maxHeight: '70%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 16,
+  },
+  modalOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    marginBottom: 8,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+  },
+  modalOptionText: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.6)',
+    fontWeight: '500',
+  },
+  modalOptionTextActive: {
+    color: '#4DB8FF',
+    fontWeight: '700',
+  },
+  modalCloseButton: {
+    marginTop: 16,
+    paddingVertical: 12,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    alignItems: 'center',
+  },
+  modalCloseText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.5)',
   },
 });
