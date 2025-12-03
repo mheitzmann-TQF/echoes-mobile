@@ -141,11 +141,9 @@ class EchoesAPI {
     }
   }
 
-  async getConsciousnessAnalysis(location?: string): Promise<ConsciousnessData> {
+  async getConsciousnessAnalysis(): Promise<any> {
     try {
-      const url = location 
-        ? `${this.baseUrl}/api/consciousness-analysis/raw-analysis?location=${encodeURIComponent(location)}`
-        : `${this.baseUrl}/api/consciousness-analysis/raw-analysis`;
+      const url = `${this.baseUrl}/api/consciousness`;
       console.log('📡 Fetching consciousness analysis from:', url);
       
       const response = await fetch(url, {
