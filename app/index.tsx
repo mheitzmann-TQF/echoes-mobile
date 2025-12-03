@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useRouter } from 'expo-router';
 import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
@@ -19,6 +20,7 @@ import MetricsGrid from '../components/MetricsGrid';
 import EchoStack from '../components/EchoStack';
 
 export default function HomeScreen() {
+  const router = useRouter();
   const { locationName, coordinates, timezone, language } = useLocation();
   const { colors, theme } = useTheme();
   const [echoes, setEchoes] = useState<Echo[]>([]);
@@ -28,6 +30,10 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedMetric, setSelectedMetric] = useState<string>('lunar');
+
+  const handleCalendarSelect = useCallback(() => {
+    router.push('/learn');
+  }, [router]);
 
   // Default mock data for fallbacks
   const getMockPlanetaryData = (): PlanetaryData => ({
@@ -235,7 +241,7 @@ export default function HomeScreen() {
             subtitle="" 
           />
 
-          <CalendarCarousel calendars={calendars} />
+          <CalendarCarousel calendars={calendars} onSelect={handleCalendarSelect} />
 
           {planetary && (
             <MetricsGrid 
