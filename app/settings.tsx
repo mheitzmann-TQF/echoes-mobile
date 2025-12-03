@@ -1,10 +1,9 @@
-import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, ActivityIndicator, Modal } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState } from 'react';
-import { MapPin, Clock, AlertCircle, ChevronRight, Check } from 'lucide-react-native';
+import { MapPin, Clock, ChevronRight, Check } from 'lucide-react-native';
 
-const LANGUAGES = ['English', 'Français', 'Deutsch', 'Español', '中文'];
 const THEMES = ['Dark', 'Light'];
 
 export default function SettingsScreen() {
@@ -22,9 +21,7 @@ export default function SettingsScreen() {
 
   const [manualInput, setManualInput] = useState(locationName);
   const [showManualInput, setShowManualInput] = useState(false);
-  const [language, setLanguage] = useState('English');
   const [theme, setTheme] = useState('Dark');
-  const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showThemeModal, setShowThemeModal] = useState(false);
 
   const handleSetLocation = () => {
@@ -121,18 +118,6 @@ export default function SettingsScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Display</Text>
           
-          {/* Language Selector */}
-          <TouchableOpacity 
-            style={styles.row}
-            onPress={() => setShowLanguageModal(true)}
-          >
-            <Text style={styles.label}>Language</Text>
-            <View style={styles.valueRow}>
-              <Text style={styles.value}>{language}</Text>
-              <ChevronRight size={16} color="rgba(255,255,255,0.3)" />
-            </View>
-          </TouchableOpacity>
-
           {/* Theme Selector */}
           <TouchableOpacity 
             style={styles.row}
@@ -145,36 +130,6 @@ export default function SettingsScreen() {
             </View>
           </TouchableOpacity>
         </View>
-
-        {/* Language Modal */}
-        <Modal visible={showLanguageModal} transparent animationType="fade">
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Select Language</Text>
-              {LANGUAGES.map((lang) => (
-                <TouchableOpacity
-                  key={lang}
-                  style={styles.modalOption}
-                  onPress={() => {
-                    setLanguage(lang);
-                    setShowLanguageModal(false);
-                  }}
-                >
-                  <Text style={[styles.modalOptionText, language === lang && styles.modalOptionTextActive]}>
-                    {lang}
-                  </Text>
-                  {language === lang && <Check size={18} color="#4DB8FF" />}
-                </TouchableOpacity>
-              ))}
-              <TouchableOpacity 
-                style={styles.modalCloseButton}
-                onPress={() => setShowLanguageModal(false)}
-              >
-                <Text style={styles.modalCloseText}>Close</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
 
         {/* Theme Modal */}
         <Modal visible={showThemeModal} transparent animationType="fade">
