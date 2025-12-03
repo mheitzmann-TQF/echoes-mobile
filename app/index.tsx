@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
 import { useLocation } from '../lib/LocationContext';
+import { useLanguage } from '../lib/LanguageContext';
 
 // Components
 import Hero from '../components/Hero';
@@ -19,6 +20,7 @@ import EchoStack from '../components/EchoStack';
 
 export default function HomeScreen() {
   const { locationName, coordinates, timezone } = useLocation();
+  const { language, t, langCode } = useLanguage();
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
@@ -101,7 +103,7 @@ export default function HomeScreen() {
       // Fetch Bundle + Calendars
       const [bundleData, calendarsData] = await Promise.all([
         Promise.race([
-          api.getDailyBundle(coordinates.lat, coordinates.lng, 'en', timezone),
+          api.getDailyBundle(coordinates.lat, coordinates.lng, langCode, timezone),
           timeoutPromise,
         ]) as Promise<DailyBundleResponse>,
         api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone).catch(() => null),
@@ -179,7 +181,7 @@ export default function HomeScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [coordinates, timezone]);
+  }, [coordinates, timezone, langCode]);
 
   useEffect(() => {
     fetchData();
@@ -229,7 +231,7 @@ export default function HomeScreen() {
           scrollEnabled={true}
         >
           <Hero 
-            title="Today" 
+            title={t('Today')} 
             subtitle="" 
           />
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
+import { useLanguage } from '../lib/LanguageContext';
 import api from '../lib/api';
 import { Clock, Moon, Leaf, Sparkles } from 'lucide-react-native';
 
@@ -75,6 +76,7 @@ const FALLBACK_SEASON = [
 // --- Components ---
 
 function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) => void }) {
+  const { t } = useLanguage();
   return (
     <View style={styles.bandControl}>
       {(['soon', 'cycle', 'season'] as Band[]).map((band) => (
@@ -84,7 +86,7 @@ function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) 
           onPress={() => onChange(band)}
         >
           <Text style={[styles.bandSegmentText, value === band && styles.bandSegmentTextActive]}>
-            {band === 'soon' ? 'Soon' : band === 'cycle' ? 'Cycle' : 'Season'}
+            {band === 'soon' ? t('Soon') : band === 'cycle' ? t('Cycle') : t('Season')}
           </Text>
         </TouchableOpacity>
       ))}
@@ -93,6 +95,7 @@ function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) 
 }
 
 function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: Category) => void }) {
+  const { t } = useLanguage();
   return (
     <View style={styles.categoryFilter}>
       {(['all', 'astronomical', 'cultural'] as Category[]).map((cat) => (
@@ -102,7 +105,7 @@ function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: 
           onPress={() => onChange(cat)}
         >
           <Text style={[styles.categoryChipText, value === cat && styles.categoryChipTextActive]}>
-            {cat === 'all' ? 'All' : cat === 'astronomical' ? 'Astronomical' : 'Cultural'}
+            {cat === 'all' ? t('All') : cat === 'astronomical' ? t('Astronomical') : t('Cultural')}
           </Text>
         </TouchableOpacity>
       ))}
@@ -167,6 +170,7 @@ function SeasonCard({ event }: { event: any }) {
 
 export default function UpcomingScreen() {
   const { coordinates, timezone } = useLocation();
+  const { t } = useLanguage();
   const [band, setBand] = useState<Band>('soon');
   const [category, setCategory] = useState<Category>('all');
   const [events, setEvents] = useState<any[]>([]);
@@ -243,8 +247,8 @@ export default function UpcomingScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Upcoming</Text>
-          <Text style={styles.headerLabel}>{label}</Text>
+          <Text style={styles.headerTitle}>{t('Upcoming')}</Text>
+          <Text style={styles.headerLabel}>{t(label)}</Text>
         </View>
 
         {/* Band Control */}
@@ -256,7 +260,7 @@ export default function UpcomingScreen() {
         {/* Content by Band */}
         {band === 'soon' && (
           <View style={styles.bandContent}>
-            <Text style={styles.bandLabel}>TIMING WINDOWS</Text>
+            <Text style={styles.bandLabel}>{t('Timing Windows')}</Text>
             {bucketedEvents.map((event) => (
               <CountdownCard key={event.id} event={event} />
             ))}
@@ -265,7 +269,7 @@ export default function UpcomingScreen() {
 
         {band === 'cycle' && (
           <View style={styles.bandContent}>
-            <Text style={styles.bandLabel}>LUNAR & PLANETARY MILESTONES</Text>
+            <Text style={styles.bandLabel}>{t('Lunar & Planetary Milestones')}</Text>
             {bucketedEvents.map((event) => (
               <CycleEventRow key={event.id} event={event} />
             ))}
@@ -274,7 +278,7 @@ export default function UpcomingScreen() {
 
         {band === 'season' && (
           <View style={styles.bandContent}>
-            <Text style={styles.bandLabel}>SEASONAL TURNING POINTS</Text>
+            <Text style={styles.bandLabel}>{t('Seasonal Turning Points')}</Text>
             {bucketedEvents.map((event) => (
               <SeasonCard key={event.id} event={event} />
             ))}

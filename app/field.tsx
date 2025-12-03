@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
+import { useLanguage } from '../lib/LanguageContext';
 import api, { DailyBundleResponse, PlanetaryData } from '../lib/api';
 import { ChevronDown, ChevronUp, Info } from 'lucide-react-native';
 
@@ -137,6 +138,7 @@ function StickyHeader({ coherence, solarPhase, lunarIllumination }: { coherence:
 
 export default function FieldScreen() {
   const { coordinates, timezone } = useLocation();
+  const { t } = useLanguage();
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
   const [bioRhythms, setBioRhythms] = useState<any>(null);
@@ -245,7 +247,7 @@ export default function FieldScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.headerTitle}>Field</Text>
+        <Text style={styles.headerTitle}>{t('Field')}</Text>
         <Text style={styles.headerSubtitle}>Cosmos · Earth · Body</Text>
         <Text style={styles.headerSubtext}>How today’s signal is shaped</Text>
 
@@ -257,11 +259,11 @@ export default function FieldScreen() {
 
         {/* Cosmos Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>COSMOS</Text>
+          <Text style={styles.sectionLabel}>{t('Cosmos')}</Text>
           
           <ExpandableCard
             icon="🌙"
-            title="Lunar"
+            title={t('Lunar')}
             message={shorten(ctx?.lunar?.message)}
             isExpanded={expandedCards['lunar']}
             onToggle={() => toggleCard('lunar')}
@@ -277,7 +279,7 @@ export default function FieldScreen() {
 
           <ExpandableCard
             icon="☀️"
-            title="Solar"
+            title={t('Solar')}
             message={shorten(ctx?.solar?.message)}
             isExpanded={expandedCards['solar']}
             onToggle={() => toggleCard('solar')}
@@ -298,11 +300,11 @@ export default function FieldScreen() {
 
         {/* Earth Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>EARTH</Text>
+          <Text style={styles.sectionLabel}>{t('Earth')}</Text>
           
           <ExpandableCard
             icon="🌐"
-            title="Coherence"
+            title={t('Coherence') || "Coherence"}
             message={ctx?.consciousness_index?.trend === 'rising' ? "Signal clarity is increasing." : "The field holds steady."}
             collapsedDetail={`Trend: ${ctx?.consciousness_index?.trend || 'Stable'}`}
             isExpanded={expandedCards['coherence']}
@@ -328,7 +330,7 @@ export default function FieldScreen() {
 
           <ExpandableCard
             icon="⚡"
-            title="Geomagnetic"
+            title={t('Geomagnetic')}
             message={geoActivity === 'Active' ? "Higher background friction." : "Low disturbance."}
             collapsedDetail={geoActivity}
             isExpanded={expandedCards['geo']}
@@ -352,11 +354,11 @@ export default function FieldScreen() {
 
         {/* Body Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>BODY</Text>
+          <Text style={styles.sectionLabel}>{t('Body')}</Text>
           
           <ExpandableCard
             icon="🧬"
-            title="Body"
+            title={t('Body')}
             message={shorten(bioRhythms?.circadian?.description)}
             isExpanded={expandedCards['body']}
             onToggle={() => toggleCard('body')}
@@ -381,7 +383,7 @@ export default function FieldScreen() {
 
         {/* Signals */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>INPUT SIGNALS</Text>
+          <Text style={styles.sectionLabel}>{t('Data Sources')}</Text>
           <View style={styles.signalsContainer}>
             <Text style={styles.signalsText}>
               Data generated using real-time inputs from:
