@@ -1,13 +1,12 @@
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://source.thequietframe.com';
-const API_KEY = process.env.EXPO_PUBLIC_TQF_API_KEY || process.env.TQF_MOBILE_API_KEY || '';
+// Use backend proxy instead of direct TQF API
+const API_BASE_URL = typeof window !== 'undefined' ? '' : 'https://source.thequietframe.com';
 
 // Log config after module loads
 if (typeof console !== 'undefined' && console.log) {
   setTimeout(() => {
     console.log('🔑 API Config:', {
-      baseUrl: API_BASE_URL,
-      hasApiKey: !!API_KEY,
-      apiKeyLength: API_KEY.length,
+      mode: 'backend-proxy',
+      baseUrl: API_BASE_URL || 'http://localhost:5000',
     });
   }, 0);
 }
@@ -94,28 +93,20 @@ export interface ConsciousnessData {
 
 class EchoesAPI {
   private baseUrl: string;
-  private apiKey: string;
 
-  constructor(baseUrl: string = API_BASE_URL, apiKey: string = API_KEY) {
+  constructor(baseUrl: string = API_BASE_URL) {
     this.baseUrl = baseUrl;
-    this.apiKey = apiKey;
   }
 
   private getHeaders() {
-    const headers: Record<string, string> = {
+    return {
       'Content-Type': 'application/json',
     };
-    
-    if (this.apiKey) {
-      headers['x-api-key'] = this.apiKey;
-    }
-    
-    return headers;
   }
 
   async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
     try {
-      const url = `${this.baseUrl}/api/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`;
+      const url = `/api/proxy/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`;
       console.log('📡 Fetching planetary data from:', url);
       
       const response = await fetch(url, {
@@ -143,7 +134,7 @@ class EchoesAPI {
 
   async getConsciousnessAnalysis(): Promise<any> {
     try {
-      const url = `${this.baseUrl}/api/consciousness`;
+      const url = `/api/proxy/consciousness`;
       console.log('📡 Fetching consciousness analysis from:', url);
       
       const response = await fetch(url, {
@@ -172,7 +163,7 @@ class EchoesAPI {
     tz: string = 'UTC'
   ): Promise<DailyBundleResponse> {
     try {
-      const url = `${this.baseUrl}/api/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`;
+      const url = `/api/proxy/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`;
       console.log('📡 Fetching daily bundle from:', url);
       
       const response = await fetch(url, {
@@ -195,7 +186,7 @@ class EchoesAPI {
 
   async getTraditionalCalendars(lat?: number, lng?: number, tz: string = 'UTC', lang: string = 'en'): Promise<any> {
     try {
-      let url = `${this.baseUrl}/api/planetary/traditional-calendars?tz=${tz}&lang=${lang}`;
+      let url = `/api/proxy/planetary/traditional-calendars?tz=${tz}&lang=${lang}`;
       if (lat && lng) {
         url += `&lat=${lat}&lng=${lng}`;
       }
@@ -219,7 +210,7 @@ class EchoesAPI {
 
   async getPlanetaryEvents(limit: number = 10, lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/planetary/events?limit=${limit}&lang=${lang}`;
+      const url = `/api/proxy/planetary/events?limit=${limit}&lang=${lang}`;
       console.log('📡 Fetching planetary events from:', url);
       
       const response = await fetch(url, {
@@ -240,7 +231,7 @@ class EchoesAPI {
 
   async getBiologicalRhythms(lat?: number, lng?: number, tz: string = 'UTC'): Promise<any> {
     try {
-      let url = `${this.baseUrl}/api/planetary/biological-rhythms?tz=${tz}`;
+      let url = `/api/proxy/planetary/biological-rhythms?tz=${tz}`;
       if (lat && lng) {
         url += `&lat=${lat}&lng=${lng}`;
       }
@@ -264,7 +255,7 @@ class EchoesAPI {
 
   async getCulturalContent(limit: number = 5, lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/cultural/content/high-alignment?limit=${limit}&lang=${lang}`;
+      const url = `/api/proxy/cultural/content/high-alignment?limit=${limit}&lang=${lang}`;
       console.log('📡 Fetching cultural content from:', url);
       
       const response = await fetch(url, {
@@ -285,7 +276,7 @@ class EchoesAPI {
 
   async getLivingCalendars(lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/sacred-geography/living-calendars?lang=${lang}`;
+      const url = `/api/proxy/sacred-geography/living-calendars?lang=${lang}`;
       console.log('📡 Fetching living calendars from:', url);
       
       const response = await fetch(url, {
@@ -320,7 +311,7 @@ class EchoesAPI {
 
   async getImportantDates(lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/important-dates/upcoming?lang=${lang}`;
+      const url = `/api/proxy/important-dates/upcoming?lang=${lang}`;
       console.log('📡 Fetching important dates from:', url);
       
       const response = await fetch(url, {
