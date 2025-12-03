@@ -283,6 +283,34 @@ export default function LearnScreen() {
     loadData();
   }, [coordinates, timezone, language]);
 
+  // Mock artifacts for fallback
+  const MOCK_ARTIFACTS = [
+    {
+      id: 'artifact-1',
+      title: 'The Codex Boturini',
+      region: 'Mesoamerica',
+      summary: 'An ancient Aztec codex depicting the migration myth of the Mexica people. The narrative unfolds as a spiral, representing the eternal cycle of time and the search for Tenochtitlan, the destined homeland.'
+    },
+    {
+      id: 'artifact-2',
+      title: 'Stonehenge Alignments',
+      region: 'British Isles',
+      summary: 'A 5,000-year-old monument aligned with celestial events. The stones mark solstices and equinoxes, serving as a vast calendar connecting human consciousness to cosmic rhythms.'
+    },
+    {
+      id: 'artifact-3',
+      title: 'The I Ching (Book of Changes)',
+      region: 'China',
+      summary: 'An ancient divination text encoding 64 hexagrams representing all possible states of change. Each pattern reflects the dynamic interplay between yin and yang, chaos and order.'
+    },
+    {
+      id: 'artifact-4',
+      title: 'Vedic Fire Ceremonies',
+      region: 'India',
+      summary: 'Rituals thousands of years old that synchronize human action with celestial events. Fire serves as mediator between earthly and cosmic realms, maintaining universal harmony.'
+    },
+  ];
+
   // Load cultural content separately
   useEffect(() => {
     async function loadCulture() {
@@ -294,12 +322,16 @@ export default function LearnScreen() {
           setCulture(data);
           setCultureEmpty(false);
         } else {
-          setCulture([]);
-          setCultureEmpty(true);
+          // Use random mock artifact from collection
+          const randomArtifact = MOCK_ARTIFACTS[Math.floor(Math.random() * MOCK_ARTIFACTS.length)];
+          setCulture([randomArtifact]);
+          setCultureEmpty(false);
         }
       } catch {
-        setCulture([]);
-        setCultureEmpty(true);
+        // Use random mock artifact on error
+        const randomArtifact = MOCK_ARTIFACTS[Math.floor(Math.random() * MOCK_ARTIFACTS.length)];
+        setCulture([randomArtifact]);
+        setCultureEmpty(false);
       } finally {
         setCultureLoading(false);
       }
@@ -324,12 +356,16 @@ export default function LearnScreen() {
         setCulture(data);
         setCultureEmpty(false);
       } else {
-        setCulture([]);
-        setCultureEmpty(true);
+        // Use random mock artifact on empty response
+        const randomArtifact = MOCK_ARTIFACTS[Math.floor(Math.random() * MOCK_ARTIFACTS.length)];
+        setCulture([randomArtifact]);
+        setCultureEmpty(false);
       }
     } catch {
-      setCulture([]);
-      setCultureEmpty(true);
+      // Use random mock artifact on error
+      const randomArtifact = MOCK_ARTIFACTS[Math.floor(Math.random() * MOCK_ARTIFACTS.length)];
+      setCulture([randomArtifact]);
+      setCultureEmpty(false);
     } finally {
       setCultureLoading(false);
     }
