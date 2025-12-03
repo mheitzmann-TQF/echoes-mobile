@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Share, Modal } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -9,6 +10,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useSharedValue } from 'react-native-reanimated';
 import { Svg, Path, Circle } from 'react-native-svg';
 import { useTheme } from '../lib/ThemeContext';
+import { X } from 'lucide-react-native';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH - 40;
@@ -36,14 +38,6 @@ function ShareIcon({ color = '#FFFFFF' }) {
       <Path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
       <Path d="M16 6 12 2 8 6" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
       <Path d="M12 2v13" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
-    </Svg>
-  );
-}
-
-function SaveIcon({ color = '#FFFFFF' }) {
-  return (
-    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-      <Path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
     </Svg>
   );
 }
@@ -92,6 +86,18 @@ const getTypeLabel = (type: string): string => {
   }
 };
 
+const getMetricDescription = (metric: string): string => {
+  const descriptions: Record<string, string> = {
+    'Lunar': 'Based on the current lunar phase and its energetic influence',
+    'Solar': 'Derived from solar positioning and circadian rhythms',
+    'Coherence': 'Generated from global coherence and consciousness metrics',
+    'Geomagnetism': 'Influenced by geomagnetic activity and earth resonance',
+    'Cultural': 'Aligned with cultural calendars and celebrations',
+    'Ancestral': 'Rooted in ancestral wisdom and traditional knowledge',
+  };
+  return descriptions[metric] || `Sourced from ${metric} data`;
+};
+
 export default function EchoCard({
   echo,
   index,
@@ -102,6 +108,18 @@ export default function EchoCard({
   const { colors, theme } = useTheme();
   const translateX = useSharedValue(0);
   const isActive = index === 0;
+  const [showWhyModal, setShowWhyModal] = useState(false);
+
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        message: `✨ ${echo.title}\n\n${echo.message}\n\n— From Echoes App`,
+        title: 'Share Echo',
+      });
+    } catch (error) {
+      console.error('Share error:', error);
+    }
+  };
 
   const panGesture = Gesture.Pan()
     .enabled(isActive)
@@ -160,48 +178,81 @@ export default function EchoCard({
     };
   });
 
-  // Determine card background color based on type or theme
-  // We'll stick to theme colors for consistency
   const cardBackgroundColor = theme === 'dark' ? '#000000' : '#FFFFFF';
   const cardBorderColor = colors.border;
 
   return (
-    <GestureDetector gesture={panGesture}>
-      <Animated.View style={[styles.card, animatedStyle, { backgroundColor: cardBackgroundColor, borderColor: cardBorderColor }]}>
-        <View style={styles.content}>
-          <View style={[styles.typeBadge, { backgroundColor: colors.surfaceHighlight }]}>
-            <Text style={styles.typeEmoji}>{getTypeEmoji(echo.type)}</Text>
-            <Text style={[styles.typeLabel, { color: colors.text }]}>{getTypeLabel(echo.type)}</Text>
+    <>
+      <GestureDetector gesture={panGesture}>
+        <Animated.View style={[styles.card, animatedStyle, { backgroundColor: cardBackgroundColor, borderColor: cardBorderColor }]}>
+          <View style={styles.content}>
+            <View style={[styles.typeBadge, { backgroundColor: colors.surfaceHighlight }]}>
+              <Text style={styles.typeEmoji}>{getTypeEmoji(echo.type)}</Text>
+              <Text style={[styles.typeLabel, { color: colors.text }]}>{getTypeLabel(echo.type)}</Text>
+            </View>
+
+            <View style={styles.messageContainer}>
+              <Text style={[styles.message, { color: colors.text }]}>{echo.message}</Text>
+            </View>
+
+            <View style={styles.footer}>
+              <Text style={[styles.title, { color: colors.textSecondary }]}>{echo.title}</Text>
+            </View>
           </View>
 
-          <View style={styles.messageContainer}>
-            <Text style={[styles.message, { color: colors.text }]}>{echo.message}</Text>
-          </View>
+          {/* Actions Toolbar */}
+          <View style={[styles.actions, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
+            <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
+              <ShareIcon color={colors.textTertiary} />
+              <Text style={[styles.actionText, { color: colors.textTertiary }]}>Share</Text>
+            </TouchableOpacity>
 
-          <View style={styles.footer}>
-            <Text style={[styles.title, { color: colors.textSecondary }]}>{echo.title}</Text>
+            <TouchableOpacity style={styles.actionButton} onPress={() => setShowWhyModal(true)}>
+              <InfoIcon color={colors.textTertiary} />
+              <Text style={[styles.actionText, { color: colors.textTertiary }]}>Why?</Text>
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
+      </GestureDetector>
+
+      {/* Why Modal */}
+      <Modal
+        visible={showWhyModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowWhyModal(false)}
+      >
+        <View style={[styles.modalOverlay, { backgroundColor: 'rgba(0,0,0,0.7)' }]}>
+          <View style={[styles.modalContent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={styles.modalHeader}>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>Why This Echo?</Text>
+              <TouchableOpacity onPress={() => setShowWhyModal(false)}>
+                <X size={24} color={colors.text} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.metricsContainer}>
+              {echo.source_metrics && echo.source_metrics.length > 0 ? (
+                echo.source_metrics.map((metric, idx) => (
+                  <View key={`${echo.id}-${metric}-${idx}`} style={[styles.metricItem, { borderBottomColor: colors.border }]}>
+                    <Text style={[styles.metricLabel, { color: colors.text }]}>{metric}</Text>
+                    <Text style={[styles.metricDescription, { color: colors.textSecondary }]}>
+                      {getMetricDescription(metric)}
+                    </Text>
+                  </View>
+                ))
+              ) : (
+                <View style={styles.metricItem}>
+                  <Text style={[styles.metricDescription, { color: colors.textTertiary }]}>
+                    This echo was generated based on the current cosmic and terrestrial conditions at your location.
+                  </Text>
+                </View>
+              )}
+            </View>
           </View>
         </View>
-
-        {/* Actions Toolbar */}
-        <View style={[styles.actions, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
-          <TouchableOpacity style={styles.actionButton}>
-            <SaveIcon color={colors.textTertiary} />
-            <Text style={[styles.actionText, { color: colors.textTertiary }]}>Save</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.actionButton}>
-            <ShareIcon color={colors.textTertiary} />
-            <Text style={[styles.actionText, { color: colors.textTertiary }]}>Share</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.actionButton}>
-            <InfoIcon color={colors.textTertiary} />
-            <Text style={[styles.actionText, { color: colors.textTertiary }]}>Why?</Text>
-          </TouchableOpacity>
-        </View>
-      </Animated.View>
-    </GestureDetector>
+      </Modal>
+    </>
   );
 }
 
@@ -266,7 +317,7 @@ const styles = StyleSheet.create({
   },
   actions: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     padding: 20,
     backgroundColor: 'rgba(255,255,255,0.03)',
     borderTopWidth: 1,
@@ -282,5 +333,46 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.6)',
     fontSize: 13,
     fontWeight: '500',
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+    borderTopWidth: 1,
+    maxHeight: '70%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  metricsContainer: {
+    gap: 0,
+  },
+  metricItem: {
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+  },
+  metricLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  metricDescription: {
+    fontSize: 13,
+    lineHeight: 18,
   },
 });
