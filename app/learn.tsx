@@ -64,27 +64,94 @@ function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: 
   const type = CALENDAR_TYPES[id] || 'System';
   const explainer = CALENDAR_EXPLAINERS[id] || 'A traditional system of timekeeping.';
   const { colors } = useTheme();
+  const [isFlipped, setIsFlipped] = useState(false);
+  const flipAnim = useRef(new Animated.Value(0)).current;
+
+  const handleFlip = () => {
+    Animated.timing(flipAnim, {
+      toValue: isFlipped ? 0 : 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start();
+    setIsFlipped(!isFlipped);
+  };
+
+  const frontOpacity = flipAnim.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 0, 0],
+  });
+
+  const backOpacity = flipAnim.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0, 0, 1],
+  });
+
+  const frontRotate = flipAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
+
+  const backRotate = flipAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['180deg', '360deg'],
+  });
 
   return (
     <TouchableOpacity 
-      style={[styles.systemCard, { backgroundColor: colors.surface, borderColor: colors.border }]} 
-      onPress={onPress} 
-      activeOpacity={0.9}
+      style={styles.systemCardContainer}
+      onPress={handleFlip}
+      activeOpacity={1}
     >
-      <View>
-        <View style={styles.systemHeader}>
-          <Text style={[styles.systemName, { color: colors.text }]}>{name}</Text>
-          <View style={[styles.systemTypeTag, { backgroundColor: colors.surfaceHighlight }]}>
-            <Text style={[styles.systemTypeText, { color: colors.textSecondary }]}>{type}</Text>
+      {/* Front of card */}
+      <Animated.View 
+        style={[
+          styles.systemCard, 
+          { 
+            backgroundColor: colors.surface, 
+            borderColor: colors.border,
+            opacity: frontOpacity,
+            transform: [{ rotateY: frontRotate }],
+            position: 'absolute',
+          }
+        ]}
+      >
+        <View>
+          <View style={styles.systemHeader}>
+            <Text style={[styles.systemName, { color: colors.text }]}>{name}</Text>
+            <View style={[styles.systemTypeTag, { backgroundColor: colors.surfaceHighlight }]}>
+              <Text style={[styles.systemTypeText, { color: colors.textSecondary }]}>{type}</Text>
+            </View>
+          </View>
+          <Text style={[styles.systemExplainer, { color: colors.textSecondary }]}>{explainer}</Text>
+        </View>
+        
+        <View style={styles.rotateCue}>
+          <Text style={[styles.rotateText, { color: colors.textTertiary }]}>Rotate lens</Text>
+          <ArrowRight size={14} color={colors.textTertiary} />
+        </View>
+      </Animated.View>
+
+      {/* Back of card */}
+      <Animated.View 
+        style={[
+          styles.systemCard, 
+          { 
+            backgroundColor: colors.surfaceHighlight, 
+            borderColor: colors.border,
+            opacity: backOpacity,
+            transform: [{ rotateY: backRotate }],
+            position: 'absolute',
+          }
+        ]}
+      >
+        <View style={styles.cardBackContent}>
+          <Text style={[styles.backTitle, { color: colors.text }]}>About {name}</Text>
+          <Text style={[styles.backDescription, { color: colors.textSecondary }]}>{explainer}</Text>
+          <View style={[styles.backFooter, { borderTopColor: colors.border }]}>
+            <Text style={[styles.backCue, { color: colors.textTertiary }]}>Tap to flip back</Text>
           </View>
         </View>
-        <Text style={[styles.systemExplainer, { color: colors.textSecondary }]}>{explainer}</Text>
-      </View>
-      
-      <View style={styles.rotateCue}>
-        <Text style={[styles.rotateText, { color: colors.textTertiary }]}>Rotate lens</Text>
-        <ArrowRight size={14} color={colors.textTertiary} />
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   );
 }
@@ -564,6 +631,39 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'rgba(255,255,255,0.6)',
     fontWeight: '500',
+  },
+  systemCardContainer: {
+    width: width * 0.85,
+    height: 200,
+    position: 'relative',
+  },
+  cardBackContent: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'space-between',
+  },
+  backTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 12,
+  },
+  backDescription: {
+    fontSize: 15,
+    color: 'rgba(255,255,255,0.7)',
+    lineHeight: 22,
+    flex: 1,
+  },
+  backFooter: {
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.1)',
+  },
+  backCue: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.4)',
+    fontStyle: 'italic',
+    textAlign: 'center',
   },
   // Artifact
   artifactCard: {
