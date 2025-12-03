@@ -1,29 +1,116 @@
-import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
+import { useState } from 'react';
+import { MapPin, Clock, AlertCircle } from 'lucide-react-native';
 
 export default function SettingsScreen() {
-  const { useCurrentLocation, setUseCurrentLocation, locationName } = useLocation();
+  const { 
+    useCurrentLocation, 
+    setUseCurrentLocation, 
+    locationName, 
+    setLocationName,
+    coordinates,
+    locationLoading,
+    locationError,
+    timezone,
+    setTimezone
+  } = useLocation();
+
+  const [manualInput, setManualInput] = useState(locationName);
+  const [showManualInput, setShowManualInput] = useState(false);
+
+  const handleSetLocation = () => {
+    if (manualInput.trim()) {
+      setLocationName(manualInput);
+      setShowManualInput(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Settings</Text>
         
+        {/* Location Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Location</Text>
+          
+          {/* Current Location Toggle */}
           <View style={styles.row}>
-            <Text style={styles.label}>Use Current Location</Text>
+            <View>
+              <Text style={styles.label}>Use Current Location</Text>
+              {locationLoading && <Text style={styles.smallText}>Loading...</Text>}
+              {locationError && <Text style={styles.errorText}>⚠ {locationError}</Text>}
+            </View>
             <Switch
               value={useCurrentLocation}
               onValueChange={setUseCurrentLocation}
-              trackColor={{ false: '#3e3e3e', true: '#ffffff' }}
-              thumbColor={useCurrentLocation ? '#000000' : '#f4f3f4'}
+              trackColor={{ false: '#3e3e3e', true: 'rgba(100, 200, 255, 0.6)' }}
+              thumbColor={useCurrentLocation ? '#4DB8FF' : '#f4f3f4'}
             />
           </View>
-          <Text style={styles.value}>{locationName}</Text>
+
+          {/* Location Display */}
+          <TouchableOpacity 
+            style={styles.locationCard}
+            onPress={() => setShowManualInput(!showManualInput)}
+          >
+            <View style={styles.locationCardHeader}>
+              <MapPin size={18} color="#4DB8FF" />
+              <Text style={styles.locationCardTitle}>{locationName || 'Set Location'}</Text>
+            </View>
+            <Text style={styles.coordinates}>
+              {coordinates.lat.toFixed(4)}°, {coordinates.lng.toFixed(4)}°
+            </Text>
+            <Text style={styles.hint}>Tap to change location</Text>
+          </TouchableOpacity>
+
+          {/* Manual Location Input */}
+          {showManualInput && (
+            <View style={styles.manualInputContainer}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter city or location..."
+                placeholderTextColor="rgba(255,255,255,0.3)"
+                value={manualInput}
+                onChangeText={setManualInput}
+                onSubmitEditing={handleSetLocation}
+              />
+              <View style={styles.buttonRow}>
+                <TouchableOpacity 
+                  style={[styles.button, styles.buttonCancel]}
+                  onPress={() => {
+                    setShowManualInput(false);
+                    setManualInput(locationName);
+                  }}
+                >
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={[styles.button, styles.buttonConfirm]}
+                  onPress={handleSetLocation}
+                >
+                  <Text style={styles.buttonTextConfirm}>Set Location</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
 
+        {/* Timezone Section */}
+        <View style={styles.section}>
+          <View style={styles.row}>
+            <View style={styles.tzHeader}>
+              <Clock size={18} color="#4DB8FF" />
+              <Text style={styles.label}>Timezone</Text>
+            </View>
+            <Text style={styles.value}>{timezone || 'UTC'}</Text>
+          </View>
+          <Text style={styles.hint}>Auto-detected from location</Text>
+        </View>
+
+        {/* Display Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Display</Text>
           <View style={styles.row}>
@@ -36,7 +123,8 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-         <View style={styles.section}>
+        {/* Privacy Section */}
+        <View style={styles.section}>
           <Text style={styles.sectionTitle}>Privacy</Text>
           <Text style={styles.infoText}>No accounts. Preferences stored on-device.</Text>
         </View>
@@ -53,24 +141,29 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
+    paddingBottom: 40,
   },
   title: {
     fontSize: 34,
     fontWeight: '700',
     color: '#FFFFFF',
     marginBottom: 32,
+    letterSpacing: -0.5,
   },
   section: {
-    marginBottom: 32,
+    marginBottom: 28,
     backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 16,
     padding: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '700',
     color: '#FFFFFF',
     marginBottom: 16,
+    letterSpacing: 0.5,
   },
   row: {
     flexDirection: 'row',
@@ -78,13 +171,109 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 12,
   },
+  tzHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   label: {
     fontSize: 16,
-    color: 'rgba(255,255,255,0.8)',
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.9)',
   },
   value: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.6)',
+    fontWeight: '500',
+  },
+  smallText: {
+    fontSize: 12,
+    color: 'rgba(100, 200, 255, 0.7)',
+    marginTop: 4,
+  },
+  errorText: {
+    fontSize: 12,
+    color: 'rgba(255, 100, 100, 0.8)',
+    marginTop: 4,
+  },
+  hint: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.4)',
+    marginTop: 4,
+  },
+  // Location Card
+  locationCard: {
+    backgroundColor: 'rgba(77, 184, 255, 0.08)',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(77, 184, 255, 0.2)',
+  },
+  locationCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 8,
+  },
+  locationCardTitle: {
     fontSize: 16,
+    fontWeight: '700',
+    color: '#4DB8FF',
+  },
+  coordinates: {
+    fontSize: 13,
     color: 'rgba(255,255,255,0.5)',
+    fontFamily: 'monospace',
+    marginBottom: 4,
+  },
+  // Manual Input
+  manualInputContainer: {
+    marginTop: 16,
+    gap: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.1)',
+  },
+  textInput: {
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    color: '#FFFFFF',
+    fontSize: 14,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonCancel: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  buttonConfirm: {
+    backgroundColor: 'rgba(77, 184, 255, 0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(77, 184, 255, 0.4)',
+  },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.6)',
+  },
+  buttonTextConfirm: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#4DB8FF',
   },
   infoText: {
     fontSize: 14,
