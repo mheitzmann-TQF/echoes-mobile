@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, Modal, Dimensions, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
-import { useLanguage } from '../lib/LanguageContext';
 import api from '../lib/api';
 import { Bookmark, X, ArrowRight, ChevronRight, BookOpen } from 'lucide-react-native';
 
@@ -76,7 +75,7 @@ function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: 
       </View>
       
       <View style={styles.rotateCue}>
-        <Text style={styles.rotateText}>{t('Rotate lens')}</Text>
+        <Text style={styles.rotateText}>Rotate lens</Text>
         <ArrowRight size={14} color="rgba(255,255,255,0.6)" />
       </View>
     </TouchableOpacity>
@@ -139,7 +138,6 @@ function SavedStrip({ count }: { count: number }) {
 
 export default function LearnScreen() {
   const { coordinates, timezone } = useLocation();
-  const { t } = useLanguage();
   const [calendars, setCalendars] = useState<any>(null);
   const [culture, setCulture] = useState<any[]>([]);
   const [cultureLoading, setCultureLoading] = useState(true);
@@ -288,7 +286,7 @@ export default function LearnScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.headerTitle}>{t('Calendar Systems')}</Text>
+        <Text style={styles.headerTitle}>Calendar Systems</Text>
         
         {/* 1. Calendar Systems Carousel */}
         <View style={styles.carouselContainer}>
@@ -312,19 +310,19 @@ export default function LearnScreen() {
 
         {/* 2. Artifact of the Day */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>{t('Artifact of the Day')}</Text>
+          <Text style={styles.sectionLabel}>ARTIFACT OF THE DAY</Text>
           
           {cultureLoading ? (
             <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 20 }} />
           ) : cultureEmpty ? (
             <View style={styles.fallbackCard}>
-              <Text style={styles.fallbackCardTitle}>{t('No cultural offering surfaced today.')}</Text>
-              <Text style={styles.fallbackCardSub}>{t('The field is quiet here. Try again later.')}</Text>
+              <Text style={styles.fallbackCardTitle}>No cultural offering surfaced today.</Text>
+              <Text style={styles.fallbackCardSub}>The field is quiet here. Try again later.</Text>
               <TouchableOpacity 
                 style={styles.fallbackRefreshButton} 
                 onPress={handleRefreshCulture}
               >
-                <Text style={styles.fallbackRefreshText}>{t('Refresh')}</Text>
+                <Text style={styles.fallbackRefreshText}>Refresh</Text>
               </TouchableOpacity>
             </View>
           ) : culture.length > 0 ? (
@@ -335,13 +333,13 @@ export default function LearnScreen() {
             />
           ) : (
             <View style={styles.fallbackCard}>
-              <Text style={styles.fallbackCardTitle}>{t('No cultural offering surfaced today.')}</Text>
-              <Text style={styles.fallbackCardSub}>{t('The field is quiet here. Try again later.')}</Text>
+              <Text style={styles.fallbackCardTitle}>No cultural offering surfaced today.</Text>
+              <Text style={styles.fallbackCardSub}>The field is quiet here. Try again later.</Text>
               <TouchableOpacity 
                 style={styles.fallbackRefreshButton} 
                 onPress={handleRefreshCulture}
               >
-                <Text style={styles.fallbackRefreshText}>{t('Refresh')}</Text>
+                <Text style={styles.fallbackRefreshText}>Refresh</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -349,7 +347,7 @@ export default function LearnScreen() {
 
         {/* 3. Living Calendar */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>{t('Living Calendar')}</Text>
+          <Text style={styles.sectionLabel}>LIVING CALENDAR</Text>
           {living.map((item, i) => (
             <LivingCard 
               key={i} 

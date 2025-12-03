@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, ActivityIndicator, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
-import { useLanguage } from '../lib/LanguageContext';
 import { useState } from 'react';
 import { MapPin, Clock, AlertCircle, ChevronRight, Check } from 'lucide-react-native';
 
@@ -21,10 +20,9 @@ export default function SettingsScreen() {
     setTimezone
   } = useLocation();
 
-  const { language, setLanguage, t } = useLanguage();
-
   const [manualInput, setManualInput] = useState(locationName);
   const [showManualInput, setShowManualInput] = useState(false);
+  const [language, setLanguage] = useState('English');
   const [theme, setTheme] = useState('Dark');
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showThemeModal, setShowThemeModal] = useState(false);
@@ -39,16 +37,16 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>{t('Settings')}</Text>
+        <Text style={styles.title}>Settings</Text>
         
         {/* Location Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('Location')}</Text>
+          <Text style={styles.sectionTitle}>Location</Text>
           
           {/* Current Location Toggle */}
           <View style={styles.row}>
             <View>
-              <Text style={styles.label}>{t('Use Current Location')}</Text>
+              <Text style={styles.label}>Use Current Location</Text>
               {locationLoading && <Text style={styles.smallText}>Loading...</Text>}
               {locationError && <Text style={styles.errorText}>⚠ {locationError}</Text>}
             </View>
@@ -67,7 +65,7 @@ export default function SettingsScreen() {
           >
             <View style={styles.locationCardHeader}>
               <MapPin size={18} color="#4DB8FF" />
-              <Text style={styles.locationCardTitle}>{locationName || t('Set Location')}</Text>
+              <Text style={styles.locationCardTitle}>{locationName || 'Set Location'}</Text>
             </View>
             <Text style={styles.coordinates}>
               {coordinates.lat.toFixed(4)}°, {coordinates.lng.toFixed(4)}°
@@ -94,13 +92,13 @@ export default function SettingsScreen() {
                     setManualInput(locationName);
                   }}
                 >
-                  <Text style={styles.buttonText}>{t('Cancel')}</Text>
+                  <Text style={styles.buttonText}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={[styles.button, styles.buttonConfirm]}
                   onPress={handleSetLocation}
                 >
-                  <Text style={styles.buttonTextConfirm}>{t('Set Location')}</Text>
+                  <Text style={styles.buttonTextConfirm}>Set Location</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -121,14 +119,14 @@ export default function SettingsScreen() {
 
         {/* Display Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('Display')}</Text>
+          <Text style={styles.sectionTitle}>Display</Text>
           
           {/* Language Selector */}
           <TouchableOpacity 
             style={styles.row}
             onPress={() => setShowLanguageModal(true)}
           >
-            <Text style={styles.label}>{t('Language')}</Text>
+            <Text style={styles.label}>Language</Text>
             <View style={styles.valueRow}>
               <Text style={styles.value}>{language}</Text>
               <ChevronRight size={16} color="rgba(255,255,255,0.3)" />
@@ -140,7 +138,7 @@ export default function SettingsScreen() {
             style={styles.row}
             onPress={() => setShowThemeModal(true)}
           >
-            <Text style={styles.label}>{t('Theme')}</Text>
+            <Text style={styles.label}>Theme</Text>
             <View style={styles.valueRow}>
               <Text style={styles.value}>{theme}</Text>
               <ChevronRight size={16} color="rgba(255,255,255,0.3)" />
@@ -152,13 +150,13 @@ export default function SettingsScreen() {
         <Modal visible={showLanguageModal} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>{t('Select Language')}</Text>
+              <Text style={styles.modalTitle}>Select Language</Text>
               {LANGUAGES.map((lang) => (
                 <TouchableOpacity
                   key={lang}
                   style={styles.modalOption}
                   onPress={() => {
-                    setLanguage(lang as any);
+                    setLanguage(lang);
                     setShowLanguageModal(false);
                   }}
                 >
@@ -172,7 +170,7 @@ export default function SettingsScreen() {
                 style={styles.modalCloseButton}
                 onPress={() => setShowLanguageModal(false)}
               >
-                <Text style={styles.modalCloseText}>{t('Close')}</Text>
+                <Text style={styles.modalCloseText}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -182,7 +180,7 @@ export default function SettingsScreen() {
         <Modal visible={showThemeModal} transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>{t('Select Theme')}</Text>
+              <Text style={styles.modalTitle}>Select Theme</Text>
               {THEMES.map((t) => (
                 <TouchableOpacity
                   key={t}
@@ -202,7 +200,7 @@ export default function SettingsScreen() {
                 style={styles.modalCloseButton}
                 onPress={() => setShowThemeModal(false)}
               >
-                <Text style={styles.modalCloseText}>{t('Close')}</Text>
+                <Text style={styles.modalCloseText}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -210,8 +208,8 @@ export default function SettingsScreen() {
 
         {/* Privacy Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('Privacy')}</Text>
-          <Text style={styles.infoText}>{t('No accounts. Preferences stored on-device.')}</Text>
+          <Text style={styles.sectionTitle}>Privacy</Text>
+          <Text style={styles.infoText}>No accounts. Preferences stored on-device.</Text>
         </View>
 
       </ScrollView>
