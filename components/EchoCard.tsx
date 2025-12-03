@@ -336,17 +336,23 @@ const styles = StyleSheet.create({
   },
   // Modal styles
   modalOverlay: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'flex-end',
+    width: '100%',
+    zIndex: 1000,
   },
   modalContent: {
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingTop: 20,
     paddingHorizontal: 20,
-    paddingBottom: 40,
+    paddingBottom: 120,
     borderTopWidth: 1,
-    maxHeight: '70%',
+    maxHeight: '65%',
   },
   modalHeader: {
     flexDirection: 'row',
