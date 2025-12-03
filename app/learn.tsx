@@ -592,7 +592,7 @@ const styles = StyleSheet.create({
   },
   systemCard: {
     width: width * 0.85,
-    height: 200,
+    height: 280,
     backgroundColor: 'rgba(255,255,255,0.08)',
     borderRadius: 24,
     padding: 24,
@@ -642,25 +642,27 @@ const styles = StyleSheet.create({
   },
   systemCardContainer: {
     width: width * 0.85,
-    height: 200,
+    height: 280,
     position: 'relative',
   },
   cardBackContent: {
     flex: 1,
     padding: 24,
     justifyContent: 'space-between',
+    paddingBottom: 16,
   },
   backTitle: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: '700',
     color: '#FFFFFF',
     marginBottom: 12,
   },
   backDescription: {
-    fontSize: 15,
+    fontSize: 14,
     color: 'rgba(255,255,255,0.7)',
-    lineHeight: 22,
+    lineHeight: 21,
     flex: 1,
+    marginBottom: 12,
   },
   backFooter: {
     paddingTop: 16,
