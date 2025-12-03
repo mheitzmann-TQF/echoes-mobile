@@ -166,7 +166,7 @@ function SeasonCard({ event }: { event: any }) {
 // --- Main Screen ---
 
 export default function UpcomingScreen() {
-  const { coordinates, timezone } = useLocation();
+  const { coordinates, timezone, language } = useLocation();
   const [band, setBand] = useState<Band>('soon');
   const [category, setCategory] = useState<Category>('all');
   const [events, setEvents] = useState<any[]>([]);
@@ -176,8 +176,8 @@ export default function UpcomingScreen() {
     async function loadEvents() {
       try {
         const [planetaryData, importantData] = await Promise.all([
-          api.getPlanetaryEvents(50).catch(() => []),
-          api.getImportantDates().catch(() => [])
+          api.getPlanetaryEvents(50, language).catch(() => []),
+          api.getImportantDates(language).catch(() => [])
         ]);
         
         // Use fallback if fetches are empty
@@ -205,7 +205,7 @@ export default function UpcomingScreen() {
       }
     }
     loadEvents();
-  }, []);
+  }, [language]);
 
   // Bucket events by date range and filter by category
   const bucketedEvents = useMemo(() => {

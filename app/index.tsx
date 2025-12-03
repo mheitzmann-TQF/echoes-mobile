@@ -18,7 +18,7 @@ import MetricsGrid from '../components/MetricsGrid';
 import EchoStack from '../components/EchoStack';
 
 export default function HomeScreen() {
-  const { locationName, coordinates, timezone } = useLocation();
+  const { locationName, coordinates, timezone, language } = useLocation();
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
@@ -101,10 +101,10 @@ export default function HomeScreen() {
       // Fetch Bundle + Calendars
       const [bundleData, calendarsData] = await Promise.all([
         Promise.race([
-          api.getDailyBundle(coordinates.lat, coordinates.lng, 'en', timezone),
+          api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone),
           timeoutPromise,
         ]) as Promise<DailyBundleResponse>,
-        api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone).catch(() => null),
+        api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, language).catch(() => null),
       ]);
 
       // Process Bundle

@@ -136,7 +136,7 @@ function StickyHeader({ coherence, solarPhase, lunarIllumination }: { coherence:
 }
 
 export default function FieldScreen() {
-  const { coordinates, timezone } = useLocation();
+  const { coordinates, timezone, language } = useLocation();
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
   const [bioRhythms, setBioRhythms] = useState<any>(null);
@@ -157,7 +157,7 @@ export default function FieldScreen() {
     async function loadData() {
       try {
         const [bundleData, instantData, bioData] = await Promise.all([
-          api.getDailyBundle(coordinates.lat, coordinates.lng, 'en', timezone)
+          api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone)
             .then(res => res.success ? res.data : null)
             .catch(() => null),
           api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone)
@@ -222,7 +222,7 @@ export default function FieldScreen() {
       }
     }
     loadData();
-  }, [coordinates, timezone]);
+  }, [coordinates, timezone, language]);
 
   if (loading) {
     return (

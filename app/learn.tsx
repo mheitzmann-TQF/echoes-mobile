@@ -137,7 +137,7 @@ function SavedStrip({ count }: { count: number }) {
 }
 
 export default function LearnScreen() {
-  const { coordinates, timezone } = useLocation();
+  const { coordinates, timezone, language } = useLocation();
   const [calendars, setCalendars] = useState<any>(null);
   const [culture, setCulture] = useState<any[]>([]);
   const [cultureLoading, setCultureLoading] = useState(true);
@@ -156,7 +156,7 @@ export default function LearnScreen() {
     async function loadData() {
       try {
         const [calData, livingData] = await Promise.all([
-          api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone)
+          api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, language)
             .catch(() => ({
               gregorian: { name: "Gregorian", day: 2, month: 12, year: 2025 },
               mayan: { name: "Mayan", tzolkin: { dayNumber: 4, dayName: "Kan", meaning: "Reptile" } },
@@ -164,7 +164,7 @@ export default function LearnScreen() {
               hebrew: { name: "Hebrew", day: 29, month: "Kislev", year: 5785 },
               islamic: { name: "Islamic", day: 1, month: "Jumada al-Awwal", year: 1446 }
             })),
-          api.getLivingCalendars()
+          api.getLivingCalendars(language)
             .catch(() => [
               {
                 id: 'seasonal',
@@ -188,7 +188,7 @@ export default function LearnScreen() {
       }
     }
     loadData();
-  }, [coordinates, timezone]);
+  }, [coordinates, timezone, language]);
 
   // Load cultural content separately
   useEffect(() => {
@@ -196,7 +196,7 @@ export default function LearnScreen() {
       setCultureLoading(true);
       setCultureEmpty(false);
       try {
-        const data = await api.getCulturalContent(1);
+        const data = await api.getCulturalContent(1, language);
         if (Array.isArray(data) && data.length > 0) {
           setCulture(data);
           setCultureEmpty(false);
@@ -212,7 +212,7 @@ export default function LearnScreen() {
       }
     }
     loadCulture();
-  }, []);
+  }, [language]);
 
   const handleRefreshCulture = async () => {
     const now = Date.now();
@@ -226,7 +226,7 @@ export default function LearnScreen() {
     setCultureEmpty(false);
     
     try {
-      const data = await api.getCulturalContent(1);
+      const data = await api.getCulturalContent(1, language);
       if (Array.isArray(data) && data.length > 0) {
         setCulture(data);
         setCultureEmpty(false);

@@ -1,5 +1,6 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import * as Location from 'expo-location';
+import { getLocales } from 'expo-localization';
 
 interface Coordinates {
   lat: number;
@@ -17,9 +18,37 @@ interface LocationContextType {
   locationError: string | null;
   timezone: string;
   setTimezone: (tz: string) => void;
+  language: string;
 }
 
 export const LocationContext = createContext<LocationContextType | undefined>(undefined);
+
+// Map device language to API supported language code
+const mapLanguageToAPI = (locale: string): string => {
+  // Supported API languages: en, es, fr, pt, de, it, zh, ja, ar, hi, ru
+  const langCode = locale.split('-')[0].toLowerCase();
+  
+  const supportedMap: Record<string, string> = {
+    en: 'en', es: 'es', fr: 'fr', pt: 'pt', de: 'de', 
+    it: 'it', zh: 'zh', ja: 'ja', ar: 'ar', hi: 'hi', ru: 'ru'
+  };
+  
+  return supportedMap[langCode] || 'en';
+};
+
+const detectDeviceLanguage = (): string => {
+  try {
+    const locales = getLocales();
+    if (locales && locales.length > 0) {
+      const detectedLang = mapLanguageToAPI(locales[0].languageCode || 'en');
+      console.log('🌍 Detected language:', locales[0].languageCode, '→ API code:', detectedLang);
+      return detectedLang;
+    }
+  } catch (e) {
+    console.log('Language detection fallback to English');
+  }
+  return 'en';
+};
 
 const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
   try {
@@ -54,6 +83,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [timezone, setTimezone] = useState('UTC');
+  const [language, setLanguage] = useState(detectDeviceLanguage());
 
   useEffect(() => {
     if (useCurrentLocation) {
@@ -108,6 +138,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         locationError,
         timezone,
         setTimezone,
+        language,
       }}
     >
       {children}

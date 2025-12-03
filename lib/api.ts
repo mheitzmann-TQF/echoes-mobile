@@ -195,9 +195,9 @@ class EchoesAPI {
     }
   }
 
-  async getTraditionalCalendars(lat?: number, lng?: number, tz: string = 'UTC'): Promise<any> {
+  async getTraditionalCalendars(lat?: number, lng?: number, tz: string = 'UTC', lang: string = 'en'): Promise<any> {
     try {
-      let url = `${this.baseUrl}/api/planetary/traditional-calendars?tz=${tz}`;
+      let url = `${this.baseUrl}/api/planetary/traditional-calendars?tz=${tz}&lang=${lang}`;
       if (lat && lng) {
         url += `&lat=${lat}&lng=${lng}`;
       }
@@ -219,9 +219,9 @@ class EchoesAPI {
     }
   }
 
-  async getPlanetaryEvents(limit: number = 10): Promise<any[]> {
+  async getPlanetaryEvents(limit: number = 10, lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/planetary/events?limit=${limit}`;
+      const url = `${this.baseUrl}/api/planetary/events?limit=${limit}&lang=${lang}`;
       console.log('📡 Fetching planetary events from:', url);
       
       const response = await fetch(url, {
@@ -264,9 +264,9 @@ class EchoesAPI {
     }
   }
 
-  async getCulturalContent(limit: number = 5): Promise<any[]> {
+  async getCulturalContent(limit: number = 5, lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/cultural/content/high-alignment?limit=${limit}`;
+      const url = `${this.baseUrl}/api/cultural/content/high-alignment?limit=${limit}&lang=${lang}`;
       console.log('📡 Fetching cultural content from:', url);
       
       const response = await fetch(url, {
@@ -285,9 +285,9 @@ class EchoesAPI {
     }
   }
 
-  async getLivingCalendars(): Promise<any[]> {
+  async getLivingCalendars(lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/sacred-geography/living-calendars`;
+      const url = `${this.baseUrl}/api/sacred-geography/living-calendars?lang=${lang}`;
       console.log('📡 Fetching living calendars from:', url);
       
       const response = await fetch(url, {
@@ -320,9 +320,9 @@ class EchoesAPI {
     }
   }
 
-  async getImportantDates(): Promise<any[]> {
+  async getImportantDates(lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/important-dates/upcoming`;
+      const url = `${this.baseUrl}/api/important-dates/upcoming?lang=${lang}`;
       console.log('📡 Fetching important dates from:', url);
       
       const response = await fetch(url, {
