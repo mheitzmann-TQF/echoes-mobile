@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { PlanetaryData } from '../lib/api';
+import { useTheme } from '../lib/ThemeContext';
 
 interface ContextChipsProps {
   planetary: PlanetaryData;
@@ -8,29 +9,30 @@ interface ContextChipsProps {
 }
 
 export default function ContextChips({ planetary, onPressChip }: ContextChipsProps) {
+  const { colors } = useTheme();
   return (
     <View style={styles.container}>
       <TouchableOpacity 
-        style={styles.chip}
+        style={[styles.chip, { backgroundColor: colors.surface, borderColor: colors.border }]}
         onPress={() => onPressChip?.('lunar')}
       >
         <Text style={styles.emoji}>🌙</Text>
         <View>
-          <Text style={styles.label}>Lunar</Text>
-          <Text style={styles.value}>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>Lunar</Text>
+          <Text style={[styles.value, { color: colors.text }]}>
             {planetary.lunar.phase} · {Math.round(planetary.lunar.illumination)}%
           </Text>
         </View>
       </TouchableOpacity>
 
       <TouchableOpacity 
-        style={styles.chip}
+        style={[styles.chip, { backgroundColor: colors.surface, borderColor: colors.border }]}
         onPress={() => onPressChip?.('geomagnetic')}
       >
         <Text style={styles.emoji}>⚡</Text>
         <View>
-          <Text style={styles.label}>Field</Text>
-          <Text style={styles.value}>{planetary.geomagnetic.activity}</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>Field</Text>
+          <Text style={[styles.value, { color: colors.text }]}>{planetary.geomagnetic.activity}</Text>
         </View>
       </TouchableOpacity>
     </View>

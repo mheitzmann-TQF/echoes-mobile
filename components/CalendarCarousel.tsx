@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTheme } from '../lib/ThemeContext';
 
 interface CalendarData {
   id: string;
@@ -15,20 +16,21 @@ interface CalendarCarouselProps {
 }
 
 export default function CalendarCarousel({ calendars, onSelect }: CalendarCarouselProps) {
+  const { colors } = useTheme();
   return (
     <View style={styles.container}>
       <View style={styles.grid}>
         {calendars.map((cal) => (
           <TouchableOpacity 
             key={cal.id} 
-            style={styles.card}
+            style={[styles.card, { backgroundColor: colors.surfaceHighlight, borderColor: colors.border }]}
             onPress={() => onSelect?.(cal)}
             activeOpacity={0.8}
           >
-            <Text style={styles.cardName}>{cal.name}</Text>
-            <Text style={styles.cardDate}>{cal.date}</Text>
+            <Text style={[styles.cardName, { color: colors.textTertiary }]}>{cal.name}</Text>
+            <Text style={[styles.cardDate, { color: colors.text }]}>{cal.date}</Text>
             <View style={styles.typeContainer}>
-              <Text style={styles.cardType}>{cal.type}</Text>
+              <Text style={[styles.cardType, { backgroundColor: colors.surface, color: colors.textSecondary }]}>{cal.type}</Text>
             </View>
           </TouchableOpacity>
         ))}

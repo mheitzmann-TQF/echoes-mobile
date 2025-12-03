@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
 import { useLocation } from '../lib/LocationContext';
+import { useTheme } from '../lib/ThemeContext';
 
 // Components
 import Hero from '../components/Hero';
@@ -19,6 +20,7 @@ import EchoStack from '../components/EchoStack';
 
 export default function HomeScreen() {
   const { locationName, coordinates, timezone, language } = useLocation();
+  const { colors, theme } = useTheme();
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
@@ -205,9 +207,9 @@ export default function HomeScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#FFFFFF" />
+          <ActivityIndicator size="large" color={colors.text} />
         </View>
       </SafeAreaView>
     );
@@ -215,14 +217,14 @@ export default function HomeScreen() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor="#FFFFFF"
+              tintColor={colors.text}
             />
           }
           showsVerticalScrollIndicator={false}
@@ -260,7 +262,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
   },
   loadingContainer: {
     flex: 1,

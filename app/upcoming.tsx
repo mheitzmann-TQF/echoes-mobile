@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
+import { useTheme } from '../lib/ThemeContext';
 import api from '../lib/api';
 import { Clock, Moon, Leaf, Sparkles } from 'lucide-react-native';
 
@@ -75,15 +76,23 @@ const FALLBACK_SEASON = [
 // --- Components ---
 
 function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) => void }) {
+  const { colors } = useTheme();
   return (
-    <View style={styles.bandControl}>
+    <View style={[styles.bandControl, { backgroundColor: colors.surface }]}>
       {(['soon', 'cycle', 'season'] as Band[]).map((band) => (
         <TouchableOpacity
           key={band}
-          style={[styles.bandSegment, value === band && styles.bandSegmentActive]}
+          style={[
+            styles.bandSegment, 
+            value === band && { backgroundColor: colors.surfaceHighlight }
+          ]}
           onPress={() => onChange(band)}
         >
-          <Text style={[styles.bandSegmentText, value === band && styles.bandSegmentTextActive]}>
+          <Text style={[
+            styles.bandSegmentText, 
+            { color: colors.textSecondary },
+            value === band && { color: colors.text, fontWeight: '700' }
+          ]}>
             {band === 'soon' ? 'Soon' : band === 'cycle' ? 'Cycle' : 'Season'}
           </Text>
         </TouchableOpacity>
@@ -93,15 +102,24 @@ function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) 
 }
 
 function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: Category) => void }) {
+  const { colors } = useTheme();
   return (
     <View style={styles.categoryFilter}>
       {(['all', 'astronomical', 'cultural'] as Category[]).map((cat) => (
         <TouchableOpacity
           key={cat}
-          style={[styles.categoryChip, value === cat && styles.categoryChipActive]}
+          style={[
+            styles.categoryChip, 
+            { backgroundColor: colors.surface, borderColor: colors.border },
+            value === cat && { backgroundColor: colors.surfaceHighlight, borderColor: colors.textTertiary }
+          ]}
           onPress={() => onChange(cat)}
         >
-          <Text style={[styles.categoryChipText, value === cat && styles.categoryChipTextActive]}>
+          <Text style={[
+            styles.categoryChipText, 
+            { color: colors.textSecondary },
+            value === cat && { color: colors.text }
+          ]}>
             {cat === 'all' ? 'All' : cat === 'astronomical' ? 'Astronomical' : 'Cultural'}
           </Text>
         </TouchableOpacity>
@@ -111,54 +129,65 @@ function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: 
 }
 
 function CountdownCard({ event }: { event: any }) {
+  const { colors } = useTheme();
   return (
-    <View style={styles.countdownCard}>
+    <View style={[styles.countdownCard, { backgroundColor: colors.surfaceHighlight, borderColor: colors.border }]}>
       <View style={styles.countdownHeader}>
-        <Clock size={20} color="#FFFFFF" />
-        <Text style={styles.countdownTime}>{event.time}</Text>
+        <Clock size={20} color={colors.text} />
+        <Text style={[styles.countdownTime, { color: colors.text }]}>{event.time}</Text>
       </View>
-      <Text style={styles.countdownTitle}>{event.name}</Text>
-      <Text style={styles.countdownDesc}>{event.description}</Text>
+      <Text style={[styles.countdownTitle, { color: colors.text }]}>{event.name}</Text>
+      <Text style={[styles.countdownDesc, { color: colors.textSecondary }]}>{event.description}</Text>
     </View>
   );
 }
 
 function CycleEventRow({ event }: { event: any }) {
   const daysUntil = Math.ceil((new Date(event.date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+  const { colors } = useTheme();
   
   return (
     <View style={styles.cycleRow}>
-      <View style={styles.cycleDate}>
-        <Text style={styles.cycleDateDay}>{event.date.getDate()}</Text>
-        <Text style={styles.cycleDateMonth}>{event.date.toLocaleDateString(undefined, { month: 'short' })}</Text>
+      <View style={[styles.cycleDate, { backgroundColor: colors.surfaceHighlight }]}>
+        <Text style={[styles.cycleDateDay, { color: colors.text }]}>{event.date.getDate()}</Text>
+        <Text style={[styles.cycleDateMonth, { color: colors.textSecondary }]}>{event.date.toLocaleDateString(undefined, { month: 'short' })}</Text>
       </View>
       <View style={styles.cycleContent}>
         <View style={styles.cycleHeader}>
-          <Text style={styles.cycleName}>{event.name}</Text>
-          <View style={[styles.cycleTag, event.significance === 'Major' && styles.cycleTagMajor]}>
-            <Text style={styles.cycleTagText}>{event.significance || 'Event'}</Text>
+          <Text style={[styles.cycleName, { color: colors.text }]}>{event.name}</Text>
+          <View style={[
+            styles.cycleTag, 
+            { backgroundColor: colors.surface },
+            event.significance === 'Major' && { backgroundColor: colors.accentSubtle }
+          ]}>
+            <Text style={[
+              styles.cycleTagText, 
+              { color: colors.textSecondary },
+              event.significance === 'Major' && { color: colors.accent }
+            ]}>{event.significance || 'Event'}</Text>
           </View>
         </View>
-        <Text style={styles.cycleDesc}>{event.description}</Text>
+        <Text style={[styles.cycleDesc, { color: colors.textTertiary }]}>{event.description}</Text>
       </View>
-      <Text style={styles.cycleDays}>{daysUntil === 0 ? 'Today' : `${daysUntil}d`}</Text>
+      <Text style={[styles.cycleDays, { color: colors.textSecondary }]}>{daysUntil === 0 ? 'Today' : `${daysUntil}d`}</Text>
     </View>
   );
 }
 
 function SeasonCard({ event }: { event: any }) {
+  const { colors } = useTheme();
   return (
-    <View style={styles.seasonCard}>
+    <View style={[styles.seasonCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View style={styles.seasonHeader}>
-        <View style={styles.seasonIcon}>
-          <Leaf size={20} color="#FFFFFF" />
+        <View style={[styles.seasonIcon, { backgroundColor: colors.surfaceHighlight }]}>
+          <Leaf size={20} color={colors.text} />
         </View>
         <View>
-          <Text style={styles.seasonTitle}>{event.name}</Text>
-          <Text style={styles.seasonDays}>{event.daysUntil} days away</Text>
+          <Text style={[styles.seasonTitle, { color: colors.text }]}>{event.name}</Text>
+          <Text style={[styles.seasonDays, { color: colors.textSecondary }]}>{event.daysUntil} days away</Text>
         </View>
       </View>
-      <Text style={styles.seasonDesc}>{event.description}</Text>
+      <Text style={[styles.seasonDesc, { color: colors.textTertiary }]}>{event.description}</Text>
     </View>
   );
 }
@@ -167,6 +196,7 @@ function SeasonCard({ event }: { event: any }) {
 
 export default function UpcomingScreen() {
   const { coordinates, timezone, language } = useLocation();
+  const { colors } = useTheme();
   const [band, setBand] = useState<Band>('soon');
   const [category, setCategory] = useState<Category>('all');
   const [events, setEvents] = useState<any[]>([]);
@@ -229,9 +259,9 @@ export default function UpcomingScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#FFFFFF" />
+          <ActivityIndicator size="large" color={colors.text} />
         </View>
       </SafeAreaView>
     );
@@ -240,11 +270,11 @@ export default function UpcomingScreen() {
   const { label } = getDateRange(band);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Upcoming</Text>
-          <Text style={styles.headerLabel}>{label}</Text>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>Upcoming</Text>
+          <Text style={[styles.headerLabel, { color: colors.textSecondary }]}>{label}</Text>
         </View>
 
         {/* Band Control */}
@@ -256,7 +286,7 @@ export default function UpcomingScreen() {
         {/* Content by Band */}
         {band === 'soon' && (
           <View style={styles.bandContent}>
-            <Text style={styles.bandLabel}>TIMING WINDOWS</Text>
+            <Text style={[styles.bandLabel, { color: colors.textTertiary }]}>TIMING WINDOWS</Text>
             {bucketedEvents.map((event) => (
               <CountdownCard key={event.id} event={event} />
             ))}
@@ -265,7 +295,7 @@ export default function UpcomingScreen() {
 
         {band === 'cycle' && (
           <View style={styles.bandContent}>
-            <Text style={styles.bandLabel}>LUNAR & PLANETARY MILESTONES</Text>
+            <Text style={[styles.bandLabel, { color: colors.textTertiary }]}>LUNAR & PLANETARY MILESTONES</Text>
             {bucketedEvents.map((event) => (
               <CycleEventRow key={event.id} event={event} />
             ))}
@@ -274,7 +304,7 @@ export default function UpcomingScreen() {
 
         {band === 'season' && (
           <View style={styles.bandContent}>
-            <Text style={styles.bandLabel}>SEASONAL TURNING POINTS</Text>
+            <Text style={[styles.bandLabel, { color: colors.textTertiary }]}>SEASONAL TURNING POINTS</Text>
             {bucketedEvents.map((event) => (
               <SeasonCard key={event.id} event={event} />
             ))}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTheme } from '../lib/ThemeContext';
 
 interface HeroProps {
   title: string;
@@ -7,10 +8,11 @@ interface HeroProps {
 }
 
 export default function Hero({ title, subtitle }: HeroProps) {
+  const { colors } = useTheme();
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
+      <Text style={[styles.subtitle, { color: colors.textSecondary }]}>{subtitle}</Text>
     </View>
   );
 }

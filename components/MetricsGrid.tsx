@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { PlanetaryData } from '../lib/api';
+import { useTheme } from '../lib/ThemeContext';
 
 interface MetricsGridProps {
   planetary: PlanetaryData;
 }
 
 export default function MetricsGrid({ planetary }: MetricsGridProps) {
+  const { colors } = useTheme();
 
   const lunarIllumination = Math.round(planetary.lunar.illumination);
   const geoKpIndex = planetary.geomagnetic.kpIndex || 2;
@@ -45,11 +47,11 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
         {metrics.map((metric) => (
           <View 
             key={metric.id}
-            style={styles.metricBox}
+            style={[styles.metricBox, { backgroundColor: colors.surface, borderColor: colors.border }]}
           >
             <Text style={styles.emoji}>{metric.emoji}</Text>
-            <Text style={styles.number}>{metric.number}</Text>
-            <Text style={styles.label}>
+            <Text style={[styles.number, { color: colors.text }]}>{metric.number}</Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>
               {metric.numberLabel}
             </Text>
           </View>

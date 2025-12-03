@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTheme } from '../lib/ThemeContext';
 
 interface GlobalCoherenceProps {
   value: number; // 0-100
 }
 
 export default function GlobalCoherence({ value }: GlobalCoherenceProps) {
+  const { colors } = useTheme();
   const getLabel = (v: number) => {
     if (v < 30) return 'Low';
     if (v < 60) return 'Moderate';
@@ -22,13 +24,13 @@ export default function GlobalCoherence({ value }: GlobalCoherenceProps) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
+      <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <View style={styles.header}>
-          <Text style={styles.label}>Global Coherence</Text>
-          <Text style={styles.value}>{value}%</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>Global Coherence</Text>
+          <Text style={[styles.value, { color: colors.text }]}>{value}%</Text>
         </View>
         
-        <View style={styles.track}>
+        <View style={[styles.track, { backgroundColor: colors.surfaceHighlight }]}>
           <View 
             style={[
               styles.fill, 
@@ -37,7 +39,7 @@ export default function GlobalCoherence({ value }: GlobalCoherenceProps) {
           />
         </View>
         
-        <Text style={styles.status}>{getLabel(value)}</Text>
+        <Text style={[styles.status, { color: colors.textSecondary }]}>{getLabel(value)}</Text>
       </View>
     </View>
   );

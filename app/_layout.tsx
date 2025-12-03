@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet } from 'react-native';
 import { Svg, Path, Circle, Rect, Line } from 'react-native-svg';
 import { LocationProvider } from '../lib/LocationContext';
+import { ThemeProvider, useTheme } from '../lib/ThemeContext';
 
 function TodayIcon({ color }: { color: string }) {
   return (
@@ -50,73 +51,83 @@ function SettingsIcon({ color }: { color: string }) {
   );
 }
 
+function ThemedApp() {
+  const { theme, colors } = useTheme();
+  
+  return (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: colors.background,
+            borderTopColor: colors.border,
+            borderTopWidth: 1,
+            height: 80,
+            paddingBottom: 16,
+            paddingTop: 8,
+          },
+          tabBarActiveTintColor: colors.text,
+          tabBarInactiveTintColor: colors.textTertiary,
+          tabBarLabelStyle: {
+            fontSize: 11,
+            fontWeight: '500',
+            marginTop: 4,
+          },
+        }}
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Today',
+            tabBarIcon: ({ color }) => <TodayIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="field"
+          options={{
+            title: 'Field',
+            tabBarIcon: ({ color }) => <FieldIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="learn"
+          options={{
+            title: 'Learn',
+            tabBarIcon: ({ color }) => <LearnIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="upcoming"
+          options={{
+            title: 'Upcoming',
+            tabBarIcon: ({ color }) => <UpcomingIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: 'Settings',
+            tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
+          }}
+        />
+        
+        {/* Hidden routes */}
+        <Tabs.Screen name="global" options={{ href: null }} />
+        <Tabs.Screen name="journey" options={{ href: null }} />
+        <Tabs.Screen name="you" options={{ href: null }} />
+      </Tabs>
+    </View>
+  );
+}
+
 export default function RootLayout() {
   return (
     <LocationProvider>
-      <View style={styles.container}>
-        <StatusBar style="light" />
-        <Tabs
-          screenOptions={{
-            headerShown: false,
-            tabBarStyle: {
-              backgroundColor: '#000000',
-              borderTopColor: 'rgba(255,255,255,0.1)',
-              borderTopWidth: 1,
-              height: 80,
-              paddingBottom: 16,
-              paddingTop: 8,
-            },
-            tabBarActiveTintColor: '#FFFFFF',
-            tabBarInactiveTintColor: 'rgba(255,255,255,0.4)',
-            tabBarLabelStyle: {
-              fontSize: 11,
-              fontWeight: '500',
-              marginTop: 4,
-            },
-          }}
-        >
-          <Tabs.Screen
-            name="index"
-            options={{
-              title: 'Today',
-              tabBarIcon: ({ color }) => <TodayIcon color={color} />,
-            }}
-          />
-          <Tabs.Screen
-            name="field"
-            options={{
-              title: 'Field',
-              tabBarIcon: ({ color }) => <FieldIcon color={color} />,
-            }}
-          />
-          <Tabs.Screen
-            name="learn"
-            options={{
-              title: 'Learn',
-              tabBarIcon: ({ color }) => <LearnIcon color={color} />,
-            }}
-          />
-          <Tabs.Screen
-            name="upcoming"
-            options={{
-              title: 'Upcoming',
-              tabBarIcon: ({ color }) => <UpcomingIcon color={color} />,
-            }}
-          />
-          <Tabs.Screen
-            name="settings"
-            options={{
-              title: 'Settings',
-              tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
-            }}
-          />
-          
-          {/* Hidden routes */}
-          <Tabs.Screen name="global" options={{ href: null }} />
-          <Tabs.Screen name="journey" options={{ href: null }} />
-          <Tabs.Screen name="you" options={{ href: null }} />
-        </Tabs>
-      </View>
+      <ThemeProvider>
+        <ThemedApp />
+      </ThemeProvider>
     </LocationProvider>
   );
 }

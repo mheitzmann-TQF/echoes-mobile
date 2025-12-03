@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTheme } from '../lib/ThemeContext';
 
 interface MoodTemperatureProps {
   value: number; // 0-100
@@ -7,6 +8,7 @@ interface MoodTemperatureProps {
 }
 
 export default function MoodTemperature({ value, label }: MoodTemperatureProps) {
+  const { colors } = useTheme();
   // Determine color based on value
   const getColor = (v: number) => {
     if (v < 30) return '#a2d2ff'; // Cool/Calm
@@ -20,11 +22,11 @@ export default function MoodTemperature({ value, label }: MoodTemperatureProps) 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.label}>Field Temperature</Text>
-        <Text style={styles.valueLabel}>{label} / {value}</Text>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>Field Temperature</Text>
+        <Text style={[styles.valueLabel, { color: colors.text }]}>{label} / {value}</Text>
       </View>
       
-      <View style={styles.track}>
+      <View style={[styles.track, { backgroundColor: colors.surfaceHighlight }]}>
         <View 
           style={[
             styles.fill, 

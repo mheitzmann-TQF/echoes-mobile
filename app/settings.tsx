@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState } from 'react';
 import { MapPin, Clock, ChevronRight, Check } from 'lucide-react-native';
+import { useTheme } from '../lib/ThemeContext';
 
 const THEMES = ['Dark', 'Light'];
 
@@ -19,9 +20,10 @@ export default function SettingsScreen() {
     setTimezone
   } = useLocation();
 
+  const { theme, setTheme, colors } = useTheme();
+
   const [manualInput, setManualInput] = useState(locationName);
   const [showManualInput, setShowManualInput] = useState(false);
-  const [theme, setTheme] = useState('Dark');
   const [showThemeModal, setShowThemeModal] = useState(false);
 
   const handleSetLocation = () => {
@@ -32,70 +34,77 @@ export default function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Settings</Text>
+        <Text style={[styles.title, { color: colors.text }]}>Settings</Text>
         
         {/* Location Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Location</Text>
+        <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Location</Text>
           
           {/* Current Location Toggle */}
           <View style={styles.row}>
             <View>
-              <Text style={styles.label}>Use Current Location</Text>
+              <Text style={[styles.label, { color: colors.text }]}>Use Current Location</Text>
               {locationLoading && <Text style={styles.smallText}>Loading...</Text>}
-              {locationError && <Text style={styles.errorText}>⚠ {locationError}</Text>}
+              {locationError && <Text style={[styles.errorText, { color: colors.error }]}>⚠ {locationError}</Text>}
             </View>
             <Switch
               value={useCurrentLocation}
               onValueChange={setUseCurrentLocation}
-              trackColor={{ false: '#3e3e3e', true: 'rgba(100, 200, 255, 0.6)' }}
-              thumbColor={useCurrentLocation ? '#4DB8FF' : '#f4f3f4'}
+              trackColor={{ false: '#3e3e3e', true: colors.accentSubtle }}
+              thumbColor={useCurrentLocation ? colors.accent : '#f4f3f4'}
             />
           </View>
 
           {/* Location Display */}
           <TouchableOpacity 
-            style={styles.locationCard}
+            style={[styles.locationCard, { backgroundColor: colors.surfaceHighlight, borderColor: colors.border }]}
             onPress={() => setShowManualInput(!showManualInput)}
           >
             <View style={styles.locationCardHeader}>
-              <MapPin size={18} color="#4DB8FF" />
-              <Text style={styles.locationCardTitle}>{locationName || 'Set Location'}</Text>
+              <MapPin size={18} color={colors.accent} />
+              <Text style={[styles.locationCardTitle, { color: colors.accent }]}>{locationName || 'Set Location'}</Text>
             </View>
-            <Text style={styles.coordinates}>
+            <Text style={[styles.coordinates, { color: colors.textSecondary }]}>
               {coordinates.lat.toFixed(4)}°, {coordinates.lng.toFixed(4)}°
             </Text>
-            <Text style={styles.hint}>Tap to change location</Text>
+            <Text style={[styles.hint, { color: colors.textTertiary }]}>Tap to change location</Text>
           </TouchableOpacity>
 
           {/* Manual Location Input */}
           {showManualInput && (
-            <View style={styles.manualInputContainer}>
+            <View style={[styles.manualInputContainer, { borderTopColor: colors.border }]}>
               <TextInput
-                style={styles.textInput}
+                style={[styles.textInput, { 
+                  backgroundColor: colors.surfaceHighlight, 
+                  borderColor: colors.border,
+                  color: colors.text 
+                }]}
                 placeholder="Enter city or location..."
-                placeholderTextColor="rgba(255,255,255,0.3)"
+                placeholderTextColor={colors.textTertiary}
                 value={manualInput}
                 onChangeText={setManualInput}
                 onSubmitEditing={handleSetLocation}
               />
               <View style={styles.buttonRow}>
                 <TouchableOpacity 
-                  style={[styles.button, styles.buttonCancel]}
+                  style={[styles.button, styles.buttonCancel, { borderColor: colors.border, backgroundColor: colors.surface }]}
                   onPress={() => {
                     setShowManualInput(false);
                     setManualInput(locationName);
                   }}
                 >
-                  <Text style={styles.buttonText}>Cancel</Text>
+                  <Text style={[styles.buttonText, { color: colors.textSecondary }]}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                  style={[styles.button, styles.buttonConfirm]}
+                  style={[styles.button, styles.buttonConfirm, { 
+                    backgroundColor: colors.accentSubtle,
+                    borderColor: colors.accent
+                  }]}
                   onPress={handleSetLocation}
                 >
-                  <Text style={styles.buttonTextConfirm}>Set Location</Text>
+                  <Text style={[styles.buttonTextConfirm, { color: colors.accent }]}>Set Location</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -103,68 +112,72 @@ export default function SettingsScreen() {
         </View>
 
         {/* Timezone Section */}
-        <View style={styles.section}>
+        <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={styles.row}>
             <View style={styles.tzHeader}>
-              <Clock size={18} color="#4DB8FF" />
-              <Text style={styles.label}>Timezone</Text>
+              <Clock size={18} color={colors.accent} />
+              <Text style={[styles.label, { color: colors.text }]}>Timezone</Text>
             </View>
-            <Text style={styles.value}>{timezone || 'UTC'}</Text>
+            <Text style={[styles.value, { color: colors.textSecondary }]}>{timezone || 'UTC'}</Text>
           </View>
-          <Text style={styles.hint}>Auto-detected from location</Text>
+          <Text style={[styles.hint, { color: colors.textTertiary }]}>Auto-detected from location</Text>
         </View>
 
         {/* Display Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Display</Text>
+        <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Display</Text>
           
           {/* Theme Selector */}
           <TouchableOpacity 
             style={styles.row}
             onPress={() => setShowThemeModal(true)}
           >
-            <Text style={styles.label}>Theme</Text>
+            <Text style={[styles.label, { color: colors.text }]}>Theme</Text>
             <View style={styles.valueRow}>
-              <Text style={styles.value}>{theme}</Text>
-              <ChevronRight size={16} color="rgba(255,255,255,0.3)" />
+              <Text style={[styles.value, { color: colors.textSecondary }]}>{theme === 'dark' ? 'Dark' : 'Light'}</Text>
+              <ChevronRight size={16} color={colors.textTertiary} />
             </View>
           </TouchableOpacity>
         </View>
 
         {/* Theme Modal */}
         <Modal visible={showThemeModal} transparent animationType="fade">
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Select Theme</Text>
+          <View style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
+            <View style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#111' : '#FFF' }]}>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>Select Theme</Text>
               {THEMES.map((t) => (
                 <TouchableOpacity
                   key={t}
-                  style={styles.modalOption}
+                  style={[styles.modalOption, { backgroundColor: colors.surface }]}
                   onPress={() => {
-                    setTheme(t);
+                    setTheme(t.toLowerCase() as 'dark' | 'light');
                     setShowThemeModal(false);
                   }}
                 >
-                  <Text style={[styles.modalOptionText, theme === t && styles.modalOptionTextActive]}>
+                  <Text style={[
+                    styles.modalOptionText, 
+                    { color: colors.textSecondary },
+                    theme === t.toLowerCase() && { color: colors.accent, fontWeight: '700' }
+                  ]}>
                     {t}
                   </Text>
-                  {theme === t && <Check size={18} color="#4DB8FF" />}
+                  {theme === t.toLowerCase() && <Check size={18} color={colors.accent} />}
                 </TouchableOpacity>
               ))}
               <TouchableOpacity 
-                style={styles.modalCloseButton}
+                style={[styles.modalCloseButton, { backgroundColor: colors.surfaceHighlight }]}
                 onPress={() => setShowThemeModal(false)}
               >
-                <Text style={styles.modalCloseText}>Close</Text>
+                <Text style={[styles.modalCloseText, { color: colors.textSecondary }]}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
 
         {/* Privacy Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Privacy</Text>
-          <Text style={styles.infoText}>No accounts. Preferences stored on-device.</Text>
+        <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Privacy</Text>
+          <Text style={[styles.infoText, { color: colors.textSecondary }]}>No accounts. Preferences stored on-device.</Text>
         </View>
 
       </ScrollView>
@@ -175,7 +188,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
   },
   content: {
     padding: 20,
@@ -184,22 +196,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 34,
     fontWeight: '700',
-    color: '#FFFFFF',
     marginBottom: 32,
     letterSpacing: -0.5,
   },
   section: {
     marginBottom: 28,
-    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 16,
     padding: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFFFFF',
     marginBottom: 16,
     letterSpacing: 0.5,
   },
@@ -223,11 +231,9 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.9)',
   },
   value: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.6)',
     fontWeight: '500',
   },
   smallText: {
@@ -237,22 +243,18 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 12,
-    color: 'rgba(255, 100, 100, 0.8)',
     marginTop: 4,
   },
   hint: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.4)',
     marginTop: 4,
   },
   // Location Card
   locationCard: {
-    backgroundColor: 'rgba(77, 184, 255, 0.08)',
     borderRadius: 12,
     padding: 16,
     marginTop: 12,
     borderWidth: 1,
-    borderColor: 'rgba(77, 184, 255, 0.2)',
   },
   locationCardHeader: {
     flexDirection: 'row',
@@ -263,11 +265,9 @@ const styles = StyleSheet.create({
   locationCardTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#4DB8FF',
   },
   coordinates: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.5)',
     fontFamily: 'monospace',
     marginBottom: 4,
   },
@@ -277,16 +277,12 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.1)',
   },
   textInput: {
-    backgroundColor: 'rgba(255,255,255,0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
     borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    color: '#FFFFFF',
     fontSize: 14,
   },
   buttonRow: {
@@ -300,39 +296,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonCancel: {
-    backgroundColor: 'rgba(255,255,255,0.05)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
   },
   buttonConfirm: {
-    backgroundColor: 'rgba(77, 184, 255, 0.2)',
     borderWidth: 1,
-    borderColor: 'rgba(77, 184, 255, 0.4)',
   },
   buttonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.6)',
   },
   buttonTextConfirm: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#4DB8FF',
   },
   infoText: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.5)',
     lineHeight: 20,
   },
   // Modal Styles
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#111',
     borderRadius: 16,
     padding: 20,
     width: '80%',
@@ -341,7 +328,6 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#FFFFFF',
     marginBottom: 16,
   },
   modalOption: {
@@ -352,27 +338,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 10,
     marginBottom: 8,
-    backgroundColor: 'rgba(255,255,255,0.05)',
   },
   modalOptionText: {
     fontSize: 16,
-    color: 'rgba(255,255,255,0.6)',
     fontWeight: '500',
-  },
-  modalOptionTextActive: {
-    color: '#4DB8FF',
-    fontWeight: '700',
   },
   modalCloseButton: {
     marginTop: 16,
     paddingVertical: 12,
     borderRadius: 10,
-    backgroundColor: 'rgba(255,255,255,0.1)',
     alignItems: 'center',
   },
   modalCloseText: {
     fontSize: 16,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.5)',
   },
 });

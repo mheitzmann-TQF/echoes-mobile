@@ -8,6 +8,7 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useSharedValue } from 'react-native-reanimated';
 import { Svg, Path, Circle } from 'react-native-svg';
+import { useTheme } from '../lib/ThemeContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH - 40;
@@ -98,6 +99,7 @@ export default function EchoCard({
   onSwipeLeft,
   onSwipeRight,
 }: EchoCardProps) {
+  const { colors, theme } = useTheme();
   const translateX = useSharedValue(0);
   const isActive = index === 0;
 
@@ -158,39 +160,44 @@ export default function EchoCard({
     };
   });
 
+  // Determine card background color based on type or theme
+  // We'll stick to theme colors for consistency
+  const cardBackgroundColor = theme === 'dark' ? '#000000' : '#FFFFFF';
+  const cardBorderColor = colors.border;
+
   return (
     <GestureDetector gesture={panGesture}>
-      <Animated.View style={[styles.card, animatedStyle]}>
+      <Animated.View style={[styles.card, animatedStyle, { backgroundColor: cardBackgroundColor, borderColor: cardBorderColor }]}>
         <View style={styles.content}>
-          <View style={styles.typeBadge}>
+          <View style={[styles.typeBadge, { backgroundColor: colors.surfaceHighlight }]}>
             <Text style={styles.typeEmoji}>{getTypeEmoji(echo.type)}</Text>
-            <Text style={styles.typeLabel}>{getTypeLabel(echo.type)}</Text>
+            <Text style={[styles.typeLabel, { color: colors.text }]}>{getTypeLabel(echo.type)}</Text>
           </View>
 
           <View style={styles.messageContainer}>
-            <Text style={styles.message}>{echo.message}</Text>
+            <Text style={[styles.message, { color: colors.text }]}>{echo.message}</Text>
           </View>
 
           <View style={styles.footer}>
-            <Text style={styles.title}>{echo.title}</Text>
+            <Text style={[styles.title, { color: colors.textSecondary }]}>{echo.title}</Text>
           </View>
         </View>
 
         {/* Actions Toolbar */}
-        <View style={styles.actions}>
+        <View style={[styles.actions, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
           <TouchableOpacity style={styles.actionButton}>
-            <SaveIcon color="rgba(255,255,255,0.6)" />
-            <Text style={styles.actionText}>Save</Text>
+            <SaveIcon color={colors.textTertiary} />
+            <Text style={[styles.actionText, { color: colors.textTertiary }]}>Save</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton}>
-            <ShareIcon color="rgba(255,255,255,0.6)" />
-            <Text style={styles.actionText}>Share</Text>
+            <ShareIcon color={colors.textTertiary} />
+            <Text style={[styles.actionText, { color: colors.textTertiary }]}>Share</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.actionButton}>
-            <InfoIcon color="rgba(255,255,255,0.6)" />
-            <Text style={styles.actionText}>Why?</Text>
+            <InfoIcon color={colors.textTertiary} />
+            <Text style={[styles.actionText, { color: colors.textTertiary }]}>Why?</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>

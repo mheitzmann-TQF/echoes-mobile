@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
+import { useTheme, ThemeColors } from '../lib/ThemeContext';
 import api, { DailyBundleResponse, PlanetaryData } from '../lib/api';
 import { ChevronDown, ChevronUp, Info } from 'lucide-react-native';
 
@@ -35,9 +36,15 @@ function ExpandableCard({
   chips,
   howToRead
 }: ExpandableCardProps) {
+  const { colors } = useTheme();
+  
   return (
     <TouchableOpacity 
-      style={[styles.card, isExpanded && styles.cardExpanded]} 
+      style={[
+        styles.card, 
+        { backgroundColor: colors.surface, borderColor: colors.border },
+        isExpanded && { backgroundColor: colors.surfaceHighlight, borderColor: colors.border }
+      ]} 
       onPress={onToggle}
       activeOpacity={0.9}
     >
@@ -45,16 +52,16 @@ function ExpandableCard({
         <View style={styles.cardHeaderLeft}>
           <Text style={styles.cardIcon}>{icon}</Text>
           <View style={styles.headerTextContainer}>
-            <Text style={styles.cardTitle}>{title}</Text>
+            <Text style={[styles.cardTitle, { color: colors.textSecondary }]}>{title}</Text>
             
             {/* Collapsed State: Show simple message/value */}
             {!isExpanded && (
               <View>
                 {message ? (
-                  <Text style={styles.collapsedMessage} numberOfLines={1}>{message}</Text>
+                  <Text style={[styles.collapsedMessage, { color: colors.text }]} numberOfLines={1}>{message}</Text>
                 ) : null}
                 {collapsedValue ? (
-                  <Text style={styles.collapsedValue}>{collapsedValue}</Text>
+                  <Text style={[styles.collapsedValue, { color: colors.textSecondary }]}>{collapsedValue}</Text>
                 ) : null}
               </View>
             )}
@@ -64,12 +71,12 @@ function ExpandableCard({
         
         <View style={styles.rightContainer}>
            {!isExpanded && collapsedDetail && (
-             <Text style={styles.collapsedDetail}>{collapsedDetail}</Text>
+             <Text style={[styles.collapsedDetail, { color: colors.textSecondary }]}>{collapsedDetail}</Text>
            )}
           <View style={styles.chevronContainer}>
             {isExpanded ? 
-              <ChevronUp size={20} color="rgba(255,255,255,0.4)" /> : 
-              <ChevronDown size={20} color="rgba(255,255,255,0.4)" />
+              <ChevronUp size={20} color={colors.textTertiary} /> : 
+              <ChevronDown size={20} color={colors.textTertiary} />
             }
           </View>
         </View>
@@ -82,10 +89,10 @@ function ExpandableCard({
 
           {/* How to Read Section */}
           {howToRead && (
-            <View style={styles.howToReadContainer}>
-              <Text style={styles.subTitle}>How to read</Text>
+            <View style={[styles.howToReadContainer, { backgroundColor: colors.surface }]}>
+              <Text style={[styles.subTitle, { color: colors.textSecondary }]}>How to read</Text>
               {howToRead.map((item, i) => (
-                <Text key={i} style={styles.bulletPoint}>• {item}</Text>
+                <Text key={i} style={[styles.bulletPoint, { color: colors.textSecondary }]}>• {item}</Text>
               ))}
             </View>
           )}
@@ -93,11 +100,11 @@ function ExpandableCard({
           {/* Chips Section */}
           {chips && (
             <View style={styles.chipsContainer}>
-              <Text style={styles.chipsLabel}>Used in Echoes</Text>
+              <Text style={[styles.chipsLabel, { color: colors.textTertiary }]}>Used in Echoes</Text>
               <View style={styles.chipRow}>
                 {chips.map((chip, i) => (
-                  <View key={i} style={styles.chip}>
-                    <Text style={styles.chipText}>{chip}</Text>
+                  <View key={i} style={[styles.chip, { backgroundColor: colors.surfaceHighlight }]}>
+                    <Text style={[styles.chipText, { color: colors.textSecondary }]}>{chip}</Text>
                   </View>
                 ))}
               </View>
@@ -110,26 +117,27 @@ function ExpandableCard({
 }
 
 function StickyHeader({ coherence, solarPhase, lunarIllumination }: { coherence: number, solarPhase: string, lunarIllumination: number }) {
+  const { colors } = useTheme();
   // Derive states
   const coherenceState = coherence > 60 ? 'Stable' : (coherence < 40 ? 'Variable' : 'Building');
   const lightState = solarPhase.includes('Morning') ? 'Brightening' : (solarPhase.includes('Night') ? 'Resting' : 'Deepening');
   const moonState = lunarIllumination > 50 ? 'Rising' : 'Falling'; // Simplified logic
 
   return (
-    <View style={styles.stickyHeader}>
+    <View style={[styles.stickyHeader, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View style={styles.stickyItem}>
-        <Text style={styles.stickyLabel}>Coherence</Text>
-        <Text style={styles.stickyValue}>{coherenceState}</Text>
+        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>Coherence</Text>
+        <Text style={[styles.stickyValue, { color: colors.text }]}>{coherenceState}</Text>
       </View>
-      <View style={styles.stickyDivider} />
+      <View style={[styles.stickyDivider, { backgroundColor: colors.border }]} />
       <View style={styles.stickyItem}>
-        <Text style={styles.stickyLabel}>Light</Text>
-        <Text style={styles.stickyValue}>{lightState}</Text>
+        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>Light</Text>
+        <Text style={[styles.stickyValue, { color: colors.text }]}>{lightState}</Text>
       </View>
-      <View style={styles.stickyDivider} />
+      <View style={[styles.stickyDivider, { backgroundColor: colors.border }]} />
       <View style={styles.stickyItem}>
-        <Text style={styles.stickyLabel}>Moon</Text>
-        <Text style={styles.stickyValue}>{moonState}</Text>
+        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>Moon</Text>
+        <Text style={[styles.stickyValue, { color: colors.text }]}>{moonState}</Text>
       </View>
     </View>
   );
@@ -137,6 +145,7 @@ function StickyHeader({ coherence, solarPhase, lunarIllumination }: { coherence:
 
 export default function FieldScreen() {
   const { coordinates, timezone, language } = useLocation();
+  const { colors } = useTheme();
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
   const [bioRhythms, setBioRhythms] = useState<any>(null);
@@ -226,9 +235,9 @@ export default function FieldScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#FFFFFF" />
+          <ActivityIndicator size="large" color={colors.text} />
         </View>
       </SafeAreaView>
     );
@@ -243,11 +252,11 @@ export default function FieldScreen() {
   const shorten = (msg?: string) => msg ? msg.split('.')[0] + '.' : '';
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.headerTitle}>Field</Text>
-        <Text style={styles.headerSubtitle}>Cosmos · Earth · Body</Text>
-        <Text style={styles.headerSubtext}>How today’s signal is shaped</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Field</Text>
+        <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>Cosmos · Earth · Body</Text>
+        <Text style={[styles.headerSubtext, { color: colors.textTertiary }]}>How today’s signal is shaped</Text>
 
         <StickyHeader 
           coherence={ctx?.consciousness_index?.global_coherence || 0}
@@ -257,7 +266,7 @@ export default function FieldScreen() {
 
         {/* Cosmos Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>COSMOS</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>COSMOS</Text>
           
           <ExpandableCard
             icon="🌙"
@@ -269,8 +278,8 @@ export default function FieldScreen() {
             howToRead={['Phase indicates energy type (building vs releasing)', 'Illumination shows intensity']}
             expandedContent={
               <View style={styles.expandedDetails}>
-                <Text style={styles.expandedValue}>{ctx?.lunar?.phase}</Text>
-                <Text style={styles.expandedSub}>{Math.round(ctx?.lunar?.illumination || 0)}% Illumination</Text>
+                <Text style={[styles.expandedValue, { color: colors.text }]}>{ctx?.lunar?.phase}</Text>
+                <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% Illumination</Text>
               </View>
             }
           />
@@ -285,8 +294,8 @@ export default function FieldScreen() {
             howToRead={['Solar angle determines hormonal peaks', 'Sunset marks the shift to restoration']}
             expandedContent={
               <View style={styles.expandedDetails}>
-                <Text style={styles.expandedValue}>{ctx?.solar?.phase}</Text>
-                <Text style={styles.expandedSub}>
+                <Text style={[styles.expandedValue, { color: colors.text }]}>{ctx?.solar?.phase}</Text>
+                <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>
                   {ctx?.solar?.time_to_sunset 
                     ? `Sunset in ${Math.round(ctx.solar.time_to_sunset)}h` 
                     : 'Sun cycle active'}
@@ -298,7 +307,7 @@ export default function FieldScreen() {
 
         {/* Earth Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>EARTH</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>EARTH</Text>
           
           <ExpandableCard
             icon="🌐"
@@ -312,14 +321,14 @@ export default function FieldScreen() {
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>Global Coherence</Text>
-                  <Text style={styles.detailValue}>{Math.round(ctx?.consciousness_index?.global_coherence || 0)}%</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Global Coherence</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{Math.round(ctx?.consciousness_index?.global_coherence || 0)}%</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>Regional Resonance</Text>
-                  <Text style={styles.detailValue}>{Math.round(ctx?.consciousness_index?.regional_resonance || 0)}%</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Regional Resonance</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{Math.round(ctx?.consciousness_index?.regional_resonance || 0)}%</Text>
                 </View>
-                <Text style={styles.explanationText}>
+                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
                   Coherence measures the synchronization of the Earth's magnetic field network. High coherence often correlates with collective calm.
                 </Text>
               </View>
@@ -338,12 +347,12 @@ export default function FieldScreen() {
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>Kp Index</Text>
-                  <Text style={styles.detailValue}>{geoKp}</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Kp Index</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{geoKp}</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>Activity</Text>
-                  <Text style={styles.detailValue}>{geoActivity}</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Activity</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{geoActivity}</Text>
                 </View>
               </View>
             }
@@ -352,7 +361,7 @@ export default function FieldScreen() {
 
         {/* Body Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>BODY</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>BODY</Text>
           
           <ExpandableCard
             icon="🧬"
@@ -364,15 +373,15 @@ export default function FieldScreen() {
             howToRead={['Match activity intensity to phase', 'Respect ultradian rest dips (every 90m)']}
             expandedContent={
               <View style={styles.expandedDetails}>
-                <Text style={styles.expandedValue}>{bioRhythms?.circadian?.phase || 'Balanced'}</Text>
-                <Text style={styles.expandedSub}>
+                <Text style={[styles.expandedValue, { color: colors.text }]}>{bioRhythms?.circadian?.phase || 'Balanced'}</Text>
+                <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>
                   {bioRhythms?.ultradian_remaining ? `${bioRhythms.ultradian_remaining}m remaining in cycle` : 'Cycle active'}
                 </Text>
                 
-                <View style={styles.divider} />
-                <Text style={styles.subTitle}>Gentle Windows</Text>
+                <View style={[styles.divider, { backgroundColor: colors.border }]} />
+                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Gentle Windows</Text>
                 {bioRhythms?.recommendations?.map((rec: string, i: number) => (
-                  <Text key={i} style={styles.bulletPoint}>• {rec}</Text>
+                  <Text key={i} style={[styles.bulletPoint, { color: colors.textSecondary }]}>• {rec}</Text>
                 ))}
               </View>
             }
@@ -381,17 +390,17 @@ export default function FieldScreen() {
 
         {/* Signals */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>INPUT SIGNALS</Text>
-          <View style={styles.signalsContainer}>
-            <Text style={styles.signalsText}>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>INPUT SIGNALS</Text>
+          <View style={[styles.signalsContainer, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Text style={[styles.signalsText, { color: colors.textSecondary }]}>
               Data generated using real-time inputs from:
             </Text>
             <View style={styles.signalTags}>
-              <Text style={styles.signalTag}>Moon: Phase & Illumination</Text>
-              <Text style={styles.signalTag}>Sun: Phase & Sunset</Text>
-              <Text style={styles.signalTag}>Coherence: Global & Trend</Text>
-              <Text style={styles.signalTag}>Geomagnetic: Activity & Kp</Text>
-              <Text style={styles.signalTag}>Seasonal: {instant?.seasonal?.season || 'Current'}</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Moon: Phase & Illumination</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Sun: Phase & Sunset</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Coherence: Global & Trend</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Geomagnetic: Activity & Kp</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Seasonal: {instant?.seasonal?.season || 'Current'}</Text>
             </View>
           </View>
         </View>
@@ -404,7 +413,6 @@ export default function FieldScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
   },
   center: {
     flex: 1,
@@ -418,29 +426,24 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 34,
     fontWeight: '700',
-    color: '#FFFFFF',
     marginBottom: 4,
     letterSpacing: -0.5,
   },
   headerSubtitle: {
     fontSize: 16,
-    color: 'rgba(255,255,255,0.6)',
     marginBottom: 4,
   },
   headerSubtext: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.4)',
     marginBottom: 24,
     fontStyle: 'italic',
   },
   stickyHeader: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255,255,255,0.08)',
     borderRadius: 12,
     padding: 16,
     marginBottom: 32,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
   },
   stickyItem: {
     flex: 1,
@@ -448,7 +451,6 @@ const styles = StyleSheet.create({
   },
   stickyLabel: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.5)',
     textTransform: 'uppercase',
     marginBottom: 4,
     letterSpacing: 0.5,
@@ -456,11 +458,9 @@ const styles = StyleSheet.create({
   stickyValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#FFFFFF',
   },
   stickyDivider: {
     width: 1,
-    backgroundColor: 'rgba(255,255,255,0.1)',
     marginHorizontal: 8,
   },
   section: {
@@ -469,22 +469,17 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.4)',
     marginBottom: 12,
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
   card: {
-    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
     overflow: 'hidden',
   },
   cardExpanded: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderColor: 'rgba(255,255,255,0.1)',
   },
   cardHeaderRow: {
     flexDirection: 'row',
@@ -514,7 +509,6 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.5)',
     fontWeight: '600',
     marginBottom: 4,
     textTransform: 'uppercase',
@@ -522,17 +516,14 @@ const styles = StyleSheet.create({
   },
   collapsedMessage: {
     fontSize: 15,
-    color: '#FFFFFF',
     fontWeight: '500',
   },
   collapsedValue: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
     marginTop: 2,
   },
   collapsedDetail: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.5)',
     fontWeight: '500',
     marginRight: 4,
   },
@@ -547,12 +538,10 @@ const styles = StyleSheet.create({
   expandedValue: {
     fontSize: 22,
     fontWeight: '600',
-    color: '#FFFFFF',
     marginBottom: 4,
   },
   expandedSub: {
     fontSize: 15,
-    color: 'rgba(255,255,255,0.7)',
   },
   detailRow: {
     flexDirection: 'row',
@@ -561,36 +550,30 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.6)',
   },
   detailValue: {
     fontSize: 14,
-    color: '#FFFFFF',
     fontWeight: '600',
   },
   explanationText: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.5)',
     fontStyle: 'italic',
     marginTop: 8,
     lineHeight: 18,
   },
   howToReadContainer: {
     marginTop: 16,
-    backgroundColor: 'rgba(0,0,0,0.2)',
     padding: 12,
     borderRadius: 8,
   },
   subTitle: {
     fontSize: 12,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.8)',
     marginBottom: 8,
     textTransform: 'uppercase',
   },
   bulletPoint: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.7)',
     marginBottom: 4,
     lineHeight: 19,
   },
@@ -599,7 +582,6 @@ const styles = StyleSheet.create({
   },
   chipsLabel: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.4)',
     textTransform: 'uppercase',
     marginBottom: 8,
   },
@@ -609,30 +591,24 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   chip: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,
   },
   chipText: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.8)',
   },
   divider: {
     height: 1,
-    backgroundColor: 'rgba(255,255,255,0.1)',
     marginVertical: 16,
   },
   signalsContainer: {
-    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
   },
   signalsText: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.5)',
     marginBottom: 12,
   },
   signalTags: {
@@ -642,8 +618,6 @@ const styles = StyleSheet.create({
   },
   signalTag: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.4)',
-    backgroundColor: 'rgba(255,255,255,0.05)',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,

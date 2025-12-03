@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, Modal, Dimensions, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
+import { useTheme } from '../lib/ThemeContext';
 import api from '../lib/api';
 import { Bookmark, X, ArrowRight, ChevronRight, BookOpen } from 'lucide-react-native';
 
@@ -29,6 +30,7 @@ const CALENDAR_TYPES: Record<string, string> = {
 
 function SkeletonCard({ style }: { style?: any }) {
   const opacity = useRef(new Animated.Value(0.3)).current;
+  const { colors } = useTheme();
 
   useEffect(() => {
     Animated.loop(
@@ -51,7 +53,7 @@ function SkeletonCard({ style }: { style?: any }) {
     <Animated.View 
       style={[
         styles.skeleton, 
-        { opacity }, 
+        { opacity, backgroundColor: colors.surfaceHighlight }, 
         style
       ]} 
     />
@@ -61,83 +63,99 @@ function SkeletonCard({ style }: { style?: any }) {
 function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: () => void }) {
   const type = CALENDAR_TYPES[id] || 'System';
   const explainer = CALENDAR_EXPLAINERS[id] || 'A traditional system of timekeeping.';
+  const { colors } = useTheme();
 
   return (
-    <TouchableOpacity style={styles.systemCard} onPress={onPress} activeOpacity={0.9}>
+    <TouchableOpacity 
+      style={[styles.systemCard, { backgroundColor: colors.surface, borderColor: colors.border }]} 
+      onPress={onPress} 
+      activeOpacity={0.9}
+    >
       <View>
         <View style={styles.systemHeader}>
-          <Text style={styles.systemName}>{name}</Text>
-          <View style={styles.systemTypeTag}>
-            <Text style={styles.systemTypeText}>{type}</Text>
+          <Text style={[styles.systemName, { color: colors.text }]}>{name}</Text>
+          <View style={[styles.systemTypeTag, { backgroundColor: colors.surfaceHighlight }]}>
+            <Text style={[styles.systemTypeText, { color: colors.textSecondary }]}>{type}</Text>
           </View>
         </View>
-        <Text style={styles.systemExplainer}>{explainer}</Text>
+        <Text style={[styles.systemExplainer, { color: colors.textSecondary }]}>{explainer}</Text>
       </View>
       
       <View style={styles.rotateCue}>
-        <Text style={styles.rotateText}>Rotate lens</Text>
-        <ArrowRight size={14} color="rgba(255,255,255,0.6)" />
+        <Text style={[styles.rotateText, { color: colors.textTertiary }]}>Rotate lens</Text>
+        <ArrowRight size={14} color={colors.textTertiary} />
       </View>
     </TouchableOpacity>
   );
 }
 
 function ArtifactCard({ artifact, onSave, isSaved }: { artifact: any, onSave: () => void, isSaved: boolean }) {
+  const { colors } = useTheme();
   if (!artifact) return null;
 
   return (
-    <View style={styles.artifactCard}>
+    <View style={[styles.artifactCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View style={styles.artifactHeader}>
-        <View style={styles.artifactTag}>
-          <Text style={styles.artifactTagText}>{artifact.region || 'Wisdom'}</Text>
+        <View style={[styles.artifactTag, { backgroundColor: colors.surfaceHighlight }]}>
+          <Text style={[styles.artifactTagText, { color: colors.text }]}>{artifact.region || 'Wisdom'}</Text>
         </View>
         <TouchableOpacity onPress={onSave}>
           <Bookmark 
             size={22} 
-            color={isSaved ? "#FFFFFF" : "rgba(255,255,255,0.4)"} 
-            fill={isSaved ? "#FFFFFF" : "none"}
+            color={isSaved ? colors.text : colors.textTertiary} 
+            fill={isSaved ? colors.text : "none"}
           />
         </TouchableOpacity>
       </View>
       
-      <Text style={styles.artifactTitle}>{artifact.title}</Text>
-      <Text style={styles.artifactSummary}>{artifact.summary}</Text>
+      <Text style={[styles.artifactTitle, { color: colors.text }]}>{artifact.title}</Text>
+      <Text style={[styles.artifactSummary, { color: colors.textSecondary }]}>{artifact.summary}</Text>
       
-      <View style={styles.whySurfaced}>
-        <Text style={styles.whyText}>Surfaced for today's coherent field.</Text>
+      <View style={[styles.whySurfaced, { borderTopColor: colors.border }]}>
+        <Text style={[styles.whyText, { color: colors.textTertiary }]}>Surfaced for today's coherent field.</Text>
       </View>
     </View>
   );
 }
 
 function LivingCard({ item, onPress }: { item: any, onPress: () => void }) {
+  const { colors } = useTheme();
   return (
-    <TouchableOpacity style={styles.livingCard} activeOpacity={0.8} onPress={onPress}>
+    <TouchableOpacity 
+      style={[styles.livingCard, { backgroundColor: colors.surfaceHighlight, borderLeftColor: colors.text }]} 
+      activeOpacity={0.8} 
+      onPress={onPress}
+    >
       <View>
-        <Text style={styles.livingTitle}>{item.title}</Text>
-        <Text style={styles.livingSummary}>{item.summary}</Text>
+        <Text style={[styles.livingTitle, { color: colors.text }]}>{item.title}</Text>
+        <Text style={[styles.livingSummary, { color: colors.textSecondary }]}>{item.summary}</Text>
       </View>
-      <Text style={styles.whyNow}>{item.why_now}</Text>
+      <Text style={[styles.whyNow, { color: colors.textTertiary }]}>{item.why_now}</Text>
     </TouchableOpacity>
   );
 }
 
 function SavedStrip({ count }: { count: number }) {
+  const { colors } = useTheme();
   if (count === 0) return null;
   
   return (
-    <TouchableOpacity style={styles.savedStrip} activeOpacity={0.9}>
+    <TouchableOpacity 
+      style={[styles.savedStrip, { backgroundColor: colors.surface, borderColor: colors.border }]} 
+      activeOpacity={0.9}
+    >
       <View style={styles.savedContent}>
-        <BookOpen size={16} color="#FFFFFF" />
-        <Text style={styles.savedText}>{count} saved item{count !== 1 ? 's' : ''}</Text>
+        <BookOpen size={16} color={colors.text} />
+        <Text style={[styles.savedText, { color: colors.text }]}>{count} saved item{count !== 1 ? 's' : ''}</Text>
       </View>
-      <ChevronRight size={16} color="rgba(255,255,255,0.4)" />
+      <ChevronRight size={16} color={colors.textTertiary} />
     </TouchableOpacity>
   );
 }
 
 export default function LearnScreen() {
   const { coordinates, timezone, language } = useLocation();
+  const { colors, theme } = useTheme();
   const [calendars, setCalendars] = useState<any>(null);
   const [culture, setCulture] = useState<any[]>([]);
   const [cultureLoading, setCultureLoading] = useState(true);
@@ -255,9 +273,9 @@ export default function LearnScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <ScrollView contentContainerStyle={styles.content} scrollEnabled={false}>
-          <Text style={styles.headerTitle}>Calendar Systems</Text>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>Calendar Systems</Text>
           
           {/* Carousel Skeleton */}
           <View style={styles.carouselContainer}>
@@ -268,13 +286,13 @@ export default function LearnScreen() {
 
           {/* Artifact Skeleton */}
           <View style={styles.section}>
-            <Text style={styles.sectionLabel}>ARTIFACT OF THE DAY</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>ARTIFACT OF THE DAY</Text>
             <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 20 }} />
           </View>
 
           {/* Living Calendar Skeleton */}
           <View style={styles.section}>
-            <Text style={styles.sectionLabel}>LIVING CALENDAR</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LIVING CALENDAR</Text>
             <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16, marginBottom: 12 }} />
             <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16 }} />
           </View>
@@ -284,9 +302,9 @@ export default function LearnScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.headerTitle}>Calendar Systems</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Calendar Systems</Text>
         
         {/* 1. Calendar Systems Carousel */}
         <View style={styles.carouselContainer}>
@@ -310,19 +328,19 @@ export default function LearnScreen() {
 
         {/* 2. Artifact of the Day */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>ARTIFACT OF THE DAY</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>ARTIFACT OF THE DAY</Text>
           
           {cultureLoading ? (
             <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 20 }} />
           ) : cultureEmpty ? (
-            <View style={styles.fallbackCard}>
-              <Text style={styles.fallbackCardTitle}>No cultural offering surfaced today.</Text>
-              <Text style={styles.fallbackCardSub}>The field is quiet here. Try again later.</Text>
+            <View style={[styles.fallbackCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Text style={[styles.fallbackCardTitle, { color: colors.textSecondary }]}>No cultural offering surfaced today.</Text>
+              <Text style={[styles.fallbackCardSub, { color: colors.textTertiary }]}>The field is quiet here. Try again later.</Text>
               <TouchableOpacity 
-                style={styles.fallbackRefreshButton} 
+                style={[styles.fallbackRefreshButton, { backgroundColor: colors.surfaceHighlight }]} 
                 onPress={handleRefreshCulture}
               >
-                <Text style={styles.fallbackRefreshText}>Refresh</Text>
+                <Text style={[styles.fallbackRefreshText, { color: colors.textSecondary }]}>Refresh</Text>
               </TouchableOpacity>
             </View>
           ) : culture.length > 0 ? (
@@ -332,14 +350,14 @@ export default function LearnScreen() {
               onSave={() => handleSave(culture[0].id || 'art1')}
             />
           ) : (
-            <View style={styles.fallbackCard}>
-              <Text style={styles.fallbackCardTitle}>No cultural offering surfaced today.</Text>
-              <Text style={styles.fallbackCardSub}>The field is quiet here. Try again later.</Text>
+            <View style={[styles.fallbackCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Text style={[styles.fallbackCardTitle, { color: colors.textSecondary }]}>No cultural offering surfaced today.</Text>
+              <Text style={[styles.fallbackCardSub, { color: colors.textTertiary }]}>The field is quiet here. Try again later.</Text>
               <TouchableOpacity 
-                style={styles.fallbackRefreshButton} 
+                style={[styles.fallbackRefreshButton, { backgroundColor: colors.surfaceHighlight }]} 
                 onPress={handleRefreshCulture}
               >
-                <Text style={styles.fallbackRefreshText}>Refresh</Text>
+                <Text style={[styles.fallbackRefreshText, { color: colors.textSecondary }]}>Refresh</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -347,7 +365,7 @@ export default function LearnScreen() {
 
         {/* 3. Living Calendar */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>LIVING CALENDAR</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LIVING CALENDAR</Text>
           {living.map((item, i) => (
             <LivingCard 
               key={i} 
@@ -369,41 +387,41 @@ export default function LearnScreen() {
         animationType="slide"
         onRequestClose={() => setSelectedSystem(null)}
       >
-        <View style={styles.modalOverlay}>
+        <View style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
           <TouchableOpacity style={styles.modalBackdrop} onPress={() => setSelectedSystem(null)} />
-          <View style={styles.modalContent}>
+          <View style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#111' : '#FFF', borderTopColor: colors.border }]}>
             <View style={styles.modalHeader}>
-              <View style={styles.modalHandle} />
-              <TouchableOpacity style={styles.closeButton} onPress={() => setSelectedSystem(null)}>
-                <X size={24} color="#FFFFFF" />
+              <View style={[styles.modalHandle, { backgroundColor: colors.border }]} />
+              <TouchableOpacity style={[styles.closeButton, { backgroundColor: colors.surfaceHighlight }]} onPress={() => setSelectedSystem(null)}>
+                <X size={24} color={colors.text} />
               </TouchableOpacity>
             </View>
             
             {selectedSystem && calendars && calendars[selectedSystem] && (
               <View style={styles.modalBody}>
-                <Text style={styles.modalTitle}>Today in {selectedSystem}</Text>
-                <View style={styles.modalDateContainer}>
+                <Text style={[styles.modalTitle, { color: colors.text }]}>Today in {selectedSystem}</Text>
+                <View style={[styles.modalDateContainer, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                   {selectedSystem === 'mayan' && (
                     <>
-                      <Text style={styles.modalDateMain}>{calendars[selectedSystem].tzolkin?.dayNumber} {calendars[selectedSystem].tzolkin?.dayName}</Text>
-                      <Text style={styles.modalDateSub}>{calendars[selectedSystem].tzolkin?.meaning}</Text>
+                      <Text style={[styles.modalDateMain, { color: colors.text }]}>{calendars[selectedSystem].tzolkin?.dayNumber} {calendars[selectedSystem].tzolkin?.dayName}</Text>
+                      <Text style={[styles.modalDateSub, { color: colors.textSecondary }]}>{calendars[selectedSystem].tzolkin?.meaning}</Text>
                     </>
                   )}
                   {selectedSystem === 'chinese' && (
                     <>
-                      <Text style={styles.modalDateMain}>{calendars[selectedSystem].year} Year</Text>
-                      <Text style={styles.modalDateSub}>{calendars[selectedSystem].element} Element</Text>
+                      <Text style={[styles.modalDateMain, { color: colors.text }]}>{calendars[selectedSystem].year} Year</Text>
+                      <Text style={[styles.modalDateSub, { color: colors.textSecondary }]}>{calendars[selectedSystem].element} Element</Text>
                     </>
                   )}
                   {(selectedSystem === 'hebrew' || selectedSystem === 'islamic') && (
-                    <Text style={styles.modalDateMain}>{calendars[selectedSystem].day} {calendars[selectedSystem].month}, {calendars[selectedSystem].year}</Text>
+                    <Text style={[styles.modalDateMain, { color: colors.text }]}>{calendars[selectedSystem].day} {calendars[selectedSystem].month}, {calendars[selectedSystem].year}</Text>
                   )}
                    {selectedSystem === 'gregorian' && (
-                    <Text style={styles.modalDateMain}>{new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</Text>
+                    <Text style={[styles.modalDateMain, { color: colors.text }]}>{new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</Text>
                   )}
                 </View>
                 
-                <Text style={styles.modalDescription}>
+                <Text style={[styles.modalDescription, { color: colors.textSecondary }]}>
                   {CALENDAR_EXPLAINERS[selectedSystem]} This system offers a unique lens on the passage of time, emphasizing {CALENDAR_TYPES[selectedSystem].toLowerCase()} rhythms.
                 </Text>
               </View>
@@ -419,30 +437,30 @@ export default function LearnScreen() {
         animationType="slide"
         onRequestClose={() => setSelectedLiving(null)}
       >
-        <View style={styles.modalOverlay}>
+        <View style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
           <TouchableOpacity style={styles.modalBackdrop} onPress={() => setSelectedLiving(null)} />
-          <View style={styles.modalContent}>
+          <View style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#111' : '#FFF', borderTopColor: colors.border }]}>
             <View style={styles.modalHeader}>
-              <View style={styles.modalHandle} />
-              <TouchableOpacity style={styles.closeButton} onPress={() => setSelectedLiving(null)}>
-                <X size={24} color="#FFFFFF" />
+              <View style={[styles.modalHandle, { backgroundColor: colors.border }]} />
+              <TouchableOpacity style={[styles.closeButton, { backgroundColor: colors.surfaceHighlight }]} onPress={() => setSelectedLiving(null)}>
+                <X size={24} color={colors.text} />
               </TouchableOpacity>
             </View>
             
             {selectedLiving && (
               <View style={styles.modalBody}>
-                <Text style={styles.modalTitle}>Living Rhythm</Text>
-                <Text style={styles.modalDateMain}>{selectedLiving.title}</Text>
+                <Text style={[styles.modalTitle, { color: colors.textSecondary }]}>Living Rhythm</Text>
+                <Text style={[styles.modalDateMain, { color: colors.text }]}>{selectedLiving.title}</Text>
                 
-                <Text style={styles.modalDescription}>
+                <Text style={[styles.modalDescription, { color: colors.textSecondary }]}>
                   {selectedLiving.summary}
                 </Text>
 
-                <View style={styles.whySurfaced}>
-                  <Text style={styles.whyText}>{selectedLiving.why_now}</Text>
+                <View style={[styles.whySurfaced, { borderTopColor: colors.border }]}>
+                  <Text style={[styles.whyText, { color: colors.textTertiary }]}>{selectedLiving.why_now}</Text>
                 </View>
 
-                <TouchableOpacity style={styles.actionButton} onPress={() => setSelectedLiving(null)}>
+                <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.accent }]} onPress={() => setSelectedLiving(null)}>
                   <Text style={styles.actionButtonText}>Carry into Quiet Frame</Text>
                   <ArrowRight size={16} color="#FFFFFF" />
                 </TouchableOpacity>

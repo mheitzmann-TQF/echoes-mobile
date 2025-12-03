@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
+import { useTheme } from '../lib/ThemeContext';
 
 interface MoonPhaseProps {
   phase: string;
@@ -45,6 +46,7 @@ const formatPhase = (phase: string): string => {
 };
 
 export default function MoonPhase({ phase, illumination, size = 60 }: MoonPhaseProps) {
+  const { colors } = useTheme();
   const moonPath = getMoonPath(phase, size);
 
   return (
@@ -55,17 +57,17 @@ export default function MoonPhase({ phase, illumination, size = 60 }: MoonPhaseP
             cx={size / 2}
             cy={size / 2}
             r={size / 2 - 2}
-            fill="rgba(255,255,255,0.1)"
-            stroke="rgba(255,255,255,0.2)"
+            fill={colors.surfaceHighlight}
+            stroke={colors.border}
             strokeWidth={1}
           />
           {moonPath && (
-            <Path d={moonPath} fill="#FFFFFF" />
+            <Path d={moonPath} fill={colors.text} />
           )}
         </Svg>
       </View>
-      <Text style={styles.phaseText}>{formatPhase(phase)}</Text>
-      <Text style={styles.illuminationText}>{Math.round(illumination * 100)}% illuminated</Text>
+      <Text style={[styles.phaseText, { color: colors.text }]}>{formatPhase(phase)}</Text>
+      <Text style={[styles.illuminationText, { color: colors.textSecondary }]}>{Math.round(illumination * 100)}% illuminated</Text>
     </View>
   );
 }
