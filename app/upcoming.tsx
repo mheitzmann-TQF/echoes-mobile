@@ -180,20 +180,22 @@ export default function UpcomingScreen() {
           api.getImportantDates().catch(() => [])
         ]);
         
-        // Merge astronomical events with cultural dates
-        let merged = [
-          ...planetaryData.map(e => ({ ...e, category: 'astronomical' })),
-          ...importantData.map(e => ({ ...e, category: 'cultural' }))
+        // Use fallback if fetches are empty
+        const astronomicalEvents = planetaryData.length > 0 
+          ? planetaryData 
+          : FALLBACK_CYCLE;
+        
+        const culturalEvents = importantData.length > 0 
+          ? importantData 
+          : CORE_DATES;
+        
+        // Merge both feeds with proper category tagging
+        const merged = [
+          ...astronomicalEvents.map(e => ({ ...e, category: e.category || 'astronomical' })),
+          ...culturalEvents.map(e => ({ ...e, category: e.category || 'cultural' }))
         ];
         
-        // If important dates endpoint is empty, use core dates
-        if (importantData.length === 0) {
-          merged = [
-            ...planetaryData.map(e => ({ ...e, category: 'astronomical' })),
-            ...CORE_DATES
-          ];
-        }
-        
+        console.log('📊 Merged events:', merged.length, 'astronomical:', astronomicalEvents.length, 'cultural:', culturalEvents.length);
         setEvents(merged);
       } catch (e) {
         console.error('Error loading events:', e);
