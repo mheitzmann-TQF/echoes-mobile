@@ -18,6 +18,14 @@ const CALENDAR_EXPLAINERS: Record<string, string> = {
   islamic: "Pure lunar count, drifting through the solar year.",
 };
 
+const CALENDAR_DETAILS: Record<string, string> = {
+  gregorian: "Established in 1582, the Gregorian calendar divides time into 365 days with leap years every 4 years. It's the international standard for civil use, based on the solar cycle.",
+  mayan: "The Tzolkin weaves 13 numbers with 20 day names in a sacred 260-day cycle. Mayans believed this reflected cosmic rhythms and human consciousness—used for spiritual guidance and timing ceremonies.",
+  chinese: "Combining lunar months with solar corrections, the Chinese calendar maintains harmony between celestial cycles. Each year cycles through 12 animals, each associated with elements and personality traits.",
+  hebrew: "Balancing lunar observation with solar precision, the Hebrew calendar aligns festivals with seasons while honoring the moon's cycles. Deeply spiritual, it marks sacred time through seasonal celebrations.",
+  islamic: "Following the pure lunar year of 354 days, the Islamic calendar shifts 11 days earlier each solar year, creating a complete cycle every 33 years. This cycle reconnects observers to the original revelation.",
+};
+
 const CALENDAR_TYPES: Record<string, string> = {
   gregorian: "Civil",
   mayan: "Sacred",
@@ -146,7 +154,7 @@ function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: 
       >
         <View style={styles.cardBackContent}>
           <Text style={[styles.backTitle, { color: colors.text }]}>About {name}</Text>
-          <Text style={[styles.backDescription, { color: colors.textSecondary }]}>{explainer}</Text>
+          <Text style={[styles.backDescription, { color: colors.textSecondary }]}>{CALENDAR_DETAILS[id] || 'A system for understanding time cycles.'}</Text>
           <View style={[styles.backFooter, { borderTopColor: colors.border }]}>
             <Text style={[styles.backCue, { color: colors.textTertiary }]}>Tap to flip back</Text>
           </View>
