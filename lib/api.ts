@@ -319,6 +319,28 @@ class EchoesAPI {
       ];
     }
   }
+
+  async getImportantDates(): Promise<any[]> {
+    try {
+      const url = `${this.baseUrl}/api/important-dates/upcoming`;
+      console.log('📡 Fetching important dates from:', url);
+      
+      const response = await fetch(url, {
+        headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('❌ Important dates error:', error);
+      // Return empty array to use fallback
+      return [];
+    }
+  }
 }
 
 export const api = new EchoesAPI();

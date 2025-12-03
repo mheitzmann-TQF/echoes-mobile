@@ -3,11 +3,12 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import api from '../lib/api';
-import { Clock, Moon, Leaf } from 'lucide-react-native';
+import { Clock, Moon, Leaf, Sparkles } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
 type Band = 'soon' | 'cycle' | 'season';
+type Category = 'all' | 'astronomical' | 'cultural';
 
 // --- Utility Functions ---
 
@@ -45,36 +46,63 @@ function formatDate(date: Date): string {
 
 // --- Fallback Data ---
 
+// Core cultural dates for fallback
+const CORE_DATES = [
+  { id: 'core-christmas', name: 'Christmas', date: new Date(new Date().getFullYear(), 11, 25), category: 'cultural', description: 'Winter solstice celebration' },
+  { id: 'core-newyear', name: 'New Year', date: new Date(new Date().getFullYear() + 1, 0, 1), category: 'cultural', description: 'Fresh cycle begins' },
+  { id: 'core-halloween', name: 'Halloween', date: new Date(new Date().getFullYear(), 9, 31), category: 'cultural', description: 'Veil between worlds thins' },
+  { id: 'core-summer', name: 'Summer Solstice', date: new Date(new Date().getFullYear(), 5, 20), category: 'astronomical', description: 'Peak solar energy' },
+  { id: 'core-thanksgiving', name: 'Thanksgiving', date: new Date(new Date().getFullYear(), 10, 28), category: 'cultural', description: 'Gathering of gratitude' },
+];
+
 const FALLBACK_SOON = [
-  { id: 'soon-1', name: 'Twilight Window', time: '18:00', description: 'Day-night threshold', daysUntil: 0 },
-  { id: 'soon-2', name: 'Midnight Point', time: '00:00', description: 'Deep night anchor', daysUntil: 0.5 },
+  { id: 'soon-1', name: 'Twilight Window', time: '18:00', description: 'Day-night threshold', category: 'astronomical', daysUntil: 0 },
+  { id: 'soon-2', name: 'Midnight Point', time: '00:00', description: 'Deep night anchor', category: 'astronomical', daysUntil: 0.5 },
 ];
 
 const FALLBACK_CYCLE = [
-  { id: 'cycle-1', name: 'First Quarter Moon', date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), description: 'Building lunar energy', significance: 'Major' },
-  { id: 'cycle-2', name: 'Mercury Direct', date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), description: 'Communication clears', significance: 'Moderate' },
-  { id: 'cycle-3', name: 'Venus Alignment', date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), description: 'Relational harmony', significance: 'Minor' },
+  { id: 'cycle-1', name: 'First Quarter Moon', date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), description: 'Building lunar energy', significance: 'Major', category: 'astronomical' },
+  { id: 'cycle-2', name: 'Mercury Direct', date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), description: 'Communication clears', significance: 'Moderate', category: 'astronomical' },
+  { id: 'cycle-3', name: 'Venus Alignment', date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), description: 'Relational harmony', significance: 'Minor', category: 'astronomical' },
 ];
 
 const FALLBACK_SEASON = [
-  { id: 'season-1', name: 'Winter Solstice Approach', date: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000), description: 'Shortest day approaches—time to nest and reflect.', daysUntil: 20 },
-  { id: 'season-2', name: 'New Moon Cycle', date: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000), description: 'New beginnings emerge from darkness.', daysUntil: 45 },
-  { id: 'season-3', name: 'Turning Point Window', date: new Date(Date.now() + 75 * 24 * 60 * 60 * 1000), description: 'Energy shifts into new terrain.', daysUntil: 75 },
+  { id: 'season-1', name: 'Winter Solstice Approach', date: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000), description: 'Shortest day approaches—time to nest and reflect.', category: 'astronomical', daysUntil: 20 },
+  { id: 'season-2', name: 'New Moon Cycle', date: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000), description: 'New beginnings emerge from darkness.', category: 'astronomical', daysUntil: 45 },
+  { id: 'season-3', name: 'Turning Point Window', date: new Date(Date.now() + 75 * 24 * 60 * 60 * 1000), description: 'Energy shifts into new terrain.', category: 'astronomical', daysUntil: 75 },
 ];
 
 // --- Components ---
 
-function SegmentedControl({ value, onChange }: { value: Band; onChange: (band: Band) => void }) {
+function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) => void }) {
   return (
-    <View style={styles.segmentedControl}>
+    <View style={styles.bandControl}>
       {(['soon', 'cycle', 'season'] as Band[]).map((band) => (
         <TouchableOpacity
           key={band}
-          style={[styles.segment, value === band && styles.segmentActive]}
+          style={[styles.bandSegment, value === band && styles.bandSegmentActive]}
           onPress={() => onChange(band)}
         >
-          <Text style={[styles.segmentText, value === band && styles.segmentTextActive]}>
+          <Text style={[styles.bandSegmentText, value === band && styles.bandSegmentTextActive]}>
             {band === 'soon' ? 'Soon' : band === 'cycle' ? 'Cycle' : 'Season'}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+}
+
+function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: Category) => void }) {
+  return (
+    <View style={styles.categoryFilter}>
+      {(['all', 'astronomical', 'cultural'] as Category[]).map((cat) => (
+        <TouchableOpacity
+          key={cat}
+          style={[styles.categoryChip, value === cat && styles.categoryChipActive]}
+          onPress={() => onChange(cat)}
+        >
+          <Text style={[styles.categoryChipText, value === cat && styles.categoryChipTextActive]}>
+            {cat === 'all' ? 'All' : cat === 'astronomical' ? 'Astronomical' : 'Cultural'}
           </Text>
         </TouchableOpacity>
       ))}
@@ -140,15 +168,33 @@ function SeasonCard({ event }: { event: any }) {
 export default function UpcomingScreen() {
   const { coordinates, timezone } = useLocation();
   const [band, setBand] = useState<Band>('soon');
+  const [category, setCategory] = useState<Category>('all');
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadEvents() {
       try {
-        // Fetch more events to have enough for bucketing
-        const data = await api.getPlanetaryEvents(50).catch(() => []);
-        setEvents(data.length > 0 ? data : []);
+        const [planetaryData, importantData] = await Promise.all([
+          api.getPlanetaryEvents(50).catch(() => []),
+          api.getImportantDates().catch(() => [])
+        ]);
+        
+        // Merge astronomical events with cultural dates
+        let merged = [
+          ...planetaryData.map(e => ({ ...e, category: 'astronomical' })),
+          ...importantData.map(e => ({ ...e, category: 'cultural' }))
+        ];
+        
+        // If important dates endpoint is empty, use core dates
+        if (importantData.length === 0) {
+          merged = [
+            ...planetaryData.map(e => ({ ...e, category: 'astronomical' })),
+            ...CORE_DATES
+          ];
+        }
+        
+        setEvents(merged);
       } catch (e) {
         console.error('Error loading events:', e);
         setEvents([]);
@@ -159,23 +205,25 @@ export default function UpcomingScreen() {
     loadEvents();
   }, []);
 
-  // Bucket events by date range
+  // Bucket events by date range and filter by category
   const bucketedEvents = useMemo(() => {
     const { start, end } = getDateRange(band);
 
-    const filtered = events.filter(e => {
+    let filtered = events.filter(e => {
       const eventDate = new Date(e.date || e.timestamp);
-      return eventDate >= start && eventDate <= end;
+      const inRange = eventDate >= start && eventDate <= end;
+      const matchesCategory = category === 'all' || e.category === category;
+      return inRange && matchesCategory;
     });
 
     if (band === 'soon') {
-      return filtered.length > 0 ? filtered : FALLBACK_SOON;
+      return filtered.length > 0 ? filtered : FALLBACK_SOON.filter(e => category === 'all' || e.category === category);
     } else if (band === 'cycle') {
-      return filtered.length > 0 ? filtered : FALLBACK_CYCLE;
+      return filtered.length > 0 ? filtered : FALLBACK_CYCLE.filter(e => category === 'all' || e.category === category);
     } else {
-      return filtered.length > 0 ? filtered : FALLBACK_SEASON;
+      return filtered.length > 0 ? filtered : FALLBACK_SEASON.filter(e => category === 'all' || e.category === category);
     }
-  }, [events, band]);
+  }, [events, band, category]);
 
   if (loading) {
     return (
@@ -197,8 +245,11 @@ export default function UpcomingScreen() {
           <Text style={styles.headerLabel}>{label}</Text>
         </View>
 
-        {/* Segmented Control */}
-        <SegmentedControl value={band} onChange={setBand} />
+        {/* Band Control */}
+        <BandControl value={band} onChange={setBand} />
+
+        {/* Category Filter */}
+        <CategoryFilter value={category} onChange={setCategory} />
 
         {/* Content by Band */}
         {band === 'soon' && (
@@ -262,31 +313,58 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.5)',
     fontWeight: '500',
   },
-  // Segmented Control
-  segmentedControl: {
+  // Band Control
+  bandControl: {
     marginHorizontal: 20,
-    marginBottom: 32,
+    marginBottom: 20,
     flexDirection: 'row',
     backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 12,
     padding: 4,
     gap: 4,
   },
-  segment: {
+  bandSegment: {
     flex: 1,
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: 'center',
   },
-  segmentActive: {
+  bandSegmentActive: {
     backgroundColor: 'rgba(255,255,255,0.15)',
   },
-  segmentText: {
+  bandSegmentText: {
     fontSize: 13,
     fontWeight: '600',
     color: 'rgba(255,255,255,0.5)',
   },
-  segmentTextActive: {
+  bandSegmentTextActive: {
+    color: '#FFFFFF',
+  },
+  // Category Filter
+  categoryFilter: {
+    marginHorizontal: 20,
+    marginBottom: 24,
+    flexDirection: 'row',
+    gap: 8,
+  },
+  categoryChip: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  categoryChipActive: {
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    borderColor: 'rgba(255,255,255,0.3)',
+  },
+  categoryChipText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.5)',
+  },
+  categoryChipTextActive: {
     color: '#FFFFFF',
   },
   // Band Content
