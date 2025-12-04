@@ -58,11 +58,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   stackContainer: {
-    height: 500,
+    height: 520,
     alignItems: 'center',
   },
   emptyState: {
-    height: 400,
+    height: 420,
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
