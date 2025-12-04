@@ -428,7 +428,12 @@ export default function LearnScreen() {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <ScrollView contentContainerStyle={styles.content} scrollEnabled={false}>
-          <Text style={[styles.headerTitle, { color: colors.text }]}>Calendar Systems</Text>
+          <View style={styles.pageHeader}>
+            <Text style={[styles.pageTitle, { color: colors.text }]}>Learn</Text>
+            <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
+          </View>
+          
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Calendar Systems</Text>
           
           {/* Carousel Skeleton */}
           <View style={styles.carouselContainer}>
@@ -457,7 +462,12 @@ export default function LearnScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Calendar Systems</Text>
+        <View style={styles.pageHeader}>
+          <Text style={[styles.pageTitle, { color: colors.text }]}>Learn</Text>
+          <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
+        </View>
+        
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>Calendar Systems</Text>
         
         {/* 1. Calendar Systems Carousel */}
         <View style={styles.carouselContainer}>
@@ -482,6 +492,7 @@ export default function LearnScreen() {
         {/* 2. Artifact of the Day */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>ARTIFACT OF THE DAY</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Cultural wisdom surfaced today</Text>
           
           {cultureLoading ? (
             <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 20 }} />
@@ -519,6 +530,7 @@ export default function LearnScreen() {
         {/* 3. Living Calendar */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LIVING CALENDAR</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Seasonal rhythms and observances</Text>
           {living.map((item, i) => (
             <LivingCard 
               key={i} 
@@ -531,6 +543,7 @@ export default function LearnScreen() {
         {/* 4. Explore Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>EXPLORE</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Deep traditions and sacred knowledge</Text>
           
           <View style={[styles.exploreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.exploreHeader}>
@@ -689,6 +702,32 @@ const styles = StyleSheet.create({
   content: {
     paddingBottom: 100,
   },
+  pageHeader: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 32,
+  },
+  pageTitle: {
+    fontSize: 34,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 8,
+    letterSpacing: -0.5,
+  },
+  pageSubtitle: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: 'rgba(255,255,255,0.6)',
+    lineHeight: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginHorizontal: 20,
+    marginBottom: 12,
+    letterSpacing: -0.3,
+  },
   headerTitle: {
     fontSize: 34,
     fontWeight: '700',
@@ -706,9 +745,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     color: 'rgba(255,255,255,0.4)',
-    marginBottom: 16,
+    marginBottom: 6,
     letterSpacing: 1,
     textTransform: 'uppercase',
+  },
+  sectionDescription: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: 'rgba(255,255,255,0.6)',
+    marginBottom: 16,
+    lineHeight: 20,
   },
   // Carousel
   carouselContainer: {
