@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
-import api from '../lib/api';
-import { Clock, Moon, Leaf, Sparkles } from 'lucide-react-native';
+import contentService from '../lib/ContentService';
+import { cleanTone, getCategoryLabel, formatOrigin } from '../lib/labelize';
+import { Clock, Moon, Leaf, Sparkles, Globe, Star } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -45,15 +46,44 @@ function formatDate(date: Date): string {
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', weekday: 'short' });
 }
 
-// --- Fallback Data ---
+// --- Fallback Data (includes diverse cultural/religious/pagan/indigenous observances) ---
 
-// Core cultural dates for fallback
+const year = new Date().getFullYear();
+const nextYear = year + 1;
+
 const CORE_DATES = [
-  { id: 'core-christmas', name: 'Christmas', date: new Date(new Date().getFullYear(), 11, 25), category: 'cultural', description: 'Winter solstice celebration' },
-  { id: 'core-newyear', name: 'New Year', date: new Date(new Date().getFullYear() + 1, 0, 1), category: 'cultural', description: 'Fresh cycle begins' },
-  { id: 'core-halloween', name: 'Halloween', date: new Date(new Date().getFullYear(), 9, 31), category: 'cultural', description: 'Veil between worlds thins' },
-  { id: 'core-summer', name: 'Summer Solstice', date: new Date(new Date().getFullYear(), 5, 20), category: 'astronomical', description: 'Peak solar energy' },
-  { id: 'core-thanksgiving', name: 'Thanksgiving', date: new Date(new Date().getFullYear(), 10, 28), category: 'cultural', description: 'Gathering of gratitude' },
+  // December events
+  { id: 'winter-solstice', name: 'Winter Solstice', date: new Date(year, 11, 21), category: 'natural', origin: 'Global', description: 'The shortest day, a threshold between darkness and returning light.' },
+  { id: 'yule', name: 'Yule', date: new Date(year, 11, 21), category: 'pagan', origin: 'Nordic · Celtic', description: 'Ancient festival of light and renewal at the darkest point of the year.' },
+  { id: 'christmas', name: 'Christmas', date: new Date(year, 11, 25), category: 'religious', origin: 'Christian', description: 'Celebration of light, generosity, and gathering.' },
+  { id: 'kwanzaa-start', name: 'Kwanzaa', date: new Date(year, 11, 26), category: 'cultural', origin: 'African American', description: 'Seven-day celebration of African heritage and unity.' },
+  { id: 'new-year', name: 'New Year', date: new Date(nextYear, 0, 1), category: 'cultural', origin: 'Global', description: 'A fresh cycle begins, inviting reflection and intention.' },
+  
+  // January/February events
+  { id: 'epiphany', name: 'Epiphany', date: new Date(nextYear, 0, 6), category: 'religious', origin: 'Christian', description: 'Celebration of revelation and light.' },
+  { id: 'makar-sankranti', name: 'Makar Sankranti', date: new Date(nextYear, 0, 14), category: 'religious', origin: 'Hindu', description: 'Harvest festival marking the sun\'s journey northward.' },
+  { id: 'lunar-new-year', name: 'Lunar New Year', date: new Date(nextYear, 0, 29), category: 'cultural', origin: 'East Asian', description: 'Celebrated across East Asia, marking a new lunar cycle.' },
+  { id: 'imbolc', name: 'Imbolc', date: new Date(nextYear, 1, 1), category: 'pagan', origin: 'Celtic', description: 'Festival marking the first stirrings of spring and the goddess Brigid.' },
+  { id: 'candlemas', name: 'Candlemas', date: new Date(nextYear, 1, 2), category: 'religious', origin: 'Christian', description: 'Feast of light and purification.' },
+  
+  // Spring events
+  { id: 'mardi-gras', name: 'Mardi Gras', date: new Date(nextYear, 2, 4), category: 'cultural', origin: 'Global', description: 'Carnival celebration before the Lenten season.' },
+  { id: 'holi', name: 'Holi', date: new Date(nextYear, 2, 14), category: 'religious', origin: 'Hindu', description: 'Festival of colors celebrating spring and love.' },
+  { id: 'spring-equinox', name: 'Spring Equinox', date: new Date(nextYear, 2, 20), category: 'natural', origin: 'Global', description: 'Day and night in balance, a threshold into the light half of the year.' },
+  { id: 'ostara', name: 'Ostara', date: new Date(nextYear, 2, 20), category: 'pagan', origin: 'Germanic', description: 'Spring festival of renewal, fertility, and new beginnings.' },
+  { id: 'nowruz', name: 'Nowruz', date: new Date(nextYear, 2, 20), category: 'cultural', origin: 'Persian · Central Asian', description: 'Persian New Year celebrating the arrival of spring.' },
+  
+  // More observances
+  { id: 'beltane', name: 'Beltane', date: new Date(nextYear, 4, 1), category: 'pagan', origin: 'Celtic', description: 'Fire festival celebrating the height of spring and fertility.' },
+  { id: 'vesak', name: 'Vesak', date: new Date(nextYear, 4, 12), category: 'religious', origin: 'Buddhist', description: 'Celebration of Buddha\'s birth, enlightenment, and passing.' },
+  { id: 'summer-solstice', name: 'Summer Solstice', date: new Date(nextYear, 5, 21), category: 'natural', origin: 'Global', description: 'The longest day, peak of solar energy.' },
+  { id: 'litha', name: 'Litha', date: new Date(nextYear, 5, 21), category: 'pagan', origin: 'Celtic', description: 'Midsummer celebration of light and abundance.' },
+  { id: 'lammas', name: 'Lammas', date: new Date(nextYear, 7, 1), category: 'pagan', origin: 'Celtic', description: 'First harvest festival, giving thanks for grain.' },
+  { id: 'autumn-equinox', name: 'Autumn Equinox', date: new Date(nextYear, 8, 22), category: 'natural', origin: 'Global', description: 'Balance point before descending into the dark half of the year.' },
+  { id: 'mabon', name: 'Mabon', date: new Date(nextYear, 8, 22), category: 'pagan', origin: 'Celtic', description: 'Second harvest, thanksgiving for abundance.' },
+  { id: 'diwali', name: 'Diwali', date: new Date(nextYear, 9, 20), category: 'religious', origin: 'Hindu · Jain · Sikh', description: 'Festival of lights celebrating the triumph of light over darkness.' },
+  { id: 'samhain', name: 'Samhain', date: new Date(nextYear, 9, 31), category: 'pagan', origin: 'Celtic', description: 'The veil between worlds thins; honoring ancestors.' },
+  { id: 'day-of-dead', name: 'Día de los Muertos', date: new Date(nextYear, 10, 1), category: 'cultural', origin: 'Mexican', description: 'Honoring deceased loved ones with offerings and celebration.' },
 ];
 
 const FALLBACK_SOON = [
@@ -143,48 +173,91 @@ function CountdownCard({ event }: { event: any }) {
 }
 
 function CycleEventRow({ event }: { event: any }) {
-  const daysUntil = Math.ceil((new Date(event.date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+  const eventDate = new Date(event.date);
+  const daysUntil = Math.ceil((eventDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
   const { colors } = useTheme();
+  
+  // Get category color
+  const getCategoryColor = (cat: string) => {
+    switch (cat) {
+      case 'pagan': return '#9b59b6';
+      case 'religious': return '#3498db';
+      case 'natural': return '#27ae60';
+      case 'indigenous': return '#e67e22';
+      default: return colors.accent;
+    }
+  };
   
   return (
     <View style={styles.cycleRow}>
       <View style={[styles.cycleDate, { backgroundColor: colors.surfaceHighlight }]}>
-        <Text style={[styles.cycleDateDay, { color: colors.text }]}>{event.date.getDate()}</Text>
-        <Text style={[styles.cycleDateMonth, { color: colors.textSecondary }]}>{event.date.toLocaleDateString(undefined, { month: 'short' })}</Text>
+        <Text style={[styles.cycleDateDay, { color: colors.text }]}>{eventDate.getDate()}</Text>
+        <Text style={[styles.cycleDateMonth, { color: colors.textSecondary }]}>{eventDate.toLocaleDateString(undefined, { month: 'short' })}</Text>
       </View>
       <View style={styles.cycleContent}>
         <View style={styles.cycleHeader}>
           <Text style={[styles.cycleName, { color: colors.text }]}>{event.name}</Text>
-          <View style={[
-            styles.cycleTag, 
-            { backgroundColor: colors.surface },
-            event.significance === 'Major' && { backgroundColor: colors.accentSubtle }
-          ]}>
-            <Text style={[
-              styles.cycleTagText, 
-              { color: colors.textSecondary },
-              event.significance === 'Major' && { color: colors.accent }
-            ]}>{event.significance || 'Event'}</Text>
-          </View>
+          {event.origin && (
+            <View style={[styles.originBadge, { backgroundColor: getCategoryColor(event.displayCategory) + '20' }]}>
+              <Text style={[styles.originBadgeText, { color: getCategoryColor(event.displayCategory) }]}>
+                {event.origin}
+              </Text>
+            </View>
+          )}
         </View>
         <Text style={[styles.cycleDesc, { color: colors.textTertiary }]}>{event.description}</Text>
       </View>
-      <Text style={[styles.cycleDays, { color: colors.textSecondary }]}>{daysUntil === 0 ? 'Today' : `${daysUntil}d`}</Text>
+      <Text style={[styles.cycleDays, { color: colors.textSecondary }]}>{daysUntil <= 0 ? 'Today' : `${daysUntil}d`}</Text>
     </View>
   );
 }
 
 function SeasonCard({ event }: { event: any }) {
   const { colors } = useTheme();
+  const eventDate = new Date(event.date);
+  const daysUntil = event.daysUntil ?? Math.ceil((eventDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+  
+  // Get icon based on category
+  const getCategoryIcon = (cat: string) => {
+    switch (cat) {
+      case 'pagan': return <Star size={20} color={colors.text} />;
+      case 'religious': return <Sparkles size={20} color={colors.text} />;
+      case 'natural': return <Leaf size={20} color={colors.text} />;
+      default: return <Globe size={20} color={colors.text} />;
+    }
+  };
+  
+  // Get category color
+  const getCategoryColor = (cat: string) => {
+    switch (cat) {
+      case 'pagan': return '#9b59b6';
+      case 'religious': return '#3498db';
+      case 'natural': return '#27ae60';
+      case 'indigenous': return '#e67e22';
+      default: return colors.accent;
+    }
+  };
+  
   return (
     <View style={[styles.seasonCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View style={styles.seasonHeader}>
         <View style={[styles.seasonIcon, { backgroundColor: colors.surfaceHighlight }]}>
-          <Leaf size={20} color={colors.text} />
+          {getCategoryIcon(event.displayCategory)}
         </View>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={[styles.seasonTitle, { color: colors.text }]}>{event.name}</Text>
-          <Text style={[styles.seasonDays, { color: colors.textSecondary }]}>{event.daysUntil} days away</Text>
+          <View style={styles.seasonMeta}>
+            <Text style={[styles.seasonDays, { color: colors.textSecondary }]}>
+              {daysUntil <= 0 ? 'Today' : `${daysUntil} days away`}
+            </Text>
+            {event.origin && (
+              <View style={[styles.originBadge, { backgroundColor: getCategoryColor(event.displayCategory) + '20', marginLeft: 8 }]}>
+                <Text style={[styles.originBadgeText, { color: getCategoryColor(event.displayCategory) }]}>
+                  {event.origin}
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
       </View>
       <Text style={[styles.seasonDesc, { color: colors.textTertiary }]}>{event.description}</Text>
@@ -205,33 +278,47 @@ export default function UpcomingScreen() {
   useEffect(() => {
     async function loadEvents() {
       try {
-        const [planetaryData, importantData] = await Promise.all([
-          api.getPlanetaryEvents(50, language).catch(() => []),
-          api.getImportantDates(language).catch(() => [])
-        ]);
+        // Use ContentService for merged events (includes caching)
+        const apiEvents = await contentService.getMergedUpcomingEvents(90, language);
         
-        // Always include core cultural dates, supplement with API data
-        const culturalEvents = [
-          ...CORE_DATES,
-          ...(importantData.length > 0 ? importantData : [])
+        // Always include CORE_DATES + API events
+        // Map categories: pagan/religious/natural → cultural for filtering
+        const normalizeCategory = (cat: string) => {
+          if (['pagan', 'religious', 'natural', 'indigenous'].includes(cat)) {
+            return 'cultural';
+          }
+          return cat === 'astronomical' ? 'astronomical' : 'cultural';
+        };
+        
+        const allEvents = [
+          ...CORE_DATES.map(e => ({ 
+            ...e, 
+            displayCategory: e.category,
+            category: normalizeCategory(e.category)
+          })),
+          ...apiEvents.map(e => ({ 
+            ...e, 
+            displayCategory: e.category,
+            category: normalizeCategory(e.category || 'cultural'),
+            description: cleanTone(e.description || e.summary || '')
+          }))
         ];
         
-        // Use fallback if fetches are empty
-        const astronomicalEvents = planetaryData.length > 0 
-          ? planetaryData 
-          : FALLBACK_CYCLE;
+        // Deduplicate by name (keep first occurrence)
+        const seen = new Set<string>();
+        const deduped = allEvents.filter(e => {
+          const key = e.name?.toLowerCase();
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
         
-        // Merge both feeds with proper category tagging
-        const merged = [
-          ...astronomicalEvents.map(e => ({ ...e, category: e.category || 'astronomical' })),
-          ...culturalEvents.map(e => ({ ...e, category: e.category || 'cultural' }))
-        ];
-        
-        console.log('📊 Merged events:', merged.length, 'astronomical:', astronomicalEvents.length, 'cultural:', culturalEvents.length);
-        setEvents(merged);
+        console.log('📊 Merged events:', deduped.length);
+        setEvents(deduped);
       } catch (e) {
         console.error('Error loading events:', e);
-        setEvents([]);
+        // Use CORE_DATES as fallback
+        setEvents(CORE_DATES.map(e => ({ ...e, category: 'cultural' })));
       } finally {
         setLoading(false);
       }
@@ -547,5 +634,19 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.7)',
     lineHeight: 22,
     marginLeft: 58,
+  },
+  seasonMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  originBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  originBadgeText: {
+    fontSize: 10,
+    fontWeight: '600',
   },
 });
