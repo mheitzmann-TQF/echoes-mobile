@@ -296,12 +296,18 @@ export default function HomeScreen() {
       // Process Living Tradition
       if (livingData && livingData.length > 0) {
         const item = livingData[0];
-        setLivingTradition({
-          name: item.name || item.title || 'Seasonal Note',
-          description: cleanTone(item.description || item.summary || ''),
-          origin: item.origin || item.tradition || 'Global',
-          category: item.category || 'seasonal'
-        });
+        const desc = cleanTone(item.description || item.summary || '');
+        // If API data has valid description, use it; otherwise fallback to mock
+        if (desc && desc.trim().length > 0) {
+          setLivingTradition({
+            name: item.name || item.title || 'Seasonal Note',
+            description: desc,
+            origin: item.origin || item.tradition || 'Global',
+            category: item.category || 'seasonal'
+          });
+        } else {
+          setLivingTradition(getMockLivingTradition());
+        }
       } else {
         setLivingTradition(getMockLivingTradition());
       }

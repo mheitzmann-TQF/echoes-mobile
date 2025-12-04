@@ -144,3 +144,27 @@ The repository includes `drizzle.config.ts` with PostgreSQL dialect configuratio
 
 **Current Backend Architecture:**
 The mobile app relies entirely on The Quiet Frame external API. No local database or persistence layer is implemented beyond device-local preference storage.
+
+## Recent Content Improvements (Session 12/04)
+
+### New Utilities Created
+- **labelize.ts** - Utility for consistent label/origin formatting, category humanization (snake_case → Title Case), and tone cleaning to remove directive coaching language
+
+### New Services Created
+- **ContentService.ts** - Unified wrapper for Sacred Geography, Oral Tradition, and Living Calendar API endpoints with:
+  - 30-minute client-side caching with `expires_at` handling
+  - Graceful fallbacks for empty/missing data
+  - Language and location parameter forwarding
+
+### Content Updates Applied
+1. **Today Tab** - Added Living Tradition card with origin labels; echo cards use cleanTone() to remove directive language
+2. **Upcoming Tab** - Merged Consciousness Calendar with planetary events; added diverse cultural dates (Samhain, Beltane, Diwali, Lunar New Year, solstices) with origin labels
+3. **Field Tab** - Removed "How to read" coaching sections; replaced with "Context" interpretive text; removed accuracy percentages
+4. **Learn Tab** - Added Explore section (Sacred Geography, Oral Tradition, Seasonal Rhythms) with origin labels and descriptive cards
+5. **Seasonal Note Fix** - Enhanced Today tab Living Tradition card to always display content, falling back to mock data if API returns empty descriptions
+
+### Content Strategy
+- Removed directive coaching tone ("you should", vague authority claims) across all tabs
+- Use source.thequietframe.com as canonical content source
+- Include origin labels on all cultural/traditional content (Global · Seasonal, Indigenous Wisdom, etc.)
+- Prioritize observational tone over prescriptive guidance
