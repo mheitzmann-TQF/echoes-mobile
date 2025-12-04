@@ -210,14 +210,16 @@ export default function UpcomingScreen() {
           api.getImportantDates(language).catch(() => [])
         ]);
         
+        // Always include core cultural dates, supplement with API data
+        const culturalEvents = [
+          ...CORE_DATES,
+          ...(importantData.length > 0 ? importantData : [])
+        ];
+        
         // Use fallback if fetches are empty
         const astronomicalEvents = planetaryData.length > 0 
           ? planetaryData 
           : FALLBACK_CYCLE;
-        
-        const culturalEvents = importantData.length > 0 
-          ? importantData 
-          : CORE_DATES;
         
         // Merge both feeds with proper category tagging
         const merged = [
