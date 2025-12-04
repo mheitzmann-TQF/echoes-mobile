@@ -116,6 +116,24 @@ function ExpandableCard({
   );
 }
 
+function generateCircadianObservations(phase: string): string[] {
+  const phaseMap: Record<string, string[]> = {
+    'Morning': ['Core body temperature rising', 'Cortisol peak aids alertness', 'Optimal for analytical work'],
+    'Midday': ['Peak mental clarity and focus', 'Energy at zenith', 'Ideal for decision-making'],
+    'Afternoon': ['Post-meal dip in attention', 'Secondary energy rise possible', 'Good for physical activity'],
+    'Evening': ['Melatonin beginning to rise', 'Temperature cooling', 'Wind-down phase begins'],
+    'Night': ['Deep sleep hormone levels peak', 'Body temperature lowest', 'Recovery and restoration mode'],
+    'Balanced': ['Circadian rhythm stable', 'Energy consistent', 'Flexible for most activities']
+  };
+  
+  for (const [key, observations] of Object.entries(phaseMap)) {
+    if (phase.includes(key)) {
+      return observations;
+    }
+  }
+  return ['Circadian rhythm active', 'Biological patterns flowing', 'Energy cycles present'];
+}
+
 function StickyHeader({ coherence, solarPhase, lunarIllumination }: { coherence: number, solarPhase: string, lunarIllumination: number }) {
   const { colors } = useTheme();
   // Derive states
@@ -436,8 +454,8 @@ export default function FieldScreen() {
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Current Observations</Text>
-                {(bioRhythms?.observations || bioRhythms?.recommendations)?.map((rec: string, i: number) => (
-                  <Text key={i} style={[styles.bulletPoint, { color: colors.textSecondary }]}>• {rec}</Text>
+                {generateCircadianObservations(bioRhythms?.circadian?.phase || 'Balanced').map((obs: string, i: number) => (
+                  <Text key={i} style={[styles.bulletPoint, { color: colors.textSecondary }]}>• {obs}</Text>
                 ))}
               </View>
             }
