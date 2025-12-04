@@ -40,7 +40,7 @@ export default function SettingsScreen() {
         
         {/* Location Section */}
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Location</Text>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>Location</Text>
           
           {/* Current Location Toggle */}
           <View style={styles.row}>
@@ -125,7 +125,7 @@ export default function SettingsScreen() {
 
         {/* Display Section */}
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Display</Text>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>Display</Text>
           
           {/* Theme Selector */}
           <TouchableOpacity 
@@ -176,7 +176,7 @@ export default function SettingsScreen() {
 
         {/* Privacy Section */}
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Privacy</Text>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>Privacy</Text>
           <Text style={[styles.infoText, { color: colors.textSecondary }]}>No accounts. Preferences stored on-device.</Text>
         </View>
 
@@ -205,11 +205,12 @@ const styles = StyleSheet.create({
     padding: 20,
     borderWidth: 1,
   },
-  sectionTitle: {
-    fontSize: 18,
+  sectionLabel: {
+    fontSize: 12,
     fontWeight: '600',
     marginBottom: 16,
-    letterSpacing: -0.3,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
   row: {
     flexDirection: 'row',

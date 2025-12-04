@@ -433,7 +433,7 @@ export default function LearnScreen() {
             <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
           </View>
           
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Calendar Systems</Text>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>Calendar Systems</Text>
           
           {/* Carousel Skeleton */}
           <View style={styles.carouselContainer}>
@@ -467,7 +467,7 @@ export default function LearnScreen() {
           <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
         </View>
         
-        <Text style={[styles.sectionTitle, { color: colors.text }]}>Calendar Systems</Text>
+        <Text style={[styles.sectionLabel, { color: colors.text }]}>Calendar Systems</Text>
         
         {/* 1. Calendar Systems Carousel */}
         <View style={styles.carouselContainer}>
@@ -719,14 +719,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: 'rgba(255,255,255,0.6)',
     lineHeight: 24,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    marginHorizontal: 20,
-    marginBottom: 12,
-    letterSpacing: -0.3,
   },
   headerTitle: {
     fontSize: 34,
