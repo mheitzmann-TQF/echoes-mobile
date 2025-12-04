@@ -310,7 +310,7 @@ export default function UpcomingScreen() {
         {/* Content by Band */}
         {band === 'soon' && (
           <View style={styles.bandContent}>
-            <Text style={[styles.bandLabel, { color: colors.textTertiary }]}>TIMING WINDOWS</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>TIMING WINDOWS</Text>
             {bucketedEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
@@ -319,7 +319,7 @@ export default function UpcomingScreen() {
 
         {band === 'cycle' && (
           <View style={styles.bandContent}>
-            <Text style={[styles.bandLabel, { color: colors.textTertiary }]}>LUNAR & PLANETARY MILESTONES</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LUNAR & PLANETARY MILESTONES</Text>
             {bucketedEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
@@ -328,7 +328,7 @@ export default function UpcomingScreen() {
 
         {band === 'season' && (
           <View style={styles.bandContent}>
-            <Text style={[styles.bandLabel, { color: colors.textTertiary }]}>SEASONAL TURNING POINTS</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>SEASONAL TURNING POINTS</Text>
             {bucketedEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
   bandContent: {
     paddingHorizontal: 20,
   },
-  bandLabel: {
+  sectionLabel: {
     fontSize: 12,
     fontWeight: '600',
     color: 'rgba(255,255,255,0.4)',
