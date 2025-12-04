@@ -347,15 +347,15 @@ export default function HomeScreen() {
               date: cal.date,
               type: 'Lunar'
             });
+          } else if (cal.system === 'Hebrew Calendar') {
+            formattedCalendars.push({
+              id: 'hebrew',
+              name: 'Hebrew',
+              date: cal.date,
+              type: 'Lunisolar'
+            });
           }
         });
-        
-        // Add Hebrew calendar from mock data (not available from API)
-        const mockCalendars = getMockCalendars();
-        const hebrewCal = mockCalendars.find(cal => cal.id === 'hebrew');
-        if (hebrewCal) {
-          formattedCalendars.push(hebrewCal);
-        }
         
         setCalendars(formattedCalendars);
       } else {
