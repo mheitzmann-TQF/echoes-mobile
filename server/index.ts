@@ -2,6 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 const app = express();
 const httpServer = createServer(app);
@@ -70,14 +71,37 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
+  // Set up frontend serving - either static files (production) or Metro proxy (development)
   if (process.env.NODE_ENV === "production") {
     serveStatic(app);
   } else {
-    const { setupVite } = await import("./vite");
-    await setupVite(httpServer, app);
+    // In development, proxy all non-API requests to Expo Metro bundler on port 8081
+    const METRO_PORT = 8081;
+    const metroProxy = createProxyMiddleware({
+      target: `http://localhost:${METRO_PORT}`,
+      changeOrigin: true,
+      ws: true,
+      on: {
+        error: (err: Error, _req: any, res: any) => {
+          log(`Proxy error: ${err.message} - Is Expo Metro running on port ${METRO_PORT}?`, 'proxy');
+          if (res && !res.headersSent) {
+            res.writeHead(503, { 'Content-Type': 'text/plain' });
+            res.end(`Expo Metro not available. Run 'expo start --port ${METRO_PORT}' first.`);
+          }
+        }
+      }
+    });
+    
+    app.use('/', metroProxy);
+    
+    // Handle WebSocket upgrades for Metro's hot reload
+    httpServer.on('upgrade', (req, socket, head) => {
+      if (metroProxy.upgrade) {
+        metroProxy.upgrade(req, socket as any, head);
+      }
+    });
+    
+    log(`Proxying frontend requests to Expo Metro on port ${METRO_PORT}`);
   }
 
   // ALWAYS serve the app on the port specified in the environment variable PORT

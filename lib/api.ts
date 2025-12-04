@@ -1,5 +1,15 @@
-// Use backend proxy instead of direct TQF API
-const API_BASE_URL = typeof window !== 'undefined' ? '' : 'https://source.thequietframe.com';
+// Use backend proxy - API key stays server-side for security
+// In development, Expo Metro needs to proxy requests to Express backend
+const getApiBaseUrl = () => {
+  // Check for explicit API URL override (for development with separate servers)
+  if (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_API_URL) {
+    return process.env.EXPO_PUBLIC_API_URL;
+  }
+  // Default to relative URLs (works when served from same origin)
+  return '';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Log config after module loads
 if (typeof console !== 'undefined' && console.log) {
