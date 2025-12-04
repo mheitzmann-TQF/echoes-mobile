@@ -433,9 +433,11 @@ export default function LearnScreen() {
             <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
           </View>
           
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
-          
           {/* Carousel Skeleton */}
+          <View style={styles.section}>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
+          </View>
+          
           <View style={styles.carouselContainer}>
             <View style={styles.carouselScroll}>
               <SkeletonCard style={{ width: width * 0.85, height: 200, borderRadius: 24 }} />
@@ -467,9 +469,11 @@ export default function LearnScreen() {
           <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
         </View>
         
-        <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
-        
         {/* 1. Calendar Systems Carousel */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
+        </View>
+        
         <View style={styles.carouselContainer}>
           <ScrollView 
             horizontal 
