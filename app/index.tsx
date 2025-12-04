@@ -192,35 +192,44 @@ export default function HomeScreen() {
       }
 
       // Process Calendars
-      if (calendarsData) {
+      if (calendarsData && Array.isArray(calendarsData)) {
         const formattedCalendars = [
           { id: 'gregorian', name: 'Gregorian', date: new Date().toLocaleDateString(), type: 'Civil' },
         ];
         
-        if (calendarsData.mayan?.tzolkin) {
-          formattedCalendars.push({
-            id: 'mayan',
-            name: 'Mayan Tzolkin',
-            date: `${calendarsData.mayan.tzolkin.dayNumber} ${calendarsData.mayan.tzolkin.dayName}`,
-            type: 'Sacred'
-          });
-        }
-        if (calendarsData.chinese) {
-          formattedCalendars.push({
-            id: 'chinese',
-            name: 'Chinese',
-            date: `${calendarsData.chinese.year} Year`,
-            type: 'Lunisolar'
-          });
-        }
-        if (calendarsData.hebrew) {
-           formattedCalendars.push({
-            id: 'hebrew',
-            name: 'Hebrew',
-            date: `${calendarsData.hebrew.day} ${calendarsData.hebrew.month}`,
-            type: 'Lunisolar'
-          });
-        }
+        // Map calendar systems from API array
+        calendarsData.forEach((cal: any) => {
+          if (cal.system === 'Mayan Tzolkin') {
+            formattedCalendars.push({
+              id: 'mayan',
+              name: 'Mayan Tzolkin',
+              date: cal.date,
+              type: 'Sacred'
+            });
+          } else if (cal.system === 'Chinese Agricultural') {
+            formattedCalendars.push({
+              id: 'chinese',
+              name: 'Chinese',
+              date: cal.date,
+              type: 'Lunisolar'
+            });
+          } else if (cal.system === 'Hindu Panchang') {
+            formattedCalendars.push({
+              id: 'hindu',
+              name: 'Hindu Panchang',
+              date: cal.date,
+              type: 'Lunisolar'
+            });
+          } else if (cal.system === 'Islamic Hijri') {
+            formattedCalendars.push({
+              id: 'islamic',
+              name: 'Islamic',
+              date: cal.date,
+              type: 'Lunar'
+            });
+          }
+        });
+        
         setCalendars(formattedCalendars);
       } else {
         setCalendars(getMockCalendars());

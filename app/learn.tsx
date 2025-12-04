@@ -16,6 +16,7 @@ const CALENDAR_EXPLAINERS: Record<string, string> = {
   chinese: "Tracks months by the moon, corrected by the sun.",
   hebrew: "Lunisolar rhythm aligning festivals with seasons.",
   islamic: "Pure lunar count, drifting through the solar year.",
+  hindu: "Integrating celestial observations with spiritual timekeeping.",
 };
 
 const CALENDAR_DETAILS: Record<string, string> = {
@@ -24,6 +25,7 @@ const CALENDAR_DETAILS: Record<string, string> = {
   chinese: "Combining lunar months with solar corrections, the Chinese calendar maintains harmony between celestial cycles. Each year cycles through 12 animals, each associated with elements and personality traits.",
   hebrew: "Balancing lunar observation with solar precision, the Hebrew calendar aligns festivals with seasons while honoring the moon's cycles. Deeply spiritual, it marks sacred time through seasonal celebrations.",
   islamic: "Following the pure lunar year of 354 days, the Islamic calendar shifts 11 days earlier each solar year, creating a complete cycle every 33 years. This cycle reconnects observers to the original revelation.",
+  hindu: "The Panchang integrates multiple calendric systems—solar, lunar, and stellar cycles—into a comprehensive framework used for auspicious timing of ceremonies and spiritual practices across Hindu traditions.",
 };
 
 const CALENDAR_TYPES: Record<string, string> = {
@@ -32,6 +34,7 @@ const CALENDAR_TYPES: Record<string, string> = {
   chinese: "Lunisolar",
   hebrew: "Lunisolar",
   islamic: "Lunar",
+  hindu: "Lunisolar",
 };
 
 // --- Components ---
