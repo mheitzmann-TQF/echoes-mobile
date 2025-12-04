@@ -1,0 +1,205 @@
+Below is a copy-paste instruction pack for Claude. It is blunt, implementation-oriented, and assumes source.thequietframe.com is canonical. No reinvention, no new “wisdom writing” unless it’s a minimal rewrite for tone/labels.
+
+⸻
+
+CLAUDE INSTRUCTIONS — Echoes Mobile: Use SOURCE as Canonical Content (No Reinvention)
+
+0) Non-negotiables
+	1.	Do NOT invent new content. Use content already present in source.thequietframe.com (Sacred Geography Intelligence, Living Calendar Wisdom, Oral Tradition Wisdom, Consciousness Calendar, Cultural Context Intelligence).
+	2.	Do NOT add accounts. Preferences remain on-device only.
+	3.	Do NOT repeat Today snapshot content outside Today (calendar tiles + lunar/geomagnetism/coherence tiles + 5 echo cards remain only on Today).
+	4.	Remove “accuracy %” claims and other fake-precision from any surfaced content (e.g., “75–85% accuracy”). Replace with “lens / tradition / heuristic” language if needed.
+	5.	No directive coaching tone. Remove “you should”, “review your intentions”, “prepare”, etc. Use descriptive language.
+
+⸻
+
+1) Content Strategy (What the app should surface)
+
+Canonical content pools (from Source)
+
+A) Consciousness Calendar entries
+	•	Tags like: cultural, religious, natural, and region/global labels.
+
+B) Sacred Geography Intelligence items
+	•	Phases 2A/2B/2C etc.
+
+C) Living Calendar Wisdom items
+	•	Includes systems like Vedic/Aztec etc.
+
+D) Oral Tradition Wisdom items
+	•	Includes indigenous/tradition-attributed items (e.g., Navajo Diné).
+
+E) Cultural Offering / “Artifact of the day” items
+	•	e.g. I Ching card already visible in Source.
+
+Output rule
+
+Mobile experience must be a curated viewer of these pools.
+
+⸻
+
+2) Data Plumbing (Do not reinvent endpoints)
+
+Task
+
+Locate the existing endpoints already used by Source (the web admin/dashboard) that return:
+	•	consciousness calendar events list
+	•	sacred geography items
+	•	living calendar wisdom items
+	•	oral tradition items
+	•	cultural offering item
+
+Then create a small mobile “content client” that queries the same endpoints.
+
+Requirements
+	•	Add a single ContentService module in the mobile app.
+	•	Provide methods:
+	•	getTodayBundle(location, tz, lang)
+	•	getConsciousnessCalendar(range)
+	•	getSacredGeographyToday(location)
+	•	getLivingCalendarToday(location)
+	•	getOralTraditionToday(location)
+	•	getCulturalOffering(location)
+	•	Caching:
+	•	Cache results for 30 minutes or until expires_at if returned.
+	•	Always fail gracefully with calm UI fallback (no blank pages, no infinite “loading…”).
+
+⸻
+
+3) Mapping / Label Cleanup (Stop leaking taxonomy keys)
+
+Task
+
+Implement a display-label layer so raw keys never appear in UI.
+
+Rules:
+	•	Convert snake_case ids to Title Case (“daily_sandhya” → “Daily Sandhya”).
+	•	Convert tags like ayurvedic_timing to “Ayurvedic timing”.
+	•	Hide raw system ids like hindu_vedic unless accompanied by a human label.
+	•	For every content item, expose:
+	•	title (human)
+	•	subtitle (human)
+	•	origin (tradition / people / region, if available)
+	•	category_label (Observed / Traditional / Mythic / Reflective)
+	•	tags_display[] (humanized)
+
+⸻
+
+4) Tone & Credibility Rules (must apply to ALL surfaced text)
+
+Disallowed
+	•	Universal claims: “thoughts get clearer”, “this causes…”
+	•	Vague authority: “many traditional societies…”
+	•	Instructional coaching: “review”, “prepare”, “you should…”
+	•	Fake precision: “75–85% accurate”
+
+Allowed rewrite (minimal)
+
+You may lightly rewrite Source text ONLY to:
+	•	remove directives
+	•	remove fake precision
+	•	add “lens” framing
+	•	shorten to fit card UI
+
+Example rewrite pattern:
+	•	“Today is auspicious for…” → “Often treated as favorable for…”
+	•	“Accuracy 75–85%” → remove; replace “Traditionally used for short-range local pattern reading.”
+
+⸻
+
+5) Screen-by-screen: EXACT behavior changes
+
+A) TODAY tab (still 5 Echo cards, but sourced from Source)
+
+Keep existing top tiles (calendars + 3 metrics).
+
+Replace Echo card generation logic with curated Source selection.
+
+Echo cards MUST be filled from Source pools using this fixed mix:
+	1.	Lunar Wisdom (planetary_context lunar) — keep but ensure tone is non-directive.
+	2.	Solar Rhythm (planetary_context solar) — non-directive.
+	3.	Global Pulse (consciousness monitor / coherence narrative) — non-directive.
+	4.	Cultural Date / Observance (from Consciousness Calendar)
+	•	If none in next 7 days, pull nearest upcoming “cultural/religious/natural” within 90 days and label “Ahead”.
+	5.	Living Tradition (rotate one daily from: Sacred Geography OR Oral Tradition OR Living Calendar Wisdom)
+	•	Must include origin label visibly.
+
+Important:
+	•	Do not write new “wisdom paragraphs.” Use Source text + minimal cleanup.
+
+⸻
+
+B) FIELD tab (interpretation layer, not values repeated)
+
+Field collapsed rows show:
+	•	meaning line only + delta/trend only
+Expanded shows:
+	•	the actual value (once) + “how to read” + “common misread” + “inputs used”
+
+Field copy must never contain advice like “how about a noon break…”
+
+⸻
+
+C) LEARN tab (Library Viewer of Source)
+
+Learn shows 3 sections:
+	1.	Calendar Systems Carousel (education, no dates on card face; date appears only in detail sheet)
+	2.	Cultural Offering (from Source cultural content)
+	3.	Explore (tabs or chips): Sacred Geography | Oral Tradition | Living Calendar
+Each lists 3–5 cards/day with “Rotate lens” interaction.
+
+If cultural offering API returns blank: render calm fallback card, not endless loading.
+
+⸻
+
+D) UPCOMING tab (must show Xmas AND “pagan / African / religious” from Source)
+
+Upcoming uses 3 horizons:
+	•	Soon (48h)
+	•	Cycle (14d)
+	•	Season (90d)
+
+Upcoming must merge:
+	1.	Planetary milestones (moon phases, etc.)
+	2.	Consciousness Calendar entries (cultural/religious/natural/global)
+
+Filtering chips must work:
+	•	All
+	•	Astronomical
+	•	Cultural (includes religious + pagan + indigenous observances)
+If categories are missing, map Source tags → these chips.
+
+Empty state is forbidden. If no events:
+	•	show timing windows (body/solar)
+	•	show next lunar checkpoint
+	•	show next seasonal turning point
+
+⸻
+
+6) Acceptance Tests (must pass)
+	1.	A “Living Tradition” card appears on Today referencing Sacred Geography / Oral Tradition content with origin label.
+	2.	No raw taxonomy keys appear anywhere (daily_sandhya, hindu_vedic, etc. are humanized).
+	3.	No accuracy % claims appear in mobile UI.
+	4.	Upcoming → Season shows more than Christmas/New Year when Source contains e.g. Beltane/Diwali/etc.
+	5.	Field tab contains no advice (“take a break”) — only interpretation.
+	6.	Learn tab never displays an infinite loader for cultural offering; fallback card appears within 1s when blank.
+
+⸻
+
+7) Deliverables (what to commit)
+	•	ContentService.ts (or equivalent)
+	•	labelize.ts (humanization + category mapping)
+	•	Updated Today echo selection logic (uses Source pools)
+	•	Updated Upcoming merged events logic (uses Consciousness Calendar)
+	•	Updated Field copy (remove advice)
+	•	Updated Learn Explore viewer
+
+⸻
+
+If Claude needs a “where to start” order:
+	1.	Implement labelize.ts (stop ugly keys).
+	2.	Wire Consciousness Calendar into Upcoming (proves cultural breadth).
+	3.	Add Today “Living Tradition” card from Sacred Geography/Oral Tradition (proves depth).
+	4.	Then refine Learn Explore viewer.
+
+Done.
