@@ -31,7 +31,8 @@
       "typedRoutes": true
     },
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "output": "server"
     }
   }
 }
