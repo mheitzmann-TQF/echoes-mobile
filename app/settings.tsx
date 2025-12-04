@@ -206,11 +206,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 18,
     fontWeight: '600',
     marginBottom: 16,
-    letterSpacing: 1,
-    textTransform: 'uppercase',
+    letterSpacing: -0.3,
   },
   row: {
     flexDirection: 'row',
