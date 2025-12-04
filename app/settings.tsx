@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     marginBottom: 16,
-    marginHorizontal: 20,
+    paddingHorizontal: 20,
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
