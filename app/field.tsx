@@ -244,9 +244,56 @@ export default function FieldScreen() {
   }
 
   const ctx = bundle?.planetary_context;
-  // Use instant data for geomagnetic if available, otherwise fallback
-  const geoActivity = instant?.geomagnetic?.activity || 'Quiet';
   const geoKp = instant?.geomagnetic?.kpIndex || 2;
+  
+  // Normalize geomagnetic state
+  const getGeoState = (kp: number): { label: string; message: string } => {
+    if (kp <= 2) return { label: 'Quiet', message: 'Geomagnetic field is calm.' };
+    if (kp <= 5) return { label: 'Active', message: 'Elevated field activity.' };
+    return { label: 'Stormy', message: 'Strong storm conditions.' };
+  };
+  
+  const geoState = getGeoState(geoKp);
+  
+  // Compute sunset time correctly
+  const getSunsetInfo = (): { display: string; label: string } => {
+    // instant.solar has sunset as time string (e.g., "19:00")
+    if (!instant?.solar?.sunset) {
+      return { display: 'Sunset timing available when expanded', label: 'Evening transition' };
+    }
+    
+    const now = new Date();
+    const [sunsetHour, sunsetMin] = instant.solar.sunset.split(':').map(Number);
+    const sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), sunsetHour, sunsetMin);
+    
+    if (sunsetDate < now) {
+      // Sunset already passed, show tomorrow's sunset
+      const tomorrow = new Date(sunsetDate);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return { 
+        display: `Sunset tomorrow at ${tomorrow.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`,
+        label: 'Evening transition' 
+      };
+    }
+    
+    const diff = sunsetDate.getTime() - now.getTime();
+    const hours = Math.floor(diff / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
+    
+    if (hours < 24) {
+      return { 
+        display: `Sunset in ${hours}h ${minutes}m`,
+        label: `${hours}h ${minutes}m remaining`
+      };
+    } else {
+      return { 
+        display: `Sunset at ${instant.solar.sunset}`,
+        label: 'Evening transition' 
+      };
+    }
+  };
+  
+  const sunsetInfo = getSunsetInfo();
 
   // Helper to shorten messages
   const shorten = (msg?: string) => msg ? msg.split('.')[0] + '.' : '';
@@ -271,15 +318,19 @@ export default function FieldScreen() {
           <ExpandableCard
             icon="🌙"
             title="Lunar"
-            message={shorten(ctx?.lunar?.message)}
+            message={ctx?.lunar?.phase || 'Phase cycle active'}
+            collapsedDetail={`${Math.round(ctx?.lunar?.illumination || 0)}%`}
             isExpanded={expandedCards['lunar']}
             onToggle={() => toggleCard('lunar')}
             chips={['phase', 'illumination']}
-            howToRead={['Phase: new → waxing → full → waning', 'Illumination: percentage of visible surface']}
+            howToRead={['Phase cycles new → waxing → full → waning over ~29.5 days', 'Illumination shows percentage of visible surface', 'Combined with other signals to shape daily echoes']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{ctx?.lunar?.phase}</Text>
-                <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% Illumination</Text>
+                <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% Illuminated</Text>
+                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                  The moon's visible portion reflects gravitational position. Waxing phases indicate increasing illumination toward full moon; waning indicates decrease toward new moon.
+                </Text>
               </View>
             }
           />
@@ -287,19 +338,21 @@ export default function FieldScreen() {
           <ExpandableCard
             icon="☀️"
             title="Solar"
-            message={shorten(ctx?.solar?.message)}
+            message={ctx?.solar?.phase || 'Day cycle active'}
+            collapsedDetail={sunsetInfo.label}
             isExpanded={expandedCards['solar']}
             onToggle={() => toggleCard('solar')}
-            chips={['current phase', 'sunset timing']}
-            howToRead={['Phase corresponds to sun position', 'Timing shows hours until next transition']}
+            chips={['phase', 'sunset timing']}
+            howToRead={['Solar phase indicates sun position: Morning (rising), Midday (highest), Afternoon (descending), Night (below horizon)', 'Sunset marks transition to evening phase', 'Used alongside lunar and coherence signals']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{ctx?.solar?.phase}</Text>
-                <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>
-                  {ctx?.solar?.time_to_sunset 
-                    ? `Sunset in ${Math.round(ctx.solar.time_to_sunset)}h` 
-                    : 'Sun cycle active'}
+                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                  The sun's position shapes the light cycle and influences circadian rhythms. Sunrise begins the brightening phase; sunset marks the transition to rest.
                 </Text>
+                <View style={[styles.divider, { backgroundColor: colors.border }]} />
+                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Next Transition</Text>
+                <Text style={[styles.expandedSub, { color: colors.text }]}>{sunsetInfo.display}</Text>
               </View>
             }
           />
@@ -312,24 +365,24 @@ export default function FieldScreen() {
           <ExpandableCard
             icon="🌐"
             title="Coherence"
-            message={ctx?.consciousness_index?.trend === 'rising' ? "Coherence levels increasing." : "Coherence levels steady."}
-            collapsedDetail={`Trend: ${ctx?.consciousness_index?.trend || 'Stable'}`}
+            message={ctx?.consciousness_index?.global_coherence && ctx.consciousness_index.global_coherence > 60 ? "Coherence stable." : "Coherence variable."}
+            collapsedDetail={`${Math.round(ctx?.consciousness_index?.global_coherence || 0)}%`}
             isExpanded={expandedCards['coherence']}
             onToggle={() => toggleCard('coherence')}
             chips={['global', 'regional', 'trend']}
-            howToRead={['Global: Earth field synchronization', 'Regional: local area patterns', 'Trend: direction of change']}
+            howToRead={['Coherence above 60% indicates global synchronization', 'Below 40% shows variable patterns', 'Combines global and regional measurements', 'Part of echo card relevance calculation']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Global Coherence</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Global</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{Math.round(ctx?.consciousness_index?.global_coherence || 0)}%</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Regional Resonance</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Regional</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{Math.round(ctx?.consciousness_index?.regional_resonance || 0)}%</Text>
                 </View>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  Coherence measures the synchronization of the Earth's magnetic field network as detected by global sensors.
+                  Coherence measures synchronization of the Earth's magnetic field as detected by global sensors. Higher values indicate more unified global patterns.
                 </Text>
               </View>
             }
@@ -338,12 +391,12 @@ export default function FieldScreen() {
           <ExpandableCard
             icon="⚡"
             title="Geomagnetic"
-            message={geoActivity === 'Active' ? "Elevated field activity." : "Calm conditions."}
-            collapsedDetail={geoActivity}
+            message={geoState.message}
+            collapsedDetail={geoState.label}
             isExpanded={expandedCards['geo']}
             onToggle={() => toggleCard('geo')}
             chips={['activity', 'kp index']}
-            howToRead={['Kp 0-3: Quiet', 'Kp 4-5: Moderate', 'Kp 6+: Storm conditions']}
+            howToRead={['Kp 0-3: Quiet conditions', 'Kp 4-5: Active / Moderate conditions', 'Kp 6+: Storm conditions', 'Affects magnetosphere and potential auroral displays']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
@@ -351,9 +404,12 @@ export default function FieldScreen() {
                   <Text style={[styles.detailValue, { color: colors.text }]}>{geoKp}</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Activity</Text>
-                  <Text style={[styles.detailValue, { color: colors.text }]}>{geoActivity}</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>State</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{geoState.label}</Text>
                 </View>
+                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                  The Kp index measures disturbance in the Earth's magnetosphere. Higher values indicate stronger geomagnetic storms from solar wind interaction.
+                </Text>
               </View>
             }
           />
@@ -366,18 +422,18 @@ export default function FieldScreen() {
           <ExpandableCard
             icon="🧬"
             title="Body"
-            message={shorten(bioRhythms?.circadian?.description)}
+            message={bioRhythms?.circadian?.phase || 'Rhythm active'}
+            collapsedDetail={bioRhythms?.ultradian_remaining ? `${bioRhythms.ultradian_remaining}m` : 'Active'}
             isExpanded={expandedCards['body']}
             onToggle={() => toggleCard('body')}
-            chips={['circadian phase', 'ultradian']}
-            howToRead={['Circadian: 24-hour biological cycle', 'Ultradian: shorter ~90-minute cycles']}
+            chips={['circadian', 'ultradian']}
+            howToRead={['Circadian: 24-hour biological clock', 'Ultradian: ~90-minute focus/energy cycles', 'Patterns derived from circadian research', 'Used to align echo timing with body readiness']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{bioRhythms?.circadian?.phase || 'Balanced'}</Text>
-                <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>
-                  {bioRhythms?.ultradian_remaining ? `${bioRhythms.ultradian_remaining}m remaining in cycle` : 'Cycle active'}
+                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                  Circadian rhythms regulate sleep-wake cycles and hormonal patterns over 24 hours. Ultradian cycles shape focus windows within the day.
                 </Text>
-                
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Current Observations</Text>
                 {(bioRhythms?.observations || bioRhythms?.recommendations)?.map((rec: string, i: number) => (
