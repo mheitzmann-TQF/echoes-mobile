@@ -350,6 +350,13 @@ export default function HomeScreen() {
           }
         });
         
+        // Add Hebrew calendar from mock data (not available from API)
+        const mockCalendars = getMockCalendars();
+        const hebrewCal = mockCalendars.find(cal => cal.id === 'hebrew');
+        if (hebrewCal) {
+          formattedCalendars.push(hebrewCal);
+        }
+        
         setCalendars(formattedCalendars);
       } else {
         setCalendars(getMockCalendars());
