@@ -366,7 +366,7 @@ export default function FieldScreen() {
             icon="🌐"
             title="Coherence"
             message={ctx?.consciousness_index?.global_coherence && ctx.consciousness_index.global_coherence > 60 ? "Coherence stable." : "Coherence variable."}
-            collapsedDetail={`${Math.round(ctx?.consciousness_index?.global_coherence || 0)}%`}
+            collapsedDetail={ctx?.consciousness_index?.global_coherence !== undefined && ctx?.consciousness_index?.global_coherence !== null ? `${Math.round(ctx.consciousness_index.global_coherence)}%` : "—"}
             isExpanded={expandedCards['coherence']}
             onToggle={() => toggleCard('coherence')}
             chips={['global', 'regional', 'trend']}
@@ -375,11 +375,11 @@ export default function FieldScreen() {
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
                   <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Global</Text>
-                  <Text style={[styles.detailValue, { color: colors.text }]}>{Math.round(ctx?.consciousness_index?.global_coherence || 0)}%</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{ctx?.consciousness_index?.global_coherence !== undefined && ctx?.consciousness_index?.global_coherence !== null ? `${Math.round(ctx.consciousness_index.global_coherence)}%` : "—"}</Text>
                 </View>
                 <View style={styles.detailRow}>
                   <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Regional</Text>
-                  <Text style={[styles.detailValue, { color: colors.text }]}>{Math.round(ctx?.consciousness_index?.regional_resonance || 0)}%</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{ctx?.consciousness_index?.regional_resonance !== undefined && ctx?.consciousness_index?.regional_resonance !== null ? `${Math.round(ctx.consciousness_index.regional_resonance)}%` : "—"}</Text>
                 </View>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
                   Coherence measures synchronization of the Earth's magnetic field as detected by global sensors. Higher values indicate more unified global patterns.
