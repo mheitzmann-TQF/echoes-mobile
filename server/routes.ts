@@ -142,7 +142,7 @@ export async function registerRoutes(
   app.get("/api/proxy/consciousness", async (req, res) => {
     try {
       const response = await fetch(
-        `${TQF_BASE_URL}/api/consciousness`,
+        `${TQF_BASE_URL}/api/consciousness/current`,
         {
           headers: { "x-api-key": TQF_API_KEY },
         }
