@@ -304,6 +304,8 @@ export default function LearnScreen() {
               calendarObj.hindu = { name: 'Hindu Panchang', date: cal.date, system: cal.system };
             } else if (cal.system === 'Islamic Hijri') {
               calendarObj.islamic = { name: 'Islamic', date: cal.date, system: cal.system };
+            } else if (cal.system === 'Hebrew Calendar') {
+              calendarObj.hebrew = { name: 'Hebrew', date: cal.date, system: cal.system };
             }
           });
           setCalendars(calendarObj);
