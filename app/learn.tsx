@@ -247,6 +247,40 @@ export default function LearnScreen() {
   const [selectedSystem, setSelectedSystem] = useState<string | null>(null);
   const [selectedLiving, setSelectedLiving] = useState<any | null>(null);
 
+  // Default living calendar items
+  const defaultLivingCalendars = [
+    {
+      id: 'seasonal',
+      title: 'Seasonal Pattern',
+      summary: 'The light is shifting as we approach the solstice threshold.',
+      why_now: 'We are 18 days from the turning point.'
+    },
+    {
+      id: 'light',
+      title: 'Light Shift',
+      summary: 'Twilight lengthens in the northern hemisphere, inviting introspection.',
+      why_now: 'Solar angle is currently at 23 degrees.'
+    }
+  ];
+
+  // Enrich living calendar data to ensure no void content
+  const enrichLivingCalendarData = (items: any[]) => {
+    return items
+      .filter(item => item) // Remove null/undefined
+      .map((item, idx) => ({
+        id: item.id || `living-${idx}`,
+        title: (item.title || item.name || '').trim() || `Seasonal Rhythm ${idx + 1}`,
+        summary: (item.summary || item.description || '').trim() || 'A natural cycle flowing through time.',
+        why_now: (item.why_now || item.relevance || '').trim() || 'Active in the current moment.'
+      }))
+      .filter((item, idx) => {
+        // Only keep items if they have non-default content OR at least the API provided something
+        const hasRealTitle = !(item.title.includes('Seasonal Rhythm'));
+        const hasRealContent = item.summary !== 'A natural cycle flowing through time.';
+        return hasRealTitle || hasRealContent;
+      });
+  };
+
   // Load initial data
   useEffect(() => {
     async function loadData() {
@@ -255,20 +289,7 @@ export default function LearnScreen() {
           api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, language)
             .catch(() => null),
           api.getLivingCalendars(language)
-            .catch(() => [
-              {
-                id: 'seasonal',
-                title: 'Seasonal Pattern',
-                summary: 'The light is shifting as we approach the solstice threshold.',
-                why_now: 'We are 18 days from the turning point.'
-              },
-              {
-                id: 'light',
-                title: 'Light Shift',
-                summary: 'Twilight lengthens in the northern hemisphere, inviting introspection.',
-                why_now: 'Solar angle is currently at 23 degrees.'
-              }
-            ])
+            .catch(() => defaultLivingCalendars)
         ]);
 
         // Convert calendar array to object format for Learn page
@@ -290,7 +311,11 @@ export default function LearnScreen() {
           setCalendars(calData);
         }
         
-        setLiving(livingData);
+        // Enrich living data to ensure content is never void
+        const enrichedLiving = Array.isArray(livingData) && livingData.length > 0 
+          ? enrichLivingCalendarData(livingData)
+          : defaultLivingCalendars;
+        setLiving(enrichedLiving);
       } finally {
         setLoading(false);
       }
