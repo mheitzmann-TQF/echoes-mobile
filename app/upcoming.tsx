@@ -158,24 +158,12 @@ function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: 
   );
 }
 
-function CountdownCard({ event }: { event: any }) {
+function EventCard({ event }: { event: any }) {
   const { colors } = useTheme();
-  return (
-    <View style={[styles.countdownCard, { backgroundColor: colors.surfaceHighlight, borderColor: colors.border }]}>
-      <View style={styles.countdownHeader}>
-        <Clock size={20} color={colors.text} />
-        <Text style={[styles.countdownTime, { color: colors.text }]}>{event.time}</Text>
-      </View>
-      <Text style={[styles.countdownTitle, { color: colors.text }]}>{event.name}</Text>
-      <Text style={[styles.countdownDesc, { color: colors.textSecondary }]}>{event.description}</Text>
-    </View>
-  );
-}
-
-function CycleEventRow({ event }: { event: any }) {
-  const eventDate = new Date(event.date);
+  
+  // Handle date formatting
+  const eventDate = event.date ? new Date(event.date) : new Date();
   const daysUntil = Math.ceil((eventDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-  const { colors } = useTheme();
   
   // Get category color
   const getCategoryColor = (cat: string) => {
@@ -189,14 +177,14 @@ function CycleEventRow({ event }: { event: any }) {
   };
   
   return (
-    <View style={styles.cycleRow}>
-      <View style={[styles.cycleDate, { backgroundColor: colors.surfaceHighlight }]}>
-        <Text style={[styles.cycleDateDay, { color: colors.text }]}>{eventDate.getDate()}</Text>
-        <Text style={[styles.cycleDateMonth, { color: colors.textSecondary }]}>{eventDate.toLocaleDateString(undefined, { month: 'short' })}</Text>
+    <View style={styles.eventRow}>
+      <View style={[styles.eventDate, { backgroundColor: colors.surfaceHighlight }]}>
+        <Text style={[styles.eventDateDay, { color: colors.text }]}>{eventDate.getDate()}</Text>
+        <Text style={[styles.eventDateMonth, { color: colors.textSecondary }]}>{eventDate.toLocaleDateString(undefined, { month: 'short' })}</Text>
       </View>
-      <View style={styles.cycleContent}>
-        <View style={styles.cycleHeader}>
-          <Text style={[styles.cycleName, { color: colors.text }]}>{event.name}</Text>
+      <View style={styles.eventContent}>
+        <View style={styles.eventHeader}>
+          <Text style={[styles.eventName, { color: colors.text }]}>{event.name}</Text>
           {event.origin && (
             <View style={[styles.originBadge, { backgroundColor: getCategoryColor(event.displayCategory) + '20' }]}>
               <Text style={[styles.originBadgeText, { color: getCategoryColor(event.displayCategory) }]}>
@@ -205,62 +193,9 @@ function CycleEventRow({ event }: { event: any }) {
             </View>
           )}
         </View>
-        <Text style={[styles.cycleDesc, { color: colors.textTertiary }]}>{event.description}</Text>
+        <Text style={[styles.eventDesc, { color: colors.textTertiary }]}>{event.description}</Text>
       </View>
-      <Text style={[styles.cycleDays, { color: colors.textSecondary }]}>{daysUntil <= 0 ? 'Today' : `${daysUntil}d`}</Text>
-    </View>
-  );
-}
-
-function SeasonCard({ event }: { event: any }) {
-  const { colors } = useTheme();
-  const eventDate = new Date(event.date);
-  const daysUntil = event.daysUntil ?? Math.ceil((eventDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-  
-  // Get icon based on category
-  const getCategoryIcon = (cat: string) => {
-    switch (cat) {
-      case 'pagan': return <Star size={20} color={colors.text} />;
-      case 'religious': return <Sparkles size={20} color={colors.text} />;
-      case 'natural': return <Leaf size={20} color={colors.text} />;
-      default: return <Globe size={20} color={colors.text} />;
-    }
-  };
-  
-  // Get category color
-  const getCategoryColor = (cat: string) => {
-    switch (cat) {
-      case 'pagan': return '#9b59b6';
-      case 'religious': return '#3498db';
-      case 'natural': return '#27ae60';
-      case 'indigenous': return '#e67e22';
-      default: return colors.accent;
-    }
-  };
-  
-  return (
-    <View style={[styles.seasonCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      <View style={styles.seasonHeader}>
-        <View style={[styles.seasonIcon, { backgroundColor: colors.surfaceHighlight }]}>
-          {getCategoryIcon(event.displayCategory)}
-        </View>
-        <View style={{ flex: 1 }}>
-          <Text style={[styles.seasonTitle, { color: colors.text }]}>{event.name}</Text>
-          <View style={styles.seasonMeta}>
-            <Text style={[styles.seasonDays, { color: colors.textSecondary }]}>
-              {daysUntil <= 0 ? 'Today' : `${daysUntil} days away`}
-            </Text>
-            {event.origin && (
-              <View style={[styles.originBadge, { backgroundColor: getCategoryColor(event.displayCategory) + '20', marginLeft: 8 }]}>
-                <Text style={[styles.originBadgeText, { color: getCategoryColor(event.displayCategory) }]}>
-                  {event.origin}
-                </Text>
-              </View>
-            )}
-          </View>
-        </View>
-      </View>
-      <Text style={[styles.seasonDesc, { color: colors.textTertiary }]}>{event.description}</Text>
+      <Text style={[styles.eventTime, { color: colors.textSecondary }]}>{daysUntil <= 0 ? 'Today' : `${daysUntil}d`}</Text>
     </View>
   );
 }
@@ -377,7 +312,7 @@ export default function UpcomingScreen() {
           <View style={styles.bandContent}>
             <Text style={[styles.bandLabel, { color: colors.textTertiary }]}>TIMING WINDOWS</Text>
             {bucketedEvents.map((event) => (
-              <CountdownCard key={event.id} event={event} />
+              <EventCard key={event.id} event={event} />
             ))}
           </View>
         )}
@@ -386,7 +321,7 @@ export default function UpcomingScreen() {
           <View style={styles.bandContent}>
             <Text style={[styles.bandLabel, { color: colors.textTertiary }]}>LUNAR & PLANETARY MILESTONES</Text>
             {bucketedEvents.map((event) => (
-              <CycleEventRow key={event.id} event={event} />
+              <EventCard key={event.id} event={event} />
             ))}
           </View>
         )}
@@ -395,7 +330,7 @@ export default function UpcomingScreen() {
           <View style={styles.bandContent}>
             <Text style={[styles.bandLabel, { color: colors.textTertiary }]}>SEASONAL TURNING POINTS</Text>
             {bucketedEvents.map((event) => (
-              <SeasonCard key={event.id} event={event} />
+              <EventCard key={event.id} event={event} />
             ))}
           </View>
         )}
@@ -500,145 +435,55 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textTransform: 'uppercase',
   },
-  // Countdown Cards (Soon)
-  countdownCard: {
-    backgroundColor: 'rgba(255,255,255,0.08)',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
-  },
-  countdownHeader: {
+  // Unified Event Cards
+  eventRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
     marginBottom: 12,
-  },
-  countdownTime: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#FFFFFF',
-  },
-  countdownTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginBottom: 6,
-  },
-  countdownDesc: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.6)',
-    lineHeight: 20,
-  },
-  // Cycle Event Rows
-  cycleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
     gap: 12,
   },
-  cycleDate: {
+  eventDate: {
     width: 56,
     backgroundColor: 'rgba(255,255,255,0.1)',
     borderRadius: 12,
     paddingVertical: 8,
     alignItems: 'center',
   },
-  cycleDateDay: {
+  eventDateDay: {
     fontSize: 20,
     fontWeight: '700',
     color: '#FFFFFF',
   },
-  cycleDateMonth: {
+  eventDateMonth: {
     fontSize: 11,
     color: 'rgba(255,255,255,0.6)',
     fontWeight: '600',
   },
-  cycleContent: {
+  eventContent: {
     flex: 1,
   },
-  cycleHeader: {
+  eventHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 4,
     gap: 8,
   },
-  cycleName: {
+  eventName: {
     fontSize: 16,
     fontWeight: '600',
     color: '#FFFFFF',
     flex: 1,
   },
-  cycleTag: {
-    backgroundColor: 'rgba(255,255,255,0.08)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  cycleTagMajor: {
-    backgroundColor: 'rgba(255,200,100,0.2)',
-  },
-  cycleTagText: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: 'rgba(255,255,255,0.7)',
-  },
-  cycleDesc: {
+  eventDesc: {
     fontSize: 13,
     color: 'rgba(255,255,255,0.5)',
     lineHeight: 18,
   },
-  cycleDays: {
+  eventTime: {
     fontSize: 12,
     fontWeight: '700',
     color: 'rgba(255,255,255,0.6)',
-  },
-  // Season Cards
-  seasonCard: {
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: 18,
-    padding: 20,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
-  },
-  seasonHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    marginBottom: 12,
-  },
-  seasonIcon: {
-    width: 44,
-    height: 44,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  seasonTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginBottom: 2,
-  },
-  seasonDays: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.5)',
-    fontWeight: '500',
-  },
-  seasonDesc: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.7)',
-    lineHeight: 22,
-    marginLeft: 58,
-  },
-  seasonMeta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
   },
   originBadge: {
     paddingHorizontal: 8,
