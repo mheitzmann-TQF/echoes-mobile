@@ -433,6 +433,7 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.4)',
     letterSpacing: 1,
     marginBottom: 16,
+    marginHorizontal: 20,
     textTransform: 'uppercase',
   },
   // Unified Event Cards

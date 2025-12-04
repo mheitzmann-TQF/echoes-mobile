@@ -539,6 +539,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 24,
+    paddingHorizontal: 20,
   },
   sectionLabel: {
     fontSize: 12,
