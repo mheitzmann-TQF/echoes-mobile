@@ -253,13 +253,7 @@ export default function LearnScreen() {
       try {
         const [calData, livingData] = await Promise.all([
           api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, language)
-            .catch(() => ({
-              gregorian: { name: "Gregorian", day: 2, month: 12, year: 2025 },
-              mayan: { name: "Mayan", tzolkin: { dayNumber: 4, dayName: "Kan", meaning: "Reptile" } },
-              chinese: { name: "Chinese", year: "Dragon", element: "Wood" },
-              hebrew: { name: "Hebrew", day: 29, month: "Kislev", year: 5785 },
-              islamic: { name: "Islamic", day: 1, month: "Jumada al-Awwal", year: 1446 }
-            })),
+            .catch(() => null),
           api.getLivingCalendars(language)
             .catch(() => [
               {
@@ -277,7 +271,25 @@ export default function LearnScreen() {
             ])
         ]);
 
-        setCalendars(calData);
+        // Convert calendar array to object format for Learn page
+        if (Array.isArray(calData)) {
+          const calendarObj: any = { gregorian: { name: 'Gregorian' } };
+          calData.forEach((cal: any) => {
+            if (cal.system === 'Mayan Tzolkin') {
+              calendarObj.mayan = { name: 'Mayan Tzolkin', date: cal.date, system: cal.system };
+            } else if (cal.system === 'Chinese Agricultural') {
+              calendarObj.chinese = { name: 'Chinese', date: cal.date, system: cal.system };
+            } else if (cal.system === 'Hindu Panchang') {
+              calendarObj.hindu = { name: 'Hindu Panchang', date: cal.date, system: cal.system };
+            } else if (cal.system === 'Islamic Hijri') {
+              calendarObj.islamic = { name: 'Islamic', date: cal.date, system: cal.system };
+            }
+          });
+          setCalendars(calendarObj);
+        } else {
+          setCalendars(calData);
+        }
+        
         setLiving(livingData);
       } finally {
         setLoading(false);
