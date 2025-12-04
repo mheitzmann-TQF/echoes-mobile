@@ -87,10 +87,10 @@ function ExpandableCard({
           {/* Expanded Content */}
           {expandedContent}
 
-          {/* How to Read Section */}
+          {/* Reading Notes Section */}
           {howToRead && (
             <View style={[styles.howToReadContainer, { backgroundColor: colors.surface }]}>
-              <Text style={[styles.subTitle, { color: colors.textSecondary }]}>How to read</Text>
+              <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Reading notes</Text>
               {howToRead.map((item, i) => (
                 <Text key={i} style={[styles.bulletPoint, { color: colors.textSecondary }]}>• {item}</Text>
               ))}
@@ -182,12 +182,12 @@ export default function FieldScreen() {
             lunar: {
               phase: 'Waxing Gibbous',
               illumination: 82,
-              message: 'A phase that favors release and integration.'
+              message: 'Moon building toward fullness.'
             },
             solar: {
               phase: 'Afternoon Light',
               time_to_sunset: 3,
-              message: 'Attention narrows; closure energy rises.'
+              message: 'Sun descending toward the horizon.'
             },
             consciousness_index: {
               global_coherence: 68,
@@ -213,13 +213,13 @@ export default function FieldScreen() {
         const mockBioRhythms = {
           circadian: {
             phase: 'Balanced',
-            description: 'Energy steady; focus aligns with action.'
+            description: 'Steady mid-cycle phase.'
           },
           ultradian_remaining: 45,
-          recommendations: [
-            'Deep work windows',
-            'Physical movement',
-            'Strategic planning'
+          observations: [
+            'Focus window active',
+            'Energy levels stable',
+            'Cycle midpoint'
           ]
         };
 
@@ -275,7 +275,7 @@ export default function FieldScreen() {
             isExpanded={expandedCards['lunar']}
             onToggle={() => toggleCard('lunar')}
             chips={['phase', 'illumination']}
-            howToRead={['Phase indicates energy type (building vs releasing)', 'Illumination shows intensity']}
+            howToRead={['Phase: new → waxing → full → waning', 'Illumination: percentage of visible surface']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{ctx?.lunar?.phase}</Text>
@@ -291,7 +291,7 @@ export default function FieldScreen() {
             isExpanded={expandedCards['solar']}
             onToggle={() => toggleCard('solar')}
             chips={['current phase', 'sunset timing']}
-            howToRead={['Solar angle determines hormonal peaks', 'Sunset marks the shift to restoration']}
+            howToRead={['Phase corresponds to sun position', 'Timing shows hours until next transition']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{ctx?.solar?.phase}</Text>
@@ -312,12 +312,12 @@ export default function FieldScreen() {
           <ExpandableCard
             icon="🌐"
             title="Coherence"
-            message={ctx?.consciousness_index?.trend === 'rising' ? "Signal clarity is increasing." : "The field holds steady."}
+            message={ctx?.consciousness_index?.trend === 'rising' ? "Coherence levels increasing." : "Coherence levels steady."}
             collapsedDetail={`Trend: ${ctx?.consciousness_index?.trend || 'Stable'}`}
             isExpanded={expandedCards['coherence']}
             onToggle={() => toggleCard('coherence')}
             chips={['global', 'regional', 'trend']}
-            howToRead={['> 60% suggests high alignment', 'Stable trends support focus', 'Rising trends aid collective action']}
+            howToRead={['Global: Earth field synchronization', 'Regional: local area patterns', 'Trend: direction of change']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
@@ -329,7 +329,7 @@ export default function FieldScreen() {
                   <Text style={[styles.detailValue, { color: colors.text }]}>{Math.round(ctx?.consciousness_index?.regional_resonance || 0)}%</Text>
                 </View>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  Coherence measures the synchronization of the Earth's magnetic field network. High coherence often correlates with collective calm.
+                  Coherence measures the synchronization of the Earth's magnetic field network as detected by global sensors.
                 </Text>
               </View>
             }
@@ -338,12 +338,12 @@ export default function FieldScreen() {
           <ExpandableCard
             icon="⚡"
             title="Geomagnetic"
-            message={geoActivity === 'Active' ? "Higher background friction." : "Low disturbance."}
+            message={geoActivity === 'Active' ? "Elevated field activity." : "Calm conditions."}
             collapsedDetail={geoActivity}
             isExpanded={expandedCards['geo']}
             onToggle={() => toggleCard('geo')}
             chips={['activity', 'kp index']}
-            howToRead={['Kp < 4: Quiet conditions', 'Kp > 5: Potential sensitivity', 'Storms may affect sleep/mood']}
+            howToRead={['Kp 0-3: Quiet', 'Kp 4-5: Moderate', 'Kp 6+: Storm conditions']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
@@ -370,7 +370,7 @@ export default function FieldScreen() {
             isExpanded={expandedCards['body']}
             onToggle={() => toggleCard('body')}
             chips={['circadian phase', 'ultradian']}
-            howToRead={['Match activity intensity to phase', 'Respect ultradian rest dips (every 90m)']}
+            howToRead={['Circadian: 24-hour biological cycle', 'Ultradian: shorter ~90-minute cycles']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{bioRhythms?.circadian?.phase || 'Balanced'}</Text>
@@ -379,8 +379,8 @@ export default function FieldScreen() {
                 </Text>
                 
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
-                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Gentle Windows</Text>
-                {bioRhythms?.recommendations?.map((rec: string, i: number) => (
+                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Current Observations</Text>
+                {(bioRhythms?.observations || bioRhythms?.recommendations)?.map((rec: string, i: number) => (
                   <Text key={i} style={[styles.bulletPoint, { color: colors.textSecondary }]}>• {rec}</Text>
                 ))}
               </View>

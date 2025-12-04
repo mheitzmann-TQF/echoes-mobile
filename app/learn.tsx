@@ -501,6 +501,56 @@ export default function LearnScreen() {
           ))}
         </View>
 
+        {/* 4. Explore Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>EXPLORE</Text>
+          
+          <View style={[styles.exploreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={styles.exploreHeader}>
+              <View style={[styles.exploreIcon, { backgroundColor: 'rgba(52, 152, 219, 0.2)' }]}>
+                <Text style={{ fontSize: 20 }}>🌍</Text>
+              </View>
+              <View style={styles.exploreContent}>
+                <Text style={[styles.exploreTitle, { color: colors.text }]}>Sacred Geography</Text>
+                <Text style={[styles.exploreOrigin, { color: '#3498db' }]}>Global Traditions</Text>
+              </View>
+            </View>
+            <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>
+              Places of spiritual significance across cultures, from sacred mountains to ceremonial sites.
+            </Text>
+          </View>
+
+          <View style={[styles.exploreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={styles.exploreHeader}>
+              <View style={[styles.exploreIcon, { backgroundColor: 'rgba(155, 89, 182, 0.2)' }]}>
+                <Text style={{ fontSize: 20 }}>📜</Text>
+              </View>
+              <View style={styles.exploreContent}>
+                <Text style={[styles.exploreTitle, { color: colors.text }]}>Oral Tradition</Text>
+                <Text style={[styles.exploreOrigin, { color: '#9b59b6' }]}>Indigenous Wisdom</Text>
+              </View>
+            </View>
+            <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>
+              Stories and teachings passed down through generations, carrying ancestral knowledge.
+            </Text>
+          </View>
+
+          <View style={[styles.exploreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={styles.exploreHeader}>
+              <View style={[styles.exploreIcon, { backgroundColor: 'rgba(46, 204, 113, 0.2)' }]}>
+                <Text style={{ fontSize: 20 }}>🌿</Text>
+              </View>
+              <View style={styles.exploreContent}>
+                <Text style={[styles.exploreTitle, { color: colors.text }]}>Seasonal Rhythms</Text>
+                <Text style={[styles.exploreOrigin, { color: '#2ecc71' }]}>Earth Cycles</Text>
+              </View>
+            </View>
+            <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>
+              Natural cycles of the year, from solstices to equinoxes, as observed across traditions.
+            </Text>
+          </View>
+        </View>
+
       </ScrollView>
 
       {/* 4. Saved Strip */}
@@ -947,5 +997,41 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: 15,
+  },
+  // Explore Section
+  exploreCard: {
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+  },
+  exploreHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    gap: 12,
+  },
+  exploreIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  exploreContent: {
+    flex: 1,
+  },
+  exploreTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  exploreOrigin: {
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  exploreDesc: {
+    fontSize: 13,
+    lineHeight: 18,
   },
 });
