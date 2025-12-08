@@ -5,6 +5,7 @@ import { useLocation } from '../lib/LocationContext';
 import { useTheme, ThemeColors } from '../lib/ThemeContext';
 import api, { DailyBundleResponse, PlanetaryData } from '../lib/api';
 import { ChevronDown, ChevronUp, Info } from 'lucide-react-native';
+import { toTitleCase } from '../lib/labelize';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -336,7 +337,7 @@ export default function FieldScreen() {
           <ExpandableCard
             icon="🌙"
             title="Lunar"
-            message={ctx?.lunar?.phase || 'Phase cycle active'}
+            message={ctx?.lunar?.phase ? toTitleCase(ctx.lunar.phase) : 'Phase cycle active'}
             collapsedDetail={`${Math.round(ctx?.lunar?.illumination || 0)}%`}
             isExpanded={expandedCards['lunar']}
             onToggle={() => toggleCard('lunar')}
@@ -344,7 +345,7 @@ export default function FieldScreen() {
             howToRead={['Phase cycles new → waxing → full → waning over ~29.5 days', 'Illumination shows percentage of visible surface', 'Combined with other signals to shape daily echoes']}
             expandedContent={
               <View style={styles.expandedDetails}>
-                <Text style={[styles.expandedValue, { color: colors.text }]}>{ctx?.lunar?.phase}</Text>
+                <Text style={[styles.expandedValue, { color: colors.text }]}>{toTitleCase(ctx?.lunar?.phase || '')}</Text>
                 <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% Illuminated</Text>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
                   The moon's visible portion reflects gravitational position. Waxing phases indicate increasing illumination toward full moon; waning indicates decrease toward new moon.
@@ -364,7 +365,7 @@ export default function FieldScreen() {
             howToRead={['Solar phase indicates sun position: Morning (rising), Midday (highest), Afternoon (descending), Night (below horizon)', 'Sunset marks transition to evening phase', 'Used alongside lunar and coherence signals']}
             expandedContent={
               <View style={styles.expandedDetails}>
-                <Text style={[styles.expandedValue, { color: colors.text }]}>{ctx?.solar?.phase}</Text>
+                <Text style={[styles.expandedValue, { color: colors.text }]}>{toTitleCase(ctx?.solar?.phase || '')}</Text>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
                   The sun's position shapes the light cycle and influences circadian rhythms. Sunrise begins the brightening phase; sunset marks the transition to rest.
                 </Text>
