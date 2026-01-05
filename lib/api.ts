@@ -264,6 +264,10 @@ class EchoesAPI {
   }
 
   async getCulturalContent(limit: number = 5, lang: string = 'en'): Promise<any[]> {
+    // Import at top of file causes circular dependency issues, so we use inline definition
+    // that mirrors the centralized culturalFilter.ts module
+    const { filterCulturalContent, getCuratedArtifact } = require('./culturalFilter');
+    
     try {
       const url = `/api/proxy/cultural/content/high-alignment?limit=${limit}&lang=${lang}`;
       console.log('📡 Fetching cultural content from:', url);
@@ -277,10 +281,10 @@ class EchoesAPI {
       }
       
       const data = await response.json();
-      return Array.isArray(data) ? data : [];
+      return filterCulturalContent(data);
     } catch (error) {
       console.error('❌ Cultural content error:', error);
-      return [];
+      return [getCuratedArtifact()];
     }
   }
 

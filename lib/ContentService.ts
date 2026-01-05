@@ -32,6 +32,103 @@ const FALLBACK_CULTURAL_OFFERING = {
   type: 'cultural_offering',
 };
 
+// Curated cultural artifacts for fallback
+const CURATED_ARTIFACTS = [
+  {
+    id: 'artifact-kintsugi',
+    title: 'The Art of Kintsugi',
+    subtitle: 'Japanese tradition of repairing broken pottery with gold, celebrating imperfection as beauty.',
+    origin: 'Japanese',
+    category_label: 'Wisdom',
+    type: 'cultural_artifact',
+  },
+  {
+    id: 'artifact-hygge',
+    title: 'Hygge',
+    subtitle: 'Danish concept of cozy contentment and well-being through simple pleasures.',
+    origin: 'Nordic',
+    category_label: 'Wisdom',
+    type: 'cultural_artifact',
+  },
+  {
+    id: 'artifact-ubuntu',
+    title: 'Ubuntu Philosophy',
+    subtitle: '"I am because we are" - the interconnectedness of humanity in Southern African thought.',
+    origin: 'African',
+    category_label: 'Wisdom',
+    type: 'cultural_artifact',
+  },
+  {
+    id: 'artifact-wabi-sabi',
+    title: 'Wabi-Sabi',
+    subtitle: 'Finding beauty in impermanence and incompleteness, a cornerstone of Japanese aesthetics.',
+    origin: 'Japanese',
+    category_label: 'Wisdom',
+    type: 'cultural_artifact',
+  },
+  {
+    id: 'artifact-ikigai',
+    title: 'Ikigai',
+    subtitle: 'The Japanese concept of a reason for being, the intersection of passion and purpose.',
+    origin: 'Japanese',
+    category_label: 'Wisdom',
+    type: 'cultural_artifact',
+  },
+  {
+    id: 'artifact-lagom',
+    title: 'Lagom',
+    subtitle: 'Swedish philosophy of "just enough" - balance and moderation in all things.',
+    origin: 'Nordic',
+    category_label: 'Wisdom',
+    type: 'cultural_artifact',
+  },
+  {
+    id: 'artifact-forest-bathing',
+    title: 'Shinrin-yoku',
+    subtitle: 'Japanese practice of forest bathing, connecting with nature for healing and clarity.',
+    origin: 'Japanese',
+    category_label: 'Wisdom',
+    type: 'cultural_artifact',
+  },
+];
+
+// Keywords that indicate news/political content (should be filtered out)
+const NEWS_KEYWORDS = [
+  'trump', 'biden', 'president', 'government', 'shutdown', 'congress',
+  'election', 'vote', 'politics', 'politician', 'senate', 'house',
+  'democrat', 'republican', 'party', 'breaking', 'update', 'news',
+  'scandal', 'investigation', 'lawsuit', 'court', 'judge', 'ruling',
+  'war', 'military', 'attack', 'strike', 'conflict', 'crisis',
+  'stock', 'market', 'economy', 'inflation', 'recession', 'fed',
+];
+
+/**
+ * Check if content appears to be news/political rather than cultural wisdom
+ */
+function isNewsContent(item: any): boolean {
+  const textToCheck = [
+    item.title || '',
+    item.subtitle || '',
+    item.description || '',
+    item.message || '',
+    item.content || '',
+  ].join(' ').toLowerCase();
+  
+  return NEWS_KEYWORDS.some(keyword => textToCheck.includes(keyword));
+}
+
+/**
+ * Get a curated artifact based on day rotation
+ */
+function getCuratedArtifact(): any {
+  const dayOfYear = Math.floor(
+    (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 
+    (1000 * 60 * 60 * 24)
+  );
+  const index = dayOfYear % CURATED_ARTIFACTS.length;
+  return CURATED_ARTIFACTS[index];
+}
+
 const FALLBACK_CONSCIOUSNESS_EVENTS = [
   {
     id: 'winter-solstice',
@@ -318,12 +415,13 @@ class ContentService {
   
   /**
    * Get cultural offering / artifact of the day
+   * Filters out news/political content and falls back to curated artifacts
    */
   async getCulturalOffering(
-    limit: number = 1,
+    limit: number = 5,
     lang: string = 'en'
   ): Promise<DisplayItem | null> {
-    const cacheKey = `cultural-offering-${limit}-${lang}`;
+    const cacheKey = `cultural-offering-${lang}`;
     const cached = getFromCache<DisplayItem>(cacheKey);
     if (cached) return cached;
     
@@ -336,16 +434,32 @@ class ContentService {
       const data = await response.json();
       
       if (Array.isArray(data) && data.length > 0) {
-        const labeled = labelize(data[0]);
-        setCache(cacheKey, labeled);
-        return labeled;
+        // Filter out news/political content
+        const culturalItems = data.filter((item: any) => !isNewsContent(item));
+        
+        if (culturalItems.length > 0) {
+          const labeled = labelize(culturalItems[0]);
+          // Clean the tone of the content
+          if (labeled.subtitle) {
+            labeled.subtitle = cleanTone(labeled.subtitle);
+          }
+          setCache(cacheKey, labeled);
+          return labeled;
+        }
+        
+        // All items were news - use curated artifact instead
+        console.log('ContentService: API returned news content, using curated artifact');
       }
       
-      // Return fallback
-      return labelize(FALLBACK_CULTURAL_OFFERING);
+      // Return curated artifact (rotates daily)
+      const curated = getCuratedArtifact();
+      const labeled = labelize(curated);
+      setCache(cacheKey, labeled);
+      return labeled;
     } catch (error) {
       console.error('ContentService.getCulturalOffering error:', error);
-      return labelize(FALLBACK_CULTURAL_OFFERING);
+      // Return curated artifact on error
+      return labelize(getCuratedArtifact());
     }
   }
   
