@@ -1,11 +1,16 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const CACHE_KEY = 'echoes_cookie_cache';
 
 interface CachedCookie {
   text: string;
   date: string;
   expiresAt: number;
+}
+
+function getStorage(): Storage | null {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    return window.localStorage;
+  }
+  return null;
 }
 
 class CookieService {
@@ -17,11 +22,14 @@ class CookieService {
     return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
   }
 
-  private async loadFromStorage(): Promise<CachedCookie | null> {
+  private loadFromStorage(): CachedCookie | null {
     try {
-      const stored = await AsyncStorage.getItem(CACHE_KEY);
-      if (stored) {
-        return JSON.parse(stored);
+      const storage = getStorage();
+      if (storage) {
+        const stored = storage.getItem(CACHE_KEY);
+        if (stored) {
+          return JSON.parse(stored);
+        }
       }
     } catch {
       console.log('Cookie storage read failed, using network');
@@ -29,9 +37,12 @@ class CookieService {
     return null;
   }
 
-  private async saveToStorage(cookie: CachedCookie): Promise<void> {
+  private saveToStorage(cookie: CachedCookie): void {
     try {
-      await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(cookie));
+      const storage = getStorage();
+      if (storage) {
+        storage.setItem(CACHE_KEY, JSON.stringify(cookie));
+      }
     } catch {
       console.log('Cookie storage write failed');
     }
@@ -47,7 +58,7 @@ class CookieService {
 
     if (!this.initialized) {
       this.initialized = true;
-      const stored = await this.loadFromStorage();
+      const stored = this.loadFromStorage();
       if (stored && stored.date === todayKey && stored.expiresAt > now) {
         this.memoryCache = stored;
         return stored.text;
@@ -74,7 +85,7 @@ class CookieService {
         };
         
         this.memoryCache = cookie;
-        await this.saveToStorage(cookie);
+        this.saveToStorage(cookie);
         
         return data.cookie;
       }
