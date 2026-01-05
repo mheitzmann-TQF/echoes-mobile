@@ -126,6 +126,12 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
     }
   };
 
+  const handleUnsplashPress = () => {
+    Linking.openURL('https://unsplash.com');
+  };
+
+  const isUnsplashPhoto = photo.photographerUrl?.includes('unsplash.com');
+
   return (
     <View style={photoStyles.container}>
       <View style={[photoStyles.imageWrapper, { backgroundColor: colors.surface }]}>
@@ -141,13 +147,34 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           onLoad={() => setImageLoaded(true)}
         />
       </View>
-      {photo.photographer && (
-        <TouchableOpacity onPress={handlePhotographerPress} disabled={!photo.photographerUrl}>
-          <Text style={[photoStyles.credit, { color: colors.textTertiary }]}>
-            Photo by {photo.photographer}
+      <View style={photoStyles.creditContainer}>
+        <Text style={[photoStyles.credit, { color: colors.textTertiary }]}>
+          Photo by{' '}
+        </Text>
+        {photo.photographer ? (
+          <>
+            <TouchableOpacity onPress={handlePhotographerPress} disabled={!photo.photographerUrl}>
+              <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
+                {photo.photographer}
+              </Text>
+            </TouchableOpacity>
+            {isUnsplashPhoto && (
+              <>
+                <Text style={[photoStyles.credit, { color: colors.textTertiary }]}> on </Text>
+                <TouchableOpacity onPress={handleUnsplashPress}>
+                  <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
+                    Unsplash
+                  </Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </>
+        ) : (
+          <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
+            The Quiet Frame
           </Text>
-        </TouchableOpacity>
-      )}
+        )}
+      </View>
     </View>
   );
 }
@@ -172,10 +199,19 @@ const photoStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  creditContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 8,
+    flexWrap: 'wrap',
+  },
   credit: {
     fontSize: 11,
-    marginTop: 8,
-    textAlign: 'center',
+  },
+  creditLink: {
+    fontSize: 11,
+    textDecorationLine: 'underline',
   },
 });
 
