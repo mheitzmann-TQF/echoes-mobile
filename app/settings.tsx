@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal, Image, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState } from 'react';
@@ -180,6 +180,29 @@ export default function SettingsScreen() {
           <Text style={[styles.infoText, { color: colors.textSecondary }]}>No accounts. Preferences stored on-device.</Text>
         </View>
 
+        {/* About Section */}
+        <View style={[styles.aboutSection, { borderColor: colors.border }]}>
+          <Image
+            source={require('../assets/images/tqf-logo-round.png')}
+            style={[
+              styles.aboutLogo,
+              { tintColor: theme === 'dark' ? '#FFFFFF' : '#000000' }
+            ]}
+            resizeMode="contain"
+          />
+          <Text style={[styles.aboutText, { color: colors.textTertiary }]}>
+            Part of
+          </Text>
+          <TouchableOpacity onPress={() => Linking.openURL('https://thequietframe.com')}>
+            <Text style={[styles.aboutLink, { color: colors.textSecondary }]}>
+              The Quiet Frame
+            </Text>
+          </TouchableOpacity>
+          <Text style={[styles.versionText, { color: colors.textTertiary }]}>
+            Echoes v1.0
+          </Text>
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -354,5 +377,30 @@ const styles = StyleSheet.create({
   modalCloseText: {
     fontSize: 16,
     fontWeight: '600',
+  },
+  // About Section
+  aboutSection: {
+    alignItems: 'center',
+    paddingVertical: 40,
+    marginTop: 20,
+    borderTopWidth: 1,
+  },
+  aboutLogo: {
+    width: 48,
+    height: 48,
+    marginBottom: 16,
+  },
+  aboutText: {
+    fontSize: 12,
+    marginBottom: 4,
+  },
+  aboutLink: {
+    fontSize: 14,
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+    marginBottom: 16,
+  },
+  versionText: {
+    fontSize: 11,
   },
 });

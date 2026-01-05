@@ -1,9 +1,10 @@
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image, Animated } from 'react-native';
 import { Svg, Path, Circle, Rect, Line } from 'react-native-svg';
 import { LocationProvider } from '../lib/LocationContext';
 import { ThemeProvider, useTheme } from '../lib/ThemeContext';
+import { useState, useEffect, useRef } from 'react';
 
 function TodayIcon({ color }: { color: string }) {
   return (
@@ -51,8 +52,52 @@ function SettingsIcon({ color }: { color: string }) {
   );
 }
 
+function SplashScreen({ onFinish }: { onFinish: () => void }) {
+  const { theme, colors } = useTheme();
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Fade in
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start(() => {
+      // Hold for 1.5 seconds, then fade out
+      setTimeout(() => {
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }).start(() => {
+          onFinish();
+        });
+      }, 1500);
+    });
+  }, []);
+
+  return (
+    <View style={[styles.splashContainer, { backgroundColor: colors.background }]}>
+      <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+      <Animated.Image
+        source={require('../assets/images/tqf-logo-round.png')}
+        style={[
+          styles.splashLogo,
+          { opacity: fadeAnim, tintColor: theme === 'dark' ? '#FFFFFF' : '#000000' }
+        ]}
+        resizeMode="contain"
+      />
+    </View>
+  );
+}
+
 function ThemedApp() {
   const { theme, colors } = useTheme();
+  const [showSplash, setShowSplash] = useState(true);
+
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
   
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -136,5 +181,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
+  },
+  splashContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  splashLogo: {
+    width: 120,
+    height: 120,
   },
 });
