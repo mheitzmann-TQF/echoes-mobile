@@ -1,9 +1,7 @@
-import { ExpoRequest, ExpoResponse } from 'expo-router/server';
-
 const TQF_API_KEY = process.env.TQF_MOBILE_API_KEY || '';
 const TQF_BASE_URL = 'https://source.thequietframe.com';
 
-export async function GET(request: ExpoRequest) {
+export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
     const limit = url.searchParams.get('limit') || '5';
@@ -17,8 +15,8 @@ export async function GET(request: ExpoRequest) {
     );
     
     const data = await response.json();
-    return ExpoResponse.json(data);
+    return Response.json(data);
   } catch (error) {
-    return ExpoResponse.json({ error: 'Failed to fetch cultural content' }, { status: 500 });
+    return Response.json({ error: 'Failed to fetch cultural content' }, { status: 500 });
   }
 }
