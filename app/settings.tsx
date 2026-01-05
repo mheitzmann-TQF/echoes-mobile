@@ -184,10 +184,7 @@ export default function SettingsScreen() {
         <View style={[styles.aboutSection, { borderColor: colors.border }]}>
           <Image
             source={require('../assets/images/tqf-logo-round.png')}
-            style={[
-              styles.aboutLogo,
-              { tintColor: theme === 'dark' ? '#FFFFFF' : '#000000' }
-            ]}
+            style={styles.aboutLogo}
             resizeMode="contain"
           />
           <Text style={[styles.aboutText, { color: colors.textTertiary }]}>

@@ -83,7 +83,7 @@ function SplashScreen({ onFinish }: { onFinish: () => void }) {
         source={require('../assets/images/tqf-logo-round.png')}
         style={[
           styles.splashLogo,
-          { opacity: fadeAnim, tintColor: theme === 'dark' ? '#FFFFFF' : '#000000' }
+          { opacity: fadeAnim }
         ]}
         resizeMode="contain"
       />
