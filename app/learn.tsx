@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import api from '../lib/api';
-import { Bookmark, X, ArrowRight, ChevronRight, BookOpen } from 'lucide-react-native';
+import { cookieService } from '../lib/CookieService';
+import { Bookmark, X, ArrowRight, ChevronRight, BookOpen, Sparkles } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -246,6 +247,10 @@ export default function LearnScreen() {
   // Detail Modal State
   const [selectedSystem, setSelectedSystem] = useState<string | null>(null);
   const [selectedLiving, setSelectedLiving] = useState<any | null>(null);
+  
+  // Cookie State
+  const [cookie, setCookie] = useState<string | null>(null);
+  const [cookieLoading, setCookieLoading] = useState(true);
 
   // Default living calendar items
   const defaultLivingCalendars = [
@@ -380,6 +385,22 @@ export default function LearnScreen() {
     }
     loadCulture();
   }, [language]);
+
+  // Load cookie
+  useEffect(() => {
+    async function loadCookie() {
+      setCookieLoading(true);
+      try {
+        const text = await cookieService.getCookie();
+        setCookie(text);
+      } catch {
+        setCookie('The echo outlives the voice that made it.');
+      } finally {
+        setCookieLoading(false);
+      }
+    }
+    loadCookie();
+  }, []);
 
   const handleRefreshCulture = async () => {
     const now = Date.now();
@@ -592,6 +613,37 @@ export default function LearnScreen() {
             <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>
               Natural cycles of the year, from solstices to equinoxes, as observed across traditions.
             </Text>
+          </View>
+        </View>
+
+        {/* 5. The Cookie */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>THE COOKIE</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>A fictional reflection for quiet contemplation</Text>
+          
+          <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={styles.cookieHeader}>
+              <View style={[styles.cookieIcon, { backgroundColor: 'rgba(241, 196, 15, 0.15)' }]}>
+                <Sparkles size={20} color="#f1c40f" />
+              </View>
+              <Text style={[styles.cookieLabel, { color: colors.textTertiary }]}>Today's Cookie</Text>
+            </View>
+            
+            {cookieLoading ? (
+              <View style={styles.cookieTextContainer}>
+                <SkeletonCard style={{ width: '100%', height: 24, borderRadius: 8 }} />
+              </View>
+            ) : (
+              <View style={styles.cookieTextContainer}>
+                <Text style={[styles.cookieText, { color: colors.text }]}>"{cookie}"</Text>
+              </View>
+            )}
+            
+            <View style={[styles.cookieFooter, { borderTopColor: colors.border }]}>
+              <Text style={[styles.cookieDisclaimer, { color: colors.textTertiary }]}>
+                This is fictional content generated for reflection, not guidance.
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -1102,5 +1154,50 @@ const styles = StyleSheet.create({
   exploreDesc: {
     fontSize: 13,
     lineHeight: 18,
+  },
+  // Cookie Section
+  cookieCard: {
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+  },
+  cookieHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    gap: 10,
+  },
+  cookieIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cookieLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  cookieTextContainer: {
+    paddingVertical: 8,
+  },
+  cookieText: {
+    fontSize: 18,
+    fontWeight: '500',
+    fontStyle: 'italic',
+    lineHeight: 28,
+    textAlign: 'center',
+  },
+  cookieFooter: {
+    marginTop: 16,
+    paddingTop: 12,
+    borderTopWidth: 1,
+  },
+  cookieDisclaimer: {
+    fontSize: 11,
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });
