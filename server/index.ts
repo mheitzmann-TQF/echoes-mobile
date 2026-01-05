@@ -77,46 +77,48 @@ app.use((req, res, next) => {
   } else {
     // In development, proxy all non-API requests to Expo Metro bundler on port 8081
     const METRO_PORT = 8081;
+
     const metroProxy = createProxyMiddleware({
       target: `http://localhost:${METRO_PORT}`,
       changeOrigin: true,
       ws: true,
       on: {
         error: (err: Error, _req: any, res: any) => {
-          log(`Proxy error: ${err.message} - Is Expo Metro running on port ${METRO_PORT}?`, 'proxy');
+          log(
+            `Proxy error: ${err.message} - Is Expo Metro running on port ${METRO_PORT}?`,
+            "proxy",
+          );
           if (res && !res.headersSent) {
-            res.writeHead(503, { 'Content-Type': 'text/plain' });
-            res.end(`Expo Metro not available. Run 'expo start --port ${METRO_PORT}' first.`);
+            res.writeHead(503, { "Content-Type": "text/plain" });
+            res.end(
+              `Expo Metro not available. Run 'expo start --port ${METRO_PORT}' first.`,
+            );
           }
-        }
-      }
+        },
+      },
     });
-    
-    app.use('/', metroProxy);
-    
-    // Handle WebSocket upgrades for Metro's hot reload
-    httpServer.on('upgrade', (req, socket, head) => {
+
+    app.use("/", metroProxy);
+
+    // Handle WebSocket upgrades for Metro hot reload
+    httpServer.on("upgrade", (req, socket, head) => {
       if (metroProxy.upgrade) {
         metroProxy.upgrade(req, socket as any, head);
       }
     });
-    
+
     log(`Proxying frontend requests to Expo Metro on port ${METRO_PORT}`);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || "5000", 10);
-  httpServer.listen(
-    {
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    },
-    () => {
-      log(`serving on port ${port}`);
-    },
-  );
+  // Default to 5050 locally to avoid clashing with Expo web on 5000.
+  // Replit / prod will provide PORT via environment.
+  const port = parseInt(process.env.PORT || "5050", 10);
+
+  // Default to loopback for local dev.
+  // Replit / prod can override with HOST=0.0.0.0
+  const host = process.env.HOST || "127.0.0.1";
+
+  httpServer.listen(port, host, () => {
+    log(`serving on http://${host}:${port}`);
+  });
 })();
