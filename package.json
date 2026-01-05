@@ -5,14 +5,16 @@
   "type": "module",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "dev": "expo start --web --port 5000",
     "dev:client": "expo start --web --port 5000 & expo start --port 8081 --tunnel",
     "build": "tsx script/build.ts",
     "check": "tsc",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "server": "PORT=5050 tsx server/index.ts",
+    "dev:local": "concurrently -n SERVER,MOBILE \"npm run server\" \"expo start --dev-client\""
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
