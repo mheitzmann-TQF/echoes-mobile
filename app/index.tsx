@@ -6,16 +6,23 @@ import {
   ScrollView,
   RefreshControl,
   ActivityIndicator,
+  Image,
+  Dimensions,
+  Linking,
+  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
 import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
 import contentService from '../lib/ContentService';
+import { getDailyPhoto } from '../lib/PhotoService';
 import { cleanTone, formatOrigin, getCategoryLabel } from '../lib/labelize';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import { Sparkles } from 'lucide-react-native';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 // Components
 import Hero from '../components/Hero';
@@ -103,6 +110,75 @@ const liveTradStyles = StyleSheet.create({
   },
 });
 
+interface DailyPhotoData {
+  url: string;
+  photographer?: string;
+  photographerUrl?: string;
+}
+
+function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
+  const { colors } = useTheme();
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handlePhotographerPress = () => {
+    if (photo.photographerUrl) {
+      Linking.openURL(photo.photographerUrl);
+    }
+  };
+
+  return (
+    <View style={photoStyles.container}>
+      <View style={[photoStyles.imageWrapper, { backgroundColor: colors.surface }]}>
+        {!imageLoaded && (
+          <View style={photoStyles.placeholder}>
+            <ActivityIndicator size="small" color={colors.textSecondary} />
+          </View>
+        )}
+        <Image
+          source={{ uri: photo.url }}
+          style={[photoStyles.image, !imageLoaded && { opacity: 0 }]}
+          resizeMode="cover"
+          onLoad={() => setImageLoaded(true)}
+        />
+      </View>
+      {photo.photographer && (
+        <TouchableOpacity onPress={handlePhotographerPress} disabled={!photo.photographerUrl}>
+          <Text style={[photoStyles.credit, { color: colors.textTertiary }]}>
+            Photo by {photo.photographer}
+          </Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+}
+
+const photoStyles = StyleSheet.create({
+  container: {
+    marginHorizontal: 20,
+    marginBottom: 24,
+  },
+  imageWrapper: {
+    width: '100%',
+    aspectRatio: 16 / 9,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  placeholder: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  credit: {
+    fontSize: 11,
+    marginTop: 8,
+    textAlign: 'center',
+  },
+});
+
 export default function HomeScreen() {
   const router = useRouter();
   const { locationName, coordinates, timezone, language } = useLocation();
@@ -111,6 +187,7 @@ export default function HomeScreen() {
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
   const [livingTradition, setLivingTradition] = useState<LivingTraditionData | null>(null);
+  const [dailyPhoto, setDailyPhoto] = useState<DailyPhotoData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -247,15 +324,20 @@ export default function HomeScreen() {
         setTimeout(() => reject(new Error('API timeout')), 15000)
       );
 
-      // Fetch Bundle + Calendars + Living Tradition
-      const [bundleData, calendarsData, livingData] = await Promise.all([
+      // Fetch Bundle + Calendars + Living Tradition + Photo
+      const [bundleData, calendarsData, livingData, photoData] = await Promise.all([
         Promise.race([
           api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone),
           timeoutPromise,
         ]) as Promise<DailyBundleResponse>,
         api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, language).catch(() => null),
         contentService.getLivingCalendarToday(coordinates.lat, coordinates.lng, timezone, language).catch(() => null),
+        getDailyPhoto().catch(() => null),
       ]);
+      
+      if (photoData) {
+        setDailyPhoto(photoData);
+      }
 
       // Process Bundle
       if (bundleData.success && bundleData.data) {
@@ -368,6 +450,16 @@ export default function HomeScreen() {
       setEchoes(getMockEchoes());
       setCalendars(getMockCalendars());
       setLivingTradition(getMockLivingTradition());
+      
+      // Still try to fetch photo independently
+      try {
+        const fallbackPhoto = await getDailyPhoto();
+        if (fallbackPhoto) {
+          setDailyPhoto(fallbackPhoto);
+        }
+      } catch (photoError) {
+        console.log('Photo fetch also failed, skipping');
+      }
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -434,6 +526,10 @@ export default function HomeScreen() {
 
           {livingTradition && (
             <LivingTraditionCard data={livingTradition} />
+          )}
+
+          {dailyPhoto && (
+            <PhotoOfTheDay photo={dailyPhoto} />
           )}
 
           <EchoStack 
