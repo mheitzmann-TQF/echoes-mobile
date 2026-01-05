@@ -1,4 +1,3 @@
-# Expo / React Native
 node_modules/
 .expo/
 dist/
@@ -19,10 +18,6 @@ yarn-error.log*
 # iOS / Android (generated)
 ios/
 android/
-
-# Replit / local state
-.local/
-.replit/
 
 # Replit / local state
 .local/
