@@ -5,7 +5,7 @@ import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import api from '../lib/api';
 import { cookieService } from '../lib/CookieService';
-import { Bookmark, X, ArrowRight, ChevronRight, BookOpen, Sparkles } from 'lucide-react-native';
+import { Bookmark, X, ArrowRight, ChevronRight, BookOpen, Sparkles, Calendar } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -128,13 +128,16 @@ function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: 
         ]}
       >
         <View>
-          <View style={styles.systemHeader}>
-            <Text style={[styles.systemName, { color: colors.text }]}>{name}</Text>
+          <View style={styles.systemCardHeader}>
+            <View style={[styles.systemIcon, { backgroundColor: 'rgba(155, 89, 182, 0.15)' }]}>
+              <Calendar size={18} color="#9b59b6" />
+            </View>
+            <Text style={[styles.systemLabel, { color: colors.textTertiary }]}>{name.toUpperCase()}</Text>
             <View style={[styles.systemTypeTag, { backgroundColor: colors.surfaceHighlight }]}>
               <Text style={[styles.systemTypeText, { color: colors.textSecondary }]}>{type}</Text>
             </View>
           </View>
-          <Text style={[styles.systemExplainer, { color: colors.textSecondary }]}>{explainer}</Text>
+          <Text style={[styles.systemExplainer, { color: colors.textSecondary, marginTop: 16 }]}>{explainer}</Text>
         </View>
         
         <View style={styles.rotateCue}>
@@ -627,9 +630,9 @@ export default function LearnScreen() {
         </View>
 
         {/* 5. Calendar Systems (static reference) */}
-        <View style={styles.section}>
+        <View style={[styles.section, { marginBottom: 12 }]}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Traditional ways of measuring time</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary, marginBottom: 0 }]}>Traditional ways of measuring time</Text>
         </View>
         
         <View style={styles.carouselContainer}>
@@ -826,17 +829,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.05)',
   },
-  systemHeader: {
+  systemCardHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 12,
+    alignItems: 'center',
+    gap: 10,
   },
-  systemName: {
-    fontSize: 24,
+  systemIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  systemLabel: {
+    fontSize: 13,
     fontWeight: '600',
-    color: '#FFFFFF',
-    textTransform: 'capitalize',
+    letterSpacing: 0.5,
+    flex: 1,
   },
   systemTypeTag: {
     backgroundColor: 'rgba(255,255,255,0.1)',
