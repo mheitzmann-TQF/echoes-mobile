@@ -22,6 +22,19 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH - 40;
 const CARD_HEIGHT = 420;
 
+const MAX_TRANSLATE_X = 300;
+const MAX_ROTATION = 15;
+
+const clamp = (value: number, min: number, max: number): number => {
+  'worklet';
+  return Math.max(min, Math.min(max, value));
+};
+
+const safeNumber = (value: number, fallback: number = 0): number => {
+  'worklet';
+  return Number.isFinite(value) ? value : fallback;
+};
+
 interface EchoCardProps {
   echo: {
     id: string;
@@ -135,17 +148,20 @@ export default function EchoCard({
       }
     })
     .onUpdate((event) => {
+      const safeTranslationX = safeNumber(event.translationX, 0);
+      const clampedX = clamp(safeTranslationX, -MAX_TRANSLATE_X, MAX_TRANSLATE_X);
+      
       if (DEBUG_GESTURES) {
         runOnJS(gestureDebug)('UPDATE', {
           translationX: event.translationX,
+          safeTranslationX,
+          clampedX,
           translationY: event.translationY,
           velocityX: event.velocityX,
           velocityY: event.velocityY,
-          absoluteX: event.absoluteX,
-          absoluteY: event.absoluteY,
         });
       }
-      translateX.value = event.translationX;
+      translateX.value = clampedX;
     })
     .onEnd((event) => {
       if (DEBUG_GESTURES) {
@@ -173,54 +189,66 @@ export default function EchoCard({
     });
 
   const animatedStyle = useAnimatedStyle(() => {
+    const safeIndex = safeNumber(index, 0);
+    
     const scale = interpolate(
-      index,
+      safeIndex,
       [0, 1, 2],
       [1, 0.95, 0.9],
       Extrapolation.CLAMP
     );
 
     const translateY = interpolate(
-      index,
+      safeIndex,
       [0, 1, 2],
       [0, 20, 40],
       Extrapolation.CLAMP
     );
 
     const opacity = interpolate(
-      index,
+      safeIndex,
       [0, 1, 2, 3],
       [1, 0.8, 0.6, 0],
       Extrapolation.CLAMP
     );
 
+    const safeTranslateX = safeNumber(translateX.value, 0);
+    const clampedTranslateX = clamp(safeTranslateX, -MAX_TRANSLATE_X, MAX_TRANSLATE_X);
+    
     const rotate = interpolate(
-      translateX.value,
-      [-200, 0, 200],
-      [-15, 0, 15],
+      clampedTranslateX,
+      [-MAX_TRANSLATE_X, 0, MAX_TRANSLATE_X],
+      [-MAX_ROTATION, 0, MAX_ROTATION],
       Extrapolation.CLAMP
     );
 
-    if (DEBUG_GESTURES && isActive && translateX.value !== 0) {
+    const safeScale = safeNumber(scale, 1);
+    const safeTranslateY = safeNumber(translateY, 0);
+    const safeOpacity = safeNumber(opacity, 1);
+    const safeRotate = safeNumber(rotate, 0);
+    const finalTranslateX = isActive ? clampedTranslateX : 0;
+
+    if (DEBUG_GESTURES && isActive && clampedTranslateX !== 0) {
       runOnJS(gestureDebug)('ANIMATED_STYLE', {
-        index,
-        translateXValue: translateX.value,
-        scale,
-        translateY,
-        opacity,
-        rotate,
+        index: safeIndex,
+        rawTranslateX: translateX.value,
+        clampedTranslateX,
+        scale: safeScale,
+        translateY: safeTranslateY,
+        opacity: safeOpacity,
+        rotate: safeRotate,
       });
     }
 
     return {
       transform: [
-        { translateX: isActive ? translateX.value : 0 },
-        { translateY },
-        { scale },
-        { rotate: `${rotate}deg` },
+        { translateX: safeNumber(finalTranslateX, 0) },
+        { translateY: safeTranslateY },
+        { scale: safeScale },
+        { rotate: `${safeRotate}deg` },
       ],
-      opacity,
-      zIndex: totalCards - index,
+      opacity: safeOpacity,
+      zIndex: totalCards - safeIndex,
     };
   });
 
