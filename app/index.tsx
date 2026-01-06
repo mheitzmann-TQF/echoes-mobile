@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
+import { format } from 'date-fns';
 import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
 import contentService from '../lib/ContentService';
 import { getDailyPhoto } from '../lib/PhotoService';
@@ -339,7 +340,7 @@ export default function HomeScreen() {
   };
 
   const getMockCalendars = () => [
-    { id: 'gregorian', name: 'Gregorian', date: new Date().toLocaleDateString(), type: 'Civil' },
+    { id: 'gregorian', name: 'Gregorian', date: format(new Date(), 'd MMM yy'), type: 'Civil' },
     { id: 'mayan', name: 'Mayan Tzolkin', date: '7 Manik', type: 'Sacred' },
     { id: 'chinese', name: 'Chinese', date: 'Month 10 · Dragon', type: 'Lunisolar' },
     { id: 'hebrew', name: 'Hebrew', date: '20 Kislev', type: 'Lunisolar' },
@@ -433,7 +434,7 @@ export default function HomeScreen() {
       // Process Calendars
       if (calendarsData && Array.isArray(calendarsData)) {
         const formattedCalendars = [
-          { id: 'gregorian', name: 'Gregorian', date: new Date().toLocaleDateString(), type: 'Civil' },
+          { id: 'gregorian', name: 'Gregorian', date: format(new Date(), 'd MMM yy'), type: 'Civil' },
         ];
         
         calendarsData.forEach((cal: any) => {
