@@ -321,8 +321,9 @@ export default function LearnScreen() {
         // Enrich living data to ensure content is never void
         const enrichedLiving = Array.isArray(livingData) && livingData.length > 0 
           ? enrichLivingCalendarData(livingData)
-          : defaultLivingCalendars;
-        setLiving(enrichedLiving);
+          : [];
+        // Always show content - use defaults if enriched is empty
+        setLiving(enrichedLiving.length > 0 ? enrichedLiving : defaultLivingCalendars);
       } finally {
         setLoading(false);
       }
@@ -454,15 +455,11 @@ export default function LearnScreen() {
             <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
           </View>
           
-          {/* Carousel Skeleton */}
+          {/* Living Calendar Skeleton */}
           <View style={styles.section}>
-            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
-          </View>
-          
-          <View style={styles.carouselContainer}>
-            <View style={styles.carouselScroll}>
-              <SkeletonCard style={{ width: width * 0.85, height: 200, borderRadius: 24 }} />
-            </View>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LIVING CALENDAR</Text>
+            <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16, marginBottom: 12 }} />
+            <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16 }} />
           </View>
 
           {/* Artifact Skeleton */}
@@ -471,11 +468,15 @@ export default function LearnScreen() {
             <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 20 }} />
           </View>
 
-          {/* Living Calendar Skeleton */}
+          {/* Carousel Skeleton (at bottom) */}
           <View style={styles.section}>
-            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LIVING CALENDAR</Text>
-            <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16, marginBottom: 12 }} />
-            <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16 }} />
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
+          </View>
+          
+          <View style={styles.carouselContainer}>
+            <View style={styles.carouselScroll}>
+              <SkeletonCard style={{ width: width * 0.85, height: 200, borderRadius: 24 }} />
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -490,28 +491,17 @@ export default function LearnScreen() {
           <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
         </View>
         
-        {/* 1. Calendar Systems Carousel */}
+        {/* 1. Living Calendar */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
-        </View>
-        
-        <View style={styles.carouselContainer}>
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false} 
-            contentContainerStyle={styles.carouselScroll}
-            decelerationRate="fast"
-            snapToInterval={width * 0.85 + 12}
-          >
-            {calendars && Object.entries(calendars).map(([key, val]: [string, any]) => (
-              <SystemCard 
-                key={key} 
-                id={key} 
-                name={val?.name || key} // Fallback if name is missing in API
-                onPress={() => setSelectedSystem(key)} 
-              />
-            ))}
-          </ScrollView>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LIVING CALENDAR</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Seasonal rhythms and observances</Text>
+          {living.map((item, i) => (
+            <LivingCard 
+              key={i} 
+              item={item} 
+              onPress={() => setSelectedLiving(item)}
+            />
+          ))}
         </View>
 
         {/* 2. Artifact of the Day */}
@@ -552,20 +542,7 @@ export default function LearnScreen() {
           )}
         </View>
 
-        {/* 3. Living Calendar */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LIVING CALENDAR</Text>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Seasonal rhythms and observances</Text>
-          {living.map((item, i) => (
-            <LivingCard 
-              key={i} 
-              item={item} 
-              onPress={() => setSelectedLiving(item)}
-            />
-          ))}
-        </View>
-
-        {/* 4. Explore Section */}
+        {/* 3. Explore Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>EXPLORE</Text>
           <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Deep traditions and sacred knowledge</Text>
@@ -616,7 +593,7 @@ export default function LearnScreen() {
           </View>
         </View>
 
-        {/* 5. The Cookie */}
+        {/* 4. The Cookie */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>THE COOKIE</Text>
           <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>A fictional reflection for quiet contemplation</Text>
@@ -645,6 +622,31 @@ export default function LearnScreen() {
               </Text>
             </View>
           </View>
+        </View>
+
+        {/* 5. Calendar Systems (static reference) */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Traditional ways of measuring time</Text>
+        </View>
+        
+        <View style={styles.carouselContainer}>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false} 
+            contentContainerStyle={styles.carouselScroll}
+            decelerationRate="fast"
+            snapToInterval={width * 0.85 + 12}
+          >
+            {calendars && Object.entries(calendars).map(([key, val]: [string, any]) => (
+              <SystemCard 
+                key={key} 
+                id={key} 
+                name={val?.name || key}
+                onPress={() => setSelectedSystem(key)} 
+              />
+            ))}
+          </ScrollView>
         </View>
 
       </ScrollView>
