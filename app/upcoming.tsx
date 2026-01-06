@@ -48,42 +48,61 @@ function formatDate(date: Date): string {
 
 // --- Fallback Data (includes diverse cultural/religious/pagan/indigenous observances) ---
 
-const year = new Date().getFullYear();
-const nextYear = year + 1;
+// Helper to get the next occurrence of a date (handles year rollover)
+function getNextOccurrence(month: number, day: number): Date {
+  const now = new Date();
+  const thisYear = now.getFullYear();
+  const dateThisYear = new Date(thisYear, month, day);
+  
+  // If the date has passed this year, use next year
+  if (dateThisYear < now) {
+    return new Date(thisYear + 1, month, day);
+  }
+  return dateThisYear;
+}
 
 const CORE_DATES = [
-  // December events
-  { id: 'winter-solstice', name: 'Winter Solstice', date: new Date(year, 11, 21), category: 'natural', origin: 'Global', description: 'The shortest day, a threshold between darkness and returning light.' },
-  { id: 'yule', name: 'Yule', date: new Date(year, 11, 21), category: 'pagan', origin: 'Nordic · Celtic', description: 'Ancient festival of light and renewal at the darkest point of the year.' },
-  { id: 'christmas', name: 'Christmas', date: new Date(year, 11, 25), category: 'religious', origin: 'Christian', description: 'Celebration of light, generosity, and gathering.' },
-  { id: 'kwanzaa-start', name: 'Kwanzaa', date: new Date(year, 11, 26), category: 'cultural', origin: 'African American', description: 'Seven-day celebration of African heritage and unity.' },
-  { id: 'new-year', name: 'New Year', date: new Date(nextYear, 0, 1), category: 'cultural', origin: 'Global', description: 'A fresh cycle begins, inviting reflection and intention.' },
-  
-  // January/February events
-  { id: 'epiphany', name: 'Epiphany', date: new Date(nextYear, 0, 6), category: 'religious', origin: 'Christian', description: 'Celebration of revelation and light.' },
-  { id: 'makar-sankranti', name: 'Makar Sankranti', date: new Date(nextYear, 0, 14), category: 'religious', origin: 'Hindu', description: 'Harvest festival marking the sun\'s journey northward.' },
-  { id: 'lunar-new-year', name: 'Lunar New Year', date: new Date(nextYear, 0, 29), category: 'cultural', origin: 'East Asian', description: 'Celebrated across East Asia, marking a new lunar cycle.' },
-  { id: 'imbolc', name: 'Imbolc', date: new Date(nextYear, 1, 1), category: 'pagan', origin: 'Celtic', description: 'Festival marking the first stirrings of spring and the goddess Brigid.' },
-  { id: 'candlemas', name: 'Candlemas', date: new Date(nextYear, 1, 2), category: 'religious', origin: 'Christian', description: 'Feast of light and purification.' },
+  // Winter/Year-end events
+  { id: 'epiphany', name: 'Epiphany', date: getNextOccurrence(0, 6), category: 'religious', origin: 'Christian', description: 'Celebration of revelation and light.' },
+  { id: 'makar-sankranti', name: 'Makar Sankranti', date: getNextOccurrence(0, 14), category: 'religious', origin: 'Hindu', description: 'Harvest festival marking the sun\'s journey northward.' },
+  { id: 'lunar-new-year', name: 'Lunar New Year', date: getNextOccurrence(0, 29), category: 'cultural', origin: 'East Asian', description: 'Celebrated across East Asia, marking a new lunar cycle.' },
+  { id: 'imbolc', name: 'Imbolc', date: getNextOccurrence(1, 1), category: 'pagan', origin: 'Celtic', description: 'Festival marking the first stirrings of spring and the goddess Brigid.' },
+  { id: 'candlemas', name: 'Candlemas', date: getNextOccurrence(1, 2), category: 'religious', origin: 'Christian', description: 'Feast of light and purification.' },
+  { id: 'valentines', name: 'Valentine\'s Day', date: getNextOccurrence(1, 14), category: 'cultural', origin: 'Global', description: 'Day of love, affection, and connection.' },
   
   // Spring events
-  { id: 'mardi-gras', name: 'Mardi Gras', date: new Date(nextYear, 2, 4), category: 'cultural', origin: 'Global', description: 'Carnival celebration before the Lenten season.' },
-  { id: 'holi', name: 'Holi', date: new Date(nextYear, 2, 14), category: 'religious', origin: 'Hindu', description: 'Festival of colors celebrating spring and love.' },
-  { id: 'spring-equinox', name: 'Spring Equinox', date: new Date(nextYear, 2, 20), category: 'natural', origin: 'Global', description: 'Day and night in balance, a threshold into the light half of the year.' },
-  { id: 'ostara', name: 'Ostara', date: new Date(nextYear, 2, 20), category: 'pagan', origin: 'Germanic', description: 'Spring festival of renewal, fertility, and new beginnings.' },
-  { id: 'nowruz', name: 'Nowruz', date: new Date(nextYear, 2, 20), category: 'cultural', origin: 'Persian · Central Asian', description: 'Persian New Year celebrating the arrival of spring.' },
+  { id: 'mardi-gras', name: 'Mardi Gras', date: getNextOccurrence(2, 4), category: 'cultural', origin: 'Global', description: 'Carnival celebration before the Lenten season.' },
+  { id: 'holi', name: 'Holi', date: getNextOccurrence(2, 14), category: 'religious', origin: 'Hindu', description: 'Festival of colors celebrating spring and love.' },
+  { id: 'spring-equinox', name: 'Spring Equinox', date: getNextOccurrence(2, 20), category: 'natural', origin: 'Global', description: 'Day and night in balance, a threshold into the light half of the year.' },
+  { id: 'ostara', name: 'Ostara', date: getNextOccurrence(2, 20), category: 'pagan', origin: 'Germanic', description: 'Spring festival of renewal, fertility, and new beginnings.' },
+  { id: 'nowruz', name: 'Nowruz', date: getNextOccurrence(2, 20), category: 'cultural', origin: 'Persian · Central Asian', description: 'Persian New Year celebrating the arrival of spring.' },
+  { id: 'easter', name: 'Easter', date: getNextOccurrence(3, 20), category: 'religious', origin: 'Christian', description: 'Celebration of resurrection and new life.' },
+  { id: 'passover', name: 'Passover', date: getNextOccurrence(3, 12), category: 'religious', origin: 'Jewish', description: 'Festival of freedom commemorating the Exodus.' },
+  { id: 'earth-day', name: 'Earth Day', date: getNextOccurrence(3, 22), category: 'cultural', origin: 'Global', description: 'Celebration of environmental awareness and protection.' },
   
-  // More observances
-  { id: 'beltane', name: 'Beltane', date: new Date(nextYear, 4, 1), category: 'pagan', origin: 'Celtic', description: 'Fire festival celebrating the height of spring and fertility.' },
-  { id: 'vesak', name: 'Vesak', date: new Date(nextYear, 4, 12), category: 'religious', origin: 'Buddhist', description: 'Celebration of Buddha\'s birth, enlightenment, and passing.' },
-  { id: 'summer-solstice', name: 'Summer Solstice', date: new Date(nextYear, 5, 21), category: 'natural', origin: 'Global', description: 'The longest day, peak of solar energy.' },
-  { id: 'litha', name: 'Litha', date: new Date(nextYear, 5, 21), category: 'pagan', origin: 'Celtic', description: 'Midsummer celebration of light and abundance.' },
-  { id: 'lammas', name: 'Lammas', date: new Date(nextYear, 7, 1), category: 'pagan', origin: 'Celtic', description: 'First harvest festival, giving thanks for grain.' },
-  { id: 'autumn-equinox', name: 'Autumn Equinox', date: new Date(nextYear, 8, 22), category: 'natural', origin: 'Global', description: 'Balance point before descending into the dark half of the year.' },
-  { id: 'mabon', name: 'Mabon', date: new Date(nextYear, 8, 22), category: 'pagan', origin: 'Celtic', description: 'Second harvest, thanksgiving for abundance.' },
-  { id: 'diwali', name: 'Diwali', date: new Date(nextYear, 9, 20), category: 'religious', origin: 'Hindu · Jain · Sikh', description: 'Festival of lights celebrating the triumph of light over darkness.' },
-  { id: 'samhain', name: 'Samhain', date: new Date(nextYear, 9, 31), category: 'pagan', origin: 'Celtic', description: 'The veil between worlds thins; honoring ancestors.' },
-  { id: 'day-of-dead', name: 'Día de los Muertos', date: new Date(nextYear, 10, 1), category: 'cultural', origin: 'Mexican', description: 'Honoring deceased loved ones with offerings and celebration.' },
+  // Late Spring/Summer events  
+  { id: 'beltane', name: 'Beltane', date: getNextOccurrence(4, 1), category: 'pagan', origin: 'Celtic', description: 'Fire festival celebrating the height of spring and fertility.' },
+  { id: 'vesak', name: 'Vesak', date: getNextOccurrence(4, 12), category: 'religious', origin: 'Buddhist', description: 'Celebration of Buddha\'s birth, enlightenment, and passing.' },
+  { id: 'summer-solstice', name: 'Summer Solstice', date: getNextOccurrence(5, 21), category: 'natural', origin: 'Global', description: 'The longest day, peak of solar energy.' },
+  { id: 'litha', name: 'Litha', date: getNextOccurrence(5, 21), category: 'pagan', origin: 'Celtic', description: 'Midsummer celebration of light and abundance.' },
+  
+  // Autumn events
+  { id: 'lammas', name: 'Lammas', date: getNextOccurrence(7, 1), category: 'pagan', origin: 'Celtic', description: 'First harvest festival, giving thanks for grain.' },
+  { id: 'autumn-equinox', name: 'Autumn Equinox', date: getNextOccurrence(8, 22), category: 'natural', origin: 'Global', description: 'Balance point before descending into the dark half of the year.' },
+  { id: 'mabon', name: 'Mabon', date: getNextOccurrence(8, 22), category: 'pagan', origin: 'Celtic', description: 'Second harvest, thanksgiving for abundance.' },
+  { id: 'rosh-hashanah', name: 'Rosh Hashanah', date: getNextOccurrence(8, 15), category: 'religious', origin: 'Jewish', description: 'Jewish New Year, a time of reflection and renewal.' },
+  { id: 'diwali', name: 'Diwali', date: getNextOccurrence(9, 20), category: 'religious', origin: 'Hindu · Jain · Sikh', description: 'Festival of lights celebrating the triumph of light over darkness.' },
+  { id: 'samhain', name: 'Samhain', date: getNextOccurrence(9, 31), category: 'pagan', origin: 'Celtic', description: 'The veil between worlds thins; honoring ancestors.' },
+  { id: 'day-of-dead', name: 'Día de los Muertos', date: getNextOccurrence(10, 1), category: 'cultural', origin: 'Mexican', description: 'Honoring deceased loved ones with offerings and celebration.' },
+  { id: 'thanksgiving', name: 'Thanksgiving', date: getNextOccurrence(10, 28), category: 'cultural', origin: 'North American', description: 'Day of gratitude and gathering.' },
+  
+  // Winter events
+  { id: 'winter-solstice', name: 'Winter Solstice', date: getNextOccurrence(11, 21), category: 'natural', origin: 'Global', description: 'The shortest day, a threshold between darkness and returning light.' },
+  { id: 'yule', name: 'Yule', date: getNextOccurrence(11, 21), category: 'pagan', origin: 'Nordic · Celtic', description: 'Ancient festival of light and renewal at the darkest point of the year.' },
+  { id: 'hanukkah', name: 'Hanukkah', date: getNextOccurrence(11, 25), category: 'religious', origin: 'Jewish', description: 'Festival of Lights celebrating dedication and miracles.' },
+  { id: 'christmas', name: 'Christmas', date: getNextOccurrence(11, 25), category: 'religious', origin: 'Christian', description: 'Celebration of light, generosity, and gathering.' },
+  { id: 'kwanzaa-start', name: 'Kwanzaa', date: getNextOccurrence(11, 26), category: 'cultural', origin: 'African American', description: 'Seven-day celebration of African heritage and unity.' },
+  { id: 'new-year', name: 'New Year', date: getNextOccurrence(0, 1), category: 'cultural', origin: 'Global', description: 'A fresh cycle begins, inviting reflection and intention.' },
 ];
 
 const FALLBACK_SOON = [
