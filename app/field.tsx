@@ -118,17 +118,28 @@ function ExpandableCard({
 }
 
 function generateCircadianObservations(phase: string): string[] {
+  const normalizedPhase = phase.toLowerCase();
+  
+  // TQF API returns phases like: Secondary Peak, Peak, Recovery, Low, Rising, etc.
   const phaseMap: Record<string, string[]> = {
-    'Morning': ['Core body temperature rising', 'Cortisol peak aids alertness', 'Optimal for analytical work'],
-    'Midday': ['Peak mental clarity and focus', 'Energy at zenith', 'Ideal for decision-making'],
-    'Afternoon': ['Post-meal dip in attention', 'Secondary energy rise possible', 'Good for physical activity'],
-    'Evening': ['Melatonin beginning to rise', 'Temperature cooling', 'Wind-down phase begins'],
-    'Night': ['Deep sleep hormone levels peak', 'Body temperature lowest', 'Recovery and restoration mode'],
-    'Balanced': ['Circadian rhythm stable', 'Energy consistent', 'Flexible for most activities']
+    // TQF circadian phases
+    'secondary peak': ['Secondary energy surge occurring', 'Afternoon alertness window', 'Good for creative or physical tasks'],
+    'peak': ['Peak mental clarity and focus', 'Energy at zenith', 'Optimal for demanding cognitive work'],
+    'rising': ['Energy levels increasing', 'Alertness building', 'Good time to start focused work'],
+    'recovery': ['Body entering restoration mode', 'Processing and consolidation active', 'Wind-down phase appropriate'],
+    'low': ['Natural energy dip occurring', 'Rest or light activity preferred', 'Conserve energy for next cycle'],
+    'trough': ['Deepest rest phase', 'Body temperature at minimum', 'Maximum recovery occurring'],
+    // Time-of-day phases (fallback)
+    'morning': ['Core body temperature rising', 'Cortisol peak aids alertness', 'Optimal for analytical work'],
+    'midday': ['Peak mental clarity and focus', 'Energy at zenith', 'Ideal for decision-making'],
+    'afternoon': ['Post-meal dip in attention', 'Secondary energy rise possible', 'Good for physical activity'],
+    'evening': ['Melatonin beginning to rise', 'Temperature cooling', 'Wind-down phase begins'],
+    'night': ['Deep sleep hormone levels peak', 'Body temperature lowest', 'Recovery and restoration mode'],
+    'balanced': ['Circadian rhythm stable', 'Energy consistent', 'Flexible for most activities']
   };
   
   for (const [key, observations] of Object.entries(phaseMap)) {
-    if (phase.includes(key)) {
+    if (normalizedPhase.includes(key)) {
       return observations;
     }
   }
@@ -267,7 +278,7 @@ export default function FieldScreen() {
   }
 
   const ctx = bundle?.planetary_context;
-  const geoKp = instant?.geomagnetic?.kpIndex || instant?.geomagnetic?.kp_index || 2;
+  const geoKp = instant?.geomagnetic?.kpIndex || (instant?.geomagnetic as any)?.kp_index || 2;
   
   // Consciousness data - prefer real API data, fallback to bundle, then null (show unavailable state)
   const consciousnessData = consciousness || ctx?.consciousness_index || instant?.consciousness || null;
@@ -460,20 +471,39 @@ export default function FieldScreen() {
             icon="🧬"
             title="Body"
             message={bioRhythms?.circadian?.phase || 'Rhythm active'}
-            collapsedDetail={bioRhythms?.ultradian_remaining ? `${bioRhythms.ultradian_remaining}m` : 'Active'}
+            collapsedDetail={bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : 'Active'}
             isExpanded={expandedCards['body']}
             onToggle={() => toggleCard('body')}
-            chips={['circadian', 'ultradian']}
-            howToRead={['Circadian: 24-hour biological clock', 'Ultradian: ~90-minute focus/energy cycles', 'Patterns derived from circadian research', 'Used to align echo timing with body readiness']}
+            chips={['circadian', 'alertness']}
+            howToRead={['Circadian: 24-hour biological clock', 'Alertness: Current cognitive readiness', 'Cortisol/Melatonin: Hormonal balance indicators', 'Patterns derived from circadian research']}
             expandedContent={
               <View style={styles.expandedDetails}>
-                <Text style={[styles.expandedValue, { color: colors.text }]}>{bioRhythms?.circadian?.phase || 'Balanced'}</Text>
+                <View style={styles.detailRow}>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Phase</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.phase || '—'}</Text>
+                </View>
+                <View style={styles.detailRow}>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Time of Day</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.timeOfDay || '—'}</Text>
+                </View>
+                <View style={styles.detailRow}>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Alertness</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : '—'}</Text>
+                </View>
+                <View style={styles.detailRow}>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Cortisol</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.cortisol ?? '—'}</Text>
+                </View>
+                <View style={styles.detailRow}>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Melatonin</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.melatonin ?? '—'}</Text>
+                </View>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  Circadian rhythms regulate sleep-wake cycles and hormonal patterns over 24 hours. Ultradian cycles shape focus windows within the day.
+                  Circadian rhythms regulate sleep-wake cycles and hormonal patterns over 24 hours. Alertness and hormone levels shift throughout the day.
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
-                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Current Observations</Text>
-                {generateCircadianObservations(bioRhythms?.circadian?.phase || 'Balanced').map((obs: string, i: number) => (
+                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Context</Text>
+                {(bioRhythms?.circadian?.recommendations || generateCircadianObservations(bioRhythms?.circadian?.phase || 'Balanced')).slice(0, 3).map((obs: string, i: number) => (
                   <Text key={i} style={[styles.bulletPoint, { color: colors.textSecondary }]}>• {obs}</Text>
                 ))}
               </View>

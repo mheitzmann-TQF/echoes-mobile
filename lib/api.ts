@@ -258,6 +258,7 @@ class EchoesAPI {
       }
       
       const data = await response.json();
+      console.log('✅ Biological rhythms received:', data);
       return data;
     } catch (error) {
       console.error('❌ Biological rhythms error:', error);
