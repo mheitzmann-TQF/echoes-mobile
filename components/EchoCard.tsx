@@ -368,11 +368,11 @@ const styles = StyleSheet.create({
   },
   message: {
     color: '#FFFFFF',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '500',
     textAlign: 'left',
-    lineHeight: 34,
-    letterSpacing: -0.5,
+    lineHeight: 28,
+    letterSpacing: -0.3,
   },
   footer: {
     alignItems: 'flex-start',

@@ -9,7 +9,7 @@ author = 43422192
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npx tsx server/index.ts"
+args = "bash scripts/start-dev.sh"
 
 [[ports]]
 localPort = 5000
