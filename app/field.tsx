@@ -263,7 +263,11 @@ export default function FieldScreen() {
   }
 
   const ctx = bundle?.planetary_context;
-  const geoKp = instant?.geomagnetic?.kpIndex || 2;
+  const geoKp = instant?.geomagnetic?.kpIndex || instant?.geomagnetic?.kp_index || 2;
+  
+  // Consciousness data fallback - API may not provide this
+  const defaultCoherence = { global_coherence: 68, regional_resonance: 65, trend: 'stable' };
+  const consciousnessData = ctx?.consciousness_index || instant?.consciousness || defaultCoherence;
   
   // Normalize geomagnetic state
   const getGeoState = (kp: number): { label: string; message: string } => {
@@ -325,9 +329,9 @@ export default function FieldScreen() {
         <Text style={[styles.headerSubtext, { color: colors.textTertiary }]}>How today’s signal is shaped</Text>
 
         <StickyHeader 
-          coherence={ctx?.consciousness_index?.global_coherence || 0}
-          solarPhase={ctx?.solar?.phase || 'Day'}
-          lunarIllumination={ctx?.lunar?.illumination || 0}
+          coherence={consciousnessData.global_coherence || 0}
+          solarPhase={ctx?.solar?.phase || instant?.solar?.current_phase || 'Day'}
+          lunarIllumination={ctx?.lunar?.illumination || instant?.lunar?.illumination || 0}
         />
 
         {/* Cosmos Section */}
