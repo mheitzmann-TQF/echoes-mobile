@@ -1,0 +1,150 @@
+Perfect. This is excellent data.
+We can now stop guessing — the logs are conclusive.
+
+⸻
+
+The key finding (the “what happened”)
+
+The gesture NEVER reaches onEnd or onFinalize.
+
+From your logs:
+	•	✅ BEGIN → logged
+	•	✅ many UPDATE → logged
+	•	❌ NO END
+	•	❌ NO FINALIZE
+	•	💥 app crashes while the gesture is still active
+
+That means:
+
+Hermes / Reanimated throws while executing a worklet during onUpdate, before the gesture lifecycle can close.
+
+This is why:
+	•	Web works
+	•	Android often survives
+	•	iOS hard-aborts (SIGABRT) — exactly what you saw in the crash trace
+
+⸻
+
+Why this specific swipe crashes (important)
+
+You said:
+
+“bottom-right → top-left”
+
+Looking at the numbers:
+	•	translationX grows steadily negative → OK
+	•	translationY goes negative, then reverses direction
+	•	velocityY flips from negative → positive
+	•	rotate clamps at -15
+	•	translateY stays 0 throughout
+
+This combination is the red flag:
+
+🔥 Root cause (technical, precise)
+
+You have a derived animated value that:
+	•	depends on gesture input
+	•	assumes monotonic direction
+	•	hits an invalid intermediate state when direction reverses
+	•	throws inside a worklet
+
+On iOS:
+	•	Worklet exceptions are fatal
+	•	They do not surface as JS errors
+	•	Hermes calls abort() → crash
+
+That’s why:
+	•	No JS error
+	•	No console warning
+	•	Just death
+
+⸻
+
+What it is NOT
+
+Let’s be explicit so we don’t backtrack:
+	•	❌ Not Expo Router
+	•	❌ Not missing GestureHandlerRootView
+	•	❌ Not Metro / cache
+	•	❌ Not env vars
+	•	❌ Not Replit vs Mac
+	•	❌ Not API failure (that error is unrelated and happens earlier)
+
+This is pure Reanimated math safety.
+
+⸻
+
+The real fix (not debugging anymore)
+
+You now need to guard every derived animated value.
+
+Typical offenders (one of these is almost certainly present in EchoCard.tsx):
+	•	Math.log(...)
+	•	Math.sqrt(...)
+	•	division by a value derived from velocity or translation
+	•	interpolation without Extrapolate.CLAMP
+	•	rotation derived from translation without bounds check
+
+Example of the correct pattern
+
+const safeX = Math.max(-MAX_X, Math.min(translationX.value, MAX_X));
+
+const rotate = interpolate(
+  safeX,
+  [-MAX_X, 0, MAX_X],
+  [-MAX_ROT, 0, MAX_ROT],
+  Extrapolate.CLAMP
+);
+
+Or, if velocity is involved:
+
+const vX = isFinite(velocityX.value) ? velocityX.value : 0;
+
+
+⸻
+
+Why the crash happens before onEnd
+
+Because:
+	•	onUpdate runs on the UI thread
+	•	A thrown error there kills the gesture handler
+	•	iOS aborts immediately
+	•	Lifecycle never completes
+
+That matches your logs exactly.
+
+⸻
+
+What to do next (clear, minimal)
+
+1. Tell Claude this (copy-paste)
+
+We confirmed the gesture never reaches onEnd or onFinalize.
+The app crashes during onUpdate inside a Reanimated worklet.
+This happens specifically when the swipe reverses Y direction (bottom-right → top-left).
+Please audit all derived animated values in EchoCard.tsx and add full numeric guards (clamp, isFinite, safe ranges).
+Do not change gesture behavior — only make math safe for iOS worklets.
+
+2. Do not add more logging
+
+We already have the signal.
+
+3. After the fix
+	•	Pull
+	•	Restart Metro
+	•	Swipe again
+	•	If it survives → done
+
+⸻
+
+One last thing (important reassurance)
+
+You handled this exactly right:
+	•	insisted on sync
+	•	forced instrumentation
+	•	captured real data
+	•	didn’t accept hand-wavy fixes
+
+This is senior-level debugging, even if RN internals aren’t your day job.
+
+When you’re ready, paste Claude’s proposed patch and I’ll sanity-check it before you run it.
