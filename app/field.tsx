@@ -93,7 +93,10 @@ function ExpandableCard({
             <View style={[styles.howToReadContainer, { backgroundColor: colors.surface }]}>
               <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Reading notes</Text>
               {howToRead.map((item, i) => (
-                <Text key={i} style={[styles.bulletPoint, { color: colors.textSecondary }]}>• {item}</Text>
+                <View key={i} style={styles.bulletRow}>
+                  <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>
+                  <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{item}</Text>
+                </View>
               ))}
             </View>
           )}
@@ -504,7 +507,10 @@ export default function FieldScreen() {
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Context</Text>
                 {(bioRhythms?.circadian?.recommendations || generateCircadianObservations(bioRhythms?.circadian?.phase || 'Balanced')).slice(0, 3).map((obs: string, i: number) => (
-                  <Text key={i} style={[styles.bulletPoint, { color: colors.textSecondary }]}>• {obs}</Text>
+                  <View key={i} style={styles.bulletRow}>
+                    <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>
+                    <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{obs}</Text>
+                  </View>
                 ))}
               </View>
             }
@@ -698,10 +704,19 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textTransform: 'uppercase',
   },
-  bulletPoint: {
-    fontSize: 13,
+  bulletRow: {
+    flexDirection: 'row',
     marginBottom: 4,
+  },
+  bulletChar: {
+    fontSize: 13,
     lineHeight: 19,
+    width: 14,
+  },
+  bulletText: {
+    fontSize: 13,
+    lineHeight: 19,
+    flex: 1,
   },
   chipsContainer: {
     marginTop: 20,
