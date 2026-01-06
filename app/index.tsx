@@ -361,8 +361,8 @@ export default function HomeScreen() {
         setTimeout(() => reject(new Error('API timeout')), 15000)
       );
 
-      // Fetch Bundle + Calendars + Living Tradition + Photo
-      const [bundleData, calendarsData, livingData, photoData] = await Promise.all([
+      // Fetch Bundle + Calendars + Living Tradition + Photo + Consciousness
+      const [bundleData, calendarsData, livingData, photoData, consciousnessData] = await Promise.all([
         Promise.race([
           api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone),
           timeoutPromise,
@@ -370,6 +370,7 @@ export default function HomeScreen() {
         api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, language).catch(() => null),
         contentService.getLivingCalendarToday(coordinates.lat, coordinates.lng, timezone, language).catch(() => null),
         getDailyPhoto().catch(() => null),
+        api.getConsciousnessAnalysis().catch(() => null),
       ]);
       
       if (photoData) {
@@ -394,7 +395,12 @@ export default function HomeScreen() {
             kpIndex: 2 
           },
           seasonal: { season: 'Current', progress: 50 },
-          consciousness: ctx.consciousness_index
+          consciousness: consciousnessData ? {
+            global_coherence: consciousnessData.global_coherence,
+            regional_resonance: consciousnessData.regional_coherence ? 
+              Math.round(Object.values(consciousnessData.regional_coherence as Record<string, number>).reduce((a, b) => a + b, 0) / Object.values(consciousnessData.regional_coherence as Record<string, number>).length) : 65,
+            trend: consciousnessData.trend || 'stable'
+          } : ctx.consciousness_index
         });
         
         if (bundleData.data.echo_cards && bundleData.data.echo_cards.length > 0) {
