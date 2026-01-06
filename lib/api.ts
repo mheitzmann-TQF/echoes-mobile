@@ -1,5 +1,5 @@
 // Use backend proxy - API key stays server-side for security
-// In development, Expo Metro needs to proxy requests to Express backend
+// Express server handles /api/* routes and proxies other requests to Expo Metro
 const getApiBaseUrl = () => {
   // Check for explicit API URL override (for development with separate servers)
   if (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_API_URL) {
