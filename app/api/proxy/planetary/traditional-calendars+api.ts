@@ -1,6 +1,6 @@
+import { TQF_API_KEY } from "@/lib/env";
 
 
-const TQF_API_KEY = process.env.TQF_MOBILE_API_KEY || '';
 const TQF_BASE_URL = 'https://source.thequietframe.com';
 
 export async function GET(request: Request) {

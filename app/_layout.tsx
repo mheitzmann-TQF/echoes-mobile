@@ -5,6 +5,7 @@ import { Svg, Path, Circle, Rect, Line } from 'react-native-svg';
 import { LocationProvider } from '../lib/LocationContext';
 import { ThemeProvider, useTheme } from '../lib/ThemeContext';
 import { useState, useEffect, useRef } from 'react';
+import { logEnvOnce } from "@/lib/env";
 
 function TodayIcon({ color }: { color: string }) {
   return (
@@ -168,6 +169,7 @@ function ThemedApp() {
 }
 
 export default function RootLayout() {
+  logEnvOnce("BOOT");
   return (
     <LocationProvider>
       <ThemeProvider>
