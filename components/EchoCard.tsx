@@ -5,12 +5,18 @@ import Animated, {
   withSpring,
   interpolate,
   Extrapolation,
+  runOnJS,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useSharedValue } from 'react-native-reanimated';
 import { Svg, Path, Circle } from 'react-native-svg';
 import { useTheme } from '../lib/ThemeContext';
 import { X } from 'lucide-react-native';
+import { DEBUG_GESTURES } from '../lib/debug';
+
+const gestureDebug = (...args: any[]) => {
+  console.log('[GESTURE]', ...args);
+};
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH - 40;
@@ -123,10 +129,34 @@ export default function EchoCard({
 
   const panGesture = Gesture.Pan()
     .enabled(isActive)
+    .onBegin(() => {
+      if (DEBUG_GESTURES) {
+        runOnJS(gestureDebug)('BEGIN', { isActive, index });
+      }
+    })
     .onUpdate((event) => {
+      if (DEBUG_GESTURES) {
+        runOnJS(gestureDebug)('UPDATE', {
+          translationX: event.translationX,
+          translationY: event.translationY,
+          velocityX: event.velocityX,
+          velocityY: event.velocityY,
+          absoluteX: event.absoluteX,
+          absoluteY: event.absoluteY,
+        });
+      }
       translateX.value = event.translationX;
     })
     .onEnd((event) => {
+      if (DEBUG_GESTURES) {
+        runOnJS(gestureDebug)('END', {
+          translationX: event.translationX,
+          velocityX: event.velocityX,
+          threshold: 100,
+          willSwipe: Math.abs(event.translationX) > 100,
+          direction: event.translationX > 0 ? 'right' : 'left',
+        });
+      }
       if (Math.abs(event.translationX) > 100) {
         if (event.translationX > 0) {
           onSwipeRight?.();
@@ -135,6 +165,11 @@ export default function EchoCard({
         }
       }
       translateX.value = withSpring(0);
+    })
+    .onFinalize(() => {
+      if (DEBUG_GESTURES) {
+        runOnJS(gestureDebug)('FINALIZE', { index });
+      }
     });
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -165,6 +200,17 @@ export default function EchoCard({
       [-15, 0, 15],
       Extrapolation.CLAMP
     );
+
+    if (DEBUG_GESTURES && isActive && translateX.value !== 0) {
+      runOnJS(gestureDebug)('ANIMATED_STYLE', {
+        index,
+        translateXValue: translateX.value,
+        scale,
+        translateY,
+        opacity,
+        rotate,
+      });
+    }
 
     return {
       transform: [
