@@ -62,21 +62,21 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   cardName: {
-    fontSize: 11,
+    fontSize: 13,
     color: 'rgba(255,255,255,0.6)',
     fontWeight: '500',
   },
   cardDate: {
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: '700',
     color: '#FFFFFF',
-    marginTop: 3,
+    marginTop: 4,
   },
   typeContainer: {
     marginTop: 8,
   },
   cardType: {
-    fontSize: 9,
+    fontSize: 11,
     color: 'rgba(255,255,255,0.8)',
     textTransform: 'capitalize',
     backgroundColor: 'rgba(255,255,255,0.1)',
