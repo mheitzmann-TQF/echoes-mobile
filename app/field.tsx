@@ -168,6 +168,7 @@ export default function FieldScreen() {
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
   const [bioRhythms, setBioRhythms] = useState<any>(null);
+  const [consciousness, setConsciousness] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
   // Expanded states
@@ -184,13 +185,15 @@ export default function FieldScreen() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [bundleData, instantData, bioData] = await Promise.all([
+        const [bundleData, instantData, bioData, consciousnessData] = await Promise.all([
           api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone)
             .then(res => res.success ? res.data : null)
             .catch(() => null),
           api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone)
             .catch(() => null),
           api.getBiologicalRhythms(coordinates.lat, coordinates.lng, timezone)
+            .catch(() => null),
+          api.getConsciousnessAnalysis()
             .catch(() => null)
         ]);
 
@@ -245,6 +248,7 @@ export default function FieldScreen() {
         setBundle(bundleData || mockBundle);
         setInstant(instantData || mockInstant);
         setBioRhythms(bioData || mockBioRhythms);
+        setConsciousness(consciousnessData);
       } finally {
         setLoading(false);
       }
@@ -265,9 +269,19 @@ export default function FieldScreen() {
   const ctx = bundle?.planetary_context;
   const geoKp = instant?.geomagnetic?.kpIndex || instant?.geomagnetic?.kp_index || 2;
   
-  // Consciousness data fallback - API may not provide this
-  const defaultCoherence = { global_coherence: 68, regional_resonance: 65, trend: 'stable' };
-  const consciousnessData = ctx?.consciousness_index || instant?.consciousness || defaultCoherence;
+  // Consciousness data - prefer real API data, fallback to bundle, then null (show unavailable state)
+  const consciousnessData = consciousness || ctx?.consciousness_index || instant?.consciousness || null;
+  
+  // Calculate regional average from regional_coherence object (API returns {north_america: 79, europe: 75, ...})
+  const getRegionalAverage = (): number | null => {
+    if (!consciousnessData?.regional_coherence) {
+      return consciousnessData?.regional_resonance || null;
+    }
+    const regions = Object.values(consciousnessData.regional_coherence) as number[];
+    if (regions.length === 0) return null;
+    return Math.round(regions.reduce((a, b) => a + b, 0) / regions.length);
+  };
+  const regionalAverage = getRegionalAverage();
   
   // Normalize geomagnetic state
   const getGeoState = (kp: number): { label: string; message: string } => {
@@ -329,8 +343,8 @@ export default function FieldScreen() {
         <Text style={[styles.headerSubtext, { color: colors.textTertiary }]}>How today’s signal is shaped</Text>
 
         <StickyHeader 
-          coherence={consciousnessData.global_coherence || 0}
-          solarPhase={ctx?.solar?.phase || instant?.solar?.current_phase || 'Day'}
+          coherence={consciousnessData?.global_coherence || 0}
+          solarPhase={ctx?.solar?.phase || instant?.solar?.currentPhase || 'Day'}
           lunarIllumination={ctx?.lunar?.illumination || instant?.lunar?.illumination || 0}
         />
 
@@ -388,24 +402,24 @@ export default function FieldScreen() {
           <ExpandableCard
             icon="🌐"
             title="Coherence"
-            message={ctx?.consciousness_index?.global_coherence && ctx.consciousness_index.global_coherence > 60 ? "Coherence stable." : "Coherence variable."}
-            collapsedDetail={ctx?.consciousness_index?.global_coherence !== undefined && ctx?.consciousness_index?.global_coherence !== null ? `${Math.round(ctx.consciousness_index.global_coherence)}%` : "—"}
+            message={consciousnessData?.global_coherence && consciousnessData.global_coherence > 60 ? "Collective tone is stable." : consciousnessData ? "Collective tone is variable." : "Checking collective pulse..."}
+            collapsedDetail={consciousnessData?.global_coherence !== undefined && consciousnessData?.global_coherence !== null ? `${Math.round(consciousnessData.global_coherence)}%` : "—"}
             isExpanded={expandedCards['coherence']}
             onToggle={() => toggleCard('coherence')}
             chips={['global', 'regional', 'trend']}
-            howToRead={['Coherence above 60% indicates global synchronization', 'Below 40% shows variable patterns', 'Combines global and regional measurements', 'Part of echo card relevance calculation']}
+            howToRead={['Coherence above 60% indicates aligned collective sentiment', 'Below 40% shows divergent narratives', 'Synthesized from global news and contemplative sources', 'Part of echo card relevance calculation']}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
                   <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Global</Text>
-                  <Text style={[styles.detailValue, { color: colors.text }]}>{ctx?.consciousness_index?.global_coherence !== undefined && ctx?.consciousness_index?.global_coherence !== null ? `${Math.round(ctx.consciousness_index.global_coherence)}%` : "—"}</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{consciousnessData?.global_coherence !== undefined && consciousnessData?.global_coherence !== null ? `${Math.round(consciousnessData.global_coherence)}%` : "—"}</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Regional</Text>
-                  <Text style={[styles.detailValue, { color: colors.text }]}>{ctx?.consciousness_index?.regional_resonance !== undefined && ctx?.consciousness_index?.regional_resonance !== null ? `${Math.round(ctx.consciousness_index.regional_resonance)}%` : "—"}</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Regional Avg</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{regionalAverage !== null ? `${regionalAverage}%` : "—"}</Text>
                 </View>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  Coherence measures synchronization of the Earth's magnetic field as detected by global sensors. Higher values indicate more unified global patterns.
+                  Coherence measures collective sentiment alignment synthesized from global news sources and contemplative observatories. Higher values indicate more unified collective patterns across regions.
                 </Text>
               </View>
             }

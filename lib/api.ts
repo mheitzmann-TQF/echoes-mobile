@@ -159,7 +159,9 @@ class EchoesAPI {
       console.log('✅ Consciousness data received:', data);
       
       if (!data.success) throw new Error('Failed to fetch consciousness data');
-      return data.data;
+      // API returns metrics at root level (global_coherence, regional_coherence, etc.)
+      // not nested under data, so return the full response
+      return data;
     } catch (error) {
       console.error('❌ Consciousness analysis error:', error);
       throw error;
