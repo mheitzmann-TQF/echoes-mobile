@@ -274,12 +274,14 @@ export default function LearnScreen() {
       .filter(item => item) // Remove null/undefined
       .map((item, idx) => ({
         id: item.id || `living-${idx}`,
-        title: (item.title || item.name || '').trim() || `Seasonal Rhythm ${idx + 1}`,
-        summary: (item.summary || item.description || '').trim() || 'A natural cycle flowing through time.',
-        why_now: (item.why_now || item.relevance || '').trim() || 'Active in the current moment.'
+        // API returns: cycleName, cycleDescription, dailyGuidance
+        title: (item.cycleName || item.title || item.name || '').trim() || `Seasonal Rhythm ${idx + 1}`,
+        summary: (item.cycleDescription || item.summary || item.description || '').trim() || 'A natural cycle flowing through time.',
+        why_now: (item.dailyGuidance || item.why_now || item.relevance || '').trim() || 'Active in the current moment.',
+        origin: item.culture ? item.culture.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) : 'Traditional'
       }))
-      .filter((item, idx) => {
-        // Only keep items if they have non-default content OR at least the API provided something
+      .filter((item) => {
+        // Only keep items if they have non-default content
         const hasRealTitle = !(item.title.includes('Seasonal Rhythm'));
         const hasRealContent = item.summary !== 'A natural cycle flowing through time.';
         return hasRealTitle || hasRealContent;
