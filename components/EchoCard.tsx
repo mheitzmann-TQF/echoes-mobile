@@ -11,7 +11,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useSharedValue } from 'react-native-reanimated';
 import { Svg, Path, Circle } from 'react-native-svg';
 import { useTheme } from '../lib/ThemeContext';
-import { X } from 'lucide-react-native';
+import { X, Moon, Sun, Globe, Drama, Leaf, Sparkles } from 'lucide-react-native';
 import { DEBUG_GESTURES } from '../lib/debug';
 
 const gestureDebug = (...args: any[]) => {
@@ -71,20 +71,21 @@ function InfoIcon({ color = '#FFFFFF' }) {
   );
 }
 
-const getTypeEmoji = (type: string): string => {
+const getTypeIcon = (type: string, color: string): React.ReactNode => {
+  const size = 16;
   switch (type) {
     case 'lunar_guidance':
-      return '🌙';
+      return <Moon size={size} color={color} />;
     case 'solar_rhythm':
-      return '☀️';
+      return <Sun size={size} color={color} />;
     case 'global_consciousness':
-      return '🌍';
+      return <Globe size={size} color={color} />;
     case 'cultural_rhythms':
-      return '🎭';
+      return <Drama size={size} color={color} />;
     case 'ancestral_echo':
-      return '🌿';
+      return <Leaf size={size} color={color} />;
     default:
-      return '✨';
+      return <Sparkles size={size} color={color} />;
   }
 };
 
@@ -257,7 +258,7 @@ export default function EchoCard({
         <Animated.View style={[styles.card, animatedStyle, { backgroundColor: cardBackgroundColor, borderColor: cardBorderColor }]}>
           <View style={styles.content}>
             <View style={[styles.typeBadge, { backgroundColor: colors.surfaceHighlight }]}>
-              <Text style={styles.typeEmoji}>{getTypeEmoji(echo.type)}</Text>
+              <View style={styles.typeIcon}>{getTypeIcon(echo.type, colors.text)}</View>
               <Text style={[styles.typeLabel, { color: colors.text }]}>{getTypeLabel(echo.type)}</Text>
             </View>
 
@@ -351,8 +352,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
   },
-  typeEmoji: {
-    fontSize: 16,
+  typeIcon: {
     marginRight: 6,
   },
   typeLabel: {
