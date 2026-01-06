@@ -93,7 +93,7 @@ const liveTradStyles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
   },
   originBadge: {
@@ -102,12 +102,12 @@ const liveTradStyles = StyleSheet.create({
     borderRadius: 6,
   },
   originText: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: '600',
   },
   description: {
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 16,
+    lineHeight: 24,
   },
 });
 
