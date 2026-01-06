@@ -361,8 +361,8 @@ export default function HomeScreen() {
         setTimeout(() => reject(new Error('API timeout')), 15000)
       );
 
-      // Fetch Bundle + Calendars + Living Tradition + Photo + Consciousness
-      const [bundleData, calendarsData, livingData, photoData, consciousnessData] = await Promise.all([
+      // Fetch Bundle + Calendars + Living Tradition + Photo + Consciousness + Instant
+      const [bundleData, calendarsData, livingData, photoData, consciousnessData, instantData] = await Promise.all([
         Promise.race([
           api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone),
           timeoutPromise,
@@ -371,6 +371,7 @@ export default function HomeScreen() {
         contentService.getLivingCalendarToday(coordinates.lat, coordinates.lng, timezone, language).catch(() => null),
         getDailyPhoto().catch(() => null),
         api.getConsciousnessAnalysis().catch(() => null),
+        api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone).catch(() => null),
       ]);
       
       if (photoData) {
@@ -390,8 +391,11 @@ export default function HomeScreen() {
             sunset: '19:00',
             currentPhase: ctx.solar.phase
           },
-          geomagnetic: { 
-            activity: ctx.consciousness_index.global_coherence > 60 ? 'Coherent' : 'Quiet', 
+          geomagnetic: instantData?.geomagnetic ? {
+            activity: instantData.geomagnetic.activity || 'Quiet',
+            kpIndex: instantData.geomagnetic.kpIndex || (instantData.geomagnetic as any).kp_index || 2
+          } : { 
+            activity: 'Quiet', 
             kpIndex: 2 
           },
           seasonal: { season: 'Current', progress: 50 },
