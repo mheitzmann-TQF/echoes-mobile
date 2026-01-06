@@ -16,12 +16,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
 import { format } from 'date-fns';
 import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
-import contentService from '../lib/ContentService';
 import { getDailyPhoto } from '../lib/PhotoService';
-import { cleanTone, formatOrigin, getCategoryLabel } from '../lib/labelize';
+import { cleanTone } from '../lib/labelize';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
-import { Sparkles } from 'lucide-react-native';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -30,86 +28,6 @@ import Hero from '../components/Hero';
 import CalendarCarousel from '../components/CalendarCarousel';
 import MetricsGrid from '../components/MetricsGrid';
 import EchoStack from '../components/EchoStack';
-
-// Living Tradition Card (inline component)
-interface LivingTraditionData {
-  name: string;
-  description: string;
-  origin?: string;
-  category?: string;
-}
-
-function LivingTraditionCard({ data }: { data: LivingTraditionData }) {
-  const { colors } = useTheme();
-  
-  return (
-    <View style={[liveTradStyles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      <View style={liveTradStyles.header}>
-        <View style={[liveTradStyles.icon, { backgroundColor: colors.surfaceHighlight }]}>
-          <Sparkles size={18} color={colors.text} />
-        </View>
-        <View style={liveTradStyles.headerText}>
-          <Text style={[liveTradStyles.title, { color: colors.text }]}>{data.name}</Text>
-          {data.origin && (
-            <View style={[liveTradStyles.originBadge, { backgroundColor: colors.surfaceHighlight }]}>
-              <Text style={[liveTradStyles.originText, { color: colors.textSecondary }]}>{data.origin}</Text>
-            </View>
-          )}
-        </View>
-      </View>
-      <Text style={[liveTradStyles.description, { color: colors.textSecondary }]}>
-        {cleanTone(data.description)}
-      </Text>
-    </View>
-  );
-}
-
-const liveTradStyles = StyleSheet.create({
-  card: {
-    marginHorizontal: 20,
-    marginBottom: 20,
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    gap: 12,
-  },
-  icon: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerText: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    flexWrap: 'wrap',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  originBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-  },
-  originText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  description: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
-});
 
 interface DailyPhotoData {
   url: string;
@@ -135,7 +53,8 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 
   return (
     <View style={photoStyles.container}>
-      <View style={[photoStyles.imageWrapper, { backgroundColor: colors.surface }]}>
+      <Text style={[photoStyles.sectionLabel, { color: colors.textTertiary }]}>MOMENT</Text>
+      <View style={[photoStyles.imageWrapper, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         {!imageLoaded && (
           <View style={photoStyles.placeholder}>
             <ActivityIndicator size="small" color={colors.textSecondary} />
@@ -185,11 +104,19 @@ const photoStyles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 24,
   },
+  sectionLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    marginBottom: 12,
+  },
   imageWrapper: {
     width: '100%',
-    aspectRatio: 16 / 9,
+    aspectRatio: 4 / 3,
     borderRadius: 16,
     overflow: 'hidden',
+    borderWidth: 1,
   },
   placeholder: {
     ...StyleSheet.absoluteFillObject,
@@ -223,7 +150,6 @@ export default function HomeScreen() {
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
-  const [livingTradition, setLivingTradition] = useState<LivingTraditionData | null>(null);
   const [dailyPhoto, setDailyPhoto] = useState<DailyPhotoData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -347,28 +273,19 @@ export default function HomeScreen() {
     { id: 'islamic', name: 'Islamic', date: '16 Jumada I', type: 'Lunar' },
   ];
 
-  // Fallback living tradition content
-  const getMockLivingTradition = (): LivingTraditionData => ({
-    name: 'Seasonal Threshold',
-    description: 'Cultures across the world have long recognized the winter period as a time of gathering, reflection, and renewal. Traditions from Celtic Yule to the Roman Saturnalia mark this darkest season as a passage toward returning light.',
-    origin: 'Global · Seasonal',
-    category: 'seasonal'
-  });
-
   const fetchData = useCallback(async () => {
     try {
       const timeoutPromise = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('API timeout')), 15000)
       );
 
-      // Fetch Bundle + Calendars + Living Tradition + Photo + Consciousness + Instant
-      const [bundleData, calendarsData, livingData, photoData, consciousnessData, instantData] = await Promise.all([
+      // Fetch Bundle + Calendars + Photo + Consciousness + Instant
+      const [bundleData, calendarsData, photoData, consciousnessData, instantData] = await Promise.all([
         Promise.race([
           api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone),
           timeoutPromise,
         ]) as Promise<DailyBundleResponse>,
         api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, language).catch(() => null),
-        contentService.getLivingCalendarToday(coordinates.lat, coordinates.lng, timezone, language).catch(() => null),
         getDailyPhoto().catch(() => null),
         api.getConsciousnessAnalysis().catch(() => null),
         api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone).catch(() => null),
@@ -420,25 +337,6 @@ export default function HomeScreen() {
       } else {
         setPlanetary(getMockPlanetaryData());
         setEchoes(getMockEchoes());
-      }
-
-      // Process Living Tradition
-      if (livingData && livingData.length > 0) {
-        const item = livingData[0];
-        const desc = cleanTone(item.description || item.summary || '');
-        // If API data has valid description, use it; otherwise fallback to mock
-        if (desc && desc.trim().length > 0) {
-          setLivingTradition({
-            name: item.name || item.title || 'Seasonal Note',
-            description: desc,
-            origin: item.origin || item.tradition || 'Global',
-            category: item.category || 'seasonal'
-          });
-        } else {
-          setLivingTradition(getMockLivingTradition());
-        }
-      } else {
-        setLivingTradition(getMockLivingTradition());
       }
 
       // Process Calendars
@@ -496,7 +394,6 @@ export default function HomeScreen() {
       setPlanetary(getMockPlanetaryData());
       setEchoes(getMockEchoes());
       setCalendars(getMockCalendars());
-      setLivingTradition(getMockLivingTradition());
       
       // Still try to fetch photo independently
       try {
@@ -569,10 +466,6 @@ export default function HomeScreen() {
 
           {planetary && (
             <MetricsGrid planetary={planetary} />
-          )}
-
-          {livingTradition && (
-            <LivingTraditionCard data={livingTradition} />
           )}
 
           {dailyPhoto && (
