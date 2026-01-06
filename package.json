@@ -1,7 +1,7 @@
 {
   "name": "echoes-mobile",
   "version": "1.0.0",
-  "main": "expo-router/entry",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "expo start",
