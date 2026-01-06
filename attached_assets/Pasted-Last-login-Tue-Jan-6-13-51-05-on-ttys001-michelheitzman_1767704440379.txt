@@ -1,0 +1,181 @@
+Last login: Tue Jan  6 13:51:05 on ttys001
+michelheitzmann@michels-macbook-pro ~ % cd ~Desktop/TQF
+zsh: no such user or named directory: Desktop
+michelheitzmann@michels-macbook-pro ~ % cdNdesktop
+zsh: command not found: cdNdesktop
+michelheitzmann@michels-macbook-pro ~ % cd ~desktop
+zsh: no such user or named directory: desktop
+michelheitzmann@michels-macbook-pro ~ % cd ~/Desktop/TQF
+michelheitzmann@michels-macbook-pro TQF % npx expo start --dev-client --clear
+env: load .env.local .env
+env: export EXPO_PUBLIC_TQF_API_KEY
+Starting project at /Users/michelheitzmann/Desktop/TQF
+Starting Metro Bundler
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+█ ▄▄▄▄▄ █▄▀ ▄▄ ▀█▄▄█▀▀▀ ███ ▄▄▄▄▄ █
+█ █   █ ███▄█▄  ▀▀▀▄ ▀ ▄█▀█ █   █ █
+█ █▄▄▄█ ██▄▀▀ ▀▀█▀ █▄▀▄▄▀██ █▄▄▄█ █
+█▄▄▄▄▄▄▄█ █ █ ▀ ▀▄█ ▀▄█▄█▄█▄▄▄▄▄▄▄█
+█▄ █▄▄▀▄█▀ ▄ ▀▀█ ▀▄█▀ ▀  ▄▀▄▀▀▀▀█▄█
+█▄▄  ▄▀▄▀ ▀   █▄▄   █ ▄▄  █▄▄██   █
+█▀ ▀ █▄▄▀▀ █ ▀█ ▀██ █▄██ █▀▄▀█▄▀ ██
+█▄ ▀█▄▄▄█▄▀▄█ █ ▄▀██ ▀█▄▀█▀▄▀  ▀▄▀█
+█▄█ ▄▀█▄▄█ ██▀▄   ▀▄▀▀▀ █▄█    █▀ █
+█  ▄▀▀ ▄ ██ ▄▀ ▄  █▄ █▄█▄▄█▀▀▀  ▀ █
+█▀ █▄ ▀▄ ██ █▄▀▀▄▄█▀ ▄▀▀ ▄██▄▀▀█ ▄█
+█ █▀▀▀ ▄ ▀▀█▄▀▄█ ▀ ▄▀▀▄█ █▄▄▀▄█▀ ▄█
+█▄▄███▄▄█ █  ▀▀▄ ██ █▀██▄ ▄▄▄  ▀▀▄█
+█ ▄▄▄▄▄ ██▄ ███▀▄███ ▄▄█  █▄█   ▀██
+█ █   █ █ ▄▀▄ ▄  ▀▀▄ ▄▀  ▄ ▄▄▄▀▀███
+█ █▄▄▄█ █▀█▄▄  ▄  █  ▄██▀▄▄▀▄ █▀▀ █
+█▄▄▄▄▄▄▄█▄██▄███▄▄██▄▄██▄▄██▄█▄████
+
+› Metro waiting on exp+echoes://expo-development-client/?url=http%3A%2F%2F192.168.1.218%3A8081
+› Scan the QR code above to open the project in a development build. Learn more: https://expo.fyi/start
+
+› Web is waiting on http://localhost:8081
+
+› Using development build
+› Press s │ switch to Expo Go
+
+› Press a │ open Android
+› Press i │ open iOS simulator
+› Press w │ open web
+
+› Press j │ open debugger
+› Press r │ reload app
+› Press m │ toggle menu
+› shift+m │ more tools
+› Press o │ open project code in your editor
+
+› Press ? │ show all commands
+
+Logs for your project will appear below. Press Ctrl+C to exit.
+› Opening on iOS...
+› Opening exp+echoes://expo-development-client/?url=http%3A%2F%2F192.168.1.218%3A8081 on iPhone 16e
+› Press ? │ show all commands
+iOS Bundled 916ms index.js (3280 modules)
+ LOG  🔑 API Config: {"baseUrl": "http://localhost:5000", "mode": "backend-proxy"}
+ LOG  🌍 Detected language: en → API code: en
+ WARN  [Layout children]: Too many screens defined. Route "global" is extraneous.
+ WARN  [Layout children]: Too many screens defined. Route "journey" is extraneous.
+ WARN  [Layout children]: Too many screens defined. Route "you" is extraneous.
+ LOG  📡 Fetching daily bundle from: /api/proxy/echoes/daily-bundle?lat=40.7128&lng=-74.006&lang=en&tz=UTC
+ LOG  📡 Fetching calendars from: /api/proxy/planetary/traditional-calendars?tz=UTC&lang=en&lat=40.7128&lng=-74.006
+λ Bundled 6ms app/api/proxy/planetary/traditional-calendars+api.ts (1 module)
+λ Bundled 14ms app/api/proxy/echoes/daily-bundle+api.ts (1 module)
+ LOG  ✅ Daily bundle received: {"code": "MISSING_API_KEY", "error": "API key required", "success": false}
+ ERROR  ❌ Daily bundle error: [Error: Failed to fetch daily bundle] 
+
+Code: api.ts
+  187 |       const data = await response.json();
+  188 |       console.log('✅ Daily bundle received:', data);
+> 189 |       if (!data.success) throw new Error('Failed to fetch daily bundle');
+      |                                         ^
+  190 |       return data;
+  191 |     } catch (error) {
+  192 |       console.error('❌ Daily bundle error:', error);
+Call Stack
+  EchoesAPI#getDailyBundle (lib/api.ts:189:41)
+ ERROR  Failed to fetch data: [Error: Failed to fetch daily bundle] 
+
+Code: api.ts
+  187 |       const data = await response.json();
+  188 |       console.log('✅ Daily bundle received:', data);
+> 189 |       if (!data.success) throw new Error('Failed to fetch daily bundle');
+      |                                         ^
+  190 |       return data;
+  191 |     } catch (error) {
+  192 |       console.error('❌ Daily bundle error:', error);
+Call Stack
+  EchoesAPI#getDailyBundle (lib/api.ts:189:41)
+ LOG  [GESTURE] BEGIN {"index": 0, "isActive": true}
+ LOG  [GESTURE] UPDATE {"clampedX": -27, "safeTranslationX": -27, "translationX": -27, "translationY": -29.999999999999943, "velocityX": -764.4520327220434, "velocityY": -864.5562903233842}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -27, "index": 0, "opacity": 1, "rawTranslateX": -27, "rotate": -1.3499999999999996, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -48.333333333333314, "safeTranslationX": -48.333333333333314, "translationX": -48.333333333333314, "translationY": -45.33333333333326, "velocityX": -1114.3714205283893, "velocityY": -954.4640528515299}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -48.333333333333314, "index": 0, "opacity": 1, "rawTranslateX": -48.333333333333314, "rotate": -2.416666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -58, "safeTranslationX": -58, "translationX": -58, "translationY": -51.66666666666663, "velocityX": -797.2603984254613, "velocityY": -565.6552291177564}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -58, "index": 0, "opacity": 1, "rawTranslateX": -58, "rotate": -2.9000000000000004, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -68.66666666666666, "safeTranslationX": -68.66666666666666, "translationX": -68.66666666666666, "translationY": -57.66666666666663, "velocityX": -591.6486223382462, "velocityY": -375.8063279328434}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -68.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -68.66666666666666, "rotate": -3.433333333333332, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -74.66666666666666, "safeTranslationX": -74.66666666666666, "translationX": -74.66666666666666, "translationY": -61.66666666666663, "velocityX": -582.6477743087994, "velocityY": -335.2628085509427}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -74.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -74.66666666666666, "rotate": -3.7333333333333325, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -80.33333333333331, "safeTranslationX": -80.33333333333331, "translationX": -80.33333333333331, "translationY": -66.66666666666663, "velocityX": -356.9191387182659, "velocityY": -252.61690365048264}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -80.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -80.33333333333331, "rotate": -4.016666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -90.33333333333331, "safeTranslationX": -90.33333333333331, "translationX": -90.33333333333331, "translationY": -77.99999999999994, "velocityX": -392.2529196491951, "velocityY": -376.2673514823095}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -90.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -90.33333333333331, "rotate": -4.516666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -98.33333333333331, "safeTranslationX": -98.33333333333331, "translationX": -98.33333333333331, "translationY": -90.33333333333326, "velocityX": -576.6354010622681, "velocityY": -692.6920153673084}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -98.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -98.33333333333331, "rotate": -4.916666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -108.66666666666666, "safeTranslationX": -108.66666666666666, "translationX": -108.66666666666666, "translationY": -105.33333333333326, "velocityX": -507.85128667799273, "velocityY": -771.7593319973246}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -108.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -108.66666666666666, "rotate": -5.433333333333334, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -120, "safeTranslationX": -120, "translationX": -120, "translationY": -120.99999999999994, "velocityX": -632.3736264368923, "velocityY": -908.5515593861053}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -120, "index": 0, "opacity": 1, "rawTranslateX": -120, "rotate": -6, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -128.33333333333331, "safeTranslationX": -128.33333333333331, "translationX": -128.33333333333331, "translationY": -128.99999999999994, "velocityX": -610.2161902623328, "velocityY": -815.343171539562}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -128.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -128.33333333333331, "rotate": -6.416666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -133, "safeTranslationX": -133, "translationX": -133, "translationY": -132.33333333333326, "velocityX": -322.9741885455524, "velocityY": -296.29903834325887}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -133, "index": 0, "opacity": 1, "rawTranslateX": -133, "rotate": -6.65, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -137, "safeTranslationX": -137, "translationX": -137, "translationY": -134.99999999999994, "velocityX": -271.84360270687705, "velocityY": -191.89277595998777}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -137, "index": 0, "opacity": 1, "rawTranslateX": -137, "rotate": -6.85, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -141.66666666666666, "safeTranslationX": -141.66666666666666, "translationX": -141.66666666666666, "translationY": -137.66666666666663, "velocityX": -247.7241040539472, "velocityY": -159.80643867592718}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -141.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -141.66666666666666, "rotate": -7.083333333333333, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -146.33333333333331, "safeTranslationX": -146.33333333333331, "translationX": -146.33333333333331, "translationY": -140.66666666666663, "velocityX": -280.357069303846, "velocityY": -164.20065247235726}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -146.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -146.33333333333331, "rotate": -7.316666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -151, "safeTranslationX": -151, "translationX": -151, "translationY": -143.66666666666663, "velocityX": -279.9541893897469, "velocityY": -179.97055032198028}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -151, "index": 0, "opacity": 1, "rawTranslateX": -151, "rotate": -7.550000000000001, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -157.66666666666666, "safeTranslationX": -157.66666666666666, "translationX": -157.66666666666666, "translationY": -146.66666666666663, "velocityX": -304.41997748811343, "velocityY": -180.29997426518776}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -157.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -157.66666666666666, "rotate": -7.883333333333333, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -162.66666666666666, "safeTranslationX": -162.66666666666666, "translationX": -162.66666666666666, "translationY": -148.33333333333326, "velocityX": -379.3080430664298, "velocityY": -163.69678234961688}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -162.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -162.66666666666666, "rotate": -8.133333333333333, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -168.66666666666666, "safeTranslationX": -168.66666666666666, "translationX": -168.66666666666666, "translationY": -150.33333333333326, "velocityX": -311.7293079152938, "velocityY": -103.90976930509612}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -168.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -168.66666666666666, "rotate": -8.433333333333334, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -174, "safeTranslationX": -174, "translationX": -174, "translationY": -151.33333333333326, "velocityX": -352.1537382071594, "velocityY": -108.03418159223907}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -174, "index": 0, "opacity": 1, "rawTranslateX": -174, "rotate": -8.7, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -177, "safeTranslationX": -177, "translationX": -177, "translationY": -151.99999999999994, "velocityX": -292.45141191510527, "velocityY": -56.084061876232376}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -177, "index": 0, "opacity": 1, "rawTranslateX": -177, "rotate": -8.850000000000001, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -179, "safeTranslationX": -179, "translationX": -179, "translationY": -152.66666666666663, "velocityX": -167.91340749653904, "velocityY": -39.97853241266091}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -179, "index": 0, "opacity": 1, "rawTranslateX": -179, "rotate": -8.95, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -181.33333333333331, "safeTranslationX": -181.33333333333331, "translationX": -181.33333333333331, "translationY": -153.66666666666663, "velocityX": -123.92270716482307, "velocityY": -43.974502415073786}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -181.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -181.33333333333331, "rotate": -9.066666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -184, "safeTranslationX": -184, "translationX": -184, "translationY": -153.99999999999994, "velocityX": -144.0621621502936, "velocityY": -52.01117061046668}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -184, "index": 0, "opacity": 1, "rawTranslateX": -184, "rotate": -9.2, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -186.33333333333331, "safeTranslationX": -186.33333333333331, "translationX": -186.33333333333331, "translationY": -154.33333333333326, "velocityX": -156.23994057517126, "velocityY": -20.030637151826102}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -186.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -186.33333333333331, "rotate": -9.316666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -189, "safeTranslationX": -189, "translationX": -189, "translationY": -154.33333333333326, "velocityX": -144.1199246130872, "velocityY": -16.020626557788518}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -189, "index": 0, "opacity": 1, "rawTranslateX": -189, "rotate": -9.45, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -192.33333333333331, "safeTranslationX": -192.33333333333331, "translationX": -192.33333333333331, "translationY": -154.66666666666663, "velocityX": -167.89155764386254, "velocityY": -3.99894028096188}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -192.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -192.33333333333331, "rotate": -9.616666666666665, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -195.66666666666666, "safeTranslationX": -195.66666666666666, "translationX": -195.66666666666666, "translationY": -154.33333333333326, "velocityX": -199.9628119168879, "velocityY": -11.995241056003973}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -195.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -195.66666666666666, "rotate": -9.783333333333333, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -198.66666666666666, "safeTranslationX": -198.66666666666666, "translationX": -198.66666666666666, "translationY": -152.99999999999994, "velocityX": -196.01540352229898, "velocityY": 31.999680630740503}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -198.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -198.66666666666666, "rotate": -9.933333333333334, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -202, "safeTranslationX": -202, "translationX": -202, "translationY": -151.33333333333326, "velocityX": -183.96390848650162, "velocityY": 83.9831540635669}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -202, "index": 0, "opacity": 1, "rawTranslateX": -202, "rotate": -10.1, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -204.33333333333331, "safeTranslationX": -204.33333333333331, "translationX": -204.33333333333331, "translationY": -150.33333333333326, "velocityX": -187.89973496627317, "velocityY": 91.95288791474752}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -204.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -204.33333333333331, "rotate": -10.216666666666665, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -205.33333333333331, "safeTranslationX": -205.33333333333331, "translationX": -205.33333333333331, "translationY": -149.99999999999994, "velocityX": -123.85348843766278, "velocityY": 51.93505384396806}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -205.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -205.33333333333331, "rotate": -10.266666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -206.33333333333331, "safeTranslationX": -206.33333333333331, "translationX": -206.33333333333331, "translationY": -149.99999999999994, "velocityX": -60.09752450457997, "velocityY": 16.03017681042105}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -206.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -206.33333333333331, "rotate": -10.316666666666666, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -207, "safeTranslationX": -207, "translationX": -207, "translationY": -149.99999999999994, "velocityX": -56.01547585668278, "velocityY": 0}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -207, "index": 0, "opacity": 1, "rawTranslateX": -207, "rotate": -10.35, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -207.33333333333331, "safeTranslationX": -207.33333333333331, "translationX": -207.33333333333331, "translationY": -149.99999999999994, "velocityX": -35.94437616647412, "velocityY": 0}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -207.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -207.33333333333331, "rotate": -10.366666666666667, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -208, "safeTranslationX": -208, "translationX": -208, "translationY": -149.99999999999994, "velocityX": -23.95957197108094, "velocityY": 0}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -208, "index": 0, "opacity": 1, "rawTranslateX": -208, "rotate": -10.4, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -209.33333333333331, "safeTranslationX": -209.33333333333331, "translationX": -209.33333333333331, "translationY": -149.99999999999994, "velocityX": -47.97940436326944, "velocityY": 0}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -209.33333333333331, "index": 0, "opacity": 1, "rawTranslateX": -209.33333333333331, "rotate": -10.466666666666665, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -213, "safeTranslationX": -213, "translationX": -213, "translationY": -149.99999999999994, "velocityX": -108.23888894733687, "velocityY": 0}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -213, "index": 0, "opacity": 1, "rawTranslateX": -213, "rotate": -10.65, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -218.66666666666666, "safeTranslationX": -218.66666666666666, "translationX": -218.66666666666666, "translationY": -149.99999999999994, "velocityX": -244.16756023021514, "velocityY": 0}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -218.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -218.66666666666666, "rotate": -10.933333333333334, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -230, "safeTranslationX": -230, "translationX": -230, "translationY": -149.33333333333326, "velocityX": -408.0066138453064, "velocityY": 7.9931858090883745}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -230, "index": 0, "opacity": 1, "rawTranslateX": -230, "rotate": -11.5, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -239.66666666666666, "safeTranslationX": -239.66666666666666, "translationX": -239.66666666666666, "translationY": -146.99999999999994, "velocityX": -659.5676733392728, "velocityY": 59.9802352449378}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -239.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -239.66666666666666, "rotate": -11.983333333333333, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -255.66666666666666, "safeTranslationX": -255.66666666666666, "translationX": -255.66666666666666, "translationY": -140.99999999999994, "velocityX": -656.2990324032166, "velocityY": 184.09554770362524}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -255.66666666666666, "index": 0, "opacity": 1, "rawTranslateX": -255.66666666666666, "rotate": -12.783333333333333, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -274.3333333333333, "safeTranslationX": -274.3333333333333, "translationX": -274.3333333333333, "translationY": -131.66666666666663, "velocityX": -992.5020107686472, "velocityY": 400.1635658252728}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -274.3333333333333, "index": 0, "opacity": 1, "rawTranslateX": -274.3333333333333, "rotate": -13.716666666666665, "scale": 1, "translateY": 0}
+ LOG  [GESTURE] UPDATE {"clampedX": -297, "safeTranslationX": -297, "translationX": -297, "translationY": -117.99999999999994, "velocityX": -1167.204537295881, "velocityY": 611.6017086593575}
+ LOG  [GESTURE] ANIMATED_STYLE {"clampedTranslateX": -297, "index": 0, "opacity": 1, "rawTranslateX": -297, "rotate": -14.85, "scale": 1, "translateY": 0}
+
