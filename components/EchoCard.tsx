@@ -126,6 +126,7 @@ export default function EchoCard({
 }: EchoCardProps) {
   const { colors, theme } = useTheme();
   const translateX = useSharedValue(0);
+  const updateCount = useSharedValue(0);
   const isActive = index === 0;
   const [showWhyModal, setShowWhyModal] = useState(false);
 
@@ -143,6 +144,7 @@ export default function EchoCard({
   const panGesture = Gesture.Pan()
     .enabled(isActive)
     .onBegin(() => {
+      updateCount.value = 0;
       if (DEBUG_GESTURES) {
         runOnJS(gestureDebug)('BEGIN', { isActive, index });
       }
@@ -151,33 +153,39 @@ export default function EchoCard({
       const safeTranslationX = safeNumber(event.translationX, 0);
       const clampedX = clamp(safeTranslationX, -MAX_TRANSLATE_X, MAX_TRANSLATE_X);
       
-      if (DEBUG_GESTURES) {
+      updateCount.value = updateCount.value + 1;
+      
+      if (DEBUG_GESTURES && updateCount.value % 10 === 0) {
         runOnJS(gestureDebug)('UPDATE', {
-          translationX: event.translationX,
-          safeTranslationX,
+          count: updateCount.value,
           clampedX,
           translationY: event.translationY,
-          velocityX: event.velocityX,
-          velocityY: event.velocityY,
         });
       }
       translateX.value = clampedX;
     })
     .onEnd((event) => {
+      const safeTranslationX = safeNumber(event.translationX, 0);
+      const clampedX = clamp(safeTranslationX, -MAX_TRANSLATE_X, MAX_TRANSLATE_X);
+      const absX = Math.abs(clampedX);
+      const shouldSwipe = absX > 100;
+      const direction = clampedX > 0 ? 'right' : 'left';
+      
       if (DEBUG_GESTURES) {
         runOnJS(gestureDebug)('END', {
-          translationX: event.translationX,
-          velocityX: event.velocityX,
+          rawTranslationX: event.translationX,
+          clampedX,
           threshold: 100,
-          willSwipe: Math.abs(event.translationX) > 100,
-          direction: event.translationX > 0 ? 'right' : 'left',
+          willSwipe: shouldSwipe,
+          direction,
         });
       }
-      if (Math.abs(event.translationX) > 100) {
-        if (event.translationX > 0) {
-          onSwipeRight?.();
-        } else {
-          onSwipeLeft?.();
+      
+      if (shouldSwipe) {
+        if (direction === 'right' && onSwipeRight) {
+          runOnJS(onSwipeRight)();
+        } else if (direction === 'left' && onSwipeLeft) {
+          runOnJS(onSwipeLeft)();
         }
       }
       translateX.value = withSpring(0);
@@ -227,18 +235,6 @@ export default function EchoCard({
     const safeOpacity = safeNumber(opacity, 1);
     const safeRotate = safeNumber(rotate, 0);
     const finalTranslateX = isActive ? clampedTranslateX : 0;
-
-    if (DEBUG_GESTURES && isActive && clampedTranslateX !== 0) {
-      runOnJS(gestureDebug)('ANIMATED_STYLE', {
-        index: safeIndex,
-        rawTranslateX: translateX.value,
-        clampedTranslateX,
-        scale: safeScale,
-        translateY: safeTranslateY,
-        opacity: safeOpacity,
-        rotate: safeRotate,
-      });
-    }
 
     return {
       transform: [
