@@ -1,1 +1,1 @@
-export const DEBUG_GESTURES = true;
+export const DEBUG_GESTURES = false;
