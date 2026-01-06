@@ -470,7 +470,7 @@ export default function LearnScreen() {
           {/* Artifact Skeleton */}
           <View style={styles.section}>
             <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>ARTIFACT OF THE DAY</Text>
-            <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 20 }} />
+            <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 16 }} />
           </View>
 
           {/* Carousel Skeleton (at bottom) */}
@@ -480,7 +480,7 @@ export default function LearnScreen() {
           
           <View style={styles.carouselContainer}>
             <View style={styles.carouselScroll}>
-              <SkeletonCard style={{ width: width * 0.85, height: 200, borderRadius: 24 }} />
+              <SkeletonCard style={{ width: width * 0.85, height: 200, borderRadius: 16 }} />
             </View>
           </View>
         </ScrollView>
@@ -515,7 +515,7 @@ export default function LearnScreen() {
           <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Cultural wisdom surfaced today</Text>
           
           {cultureLoading ? (
-            <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 20 }} />
+            <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 16 }} />
           ) : cultureEmpty ? (
             <View style={[styles.fallbackCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Text style={[styles.fallbackCardTitle, { color: colors.textSecondary }]}>No cultural offering surfaced today.</Text>
@@ -800,7 +800,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     color: 'rgba(255,255,255,0.4)',
-    marginBottom: 6,
+    marginBottom: 12,
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
@@ -823,7 +823,7 @@ const styles = StyleSheet.create({
     width: width * 0.85,
     height: 280,
     backgroundColor: 'rgba(255,255,255,0.08)',
-    borderRadius: 24,
+    borderRadius: 16,
     padding: 24,
     justifyContent: 'space-between',
     borderWidth: 1,
@@ -913,7 +913,7 @@ const styles = StyleSheet.create({
   // Artifact
   artifactCard: {
     backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: 20,
+    borderRadius: 16,
     padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.05)',
@@ -961,7 +961,7 @@ const styles = StyleSheet.create({
     padding: 32,
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.08)',
     minHeight: 180,

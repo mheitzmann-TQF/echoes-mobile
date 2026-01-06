@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme, ThemeColors } from '../lib/ThemeContext';
 import api, { DailyBundleResponse, PlanetaryData } from '../lib/api';
-import { ChevronDown, ChevronUp, Info } from 'lucide-react-native';
+import { ChevronDown, ChevronUp, Info, Moon, Sun, Globe, Zap, Dna } from 'lucide-react-native';
 import { toTitleCase } from '../lib/labelize';
 
 // Enable LayoutAnimation on Android
@@ -13,7 +13,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 interface ExpandableCardProps {
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   collapsedValue?: string;
   collapsedDetail?: string;
@@ -51,7 +51,7 @@ function ExpandableCard({
     >
       <View style={styles.cardHeaderRow}>
         <View style={styles.cardHeaderLeft}>
-          <Text style={styles.cardIcon}>{icon}</Text>
+          <View style={styles.cardIcon}>{icon}</View>
           <View style={styles.headerTextContainer}>
             <Text style={[styles.cardTitle, { color: colors.textSecondary }]}>{title}</Text>
             
@@ -367,7 +367,7 @@ export default function FieldScreen() {
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>COSMOS</Text>
           
           <ExpandableCard
-            icon="🌙"
+            icon={<Moon size={20} color={colors.text} />}
             title="Lunar"
             message={ctx?.lunar?.phase ? toTitleCase(ctx.lunar.phase) : 'Phase cycle active'}
             collapsedDetail={`${Math.round(ctx?.lunar?.illumination || 0)}%`}
@@ -387,7 +387,7 @@ export default function FieldScreen() {
           />
 
           <ExpandableCard
-            icon="☀️"
+            icon={<Sun size={20} color={colors.text} />}
             title="Solar"
             message={ctx?.solar?.phase || 'Day cycle active'}
             collapsedDetail={sunsetInfo.label}
@@ -414,7 +414,7 @@ export default function FieldScreen() {
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>EARTH</Text>
           
           <ExpandableCard
-            icon="🌐"
+            icon={<Globe size={20} color={colors.text} />}
             title="Coherence"
             message={consciousnessData?.global_coherence && consciousnessData.global_coherence > 60 ? "Collective tone is stable." : consciousnessData ? "Collective tone is variable." : "Checking collective pulse..."}
             collapsedDetail={consciousnessData?.global_coherence !== undefined && consciousnessData?.global_coherence !== null ? `${Math.round(consciousnessData.global_coherence)}%` : "—"}
@@ -440,7 +440,7 @@ export default function FieldScreen() {
           />
 
           <ExpandableCard
-            icon="⚡"
+            icon={<Zap size={20} color={colors.text} />}
             title="Geomagnetic"
             message={geoState.message}
             collapsedDetail={geoState.label}
@@ -471,7 +471,7 @@ export default function FieldScreen() {
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>BODY</Text>
           
           <ExpandableCard
-            icon="🧬"
+            icon={<Dna size={20} color={colors.text} />}
             title="Body"
             message={bioRhythms?.circadian?.phase || 'Rhythm active'}
             collapsedDetail={bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : 'Active'}
@@ -569,7 +569,7 @@ const styles = StyleSheet.create({
   },
   stickyHeader: {
     flexDirection: 'row',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
     marginBottom: 32,
     borderWidth: 1,
@@ -636,8 +636,11 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
   },
   cardIcon: {
-    fontSize: 22,
-    marginRight: 16,
+    marginRight: 12,
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   cardTitle: {
     fontSize: 13,

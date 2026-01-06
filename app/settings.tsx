@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontSize: 12,
     fontWeight: '600',
-    marginBottom: 16,
+    marginBottom: 12,
     paddingHorizontal: 20,
     letterSpacing: 1,
     textTransform: 'uppercase',
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
   },
   // Location Card
   locationCard: {
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
     marginTop: 12,
     borderWidth: 1,

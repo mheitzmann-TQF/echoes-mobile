@@ -51,8 +51,8 @@ function LivingTraditionCard({ data }: { data: LivingTraditionData }) {
         <View style={liveTradStyles.headerText}>
           <Text style={[liveTradStyles.title, { color: colors.text }]}>{data.name}</Text>
           {data.origin && (
-            <View style={[liveTradStyles.originBadge, { backgroundColor: 'rgba(155, 89, 182, 0.2)' }]}>
-              <Text style={[liveTradStyles.originText, { color: '#9b59b6' }]}>{data.origin}</Text>
+            <View style={[liveTradStyles.originBadge, { backgroundColor: colors.surfaceHighlight }]}>
+              <Text style={[liveTradStyles.originText, { color: colors.textSecondary }]}>{data.origin}</Text>
             </View>
           )}
         </View>
@@ -69,7 +69,7 @@ const liveTradStyles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 20,
     padding: 16,
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 1,
   },
   header: {
