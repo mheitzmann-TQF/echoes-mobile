@@ -5,7 +5,7 @@ import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import api from '../lib/api';
 import { cookieService } from '../lib/CookieService';
-import { Bookmark, X, ArrowRight, ChevronRight, BookOpen, Sparkles, Calendar } from 'lucide-react-native';
+import { Bookmark, X, ArrowRight, ChevronRight, BookOpen, Sparkles, Calendar, Globe, Leaf } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -554,12 +554,12 @@ export default function LearnScreen() {
           
           <View style={[styles.exploreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.exploreHeader}>
-              <View style={[styles.exploreIcon, { backgroundColor: 'rgba(52, 152, 219, 0.2)' }]}>
-                <Text style={{ fontSize: 20 }}>🌍</Text>
+              <View style={[styles.exploreIcon, { backgroundColor: 'rgba(52, 152, 219, 0.15)' }]}>
+                <Globe size={20} color="#3498db" />
               </View>
               <View style={styles.exploreContent}>
                 <Text style={[styles.exploreTitle, { color: colors.text }]}>Sacred Geography</Text>
-                <Text style={[styles.exploreOrigin, { color: '#3498db' }]}>Global Traditions</Text>
+                <Text style={[styles.exploreOrigin, { color: colors.textSecondary }]}>Global Traditions</Text>
               </View>
             </View>
             <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>
@@ -569,12 +569,12 @@ export default function LearnScreen() {
 
           <View style={[styles.exploreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.exploreHeader}>
-              <View style={[styles.exploreIcon, { backgroundColor: 'rgba(155, 89, 182, 0.2)' }]}>
-                <Text style={{ fontSize: 20 }}>📜</Text>
+              <View style={[styles.exploreIcon, { backgroundColor: 'rgba(155, 89, 182, 0.15)' }]}>
+                <BookOpen size={20} color="#9b59b6" />
               </View>
               <View style={styles.exploreContent}>
                 <Text style={[styles.exploreTitle, { color: colors.text }]}>Oral Tradition</Text>
-                <Text style={[styles.exploreOrigin, { color: '#9b59b6' }]}>Indigenous Wisdom</Text>
+                <Text style={[styles.exploreOrigin, { color: colors.textSecondary }]}>Indigenous Wisdom</Text>
               </View>
             </View>
             <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>
@@ -584,12 +584,12 @@ export default function LearnScreen() {
 
           <View style={[styles.exploreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.exploreHeader}>
-              <View style={[styles.exploreIcon, { backgroundColor: 'rgba(46, 204, 113, 0.2)' }]}>
-                <Text style={{ fontSize: 20 }}>🌿</Text>
+              <View style={[styles.exploreIcon, { backgroundColor: 'rgba(46, 204, 113, 0.15)' }]}>
+                <Leaf size={20} color="#2ecc71" />
               </View>
               <View style={styles.exploreContent}>
                 <Text style={[styles.exploreTitle, { color: colors.text }]}>Seasonal Rhythms</Text>
-                <Text style={[styles.exploreOrigin, { color: '#2ecc71' }]}>Earth Cycles</Text>
+                <Text style={[styles.exploreOrigin, { color: colors.textSecondary }]}>Earth Cycles</Text>
               </View>
             </View>
             <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>

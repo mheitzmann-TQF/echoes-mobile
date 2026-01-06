@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Moon, Zap, Globe } from 'lucide-react-native';
 import { PlanetaryData } from '../lib/api';
 import { useTheme } from '../lib/ThemeContext';
 
@@ -19,7 +20,7 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
       id: 'lunar',
       number: `${lunarIllumination}%`,
       numberLabel: 'Lunar',
-      emoji: '🌙',
+      icon: <Moon size={22} color={colors.text} />,
       cardTitle: planetary.lunar.phase,
       cardDesc: 'Lunar Phase',
     },
@@ -27,7 +28,7 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
       id: 'geomagnetism',
       number: `${geoKpIndex}`,
       numberLabel: 'Geomagnetism',
-      emoji: '⚡',
+      icon: <Zap size={22} color={colors.text} />,
       cardTitle: planetary.geomagnetic.activity,
       cardDesc: 'Geomagnetic',
     },
@@ -35,7 +36,7 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
       id: 'coherence',
       number: `${Math.round(coherence)}%`,
       numberLabel: 'Coherence',
-      emoji: '🌐',
+      icon: <Globe size={22} color={colors.text} />,
       cardTitle: 'Active',
       cardDesc: 'Field Strength',
     },
@@ -49,7 +50,9 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
             key={metric.id}
             style={[styles.metricBox, { backgroundColor: colors.surface, borderColor: colors.border }]}
           >
-            <Text style={styles.emoji}>{metric.emoji}</Text>
+            <View style={styles.iconContainer}>
+              {metric.icon}
+            </View>
             <Text style={[styles.number, { color: colors.text }]}>{metric.number}</Text>
             <Text style={[styles.label, { color: colors.textSecondary }]}>
               {metric.numberLabel}
@@ -82,8 +85,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.05)',
     backgroundColor: 'rgba(255,255,255,0.02)',
   },
-  emoji: {
-    fontSize: 24,
+  iconContainer: {
     marginBottom: 8,
   },
   number: {
