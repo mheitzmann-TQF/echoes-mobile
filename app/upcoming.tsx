@@ -20,11 +20,11 @@ function getDateRange(band: Band): { start: Date; end: Date; label: string } {
   let end = new Date(now);
 
   if (band === 'soon') {
-    end.setHours(now.getHours() + 48);
-    return { start, end, label: 'Next 48 hours' };
-  } else if (band === 'cycle') {
     end.setDate(now.getDate() + 14);
     return { start, end, label: 'Next 14 days' };
+  } else if (band === 'cycle') {
+    end.setDate(now.getDate() + 30);
+    return { start, end, label: 'Next 30 days' };
   } else {
     end.setDate(now.getDate() + 90);
     return { start, end, label: 'Next 90 days' };
