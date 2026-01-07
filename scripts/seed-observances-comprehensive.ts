@@ -387,6 +387,40 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     // Christmas
     addObservance({ date: `${year}-12-25`, name: 'Christmas', tradition: 'Christian', region: 'Global', description: 'Christian celebration of the birth of Jesus Christ.', category: 'religious' });
 
+    // ========== UNIQUE & FASCINATING OBSERVANCES ==========
+
+    // World observances with interesting histories
+    addObservance({ date: `${year}-02-14`, name: 'World Sound Healing Day', tradition: 'New Age/Holistic', region: 'Global', description: 'Day for using voice and sound for personal and planetary healing at 12 noon local time.', category: 'cultural' });
+    addObservance({ date: `${year}-03-03`, name: 'World Wildlife Day', tradition: 'UN Observance', region: 'Global', description: 'Celebrating wild animals and plants and their importance to human wellbeing.', category: 'environmental' });
+    addObservance({ date: `${year}-04-22`, name: 'Earth Day', tradition: 'Environmental', region: 'Global', description: 'Annual event supporting environmental protection, begun in 1970.', category: 'environmental' });
+    addObservance({ date: `${year}-06-05`, name: 'World Environment Day', tradition: 'UN Observance', region: 'Global', description: 'UN day for encouraging awareness and action for protection of the environment.', category: 'environmental' });
+    addObservance({ date: `${year}-09-21`, name: 'International Day of Peace', tradition: 'UN Observance', region: 'Global', description: 'Day devoted to strengthening ideals of peace through 24 hours of non-violence and cease-fire.', category: 'cultural' });
+
+    // Unique regional celebrations
+    addObservance({ date: `${year}-02-08`, name: 'Prešeren Day', tradition: 'National/Literary', region: 'Slovenia', description: 'Slovenian cultural holiday honoring the poet France Prešeren, a day of Slovenian culture.', category: 'cultural' });
+    addObservance({ date: `${year}-03-08`, name: 'International Women\'s Day', tradition: 'Social Movement', region: 'Global', description: 'Celebrating women\'s achievements and advocating for gender equality worldwide.', category: 'cultural' });
+    addObservance({ date: `${year}-04-13`, name: 'Songkran (Water Festival)', tradition: 'Buddhist/Thai', region: 'Thailand, Laos, Cambodia, Myanmar', description: 'Traditional New Year festival with water splashing symbolizing purification and renewal.', category: 'cultural' });
+    addObservance({ date: `${year}-05-05`, name: 'Cinco de Mayo', tradition: 'Mexican/Cultural', region: 'Mexico, United States', description: 'Commemorates the Mexican Army\'s victory over France at the Battle of Puebla in 1862.', category: 'cultural' });
+    addObservance({ date: `${year}-06-24`, name: 'Inti Raymi', tradition: 'Incan/Andean', region: 'Peru, Ecuador, Bolivia, Andean communities', description: 'Festival of the Sun honoring Inti, the Incan sun god, at the winter solstice.', category: 'cultural' });
+    addObservance({ date: `${year}-07-26`, name: 'Day Out of Time', tradition: 'Maya/New Age', region: 'Global (Maya traditions)', description: 'Day between the end of the galactic year and Mayan New Year, for reflection and celebration.', category: 'cultural' });
+    addObservance({ date: `${year}-08-08`, name: 'Lion\'s Gate Portal', tradition: 'Astrological/New Age', region: 'Global', description: 'Annual alignment when the Sun in Leo aligns with Sirius, believed to open a cosmic gateway.', category: 'astronomical' });
+    addObservance({ date: `${year}-09-09`, name: 'Chrysanthemum Festival', tradition: 'Japanese/Chinese', region: 'Japan, China, East Asia', description: 'Day honoring the chrysanthemum flower, symbol of longevity and rejuvenation.', category: 'cultural' });
+    addObservance({ date: `${year}-11-11`, name: '11:11 Portal Day', tradition: 'Numerological/New Age', region: 'Global', description: 'Day associated with spiritual awakening and synchronicity in numerology traditions.', category: 'cultural' });
+
+    // Indigenous and traditional celebrations
+    addObservance({ date: `${year}-06-21`, name: 'National Indigenous Peoples Day', tradition: 'Indigenous', region: 'Canada', description: 'Day to recognize and celebrate the cultures and contributions of First Nations, Inuit, and Métis peoples.', category: 'cultural' });
+    addObservance({ date: `${year}-08-09`, name: 'International Day of the World\'s Indigenous Peoples', tradition: 'UN/Indigenous', region: 'Global', description: 'Day to promote and protect the rights of indigenous peoples worldwide.', category: 'cultural' });
+    addObservance({ date: `${year}-10-12`, name: 'Día de la Raza / Indigenous Peoples\' Day', tradition: 'Indigenous/National', region: 'Latin America, United States', description: 'Day honoring indigenous peoples and their cultural heritage.', category: 'cultural' });
+
+    // Lunar and cosmic observances
+    addObservance({ date: `${year}-07-28`, name: 'Delta Aquariid Meteor Shower Peak', tradition: 'Astronomical', region: 'Global', description: 'Annual meteor shower visible from both hemispheres, best viewed after midnight.', category: 'astronomical' });
+    addObservance({ date: `${year}-08-12`, name: 'Perseid Meteor Shower Peak', tradition: 'Astronomical', region: 'Global (Northern Hemisphere)', description: 'Most popular meteor shower of the year, producing up to 100 meteors per hour.', category: 'astronomical' });
+    addObservance({ date: `${year}-12-14`, name: 'Geminid Meteor Shower Peak', tradition: 'Astronomical', region: 'Global', description: 'King of meteor showers, producing up to 150 multicolored meteors per hour.', category: 'astronomical' });
+
+    // Harvest and seasonal traditions
+    addObservance({ date: `${year}-09-29`, name: 'Michaelmas', tradition: 'Christian/Celtic', region: 'UK, Ireland, Germanic regions', description: 'Feast of St. Michael, traditionally marking the end of the harvest season.', category: 'seasonal' });
+    addObservance({ date: `${year}-11-15`, name: 'Shichi-Go-San', tradition: 'Shinto/Japanese', region: 'Japan', description: 'Celebration of children aged 3, 5, and 7, giving thanks for their health and growth.', category: 'cultural' });
+
     // ========== MOVEABLE DATES ==========
     
     const easter = getEasterSunday(year);

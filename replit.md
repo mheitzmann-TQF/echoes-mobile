@@ -142,7 +142,7 @@ The app now uses PostgreSQL (Neon serverless) with Drizzle ORM for persistent st
 **Tables:**
 - `cultural_observances` - Stores pre-calculated moveable holidays for accurate global event tracking
   - Fields: id, date, name, tradition, region, description, category
-  - Contains 768 observances spanning 2026-2036 (11 years of pre-calculated moveable holidays)
+  - Contains 1,010 observances spanning 2026-2036 (11 years of pre-calculated moveable holidays)
   - Uses `date-holidays` library for automatic calculation of country-specific holidays
   - Verified moveable dates: Lunar New Year, Diwali, Holi, Ramadan, Eid al-Fitr, Passover, Vesak, Isra and Mi'raj, Easter, Orthodox Easter
   - Fixed dates: Orthodox Christmas, Vodoun Festival, Amazigh New Year, Republic Day (India), Australia Day, Waitangi Day, Nowruz, solstices, equinoxes, Celtic festivals
