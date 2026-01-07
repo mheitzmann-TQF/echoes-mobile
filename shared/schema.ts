@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, serial, date } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, serial, date, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -50,3 +50,26 @@ export const insertObservanceSchema = createInsertSchema(culturalObservances).om
 
 export type InsertObservance = z.infer<typeof insertObservanceSchema>;
 export type Observance = typeof culturalObservances.$inferSelect;
+
+export const entitlementRecords = pgTable("entitlement_records", {
+  id: serial("id").primaryKey(),
+  installId: varchar("install_id", { length: 64 }).notNull().unique(),
+  entitlement: text("entitlement").notNull().default("free"),
+  platform: text("platform"),
+  sku: text("sku"),
+  purchaseToken: text("purchase_token"),
+  transactionId: text("transaction_id"),
+  expiresAt: timestamp("expires_at"),
+  lastVerifiedAt: timestamp("last_verified_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertEntitlementSchema = createInsertSchema(entitlementRecords).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertEntitlement = z.infer<typeof insertEntitlementSchema>;
+export type EntitlementRecord = typeof entitlementRecords.$inferSelect;
