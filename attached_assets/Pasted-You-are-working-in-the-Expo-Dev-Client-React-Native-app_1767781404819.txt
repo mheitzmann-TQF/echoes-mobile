@@ -1,0 +1,86 @@
+You are working in the Expo Dev Client React Native app “Echoes / The Quiet Frame”.
+
+Goal:
+Implement iOS/Android subscription pricing using react-native-iap, with a 3-day free trial handled by Apple/Google via “Introductory Offer / Free trial” in the stores (NOT a custom timer).
+
+Constraints:
+- Do NOT implement any local 3-day timer or trial tracking.
+- Treat “trial” as subscribed (entitlement true) because Apple/Google return an active subscription during the free trial.
+- Keep code minimal, production-safe, and instrumented with clear logs.
+- Ensure App Review compliance: show price terms, provide Restore Purchases, and link Terms/Privacy.
+
+What to do:
+
+1) Define product IDs (single source of truth)
+- Create `lib/iap/products.ts` exporting:
+  - `SUBSCRIPTION_IDS = { monthly: "com.thequietframe.echoes.monthly", yearly: "com.thequietframe.echoes.yearly" }`
+  - `SUBSCRIPTION_SKUS = Platform.select({ ios: [...], android: [...] })` using the same IDs
+- Use these SKUs everywhere.
+
+2) Add an IAP service layer
+- Create `lib/iap/iap.ts` with functions:
+  - `initIAP()` -> calls `RNIap.initConnection()`, sets up listeners, returns cleanup
+  - `getProducts()` -> `RNIap.getSubscriptions({ skus: SUBSCRIPTION_SKUS })`
+  - `purchase(sku)` -> `RNIap.requestSubscription({ sku })`
+  - `restore()` -> `RNIap.restorePurchases()`
+  - `getEntitlement(purchases)` -> returns boolean “isPro”
+    - iOS: if any active subscription purchase exists (non-expired if expiry provided; otherwise assume active when present)
+    - Android: check purchase acknowledged/purchaseState if available; otherwise treat active if returned
+  - Add logs prefixed `[IAP]`
+
+3) Store entitlement in app state
+- Add `lib/iap/useEntitlement.ts` (or integrate with existing state/query system):
+  - Loads products + purchases on app start
+  - Exposes:
+    - `isPro`, `isLoading`, `products`, `purchaseMonthly`, `purchaseYearly`, `restorePurchases`, `refresh`
+  - Refresh entitlement on:
+    - app foreground
+    - purchase update events
+- Keep it resilient: if store not available, fail gracefully.
+
+4) Paywall UI
+- Create a simple `components/Paywall.tsx`:
+  - Shows:
+    - Title
+    - Two buttons:
+      - “Start free trial” (monthly)  (IMPORTANT: text must not claim trial unless store offer is configured)
+      - “Start free trial” (yearly)   (same note)
+    - Under each button show localized price from `products`:
+      - e.g. `${product.localizedPrice} / month`
+  - Fine print:
+    - “3-day free trial, then {price}/month. Cancel anytime.”
+    - “Payment charged to Apple ID/Google account after trial.”
+  - Buttons:
+    - Restore Purchases
+    - Links to Terms & Privacy (use existing URLs; if missing, create placeholders)
+  - If trial isn’t configured in App Store Connect / Play Console yet, the UI must still be accurate:
+    - Show “Subscribe” and “{price}/month” (don’t promise a free trial if not guaranteed).
+    - Implement this with a flag `HAS_TRIAL_OFFER = true/false` in `lib/iap/products.ts`.
+
+5) Gate premium features
+- Wherever premium is required, use `isPro` from entitlement.
+- If `isPro` false -> show Paywall.
+- If true -> show premium content.
+- Again: trial counts as `isPro`.
+
+6) App Store Connect / Play Console checklist (write as comments in code)
+- Add a short comment block in `lib/iap/products.ts` reminding:
+  - iOS: Create subscription group + products + Introductory Offer: 3 days free trial.
+  - Android: Create base plan + free trial offer.
+  - Ensure the app bundle id matches.
+  - Ensure products are “Ready to Submit” / active in testing.
+  - Use Sandbox testers for iOS.
+
+Deliverables:
+- New files: lib/iap/products.ts, lib/iap/iap.ts, lib/iap/useEntitlement.ts, components/Paywall.tsx
+- Minimal integration changes: add entitlement provider/hook usage in the app root and one place where premium is gated.
+- Make sure the app compiles.
+
+After implementation:
+- Provide exact steps to test on iOS sandbox:
+  - sign out of App Store
+  - use sandbox tester
+  - test purchase + cancel during trial + restore purchases
+  - verify entitlement toggles.
+
+Proceed to implement now.
