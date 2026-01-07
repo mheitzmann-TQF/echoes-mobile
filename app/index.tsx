@@ -25,6 +25,16 @@ import { useTheme } from '../lib/ThemeContext';
 
 const { width: screenWidth } = Dimensions.get('window');
 
+interface Observance {
+  id: number;
+  date: string;
+  name: string;
+  tradition: string;
+  region: string;
+  description: string;
+  category: string;
+}
+
 // Components
 import Hero from '../components/Hero';
 import CalendarCarousel from '../components/CalendarCarousel';
@@ -231,6 +241,88 @@ const photoStyles = StyleSheet.create({
   },
 });
 
+function TodayObservances({ observances }: { observances: Observance[] }) {
+  const { colors } = useTheme();
+  
+  if (!observances || observances.length === 0) {
+    return null;
+  }
+
+  return (
+    <View style={observanceStyles.container}>
+      <Text style={[observanceStyles.sectionLabel, { color: colors.textTertiary }]}>
+        TODAY'S OBSERVANCES
+      </Text>
+      {observances.map((obs) => (
+        <View 
+          key={obs.id} 
+          style={[observanceStyles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
+          data-testid={`observance-card-${obs.id}`}
+        >
+          <View style={observanceStyles.header}>
+            <Text style={[observanceStyles.name, { color: colors.text }]}>{obs.name}</Text>
+            <Text style={[observanceStyles.tradition, { color: colors.textSecondary }]}>
+              {obs.tradition}
+            </Text>
+          </View>
+          <Text style={[observanceStyles.description, { color: colors.textSecondary }]}>
+            {obs.description}
+          </Text>
+          <Text style={[observanceStyles.region, { color: colors.textTertiary }]}>
+            {obs.region}
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+const observanceStyles = StyleSheet.create({
+  container: {
+    marginHorizontal: 20,
+    marginBottom: 24,
+  },
+  sectionLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    marginBottom: 12,
+  },
+  card: {
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: 12,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 8,
+    gap: 12,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: '600',
+    flex: 1,
+  },
+  tradition: {
+    fontSize: 12,
+    fontWeight: '500',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  description: {
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 8,
+  },
+  region: {
+    fontSize: 12,
+  },
+});
+
 export default function HomeScreen() {
   const router = useRouter();
   const { locationName, coordinates, timezone, language } = useLocation();
@@ -239,6 +331,7 @@ export default function HomeScreen() {
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
   const [dailyPhoto, setDailyPhoto] = useState<DailyPhotoData | null>(null);
+  const [observances, setObservances] = useState<Observance[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -367,8 +460,8 @@ export default function HomeScreen() {
         setTimeout(() => reject(new Error('API timeout')), 15000)
       );
 
-      // Fetch Bundle + Calendars + Photo + Consciousness + Instant
-      const [bundleData, calendarsData, photoData, consciousnessData, instantData] = await Promise.all([
+      // Fetch Bundle + Calendars + Photo + Consciousness + Instant + Observances
+      const [bundleData, calendarsData, photoData, consciousnessData, instantData, observancesData] = await Promise.all([
         Promise.race([
           api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone),
           timeoutPromise,
@@ -377,10 +470,15 @@ export default function HomeScreen() {
         getDailyPhoto().catch(() => null),
         api.getConsciousnessAnalysis().catch(() => null),
         api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone).catch(() => null),
+        fetch('/api/proxy/observances').then(res => res.json()).catch(() => null),
       ]);
       
       if (photoData) {
         setDailyPhoto(photoData);
+      }
+      
+      if (observancesData?.success && observancesData.observances) {
+        setObservances(observancesData.observances);
       }
 
       // Process Bundle
@@ -555,6 +653,8 @@ export default function HomeScreen() {
           {planetary && (
             <MetricsGrid planetary={planetary} />
           )}
+
+          <TodayObservances observances={observances} />
 
           {dailyPhoto && (
             <PhotoOfTheDay photo={dailyPhoto} />
