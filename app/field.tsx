@@ -149,13 +149,17 @@ function generateCircadianObservations(phase: string): string[] {
   return ['Circadian rhythm active', 'Biological patterns flowing', 'Energy cycles present'];
 }
 
-function StickyHeader({ coherence, solarPhase, lunarIllumination }: { coherence: number, solarPhase: string, lunarIllumination: number }) {
+function StickyHeader({ coherence, solarPhase, lunarPhase }: { coherence: number, solarPhase: string, lunarPhase: string }) {
   const { colors } = useTheme();
   // Derive states
   const coherenceState = coherence > 60 ? 'Stable' : (coherence < 40 ? 'Variable' : 'Building');
   const lightState = solarPhase.includes('Morning') || solarPhase.includes('Dawn') ? 'Brightening' : 
                      (solarPhase.includes('Night') || solarPhase.includes('Dusk') ? 'Resting' : 'Active');
-  const moonState = `${Math.round(lunarIllumination)}%`;
+  // Determine if moon is waxing (rising) or waning (falling) from phase name
+  const lowerPhase = lunarPhase.toLowerCase();
+  const isWaxing = lowerPhase.includes('waxing') || lowerPhase.includes('new') || lowerPhase.includes('crescent') && !lowerPhase.includes('waning');
+  const isWaning = lowerPhase.includes('waning') || lowerPhase.includes('full');
+  const moonState = isWaning ? 'Falling' : 'Rising';
 
   return (
     <View style={[styles.stickyHeader, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -460,7 +464,7 @@ export default function FieldScreen() {
         <StickyHeader 
           coherence={consciousnessData?.global_coherence || 0}
           solarPhase={solarPhase}
-          lunarIllumination={ctx?.lunar?.illumination || instant?.lunar?.illumination || 0}
+          lunarPhase={lunarPhase}
         />
 
         {/* Cosmos Section */}
