@@ -334,6 +334,47 @@ export default function FieldScreen() {
   
   const lunarPhase = getLunarPhase();
   
+  // Get appropriate circadian phase based on time of day
+  const getCircadianPhase = (): string => {
+    const apiPhase = bioRhythms?.circadian?.phase || '';
+    const hour = new Date().getHours();
+    
+    // Check if API phase makes sense for current time
+    const morningPhases = ['rising', 'peak', 'morning', 'waking'];
+    const eveningPhases = ['sleep', 'recovery', 'wind', 'preparation', 'evening', 'night'];
+    
+    const isApiMorningPhase = morningPhases.some(p => apiPhase.toLowerCase().includes(p));
+    const isApiEveningPhase = eveningPhases.some(p => apiPhase.toLowerCase().includes(p));
+    
+    // If it's morning (5-11) but API says evening phase, compute instead
+    if (hour >= 5 && hour < 12 && isApiEveningPhase) {
+      if (hour < 7) return 'Waking';
+      if (hour < 9) return 'Rising';
+      return 'Peak';
+    }
+    
+    // If it's evening (18-23) but API says morning phase, compute instead
+    if (hour >= 18 && isApiMorningPhase) {
+      if (hour < 21) return 'Wind-down';
+      return 'Recovery';
+    }
+    
+    // API phase seems reasonable, use it
+    if (apiPhase) return apiPhase;
+    
+    // Fallback: compute from time
+    if (hour >= 5 && hour < 7) return 'Waking';
+    if (hour >= 7 && hour < 9) return 'Rising';
+    if (hour >= 9 && hour < 12) return 'Peak';
+    if (hour >= 12 && hour < 14) return 'Midday';
+    if (hour >= 14 && hour < 17) return 'Secondary Peak';
+    if (hour >= 17 && hour < 21) return 'Wind-down';
+    if (hour >= 21 || hour < 2) return 'Recovery';
+    return 'Deep Rest';
+  };
+  
+  const circadianPhase = getCircadianPhase();
+  
   // Parse time string like "07:51 AM" or "19:00" to minutes since midnight
   const parseTimeToMinutes = (timeStr: string | undefined | null, defaultMinutes: number = 12 * 60): number => {
     if (!timeStr || typeof timeStr !== 'string') return defaultMinutes;
@@ -578,7 +619,7 @@ export default function FieldScreen() {
           <ExpandableCard
             icon={<Dna size={20} color={colors.text} />}
             title="Body"
-            message={bioRhythms?.circadian?.phase || 'Rhythm active'}
+            message={circadianPhase}
             collapsedDetail={bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : 'Active'}
             isExpanded={expandedCards['body']}
             onToggle={() => toggleCard('body')}
@@ -588,7 +629,7 @@ export default function FieldScreen() {
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
                   <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Phase</Text>
-                  <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.phase || '—'}</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{circadianPhase}</Text>
                 </View>
                 <View style={styles.detailRow}>
                   <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Time of Day</Text>
@@ -611,7 +652,7 @@ export default function FieldScreen() {
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Context</Text>
-                {(bioRhythms?.circadian?.recommendations || generateCircadianObservations(bioRhythms?.circadian?.phase || 'Balanced')).slice(0, 3).map((obs: string, i: number) => (
+                {(bioRhythms?.circadian?.recommendations || generateCircadianObservations(circadianPhase)).slice(0, 3).map((obs: string, i: number) => (
                   <View key={i} style={styles.bulletRow}>
                     <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>
                     <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{obs}</Text>
