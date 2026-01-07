@@ -77,6 +77,10 @@ export async function clearSavedLanguage(): Promise<void> {
 }
 
 export async function initI18n(): Promise<void> {
+  if (i18n.isInitialized) {
+    return;
+  }
+  
   const savedLanguage = await getSavedLanguage();
   const initialLanguage = savedLanguage || getDeviceLanguage();
 

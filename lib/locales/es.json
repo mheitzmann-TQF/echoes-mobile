@@ -70,6 +70,7 @@
     "location": "Ubicación",
     "useCurrentLocation": "Usar ubicación actual",
     "setLocation": "Establecer ubicación",
+    "enterLocation": "Ingresa ciudad o ubicación...",
     "tapToChange": "Toca para cambiar ubicación",
     "timezone": "Zona horaria",
     "autoDetected": "Detectada automáticamente",

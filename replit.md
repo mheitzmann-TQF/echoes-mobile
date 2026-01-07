@@ -70,6 +70,27 @@ Google Play Developer API:
 - **Utility Libraries:** `lucide-react-native`, `expo-haptics`, `react-native-safe-area-context`.
 - **Development Tools:** TypeScript, Babel, Expo Metro bundler.
 - **In-App Purchases:** `expo-iap`, `expo-secure-store`.
+- **Internationalization:** `i18next`, `react-i18next` for multilingual support.
+
+### Internationalization (i18n)
+The app supports **6 languages**: English (en), Spanish (es), French (fr), Portuguese (pt), German (de), and Italian (it).
+
+**Architecture:**
+- `lib/i18n.ts` - i18n configuration with language detection and AsyncStorage persistence
+- `lib/locales/*.json` - Translation files for each supported language
+
+**Key Features:**
+- Automatic device language detection via `expo-localization`
+- Manual language override with persistence via AsyncStorage
+- Language selector in Settings screen
+- Fallback to English for unsupported languages
+
+**Usage:**
+```typescript
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
+// Use: t('settings.title')
+```
 
 ### Database & Backend
 - **PostgreSQL with Drizzle ORM:** Used for persistent storage of cultural observances data (e.g., `cultural_observances` table). This includes pre-calculated moveable holidays for accurate global event tracking, sourced via the `date-holidays` library for country-specific holidays.

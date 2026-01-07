@@ -70,6 +70,7 @@
     "location": "Location",
     "useCurrentLocation": "Use Current Location",
     "setLocation": "Set Location",
+    "enterLocation": "Enter city or location...",
     "tapToChange": "Tap to change location",
     "timezone": "Timezone",
     "autoDetected": "Auto-detected from location",

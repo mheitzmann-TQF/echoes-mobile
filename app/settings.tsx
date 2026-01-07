@@ -97,7 +97,7 @@ export default function SettingsScreen() {
                   borderColor: colors.border,
                   color: colors.text 
                 }]}
-                placeholder="Enter city or location..."
+                placeholder={t('settings.enterLocation')}
                 placeholderTextColor={colors.textTertiary}
                 value={manualInput}
                 onChangeText={setManualInput}
