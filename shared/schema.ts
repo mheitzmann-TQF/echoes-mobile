@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, serial, date } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -32,3 +32,21 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertUserSettings = z.infer<typeof insertUserSettingsSchema>;
 export type UserSettings = typeof userSettings.$inferSelect;
+
+// Cultural observances table for holidays and cultural events
+export const culturalObservances = pgTable("cultural_observances", {
+  id: serial("id").primaryKey(),
+  date: date("date").notNull(), // Format: YYYY-MM-DD
+  name: text("name").notNull(),
+  tradition: text("tradition").notNull(), // e.g., "Orthodox Christian", "Hindu", "Celtic"
+  region: text("region").notNull(), // e.g., "Russia, Serbia, Ethiopia" or "Global"
+  description: text("description"),
+  category: text("category").default("cultural"), // cultural, religious, astronomical, seasonal
+});
+
+export const insertObservanceSchema = createInsertSchema(culturalObservances).omit({
+  id: true,
+});
+
+export type InsertObservance = z.infer<typeof insertObservanceSchema>;
+export type Observance = typeof culturalObservances.$inferSelect;
