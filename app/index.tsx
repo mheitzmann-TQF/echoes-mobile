@@ -166,14 +166,14 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 const photoStyles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    marginBottom: 24,
+    marginBottom: 32,
   },
   sectionLabel: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '600',
     letterSpacing: 1,
     textTransform: 'uppercase',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   imageWrapper: {
     width: '100%',
@@ -280,20 +280,20 @@ function TodayObservances({ observances }: { observances: Observance[] }) {
 const observanceStyles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    marginBottom: 24,
+    marginBottom: 32,
   },
   sectionLabel: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '600',
     letterSpacing: 1,
     textTransform: 'uppercase',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   card: {
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: 16,
   },
   header: {
     flexDirection: 'row',
@@ -303,23 +303,25 @@ const observanceStyles = StyleSheet.create({
     gap: 12,
   },
   name: {
-    fontSize: 18,
+    fontSize: 19,
     fontWeight: '600',
     flex: 1,
+    lineHeight: 24,
   },
   tradition: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '500',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   description: {
     fontSize: 14,
-    lineHeight: 20,
+    lineHeight: 21,
     marginBottom: 8,
   },
   region: {
-    fontSize: 12,
+    fontSize: 11,
+    lineHeight: 16,
   },
 });
 

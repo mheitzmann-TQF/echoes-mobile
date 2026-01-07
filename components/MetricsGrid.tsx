@@ -67,7 +67,7 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 24,
   },
   metricsRow: {
     flexDirection: 'row',
@@ -89,17 +89,18 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   number: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: '700',
     color: '#FFFFFF',
-    lineHeight: 26,
+    lineHeight: 28,
     marginBottom: 4,
   },
   label: {
-    fontSize: 11,
-    color: 'rgba(255,255,255,0.5)',
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.45)',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     fontWeight: '500',
+    lineHeight: 14,
   },
 });

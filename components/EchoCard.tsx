@@ -357,21 +357,21 @@ const styles = StyleSheet.create({
   },
   typeLabel: {
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '600',
     letterSpacing: 0.5,
   },
   messageContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingVertical: 20,
+    paddingVertical: 24,
   },
   message: {
     color: '#FFFFFF',
-    fontSize: 20,
+    fontSize: 21,
     fontWeight: '500',
     textAlign: 'left',
-    lineHeight: 28,
+    lineHeight: 30,
     letterSpacing: -0.3,
   },
   footer: {

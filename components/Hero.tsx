@@ -20,21 +20,21 @@ export default function Hero({ title, subtitle }: HeroProps) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginTop: 40,
-    marginBottom: 20,
+    marginTop: 48,
+    marginBottom: 24,
   },
   title: {
-    fontSize: 32,
+    fontSize: 34,
     fontWeight: '700',
     color: '#FFFFFF',
-    lineHeight: 38,
+    lineHeight: 40,
     marginBottom: 0,
     letterSpacing: -0.5,
   },
   subtitle: {
-    fontSize: 18,
-    color: 'rgba(255,255,255,0.7)',
-    lineHeight: 26,
+    fontSize: 17,
+    color: 'rgba(255,255,255,0.6)',
+    lineHeight: 24,
     fontWeight: '400',
   },
 });
