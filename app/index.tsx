@@ -122,7 +122,12 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
             style={{ width: screenWidth, height: screenHeight }}
             resizeMode="contain"
           />
-          <View style={photoStyles.fullscreenHint}>
+          <View style={photoStyles.fullscreenCredit}>
+            {photo.photographer && (
+              <Text style={photoStyles.fullscreenCreditText}>
+                Photo by {photo.photographer}{isUnsplashPhoto ? ' on Unsplash' : ''}
+              </Text>
+            )}
             <Text style={photoStyles.fullscreenHintText}>Tap to close</Text>
           </View>
         </TouchableOpacity>
@@ -179,18 +184,24 @@ const photoStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  fullscreenHint: {
+  fullscreenCredit: {
     position: 'absolute',
-    bottom: 60,
+    bottom: 50,
     alignSelf: 'center',
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
+    alignItems: 'center',
+    gap: 8,
+  },
+  fullscreenCreditText: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 12,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
   },
   fullscreenHintText: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 13,
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: 12,
   },
 });
 
