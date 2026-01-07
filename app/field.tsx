@@ -306,6 +306,29 @@ export default function FieldScreen() {
   
   const geoState = getGeoState(geoKp);
   
+  // Get meaningful lunar phase from API data or compute from illumination
+  const getLunarPhase = (): string => {
+    const apiPhase = ctx?.lunar?.phase || instant?.lunar?.phase || '';
+    const illumination = ctx?.lunar?.illumination || instant?.lunar?.illumination || 0;
+    
+    // Check if API phase is a valid moon phase name (not position like "Rising")
+    const validPhases = ['new', 'waxing', 'waning', 'crescent', 'gibbous', 'quarter', 'full'];
+    const isValidPhase = validPhases.some(p => apiPhase.toLowerCase().includes(p));
+    
+    if (isValidPhase && apiPhase) {
+      return apiPhase;
+    }
+    
+    // Compute phase from illumination
+    if (illumination <= 2) return 'New Moon';
+    if (illumination >= 98) return 'Full Moon';
+    if (illumination >= 48 && illumination <= 52) return 'Quarter Moon';
+    if (illumination < 50) return 'Crescent';
+    return 'Gibbous';
+  };
+  
+  const lunarPhase = getLunarPhase();
+  
   // Parse time string like "07:51 AM" or "19:00" to minutes since midnight
   const parseTimeToMinutes = (timeStr: string | undefined | null, defaultMinutes: number = 12 * 60): number => {
     if (!timeStr || typeof timeStr !== 'string') return defaultMinutes;
@@ -446,7 +469,7 @@ export default function FieldScreen() {
           <ExpandableCard
             icon={<Moon size={20} color={colors.text} />}
             title="Lunar"
-            message={ctx?.lunar?.phase ? toTitleCase(ctx.lunar.phase) : 'Phase cycle active'}
+            message={toTitleCase(lunarPhase)}
             collapsedDetail={`${Math.round(ctx?.lunar?.illumination || 0)}%`}
             isExpanded={expandedCards['lunar']}
             onToggle={() => toggleCard('lunar')}
@@ -454,7 +477,7 @@ export default function FieldScreen() {
             howToRead={['Phase cycles new → waxing → full → waning over ~29.5 days', 'Illumination shows percentage of visible surface', 'Combined with other signals to shape daily echoes']}
             expandedContent={
               <View style={styles.expandedDetails}>
-                <Text style={[styles.expandedValue, { color: colors.text }]}>{toTitleCase(ctx?.lunar?.phase || '')}</Text>
+                <Text style={[styles.expandedValue, { color: colors.text }]}>{toTitleCase(lunarPhase)}</Text>
                 <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% Illuminated</Text>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
                   The moon's visible portion reflects gravitational position. Waxing phases indicate increasing illumination toward full moon; waning indicates decrease toward new moon.
