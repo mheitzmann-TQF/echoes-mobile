@@ -466,7 +466,7 @@ export default function FieldScreen() {
           <ExpandableCard
             icon={<Sun size={20} color={colors.text} />}
             title="Solar"
-            message={(ctx?.solar as any)?.message || solarPhase}
+            message={solarPhase}
             collapsedDetail={solarPhase}
             isExpanded={expandedCards['solar']}
             onToggle={() => toggleCard('solar')}
