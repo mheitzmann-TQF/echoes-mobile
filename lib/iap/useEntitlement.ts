@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Platform, AppState, AppStateStatus } from 'react-native';
-import type { ProductSubscription, Purchase } from 'expo-iap';
 import {
   initIAP,
   getProducts,
@@ -10,6 +9,8 @@ import {
   getPurchasePayload,
   purchaseUpdatedListener,
   purchaseErrorListener,
+  type ProductSubscription,
+  type Purchase,
 } from './iap';
 import { getInstallId } from './installId';
 import { SUBSCRIPTION_IDS } from './products';
@@ -32,7 +33,7 @@ export interface EntitlementActions {
 
 function getApiBase(): string {
   const expoConfig = Constants.expoConfig || Constants.manifest;
-  const extra = expoConfig?.extra as { apiUrl?: string } | undefined;
+  const extra = (expoConfig as any)?.extra as { apiUrl?: string } | undefined;
   if (extra?.apiUrl) {
     return extra.apiUrl;
   }

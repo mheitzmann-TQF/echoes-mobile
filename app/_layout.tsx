@@ -94,27 +94,9 @@ function SplashScreen({ onFinish }: { onFinish: () => void }) {
   );
 }
 
-function ThemedApp() {
+function TabsNavigator() {
   const { theme, colors } = useTheme();
   const { t } = useTranslation();
-  const [showSplash, setShowSplash] = useState(true);
-  const [i18nReady, setI18nReady] = useState(false);
-
-  useEffect(() => {
-    initI18n().then(() => setI18nReady(true));
-  }, []);
-
-  if (!i18nReady) {
-    return (
-      <View style={[styles.splashContainer, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="small" color={colors.text} />
-      </View>
-    );
-  }
-
-  if (showSplash) {
-    return <SplashScreen onFinish={() => setShowSplash(false)} />;
-  }
   
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -182,6 +164,30 @@ function ThemedApp() {
       </Tabs>
     </View>
   );
+}
+
+function ThemedApp() {
+  const { colors } = useTheme();
+  const [showSplash, setShowSplash] = useState(true);
+  const [i18nReady, setI18nReady] = useState(false);
+
+  useEffect(() => {
+    initI18n().then(() => setI18nReady(true));
+  }, []);
+
+  if (!i18nReady) {
+    return (
+      <View style={[styles.splashContainer, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="small" color={colors.text} />
+      </View>
+    );
+  }
+
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
+  
+  return <TabsNavigator />;
 }
 
 export default function RootLayout() {

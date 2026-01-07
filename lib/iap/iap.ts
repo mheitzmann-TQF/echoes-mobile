@@ -1,9 +1,18 @@
 import { Platform } from 'react-native';
-import * as ExpoIap from 'expo-iap';
-import type { Purchase, ProductSubscription } from 'expo-iap';
 import { SUBSCRIPTION_SKUS } from './products';
 
+let ExpoIap: typeof import('expo-iap') | null = null;
 let isConnected = false;
+
+async function getExpoIap() {
+  if (Platform.OS === 'web') {
+    return null;
+  }
+  if (!ExpoIap) {
+    ExpoIap = await import('expo-iap');
+  }
+  return ExpoIap;
+}
 
 export async function initIAP(): Promise<() => Promise<void>> {
   try {
@@ -12,14 +21,20 @@ export async function initIAP(): Promise<() => Promise<void>> {
       return async () => {};
     }
 
+    const iap = await getExpoIap();
+    if (!iap) return async () => {};
+
     console.log('[IAP] Initializing connection...');
-    const connected = await ExpoIap.initConnection();
+    const connected = await iap.initConnection();
     isConnected = !!connected;
     console.log('[IAP] Connection initialized:', connected);
     
     return async () => {
       try {
-        await ExpoIap.endConnection();
+        const iapModule = await getExpoIap();
+        if (iapModule) {
+          await iapModule.endConnection();
+        }
         isConnected = false;
         console.log('[IAP] Connection ended');
       } catch (error) {
@@ -32,6 +47,16 @@ export async function initIAP(): Promise<() => Promise<void>> {
   }
 }
 
+export interface ProductSubscription {
+  productId: string;
+  title: string;
+  description: string;
+  price: string;
+  currency: string;
+  localizedPrice?: string;
+  subscriptionOffers?: Array<{ offerToken: string }>;
+}
+
 export async function getProducts(): Promise<ProductSubscription[]> {
   try {
     if (Platform.OS === 'web' || !isConnected) {
@@ -39,17 +64,27 @@ export async function getProducts(): Promise<ProductSubscription[]> {
       return [];
     }
 
+    const iap = await getExpoIap();
+    if (!iap) return [];
+
     console.log('[IAP] Fetching products...', SUBSCRIPTION_SKUS);
-    const products = await ExpoIap.fetchProducts({
+    const products = await iap.fetchProducts({
       skus: SUBSCRIPTION_SKUS || [],
       type: 'subs',
     });
     console.log('[IAP] Fetched products:', products?.length ?? 0);
-    return (products ?? []) as ProductSubscription[];
+    return (products ?? []) as unknown as ProductSubscription[];
   } catch (error) {
     console.error('[IAP] Error fetching products:', error);
     return [];
   }
+}
+
+export interface Purchase {
+  productId: string;
+  transactionId?: string;
+  purchaseToken?: string;
+  transactionReceipt?: string;
 }
 
 export interface PurchaseResult {
@@ -64,10 +99,13 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
       return { success: false, error: 'IAP not available on web' };
     }
 
+    const iap = await getExpoIap();
+    if (!iap) return { success: false, error: 'IAP module not available' };
+
     console.log('[IAP] Requesting subscription purchase:', sku);
 
-    const purchaseArgs: ExpoIap.MutationRequestPurchaseArgs = {
-      type: 'subs',
+    const purchaseArgs = {
+      type: 'subs' as const,
       request: Platform.OS === 'ios' 
         ? { apple: { sku } }
         : { 
@@ -80,7 +118,7 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
           },
     };
 
-    const purchase = await ExpoIap.requestPurchase(purchaseArgs);
+    const purchase = await iap.requestPurchase(purchaseArgs);
 
     console.log('[IAP] Purchase successful:', purchase);
     return { success: true, purchase: purchase as Purchase };
@@ -102,10 +140,13 @@ export async function restorePurchases(): Promise<Purchase[]> {
       return [];
     }
 
+    const iap = await getExpoIap();
+    if (!iap) return [];
+
     console.log('[IAP] Restoring purchases...');
-    const purchases = await ExpoIap.getAvailablePurchases();
+    const purchases = await iap.getAvailablePurchases();
     console.log('[IAP] Restored purchases:', purchases.length);
-    return purchases;
+    return purchases as Purchase[];
   } catch (error) {
     console.error('[IAP] Error restoring purchases:', error);
     return [];
@@ -114,8 +155,11 @@ export async function restorePurchases(): Promise<Purchase[]> {
 
 export async function finishTransaction(purchase: Purchase): Promise<void> {
   try {
+    const iap = await getExpoIap();
+    if (!iap) return;
+
     console.log('[IAP] Finishing transaction...');
-    await ExpoIap.finishTransaction({ purchase, isConsumable: false });
+    await iap.finishTransaction({ purchase: purchase as any, isConsumable: false });
     console.log('[IAP] Transaction finished');
   } catch (error) {
     console.error('[IAP] Error finishing transaction:', error);
@@ -145,4 +189,45 @@ export function isConnectedToStore(): boolean {
   return isConnected;
 }
 
-export { purchaseUpdatedListener, purchaseErrorListener } from 'expo-iap';
+type PurchaseListener = (purchase: Purchase) => void;
+type ErrorListener = (error: { message: string }) => void;
+
+export function purchaseUpdatedListener(callback: PurchaseListener): { remove: () => void } {
+  if (Platform.OS === 'web') {
+    return { remove: () => {} };
+  }
+  
+  let subscription: { remove: () => void } | null = null;
+  
+  getExpoIap().then((iap) => {
+    if (iap) {
+      subscription = iap.purchaseUpdatedListener(callback as any);
+    }
+  });
+  
+  return {
+    remove: () => {
+      subscription?.remove();
+    }
+  };
+}
+
+export function purchaseErrorListener(callback: ErrorListener): { remove: () => void } {
+  if (Platform.OS === 'web') {
+    return { remove: () => {} };
+  }
+  
+  let subscription: { remove: () => void } | null = null;
+  
+  getExpoIap().then((iap) => {
+    if (iap) {
+      subscription = iap.purchaseErrorListener(callback as any);
+    }
+  });
+  
+  return {
+    remove: () => {
+      subscription?.remove();
+    }
+  };
+}
