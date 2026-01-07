@@ -793,23 +793,23 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
   },
   section: {
-    marginBottom: 32,
+    marginBottom: 48,
     paddingHorizontal: 20,
   },
   sectionLabel: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.4)',
-    marginBottom: 12,
+    color: 'rgba(255,255,255,0.35)',
+    marginBottom: 8,
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
   sectionDescription: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '400',
-    color: 'rgba(255,255,255,0.6)',
+    color: 'rgba(255,255,255,0.5)',
     marginBottom: 16,
-    lineHeight: 20,
+    lineHeight: 18,
   },
   // Carousel
   carouselContainer: {
@@ -1171,7 +1171,7 @@ const styles = StyleSheet.create({
   // Cookie Section
   cookieCard: {
     borderRadius: 16,
-    padding: 20,
+    padding: 24,
     borderWidth: 1,
   },
   cookieHeader: {
@@ -1188,19 +1188,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cookieLabel: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   cookieTextContainer: {
-    paddingVertical: 8,
+    paddingVertical: 16,
   },
   cookieText: {
-    fontSize: 18,
+    fontSize: 19,
     fontWeight: '500',
     fontStyle: 'italic',
-    lineHeight: 28,
+    lineHeight: 30,
     textAlign: 'center',
   },
   cookieFooter: {
@@ -1209,8 +1209,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
   },
   cookieDisclaimer: {
-    fontSize: 11,
+    fontSize: 10,
     textAlign: 'center',
     fontStyle: 'italic',
+    lineHeight: 14,
   },
 });

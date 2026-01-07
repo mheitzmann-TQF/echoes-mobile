@@ -761,13 +761,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   stickyLabel: {
-    fontSize: 11,
+    fontSize: 10,
     textTransform: 'uppercase',
     marginBottom: 4,
     letterSpacing: 0.5,
   },
   stickyValue: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '600',
   },
   stickyDivider: {
@@ -775,14 +775,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 32,
     paddingHorizontal: 20,
   },
   sectionLabel: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.4)',
-    marginBottom: 12,
+    color: 'rgba(255,255,255,0.35)',
+    marginBottom: 16,
     paddingHorizontal: 20,
     letterSpacing: 1,
     textTransform: 'uppercase',
@@ -825,14 +825,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cardTitle: {
-    fontSize: 13,
+    fontSize: 11,
     fontWeight: '600',
     marginBottom: 4,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   collapsedMessage: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '500',
   },
   collapsedValue: {
