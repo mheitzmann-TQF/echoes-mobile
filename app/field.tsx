@@ -375,6 +375,42 @@ export default function FieldScreen() {
   
   const circadianPhase = getCircadianPhase();
   
+  // Get appropriate time of day label based on actual hour
+  const getTimeOfDay = (): string => {
+    const apiTimeOfDay = bioRhythms?.circadian?.timeOfDay || '';
+    const hour = new Date().getHours();
+    
+    // Check if API value matches reality
+    const morningTerms = ['morning', 'dawn', 'sunrise'];
+    const afternoonTerms = ['afternoon', 'midday', 'noon'];
+    const eveningTerms = ['evening', 'dusk', 'sunset'];
+    const nightTerms = ['night', 'midnight', 'late'];
+    
+    const apiSaysMorning = morningTerms.some(t => apiTimeOfDay.toLowerCase().includes(t));
+    const apiSaysAfternoon = afternoonTerms.some(t => apiTimeOfDay.toLowerCase().includes(t));
+    const apiSaysEvening = eveningTerms.some(t => apiTimeOfDay.toLowerCase().includes(t));
+    const apiSaysNight = nightTerms.some(t => apiTimeOfDay.toLowerCase().includes(t));
+    
+    // Validate API response against actual time
+    if (hour >= 5 && hour < 12) {
+      if (apiSaysNight || apiSaysEvening) return 'Morning';
+      if (apiSaysMorning || !apiTimeOfDay) return apiTimeOfDay || 'Morning';
+    }
+    if (hour >= 12 && hour < 17) {
+      if (apiSaysNight || apiSaysMorning) return 'Afternoon';
+      if (apiSaysAfternoon || !apiTimeOfDay) return apiTimeOfDay || 'Afternoon';
+    }
+    if (hour >= 17 && hour < 21) {
+      if (apiSaysNight || apiSaysMorning) return 'Evening';
+      if (apiSaysEvening || !apiTimeOfDay) return apiTimeOfDay || 'Evening';
+    }
+    // Night: 21-5
+    if (apiSaysMorning || apiSaysAfternoon) return 'Night';
+    return apiTimeOfDay || 'Night';
+  };
+  
+  const timeOfDay = getTimeOfDay();
+  
   // Parse time string like "07:51 AM" or "19:00" to minutes since midnight
   const parseTimeToMinutes = (timeStr: string | undefined | null, defaultMinutes: number = 12 * 60): number => {
     if (!timeStr || typeof timeStr !== 'string') return defaultMinutes;
@@ -633,7 +669,7 @@ export default function FieldScreen() {
                 </View>
                 <View style={styles.detailRow}>
                   <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Time of Day</Text>
-                  <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.timeOfDay || '—'}</Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{timeOfDay}</Text>
                 </View>
                 <View style={styles.detailRow}>
                   <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Alertness</Text>
