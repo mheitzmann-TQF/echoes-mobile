@@ -306,15 +306,92 @@ export default function FieldScreen() {
   
   const geoState = getGeoState(geoKp);
   
-  // Compute sunset time correctly
-  const getSunsetInfo = (): { display: string; label: string } => {
-    // instant.solar has sunset as time string (e.g., "19:00")
-    if (!instant?.solar?.sunset) {
-      return { display: 'Sunset timing available when expanded', label: 'Evening transition' };
+  // Parse time string like "07:51 AM" or "19:00" to minutes since midnight
+  const parseTimeToMinutes = (timeStr: string | undefined | null, defaultMinutes: number = 12 * 60): number => {
+    if (!timeStr || typeof timeStr !== 'string') return defaultMinutes;
+    
+    const normalized = timeStr.trim().toUpperCase();
+    if (!normalized) return defaultMinutes;
+    
+    const isPM = normalized.includes('PM');
+    const isAM = normalized.includes('AM');
+    
+    // Remove AM/PM and extra spaces
+    const cleaned = normalized.replace(/\s*(AM|PM)\s*/gi, '').trim();
+    const parts = cleaned.split(':').map(p => parseInt(p, 10));
+    
+    let hours = parts[0];
+    const minutes = parts[1] || 0;
+    
+    // Validate parsed values
+    if (isNaN(hours) || isNaN(minutes)) return defaultMinutes;
+    
+    // Handle 12-hour format
+    if (isAM || isPM) {
+      if (isPM && hours !== 12) hours += 12;
+      if (isAM && hours === 12) hours = 0;
+    }
+    
+    return hours * 60 + minutes;
+  };
+  
+  // Calculate actual solar phase based on current time vs sunrise/sunset
+  const getSolarPhase = (): string => {
+    // Prefer API-provided phase if available and meaningful
+    const apiPhase = ctx?.solar?.phase || instant?.solar?.currentPhase;
+    if (apiPhase && apiPhase.length > 0 && apiPhase !== 'Day') {
+      return apiPhase;
     }
     
     const now = new Date();
-    const [sunsetHour, sunsetMin] = instant.solar.sunset.split(':').map(Number);
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+    
+    // Parse sunrise/sunset from bundle data (instant doesn't have sunrise/sunset)
+    const sunriseStr = (ctx?.solar as any)?.sunrise || '07:00';
+    const sunsetStr = (ctx?.solar as any)?.sunset || '19:00';
+    
+    const sunriseTime = parseTimeToMinutes(sunriseStr, 7 * 60); // Default 7:00 AM
+    const sunsetTime = parseTimeToMinutes(sunsetStr, 19 * 60); // Default 7:00 PM
+    
+    // Dawn: 90 minutes before sunrise to sunrise (civil + nautical twilight)
+    const dawnStart = sunriseTime - 90;
+    // Dusk: sunset to 90 minutes after sunset
+    const duskEnd = sunsetTime + 90;
+    // Midday: 11:00 to 13:00
+    const middayStart = 11 * 60;
+    const middayEnd = 13 * 60;
+    
+    if (currentTime < dawnStart) {
+      return 'Night';
+    } else if (currentTime < sunriseTime) {
+      return 'Dawn';
+    } else if (currentTime < middayStart) {
+      return 'Morning';
+    } else if (currentTime < middayEnd) {
+      return 'Midday';
+    } else if (currentTime < sunsetTime) {
+      return 'Afternoon';
+    } else if (currentTime < duskEnd) {
+      return 'Dusk';
+    } else {
+      return 'Night';
+    }
+  };
+  
+  const solarPhase = getSolarPhase();
+  
+  // Compute sunset time correctly
+  const getSunsetInfo = (): { display: string; label: string } => {
+    // Get sunset from bundle or instant data
+    const sunsetStr = (ctx?.solar as any)?.sunset || (instant?.solar as any)?.sunset;
+    if (!sunsetStr) {
+      return { display: 'Sunset timing available when expanded', label: solarPhase };
+    }
+    
+    const now = new Date();
+    const sunsetMinutes = parseTimeToMinutes(sunsetStr);
+    const sunsetHour = Math.floor(sunsetMinutes / 60);
+    const sunsetMin = sunsetMinutes % 60;
     const sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), sunsetHour, sunsetMin);
     
     if (sunsetDate < now) {
@@ -323,7 +400,7 @@ export default function FieldScreen() {
       tomorrow.setDate(tomorrow.getDate() + 1);
       return { 
         display: `Sunset tomorrow at ${tomorrow.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`,
-        label: 'Evening transition' 
+        label: solarPhase 
       };
     }
     
@@ -338,8 +415,8 @@ export default function FieldScreen() {
       };
     } else {
       return { 
-        display: `Sunset at ${instant.solar.sunset}`,
-        label: 'Evening transition' 
+        display: `Sunset at ${sunsetStr}`,
+        label: solarPhase 
       };
     }
   };
@@ -358,7 +435,7 @@ export default function FieldScreen() {
 
         <StickyHeader 
           coherence={consciousnessData?.global_coherence || 0}
-          solarPhase={ctx?.solar?.phase || instant?.solar?.currentPhase || 'Day'}
+          solarPhase={solarPhase}
           lunarIllumination={ctx?.lunar?.illumination || instant?.lunar?.illumination || 0}
         />
 
@@ -389,15 +466,15 @@ export default function FieldScreen() {
           <ExpandableCard
             icon={<Sun size={20} color={colors.text} />}
             title="Solar"
-            message={ctx?.solar?.phase || 'Day cycle active'}
-            collapsedDetail={sunsetInfo.label}
+            message={(ctx?.solar as any)?.message || solarPhase}
+            collapsedDetail={solarPhase}
             isExpanded={expandedCards['solar']}
             onToggle={() => toggleCard('solar')}
             chips={['phase', 'sunset timing']}
             howToRead={['Solar phase indicates sun position: Morning (rising), Midday (highest), Afternoon (descending), Night (below horizon)', 'Sunset marks transition to evening phase', 'Used alongside lunar and coherence signals']}
             expandedContent={
               <View style={styles.expandedDetails}>
-                <Text style={[styles.expandedValue, { color: colors.text }]}>{toTitleCase(ctx?.solar?.phase || '')}</Text>
+                <Text style={[styles.expandedValue, { color: colors.text }]}>{solarPhase}</Text>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
                   The sun's position shapes the light cycle and influences circadian rhythms. Sunrise begins the brightening phase; sunset marks the transition to rest.
                 </Text>
