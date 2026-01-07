@@ -60,6 +60,7 @@
     "concurrently": "^9.2.1",
     "connect-pg-simple": "^10.0.0",
     "date-fns": "^3.6.0",
+    "date-holidays": "^3.26.6",
     "drizzle-orm": "^0.39.1",
     "drizzle-zod": "^0.7.1",
     "embla-carousel-react": "^8.6.0",
