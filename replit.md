@@ -144,14 +144,31 @@ The app now uses PostgreSQL (Neon serverless) with Drizzle ORM for persistent st
   - Fields: id, date, name, tradition, region, description, category
   - Contains 1,010 observances spanning 2026-2036 (11 years of pre-calculated moveable holidays)
   - Uses `date-holidays` library for automatic calculation of country-specific holidays
-  - Verified moveable dates: Lunar New Year, Diwali, Holi, Ramadan, Eid al-Fitr, Passover, Vesak, Isra and Mi'raj, Easter, Orthodox Easter
-  - Fixed dates: Orthodox Christmas, Vodoun Festival, Amazigh New Year, Republic Day (India), Australia Day, Waitangi Day, Nowruz, solstices, equinoxes, Celtic festivals
-  - Library-sourced holidays from 20+ countries including: Japan (Foundation Day, Emperor's Birthday, Culture Day), Korea (Chuseok, Hangul Day), Thailand (Songkran, Makha Bucha, Loi Krathong), Israel (Tu BiShvat, Purim, Shavuot, Rosh Hashanah, Yom Kippur, Sukkot, Hanukkah), Ethiopia (Victory of Adwa, Meskel, Enkutatash, Timkat), South Africa (Human Rights Day, Freedom Day, Youth Day, Heritage Day), Mexico (Benito Juárez Day), Brazil (Tiradentes Day, Black Consciousness Day), Trinidad (Spiritual Baptist Liberation Day, Emancipation Day), Scandinavia (Midsummer, Santa Lucia, Sami National Day), and more
+  - All traditions are country/culture-specific (no generic "National" labels)
+
+**Tradition Categories:**
+- **Religious:** Jewish (Tu BiShvat, Purim, Passover, Shavuot, Rosh Hashanah, Yom Kippur, Sukkot, Hanukkah), Islamic (Ramadan, Eid al-Fitr, Isra and Mi'raj), Hindu (Diwali, Holi), Buddhist (Vesak, Makha Bucha, Visakha Bucha), Christian, Orthodox Christian, Ethiopian Orthodox
+- **East Asian:** Japanese (Coming of Age Day, Foundation Day, Emperor's Birthday, Culture Day, Shichi-Go-San), Korean (Chuseok, Hangul Day, Independence Movement Day), Chinese/East Asian (Lunar New Year, Chrysanthemum Festival)
+- **Southeast Asian:** Thai (Songkran, Chakri Memorial Day, Loi Krathong), Hindu/Balinese (Nyepi)
+- **African:** Ethiopian (Victory of Adwa, Enkutatash), South African (Human Rights Day, Freedom Day, Youth Day, Heritage Day), West African Vodoun
+- **Latin American:** Mexican (Cinco de Mayo, Benito Juárez Day), Brazilian (Tiradentes Day, Black Consciousness Day), Argentine, Incan/Andean (Inti Raymi)
+- **Caribbean:** Afro-Caribbean (Shouter Baptist Liberation Day), Caribbean (Emancipation Day)
+- **European:** Celtic/Pagan (Samhain, Beltane, Imbolc, Lughnasadh), Irish, Nordic (Midsummer, Santa Lucia), Norwegian, Greek, Slovenian
+- **Middle Eastern/Central Asian:** Persian/Zoroastrian (Nowruz), Berber/Amazigh (Yennayer)
+- **Indigenous:** Sami (Sami National Day), Canadian Indigenous, Maya/New Age
+- **Oceania:** Australian, New Zealand/Māori (Waitangi Day)
+- **American:** American (Martin Luther King Jr. Day)
+- **Global:** UN Observance (Earth Day, World Environment Day, International Day of Peace), Astronomical (solstices, equinoxes, meteor showers), Environmental
+
+**Unique & Fascinating Observances:**
+- Cosmic: Lion's Gate Portal (Aug 8), Perseid Meteor Shower Peak (Aug 12), Geminid Meteor Shower Peak (Dec 14)
+- Cultural: Day Out of Time (Maya), 11:11 Portal Day, Chrysanthemum Festival, Shichi-Go-San
+- Environmental: Earth Day, World Wildlife Day, World Environment Day
 
 **Key Files:**
 - `lib/db.ts` - Database connection using @neondatabase/serverless
 - `shared/schema.ts` - Drizzle schema definitions
-- `scripts/seed-observances.ts` - Seed script for generating 10 years of holiday data
+- `scripts/seed-observances-comprehensive.ts` - Comprehensive seed script using date-holidays library + manual verified dates
 
 **API Endpoints:**
 - `/api/proxy/observances` - Query observances by date or date range
