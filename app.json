@@ -42,7 +42,8 @@
             "kotlinVersion": "2.0.0"
           }
         }
-      ]
+      ],
+      "./plugins/withDisableFollyCoroutines.js"
     ],
     "experiments": {
       "typedRoutes": true
