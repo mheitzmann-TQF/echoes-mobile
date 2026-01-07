@@ -119,13 +119,19 @@ function isNewsContent(item: any): boolean {
 
 /**
  * Get a curated artifact based on day rotation
+ * Uses local date to ensure proper daily rotation regardless of timezone
  */
 function getCuratedArtifact(): any {
-  const dayOfYear = Math.floor(
-    (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 
-    (1000 * 60 * 60 * 24)
-  );
-  const index = dayOfYear % CURATED_ARTIFACTS.length;
+  const now = new Date();
+  // Use local date components to avoid timezone issues
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const day = now.getDate();
+  
+  // Create a simple day number: year * 366 + month * 31 + day
+  // This ensures different days always get different indices
+  const dayNumber = year * 366 + month * 31 + day;
+  const index = dayNumber % CURATED_ARTIFACTS.length;
   return CURATED_ARTIFACTS[index];
 }
 

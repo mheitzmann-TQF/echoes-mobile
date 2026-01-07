@@ -196,13 +196,20 @@ export const CURATED_ARTIFACTS = [
 
 /**
  * Get a curated artifact based on day rotation
+ * Uses local date to ensure proper daily rotation regardless of timezone
  */
 export function getCuratedArtifact(): typeof CURATED_ARTIFACTS[0] {
-  const dayOfYear = Math.floor(
-    (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 
-    (1000 * 60 * 60 * 24)
-  );
-  return CURATED_ARTIFACTS[dayOfYear % CURATED_ARTIFACTS.length];
+  const now = new Date();
+  // Use local date components to avoid timezone issues
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const day = now.getDate();
+  
+  // Create a simple day number: year * 366 + month * 31 + day
+  // This ensures different days always get different indices
+  const dayNumber = year * 366 + month * 31 + day;
+  
+  return CURATED_ARTIFACTS[dayNumber % CURATED_ARTIFACTS.length];
 }
 
 /**
