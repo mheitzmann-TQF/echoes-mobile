@@ -648,6 +648,10 @@ export default function HomeScreen() {
             subtitle="" 
           />
 
+          {dailyPhoto && (
+            <PhotoOfTheDay photo={dailyPhoto} />
+          )}
+
           <CalendarCarousel calendars={calendars} onSelect={handleCalendarSelect} />
 
           {planetary && (
@@ -655,10 +659,6 @@ export default function HomeScreen() {
           )}
 
           <TodayObservances observances={observances} />
-
-          {dailyPhoto && (
-            <PhotoOfTheDay photo={dailyPhoto} />
-          )}
 
           <EchoStack 
             echoes={echoes}
