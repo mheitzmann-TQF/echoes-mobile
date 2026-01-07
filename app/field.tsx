@@ -153,8 +153,9 @@ function StickyHeader({ coherence, solarPhase, lunarIllumination }: { coherence:
   const { colors } = useTheme();
   // Derive states
   const coherenceState = coherence > 60 ? 'Stable' : (coherence < 40 ? 'Variable' : 'Building');
-  const lightState = solarPhase.includes('Morning') ? 'Brightening' : (solarPhase.includes('Night') ? 'Resting' : 'Deepening');
-  const moonState = lunarIllumination > 50 ? 'Rising' : 'Falling'; // Simplified logic
+  const lightState = solarPhase.includes('Morning') || solarPhase.includes('Dawn') ? 'Brightening' : 
+                     (solarPhase.includes('Night') || solarPhase.includes('Dusk') ? 'Resting' : 'Active');
+  const moonState = `${Math.round(lunarIllumination)}%`;
 
   return (
     <View style={[styles.stickyHeader, { backgroundColor: colors.surface, borderColor: colors.border }]}>
