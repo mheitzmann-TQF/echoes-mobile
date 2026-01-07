@@ -136,14 +136,23 @@ Backend API generates cards with relevance scores based on current astronomical 
 
 ### Database & Backend
 
-**Note on Drizzle Configuration:**
-The repository includes `drizzle.config.ts` with PostgreSQL dialect configuration pointing to `shared/schema.ts`. This suggests planned backend persistence layer, though the mobile app currently operates statelessly without a dedicated database. Future backend implementation may use:
-- Drizzle ORM for type-safe database queries
-- PostgreSQL (Neon serverless) for data storage
-- Shared schema definitions between mobile and potential web client
+**PostgreSQL with Drizzle ORM:**
+The app now uses PostgreSQL (Neon serverless) with Drizzle ORM for persistent storage of cultural observances data.
 
-**Current Backend Architecture:**
-The mobile app relies entirely on The Quiet Frame external API. No local database or persistence layer is implemented beyond device-local preference storage.
+**Tables:**
+- `cultural_observances` - Stores pre-calculated moveable holidays for accurate global event tracking
+  - Fields: id, date, name, tradition, region, description, category
+  - Contains 242 observances spanning 2026-2036 (10 years of pre-calculated moveable holidays)
+
+**Key Files:**
+- `lib/db.ts` - Database connection using @neondatabase/serverless
+- `shared/schema.ts` - Drizzle schema definitions
+- `scripts/seed-observances.ts` - Seed script for generating 10 years of holiday data
+
+**API Endpoints:**
+- `/api/proxy/observances` - Query observances by date or date range
+  - `?date=YYYY-MM-DD` - Single date query
+  - `?start=YYYY-MM-DD&end=YYYY-MM-DD` - Date range query
 
 ## Recent Content Improvements (Session 12/04)
 
