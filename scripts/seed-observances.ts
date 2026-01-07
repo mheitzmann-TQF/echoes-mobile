@@ -178,6 +178,44 @@ function getVesak(year: number): Date {
   return new Date(dates[year] || `${year}-05-15`);
 }
 
+// Isra and Mi'raj (27th Rajab - Islamic calendar, moveable)
+function getIsraMiraj(year: number): Date {
+  const dates: Record<number, string> = {
+    2026: '2026-01-16',
+    2027: '2027-01-06',
+    2028: '2027-12-26',
+    2029: '2029-12-15',
+    2030: '2030-12-04',
+    2031: '2031-11-23',
+    2032: '2032-11-12',
+    2033: '2033-11-01',
+    2034: '2034-10-21',
+    2035: '2035-10-11',
+    2036: '2036-09-29',
+  };
+  return new Date(dates[year] || `${year}-01-15`);
+}
+
+// Martin Luther King Jr. Day (3rd Monday of January)
+function getMlkDay(year: number): Date {
+  const jan1 = new Date(year, 0, 1);
+  const dayOfWeek = jan1.getDay();
+  // Find the first Monday
+  const firstMonday = dayOfWeek === 1 ? 1 : (dayOfWeek === 0 ? 2 : 9 - dayOfWeek);
+  // Third Monday is 14 days after first Monday
+  return new Date(year, 0, firstMonday + 14);
+}
+
+// Coming of Age Day Japan (2nd Monday of January)
+function getComingOfAgeDay(year: number): Date {
+  const jan1 = new Date(year, 0, 1);
+  const dayOfWeek = jan1.getDay();
+  // Find the first Monday
+  const firstMonday = dayOfWeek === 1 ? 1 : (dayOfWeek === 0 ? 2 : 9 - dayOfWeek);
+  // Second Monday is 7 days after first Monday
+  return new Date(year, 0, firstMonday + 7);
+}
+
 interface ObservanceEntry {
   date: string;
   name: string;
@@ -202,14 +240,59 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
         description: 'Christmas Day for Eastern Orthodox churches following the Julian calendar.',
         category: 'religious',
       },
-      // Imbolc (Feb 1)
+      // Vodoun Festival (Jan 10)
+      {
+        date: `${year}-01-10`,
+        name: 'Vodoun Festival',
+        tradition: 'West African Vodoun',
+        region: 'Benin, Togo, West Africa',
+        description: 'National celebration honoring traditional Vodoun spirituality and ancestors.',
+        category: 'religious',
+      },
+      // Amazigh New Year (Jan 12)
+      {
+        date: `${year}-01-12`,
+        name: 'Amazigh New Year (Yennayer)',
+        tradition: 'Berber/Amazigh',
+        region: 'Algeria, Morocco, Libya, Tunisia',
+        description: 'Traditional Berber New Year marking the beginning of the agrarian calendar.',
+        category: 'cultural',
+      },
+      // Republic Day India (Jan 26)
+      {
+        date: `${year}-01-26`,
+        name: 'Republic Day',
+        tradition: 'National',
+        region: 'India',
+        description: 'Commemorates the adoption of the Constitution of India in 1950.',
+        category: 'national',
+      },
+      // Australia Day (Jan 26)
+      {
+        date: `${year}-01-26`,
+        name: 'Australia Day',
+        tradition: 'National',
+        region: 'Australia',
+        description: 'National day commemorating the arrival of the First Fleet in 1788.',
+        category: 'national',
+      },
+      // Imbolc / St. Brigid's Day (Feb 1)
       {
         date: `${year}-02-01`,
-        name: 'Imbolc',
-        tradition: 'Celtic/Pagan',
+        name: 'Imbolc / St. Brigid\'s Day',
+        tradition: 'Celtic/Irish',
         region: 'Ireland, Scotland, Celtic traditions worldwide',
-        description: 'Celtic festival marking the beginning of spring and honoring the goddess Brigid.',
+        description: 'Celtic festival marking the beginning of spring, now also a public holiday in Ireland honoring St. Brigid.',
         category: 'seasonal',
+      },
+      // Waitangi Day (Feb 6)
+      {
+        date: `${year}-02-06`,
+        name: 'Waitangi Day',
+        tradition: 'National',
+        region: 'New Zealand',
+        description: 'National day commemorating the signing of the Treaty of Waitangi between Māori and the British Crown.',
+        category: 'national',
       },
       // Nowruz (Mar 20/21)
       {
@@ -322,6 +405,9 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     const eidAlFitr = getEidAlFitr(year);
     const passover = getPassover(year);
     const vesak = getVesak(year);
+    const israMiraj = getIsraMiraj(year);
+    const mlkDay = getMlkDay(year);
+    const comingOfAgeDay = getComingOfAgeDay(year);
     
     // Mardi Gras is 47 days before Easter
     const mardiGras = new Date(easter);
@@ -332,6 +418,30 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     ashWednesday.setDate(ashWednesday.getDate() - 46);
 
     observances.push(
+      {
+        date: formatDate(comingOfAgeDay),
+        name: 'Coming of Age Day',
+        tradition: 'National',
+        region: 'Japan',
+        description: 'National holiday celebrating those who have reached the age of adulthood (20 years old).',
+        category: 'cultural',
+      },
+      {
+        date: formatDate(israMiraj),
+        name: 'Isra and Mi\'raj',
+        tradition: 'Islamic',
+        region: 'Global Muslim communities',
+        description: 'Commemorates Prophet Muhammad\'s night journey from Mecca to Jerusalem and ascension to heaven.',
+        category: 'religious',
+      },
+      {
+        date: formatDate(mlkDay),
+        name: 'Martin Luther King Jr. Day',
+        tradition: 'National',
+        region: 'United States',
+        description: 'Federal holiday honoring the civil rights leader Dr. Martin Luther King Jr.',
+        category: 'national',
+      },
       {
         date: formatDate(mardiGras),
         name: 'Mardi Gras',

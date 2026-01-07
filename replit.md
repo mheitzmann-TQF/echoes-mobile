@@ -142,7 +142,8 @@ The app now uses PostgreSQL (Neon serverless) with Drizzle ORM for persistent st
 **Tables:**
 - `cultural_observances` - Stores pre-calculated moveable holidays for accurate global event tracking
   - Fields: id, date, name, tradition, region, description, category
-  - Contains 242 observances spanning 2026-2036 (10 years of pre-calculated moveable holidays)
+  - Contains 352 observances spanning 2026-2036 (11 years of pre-calculated moveable holidays)
+  - Includes: Easter, Orthodox Easter, Mardi Gras, Ash Wednesday, Lunar New Year, Diwali, Holi, Ramadan, Eid al-Fitr, Passover, Vesak, Isra and Mi'raj, MLK Day, Coming of Age Day (Japan), plus fixed dates like Orthodox Christmas, Vodoun Festival, Amazigh New Year, Republic Day (India), Australia Day, Waitangi Day, Nowruz, solstices, equinoxes, Celtic festivals, and more
 
 **Key Files:**
 - `lib/db.ts` - Database connection using @neondatabase/serverless
