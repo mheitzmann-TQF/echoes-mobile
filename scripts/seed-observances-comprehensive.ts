@@ -132,36 +132,36 @@ const CURATED_HOLIDAYS: Array<{
   {
     country: 'JP',
     holidays: [
-      { name: 'Foundation Day', tradition: 'National', region: 'Japan', description: 'Commemorates the legendary founding of Japan and the imperial line.', category: 'national' },
-      { name: "Emperor's Birthday", tradition: 'National', region: 'Japan', description: 'Celebrates the birthday of the current Emperor of Japan.', category: 'national' },
-      { name: 'Spring Equinox Day', tradition: 'National/Shinto', region: 'Japan', description: 'Day to honor ancestors and nature, also known as Shunbun no Hi.', category: 'seasonal' },
-      { name: 'Shōwa Day', tradition: 'National', region: 'Japan', description: 'Honors Emperor Shōwa and reflects on the turbulent years of his reign.', category: 'national' },
-      { name: 'Constitution Memorial Day', tradition: 'National', region: 'Japan', description: 'Commemorates the enactment of Japan\'s postwar constitution.', category: 'national' },
-      { name: 'Children\'s Day', tradition: 'Cultural', region: 'Japan', description: 'Day celebrating the happiness and welfare of children.', category: 'cultural' },
-      { name: 'Marine Day', tradition: 'National', region: 'Japan', description: 'Day of gratitude for the ocean and its bounty.', category: 'national' },
-      { name: 'Mountain Day', tradition: 'National', region: 'Japan', description: 'Appreciation for mountains and nature.', category: 'national' },
-      { name: 'Autumn Equinox Day', tradition: 'National/Shinto', region: 'Japan', description: 'Day to honor ancestors, also known as Shūbun no Hi.', category: 'seasonal' },
-      { name: 'Culture Day', tradition: 'National', region: 'Japan', description: 'Promotes culture, the arts, and academic endeavor.', category: 'cultural' },
-      { name: 'Labour Thanksgiving Day', tradition: 'National', region: 'Japan', description: 'Day of thanksgiving for labor and production.', category: 'national' },
+      { name: 'Foundation Day', tradition: 'Japanese', region: 'Japan', description: 'Commemorates the legendary founding of Japan and the imperial line.', category: 'national' },
+      { name: "Emperor's Birthday", tradition: 'Japanese', region: 'Japan', description: 'Celebrates the birthday of the current Emperor of Japan.', category: 'national' },
+      { name: 'Spring Equinox Day', tradition: 'Japanese/Shinto', region: 'Japan', description: 'Day to honor ancestors and nature, also known as Shunbun no Hi.', category: 'seasonal' },
+      { name: 'Shōwa Day', tradition: 'Japanese', region: 'Japan', description: 'Honors Emperor Shōwa and reflects on the turbulent years of his reign.', category: 'national' },
+      { name: 'Constitution Memorial Day', tradition: 'Japanese', region: 'Japan', description: 'Commemorates the enactment of Japan\'s postwar constitution.', category: 'national' },
+      { name: 'Children\'s Day', tradition: 'Japanese', region: 'Japan', description: 'Day celebrating the happiness and welfare of children.', category: 'cultural' },
+      { name: 'Marine Day', tradition: 'Japanese', region: 'Japan', description: 'Day of gratitude for the ocean and its bounty.', category: 'national' },
+      { name: 'Mountain Day', tradition: 'Japanese', region: 'Japan', description: 'Appreciation for mountains and nature.', category: 'national' },
+      { name: 'Autumn Equinox Day', tradition: 'Japanese/Shinto', region: 'Japan', description: 'Day to honor ancestors, also known as Shūbun no Hi.', category: 'seasonal' },
+      { name: 'Culture Day', tradition: 'Japanese', region: 'Japan', description: 'Promotes culture, the arts, and academic endeavor.', category: 'cultural' },
+      { name: 'Labour Thanksgiving Day', tradition: 'Japanese', region: 'Japan', description: 'Day of thanksgiving for labor and production.', category: 'national' },
     ],
   },
   {
     country: 'KR',
     holidays: [
-      { name: 'Independence Movement Day', tradition: 'National', region: 'Korea', description: 'Commemorates the March 1st Movement of 1919 against Japanese occupation.', category: 'national' },
-      { name: "Buddha's Birthday", displayName: 'Seokga Tansinil', tradition: 'Buddhist', region: 'Korea', description: 'Celebrates the birth of Buddha with lantern festivals.', category: 'religious' },
-      { name: 'Memorial Day', tradition: 'National', region: 'Korea', description: 'Honors military personnel who died in service.', category: 'national' },
-      { name: 'Liberation Day', tradition: 'National', region: 'Korea', description: 'Celebrates independence from Japanese rule in 1945.', category: 'national' },
-      { name: 'Chuseok', tradition: 'Cultural', region: 'Korea', description: 'Korean harvest festival honoring ancestors with food and gratitude.', category: 'cultural' },
-      { name: 'National Foundation Day', tradition: 'National', region: 'Korea', description: 'Celebrates the legendary founding of the first Korean kingdom.', category: 'national' },
-      { name: 'Hangul Day', tradition: 'Cultural', region: 'Korea', description: 'Celebrates the Korean alphabet invented by King Sejong.', category: 'cultural' },
+      { name: 'Independence Movement Day', tradition: 'Korean', region: 'Korea', description: 'Commemorates the March 1st Movement of 1919 against Japanese occupation.', category: 'national' },
+      { name: "Buddha's Birthday", displayName: 'Seokga Tansinil', tradition: 'Buddhist/Korean', region: 'Korea', description: 'Celebrates the birth of Buddha with lantern festivals.', category: 'religious' },
+      { name: 'Memorial Day', tradition: 'Korean', region: 'Korea', description: 'Honors military personnel who died in service.', category: 'national' },
+      { name: 'Liberation Day', tradition: 'Korean', region: 'Korea', description: 'Celebrates independence from Japanese rule in 1945.', category: 'national' },
+      { name: 'Chuseok', tradition: 'Korean', region: 'Korea', description: 'Korean harvest festival honoring ancestors with food and gratitude.', category: 'cultural' },
+      { name: 'National Foundation Day', tradition: 'Korean', region: 'Korea', description: 'Celebrates the legendary founding of the first Korean kingdom.', category: 'national' },
+      { name: 'Hangul Day', tradition: 'Korean', region: 'Korea', description: 'Celebrates the Korean alphabet invented by King Sejong.', category: 'cultural' },
     ],
   },
   {
     country: 'TH',
     holidays: [
       { name: 'Makha Bucha', tradition: 'Buddhist', region: 'Thailand', description: 'Commemorates Buddha\'s teachings to 1,250 monks gathered spontaneously.', category: 'religious' },
-      { name: 'Chakri Memorial Day', tradition: 'National', region: 'Thailand', description: 'Honors King Rama I and the Chakri Dynasty founding.', category: 'national' },
+      { name: 'Chakri Memorial Day', tradition: 'Thai', region: 'Thailand', description: 'Honors King Rama I and the Chakri Dynasty founding.', category: 'national' },
       { name: 'Songkran', tradition: 'Buddhist/Cultural', region: 'Thailand', description: 'Thai New Year festival celebrated with water splashing.', category: 'cultural' },
       { name: 'Visakha Bucha', tradition: 'Buddhist', region: 'Thailand', description: 'Most important Buddhist holiday marking Buddha\'s birth, enlightenment, and death.', category: 'religious' },
       { name: 'Asalha Bucha', tradition: 'Buddhist', region: 'Thailand', description: 'Commemorates Buddha\'s first sermon after enlightenment.', category: 'religious' },
@@ -198,7 +198,7 @@ const CURATED_HOLIDAYS: Array<{
   {
     country: 'ET',
     holidays: [
-      { name: 'Victory at Adwa Day', displayName: 'Victory of Adwa', tradition: 'National', region: 'Ethiopia', description: 'Celebrates Ethiopian victory over Italy in 1896.', category: 'national' },
+      { name: 'Victory at Adwa Day', displayName: 'Victory of Adwa', tradition: 'Ethiopian', region: 'Ethiopia', description: 'Celebrates Ethiopian victory over Italy in 1896.', category: 'national' },
       { name: 'Meskel', tradition: 'Ethiopian Orthodox', region: 'Ethiopia', description: 'Finding of the True Cross festival with bonfires.', category: 'religious' },
       { name: 'Enkutatash', tradition: 'Ethiopian', region: 'Ethiopia', description: 'Ethiopian New Year marking end of rainy season.', category: 'cultural' },
       { name: 'Timkat', displayName: 'Timkat (Epiphany)', tradition: 'Ethiopian Orthodox', region: 'Ethiopia', description: 'Ethiopian Epiphany with colorful processions.', category: 'religious' },
@@ -207,31 +207,31 @@ const CURATED_HOLIDAYS: Array<{
   {
     country: 'MX',
     holidays: [
-      { name: "Benito Juárez's birthday", displayName: 'Benito Juárez Day', tradition: 'National', region: 'Mexico', description: 'Honors Benito Juárez, indigenous president who fought for reform.', category: 'national' },
-      { name: 'Revolution Day', tradition: 'National', region: 'Mexico', description: 'Commemorates the Mexican Revolution of 1910.', category: 'national' },
+      { name: "Benito Juárez's birthday", displayName: 'Benito Juárez Day', tradition: 'Mexican', region: 'Mexico', description: 'Honors Benito Juárez, indigenous president who fought for reform.', category: 'national' },
+      { name: 'Revolution Day', tradition: 'Mexican', region: 'Mexico', description: 'Commemorates the Mexican Revolution of 1910.', category: 'national' },
     ],
   },
   {
     country: 'AR',
     holidays: [
-      { name: 'Day of Remembrance for Truth and Justice', tradition: 'National', region: 'Argentina', description: 'Commemorates victims of the 1976-1983 military dictatorship.', category: 'national' },
+      { name: 'Day of Remembrance for Truth and Justice', tradition: 'Argentine', region: 'Argentina', description: 'Commemorates victims of the 1976-1983 military dictatorship.', category: 'national' },
     ],
   },
   {
     country: 'BR',
     holidays: [
-      { name: 'Tiradentes Day', tradition: 'National', region: 'Brazil', description: 'Honors Tiradentes, martyr of Brazilian independence.', category: 'national' },
-      { name: 'Black Consciousness Day', tradition: 'Cultural', region: 'Brazil', description: 'Celebrates African-Brazilian culture and heritage.', category: 'cultural' },
+      { name: 'Tiradentes Day', tradition: 'Brazilian', region: 'Brazil', description: 'Honors Tiradentes, martyr of Brazilian independence.', category: 'national' },
+      { name: 'Black Consciousness Day', tradition: 'Brazilian', region: 'Brazil', description: 'Celebrates African-Brazilian culture and heritage.', category: 'cultural' },
     ],
   },
   {
     country: 'ZA',
     holidays: [
-      { name: 'Human Rights Day', tradition: 'National', region: 'South Africa', description: 'Commemorates the Sharpeville Massacre of 1960.', category: 'national' },
-      { name: 'Freedom Day', tradition: 'National', region: 'South Africa', description: 'Celebrates the first democratic elections in 1994.', category: 'national' },
-      { name: 'Youth Day', tradition: 'National', region: 'South Africa', description: 'Commemorates the Soweto Uprising of 1976.', category: 'national' },
-      { name: 'Heritage Day', tradition: 'Cultural', region: 'South Africa', description: 'Celebrates South African cultural diversity.', category: 'cultural' },
-      { name: 'Day of Reconciliation', tradition: 'National', region: 'South Africa', description: 'Promotes reconciliation and national unity.', category: 'national' },
+      { name: 'Human Rights Day', tradition: 'South African', region: 'South Africa', description: 'Commemorates the Sharpeville Massacre of 1960.', category: 'national' },
+      { name: 'Freedom Day', tradition: 'South African', region: 'South Africa', description: 'Celebrates the first democratic elections in 1994.', category: 'national' },
+      { name: 'Youth Day', tradition: 'South African', region: 'South Africa', description: 'Commemorates the Soweto Uprising of 1976.', category: 'national' },
+      { name: 'Heritage Day', tradition: 'South African', region: 'South Africa', description: 'Celebrates South African cultural diversity.', category: 'cultural' },
+      { name: 'Day of Reconciliation', tradition: 'South African', region: 'South Africa', description: 'Promotes reconciliation and national unity.', category: 'national' },
     ],
   },
   {
@@ -244,7 +244,7 @@ const CURATED_HOLIDAYS: Array<{
     country: 'GR',
     holidays: [
       { name: 'Clean Monday', displayName: 'Clean Monday (Kathara Deftera)', tradition: 'Orthodox Christian', region: 'Greece, Cyprus', description: 'First day of Lent with kite-flying and feasting.', category: 'religious' },
-      { name: 'Ohi Day', tradition: 'National', region: 'Greece, Cyprus', description: 'Commemorates Greek rejection of Italian ultimatum in 1940.', category: 'national' },
+      { name: 'Ohi Day', tradition: 'Greek', region: 'Greece, Cyprus', description: 'Commemorates Greek rejection of Italian ultimatum in 1940.', category: 'national' },
     ],
   },
   {
@@ -258,7 +258,7 @@ const CURATED_HOLIDAYS: Array<{
     country: 'NO',
     holidays: [
       { name: 'Day of the Sami people', displayName: 'Sami National Day', tradition: 'Indigenous', region: 'Norway, Sweden, Finland, Russia', description: 'Celebrates the indigenous Sami people of Scandinavia.', category: 'cultural' },
-      { name: 'Constitution Day', tradition: 'National', region: 'Norway', description: 'Celebrates the signing of the Norwegian Constitution in 1814.', category: 'national' },
+      { name: 'Constitution Day', tradition: 'Norwegian', region: 'Norway', description: 'Celebrates the signing of the Norwegian Constitution in 1814.', category: 'national' },
     ],
   },
   {
@@ -266,7 +266,7 @@ const CURATED_HOLIDAYS: Array<{
     holidays: [
       { name: 'Spiritual Baptist Liberation Day', displayName: 'Shouter Baptist Liberation Day', tradition: 'Afro-Caribbean', region: 'Trinidad and Tobago', description: 'Celebrates the end of persecution of Spiritual Baptists.', category: 'religious' },
       { name: 'Indian Arrival Day', tradition: 'Cultural', region: 'Trinidad and Tobago', description: 'Commemorates the arrival of Indian indentured laborers.', category: 'cultural' },
-      { name: 'Emancipation Day', tradition: 'National', region: 'Trinidad and Tobago, Caribbean', description: 'Celebrates the end of slavery in the British Empire.', category: 'national' },
+      { name: 'Emancipation Day', tradition: 'Caribbean', region: 'Trinidad and Tobago, Caribbean', description: 'Celebrates the end of slavery in the British Empire.', category: 'national' },
     ],
   },
 ];
@@ -324,7 +324,7 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     addObservance({
       date: `${year}-01-26`,
       name: 'Republic Day',
-      tradition: 'National',
+      tradition: 'Indian',
       region: 'India',
       description: 'Commemorates the adoption of the Constitution of India in 1950.',
       category: 'national',
@@ -334,7 +334,7 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     addObservance({
       date: `${year}-01-26`,
       name: 'Australia Day',
-      tradition: 'National',
+      tradition: 'Australian',
       region: 'Australia',
       description: 'National day commemorating the arrival of the First Fleet in 1788.',
       category: 'national',
@@ -354,7 +354,7 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     addObservance({
       date: `${year}-02-06`,
       name: 'Waitangi Day',
-      tradition: 'National',
+      tradition: 'New Zealand/Māori',
       region: 'New Zealand',
       description: 'National day commemorating the signing of the Treaty of Waitangi between Māori and the British Crown.',
       category: 'national',
@@ -397,7 +397,7 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     addObservance({ date: `${year}-09-21`, name: 'International Day of Peace', tradition: 'UN Observance', region: 'Global', description: 'Day devoted to strengthening ideals of peace through 24 hours of non-violence and cease-fire.', category: 'cultural' });
 
     // Unique regional celebrations
-    addObservance({ date: `${year}-02-08`, name: 'Prešeren Day', tradition: 'National/Literary', region: 'Slovenia', description: 'Slovenian cultural holiday honoring the poet France Prešeren, a day of Slovenian culture.', category: 'cultural' });
+    addObservance({ date: `${year}-02-08`, name: 'Prešeren Day', tradition: 'Slovenian', region: 'Slovenia', description: 'Slovenian cultural holiday honoring the poet France Prešeren, a day of Slovenian culture.', category: 'cultural' });
     addObservance({ date: `${year}-03-08`, name: 'International Women\'s Day', tradition: 'Social Movement', region: 'Global', description: 'Celebrating women\'s achievements and advocating for gender equality worldwide.', category: 'cultural' });
     addObservance({ date: `${year}-04-13`, name: 'Songkran (Water Festival)', tradition: 'Buddhist/Thai', region: 'Thailand, Laos, Cambodia, Myanmar', description: 'Traditional New Year festival with water splashing symbolizing purification and renewal.', category: 'cultural' });
     addObservance({ date: `${year}-05-05`, name: 'Cinco de Mayo', tradition: 'Mexican/Cultural', region: 'Mexico, United States', description: 'Commemorates the Mexican Army\'s victory over France at the Battle of Puebla in 1862.', category: 'cultural' });
@@ -408,7 +408,7 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     addObservance({ date: `${year}-11-11`, name: '11:11 Portal Day', tradition: 'Numerological/New Age', region: 'Global', description: 'Day associated with spiritual awakening and synchronicity in numerology traditions.', category: 'cultural' });
 
     // Indigenous and traditional celebrations
-    addObservance({ date: `${year}-06-21`, name: 'National Indigenous Peoples Day', tradition: 'Indigenous', region: 'Canada', description: 'Day to recognize and celebrate the cultures and contributions of First Nations, Inuit, and Métis peoples.', category: 'cultural' });
+    addObservance({ date: `${year}-06-21`, name: 'National Indigenous Peoples Day', tradition: 'Canadian Indigenous', region: 'Canada', description: 'Day to recognize and celebrate the cultures and contributions of First Nations, Inuit, and Métis peoples.', category: 'cultural' });
     addObservance({ date: `${year}-08-09`, name: 'International Day of the World\'s Indigenous Peoples', tradition: 'UN/Indigenous', region: 'Global', description: 'Day to promote and protect the rights of indigenous peoples worldwide.', category: 'cultural' });
     addObservance({ date: `${year}-10-12`, name: 'Día de la Raza / Indigenous Peoples\' Day', tradition: 'Indigenous/National', region: 'Latin America, United States', description: 'Day honoring indigenous peoples and their cultural heritage.', category: 'cultural' });
 
@@ -447,7 +447,7 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     const mlkDay = new Date(year, 0, firstMonday + 14);
 
     addObservance({ date: formatDate(comingOfAgeDay), name: 'Coming of Age Day (Seijin no Hi)', tradition: 'Japanese', region: 'Japan', description: 'National holiday celebrating those who have turned 20, marking their transition to adulthood.', category: 'cultural' });
-    addObservance({ date: formatDate(mlkDay), name: 'Martin Luther King Jr. Day', tradition: 'National', region: 'United States', description: 'Federal holiday honoring the civil rights leader Dr. Martin Luther King Jr.', category: 'national' });
+    addObservance({ date: formatDate(mlkDay), name: 'Martin Luther King Jr. Day', tradition: 'American', region: 'United States', description: 'Federal holiday honoring the civil rights leader Dr. Martin Luther King Jr.', category: 'national' });
 
     // Verified lunar/religious calendar dates
     if (LUNAR_NEW_YEAR[year]) addObservance({ date: LUNAR_NEW_YEAR[year], name: 'Lunar New Year', tradition: 'Chinese/East Asian', region: 'China, Korea, Vietnam, Singapore, Malaysia', description: 'Celebration of the new lunar year with family gatherings.', category: 'cultural' });
