@@ -40,7 +40,7 @@ interface GoogleVerificationResult {
 }
 
 async function verifyApplePurchase(
-  purchaseToken: string,
+  transactionId: string,
   sku: string
 ): Promise<AppleVerificationResult> {
   console.log('[BILLING_VERIFY] Verifying Apple purchase for SKU:', sku);
@@ -48,39 +48,38 @@ async function verifyApplePurchase(
   const applePrivateKey = process.env.APPLE_IAP_PRIVATE_KEY;
   const appleKeyId = process.env.APPLE_IAP_KEY_ID;
   const appleIssuerId = process.env.APPLE_IAP_ISSUER_ID;
+  const isSandbox = process.env.NODE_ENV !== 'production';
   
   if (!applePrivateKey || !appleKeyId || !appleIssuerId) {
-    console.log('[BILLING_VERIFY] Apple credentials not configured, using mock validation');
-    const expiresAt = new Date();
-    expiresAt.setMonth(expiresAt.getMonth() + 1);
-    return { 
-      valid: true, 
-      expiresAt,
-      productId: sku 
-    };
+    console.error('[BILLING_VERIFY] Apple credentials not configured - rejecting purchase');
+    console.error('[BILLING_VERIFY] Required: APPLE_IAP_PRIVATE_KEY, APPLE_IAP_KEY_ID, APPLE_IAP_ISSUER_ID');
+    return { valid: false };
+  }
+
+  if (!transactionId) {
+    console.error('[BILLING_VERIFY] Missing transactionId for Apple purchase');
+    return { valid: false };
   }
 
   try {
-    const now = Math.floor(Date.now() / 1000);
-    const exp = now + 3600;
+    // TODO: Implement actual App Store Server API verification
+    // 1. Generate JWT using ES256 algorithm with Apple's private key
+    // 2. Call GET https://api.storekit{-sandbox}.itunes.apple.com/inApps/v1/transactions/{transactionId}
+    // 3. Decode and verify the signed transaction response
+    // 4. Extract expiresDate from the decoded transaction
     
-    const header = {
-      alg: 'ES256',
-      kid: appleKeyId,
-      typ: 'JWT'
-    };
+    console.log('[BILLING_VERIFY] Apple Server API verification not yet implemented');
+    console.log('[BILLING_VERIFY] TransactionId received:', transactionId);
     
-    const payload = {
-      iss: appleIssuerId,
-      iat: now,
-      exp: exp,
-      aud: 'appstoreconnect-v1',
-      bid: process.env.APPLE_BUNDLE_ID || 'com.thequietframe.echoes'
-    };
+    // SECURITY: In production, this should call Apple's API
+    // For now, reject all purchases until API is properly implemented
+    if (!isSandbox) {
+      console.error('[BILLING_VERIFY] Production Apple verification not implemented - rejecting');
+      return { valid: false };
+    }
     
-    console.log('[BILLING_VERIFY] Apple verification would call App Store Server API');
-    console.log('[BILLING_VERIFY] Using mock validation for development');
-    
+    // Sandbox testing: Allow with warning (development only)
+    console.warn('[BILLING_VERIFY] SANDBOX MODE: Allowing purchase for testing');
     const expiresAt = new Date();
     expiresAt.setMonth(expiresAt.getMonth() + 1);
     return { valid: true, expiresAt, productId: sku };
@@ -97,22 +96,38 @@ async function verifyGooglePurchase(
   console.log('[BILLING_VERIFY] Verifying Google purchase for SKU:', sku);
   
   const serviceAccountKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  const isSandbox = process.env.NODE_ENV !== 'production';
   
   if (!serviceAccountKey) {
-    console.log('[BILLING_VERIFY] Google credentials not configured, using mock validation');
-    const expiresAt = new Date();
-    expiresAt.setMonth(expiresAt.getMonth() + 1);
-    return { 
-      valid: true, 
-      expiresAt,
-      productId: sku 
-    };
+    console.error('[BILLING_VERIFY] Google credentials not configured - rejecting purchase');
+    console.error('[BILLING_VERIFY] Required: GOOGLE_SERVICE_ACCOUNT_KEY');
+    return { valid: false };
+  }
+
+  if (!purchaseToken) {
+    console.error('[BILLING_VERIFY] Missing purchaseToken for Google purchase');
+    return { valid: false };
   }
 
   try {
-    console.log('[BILLING_VERIFY] Google verification would call Play Developer API');
-    console.log('[BILLING_VERIFY] Using mock validation for development');
+    // TODO: Implement actual Google Play Developer API verification
+    // 1. Parse service account JSON and generate OAuth2 token
+    // 2. Call GET https://androidpublisher.googleapis.com/androidpublisher/v3/applications/{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}
+    // 3. Verify subscription state is ACTIVE
+    // 4. Extract expiryTimeMillis from response
     
+    console.log('[BILLING_VERIFY] Google Play API verification not yet implemented');
+    console.log('[BILLING_VERIFY] PurchaseToken received:', purchaseToken.substring(0, 20) + '...');
+    
+    // SECURITY: In production, this should call Google's API
+    // For now, reject all purchases until API is properly implemented
+    if (!isSandbox) {
+      console.error('[BILLING_VERIFY] Production Google verification not implemented - rejecting');
+      return { valid: false };
+    }
+    
+    // Sandbox testing: Allow with warning (development only)
+    console.warn('[BILLING_VERIFY] SANDBOX MODE: Allowing purchase for testing');
     const expiresAt = new Date();
     expiresAt.setMonth(expiresAt.getMonth() + 1);
     return { valid: true, expiresAt, productId: sku };

@@ -13,6 +13,7 @@ import {
 } from './iap';
 import { getInstallId } from './installId';
 import { SUBSCRIPTION_IDS } from './products';
+import Constants from 'expo-constants';
 
 export interface EntitlementState {
   isPro: boolean;
@@ -29,7 +30,17 @@ export interface EntitlementActions {
   refresh: () => Promise<void>;
 }
 
-const API_BASE = '';
+function getApiBase(): string {
+  const expoConfig = Constants.expoConfig || Constants.manifest;
+  const extra = expoConfig?.extra as { apiUrl?: string } | undefined;
+  if (extra?.apiUrl) {
+    return extra.apiUrl;
+  }
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin;
+  }
+  return '';
+}
 
 async function checkEntitlementStatus(installId: string): Promise<{
   entitlement: 'pro' | 'free';
@@ -37,7 +48,8 @@ async function checkEntitlementStatus(installId: string): Promise<{
 }> {
   try {
     console.log('[ENTITLEMENT] Checking status for installId:', installId);
-    const response = await fetch(`${API_BASE}/api/billing/status?installId=${installId}`);
+    const apiBase = getApiBase();
+    const response = await fetch(`${apiBase}/api/billing/status?installId=${installId}`);
     
     if (!response.ok) {
       console.error('[ENTITLEMENT] Status check failed:', response.status);
@@ -67,7 +79,8 @@ async function verifyPurchaseWithBackend(
     const payload = getPurchasePayload(purchase);
     console.log('[ENTITLEMENT] Verifying purchase with backend:', payload);
     
-    const response = await fetch(`${API_BASE}/api/billing/verify`, {
+    const apiBase = getApiBase();
+    const response = await fetch(`${apiBase}/api/billing/verify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
