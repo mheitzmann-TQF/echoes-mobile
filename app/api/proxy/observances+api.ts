@@ -1,9 +1,8 @@
-import { ExpoRequest, ExpoResponse } from 'expo-router/server';
-import { db } from '@/lib/db';
-import { culturalObservances } from '@shared/schema';
-import { eq, and, gte, lte, sql } from 'drizzle-orm';
+import { db } from '../../../lib/db';
+import { culturalObservances } from '../../../shared/schema';
+import { eq, and, gte, lte } from 'drizzle-orm';
 
-export async function GET(request: ExpoRequest) {
+export async function GET(request: Request): Promise<Response> {
   try {
     const url = new URL(request.url);
     const date = url.searchParams.get('date');
@@ -36,14 +35,14 @@ export async function GET(request: ExpoRequest) {
         .where(eq(culturalObservances.date, today));
     }
 
-    return ExpoResponse.json({ 
+    return Response.json({ 
       success: true, 
       count: results.length,
       observances: results 
     });
   } catch (error) {
     console.error('Observances API error:', error);
-    return ExpoResponse.json({ 
+    return Response.json({ 
       success: false, 
       error: 'Failed to fetch observances' 
     }, { status: 500 });
