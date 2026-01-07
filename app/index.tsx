@@ -124,11 +124,28 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           />
           <View style={photoStyles.fullscreenCredit}>
             {photo.photographer && (
-              <Text style={photoStyles.fullscreenCreditText}>
-                Photo by {photo.photographer}{isUnsplashPhoto ? ' on Unsplash' : ''}
-              </Text>
+              <View style={photoStyles.fullscreenCreditRow}>
+                <Text style={photoStyles.fullscreenCreditText}>Photo by </Text>
+                <TouchableOpacity 
+                  onPress={(e) => { e.stopPropagation(); handlePhotographerPress(); }}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Text style={photoStyles.fullscreenCreditLink}>{photo.photographer}</Text>
+                </TouchableOpacity>
+                {isUnsplashPhoto && (
+                  <>
+                    <Text style={photoStyles.fullscreenCreditText}> on </Text>
+                    <TouchableOpacity 
+                      onPress={(e) => { e.stopPropagation(); handleUnsplashPress(); }}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                      <Text style={photoStyles.fullscreenCreditLink}>Unsplash</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
             )}
-            <Text style={photoStyles.fullscreenHintText}>Tap to close</Text>
+            <Text style={photoStyles.fullscreenHintText}>Tap anywhere to close</Text>
           </View>
         </TouchableOpacity>
       </Modal>
@@ -191,13 +208,22 @@ const photoStyles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
+  fullscreenCreditRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 16,
+  },
   fullscreenCreditText: {
     color: 'rgba(255,255,255,0.8)',
-    fontSize: 12,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
+    fontSize: 13,
+  },
+  fullscreenCreditLink: {
+    color: '#ffffff',
+    fontSize: 13,
+    textDecorationLine: 'underline',
   },
   fullscreenHintText: {
     color: 'rgba(255,255,255,0.5)',
