@@ -10,6 +10,8 @@ import {
   Dimensions,
   Linking,
   TouchableOpacity,
+  Modal,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -38,6 +40,8 @@ interface DailyPhotoData {
 function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
   const { colors } = useTheme();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
+  const { height: screenHeight } = Dimensions.get('window');
 
   const handlePhotographerPress = () => {
     if (photo.photographerUrl) {
@@ -54,7 +58,11 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
   return (
     <View style={photoStyles.container}>
       <Text style={[photoStyles.sectionLabel, { color: colors.textTertiary }]}>MOMENT</Text>
-      <View style={[photoStyles.imageWrapper, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <TouchableOpacity 
+        activeOpacity={0.9} 
+        onPress={() => setFullscreen(true)}
+        style={[photoStyles.imageWrapper, { backgroundColor: colors.surface, borderColor: colors.border }]}
+      >
         {!imageLoaded && (
           <View style={photoStyles.placeholder}>
             <ActivityIndicator size="small" color={colors.textSecondary} />
@@ -66,7 +74,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           resizeMode="cover"
           onLoad={() => setImageLoaded(true)}
         />
-      </View>
+      </TouchableOpacity>
       <View style={photoStyles.creditContainer}>
         <Text style={[photoStyles.credit, { color: colors.textTertiary }]}>
           Photo by{' '}
@@ -95,6 +103,30 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           </Text>
         )}
       </View>
+
+      <Modal
+        visible={fullscreen}
+        transparent={true}
+        animationType="fade"
+        statusBarTranslucent={true}
+        onRequestClose={() => setFullscreen(false)}
+      >
+        <StatusBar hidden={true} />
+        <TouchableOpacity 
+          activeOpacity={1}
+          onPress={() => setFullscreen(false)}
+          style={photoStyles.fullscreenOverlay}
+        >
+          <Image
+            source={{ uri: photo.url }}
+            style={{ width: screenWidth, height: screenHeight }}
+            resizeMode="contain"
+          />
+          <View style={photoStyles.fullscreenHint}>
+            <Text style={photoStyles.fullscreenHintText}>Tap to close</Text>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -140,6 +172,25 @@ const photoStyles = StyleSheet.create({
   creditLink: {
     fontSize: 11,
     textDecorationLine: 'underline',
+  },
+  fullscreenOverlay: {
+    flex: 1,
+    backgroundColor: '#000000',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fullscreenHint: {
+    position: 'absolute',
+    bottom: 60,
+    alignSelf: 'center',
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  fullscreenHintText: {
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 13,
   },
 });
 
