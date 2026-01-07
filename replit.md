@@ -142,8 +142,11 @@ The app now uses PostgreSQL (Neon serverless) with Drizzle ORM for persistent st
 **Tables:**
 - `cultural_observances` - Stores pre-calculated moveable holidays for accurate global event tracking
   - Fields: id, date, name, tradition, region, description, category
-  - Contains 352 observances spanning 2026-2036 (11 years of pre-calculated moveable holidays)
-  - Includes: Easter, Orthodox Easter, Mardi Gras, Ash Wednesday, Lunar New Year, Diwali, Holi, Ramadan, Eid al-Fitr, Passover, Vesak, Isra and Mi'raj, MLK Day, Coming of Age Day (Japan), plus fixed dates like Orthodox Christmas, Vodoun Festival, Amazigh New Year, Republic Day (India), Australia Day, Waitangi Day, Nowruz, solstices, equinoxes, Celtic festivals, and more
+  - Contains 768 observances spanning 2026-2036 (11 years of pre-calculated moveable holidays)
+  - Uses `date-holidays` library for automatic calculation of country-specific holidays
+  - Verified moveable dates: Lunar New Year, Diwali, Holi, Ramadan, Eid al-Fitr, Passover, Vesak, Isra and Mi'raj, Easter, Orthodox Easter
+  - Fixed dates: Orthodox Christmas, Vodoun Festival, Amazigh New Year, Republic Day (India), Australia Day, Waitangi Day, Nowruz, solstices, equinoxes, Celtic festivals
+  - Library-sourced holidays from 20+ countries including: Japan (Foundation Day, Emperor's Birthday, Culture Day), Korea (Chuseok, Hangul Day), Thailand (Songkran, Makha Bucha, Loi Krathong), Israel (Tu BiShvat, Purim, Shavuot, Rosh Hashanah, Yom Kippur, Sukkot, Hanukkah), Ethiopia (Victory of Adwa, Meskel, Enkutatash, Timkat), South Africa (Human Rights Day, Freedom Day, Youth Day, Heritage Day), Mexico (Benito Juárez Day), Brazil (Tiradentes Day, Black Consciousness Day), Trinidad (Spiritual Baptist Liberation Day, Emancipation Day), Scandinavia (Midsummer, Santa Lucia, Sami National Day), and more
 
 **Key Files:**
 - `lib/db.ts` - Database connection using @neondatabase/serverless
