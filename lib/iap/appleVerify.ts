@@ -27,6 +27,8 @@ interface DecodedTransaction {
   expiresDate?: number;
   environment: string;
   type: string;
+  revocationDate?: number;
+  revocationReason?: number;
 }
 
 function base64UrlEncode(data: string | Buffer): string {
@@ -184,6 +186,22 @@ export async function verifyAppleTransaction(
     // Check if subscription is active
     const now = Date.now();
     const expiresAt = transaction.expiresDate ? new Date(transaction.expiresDate) : undefined;
+    
+    // Check for revocation (refund granted by Apple)
+    // If revocationDate is set, the purchase has been refunded and access should be revoked
+    if (transaction.revocationDate) {
+      console.log('[APPLE_VERIFY] Transaction was revoked/refunded at:', new Date(transaction.revocationDate));
+      return {
+        valid: true,
+        entitled: false,
+        productId: transaction.productId,
+        expiresAt: undefined,
+        originalTransactionId: transaction.originalTransactionId,
+        environment: transaction.environment === 'Sandbox' ? 'sandbox' : 'production',
+        error: 'Purchase was refunded'
+      };
+    }
+    
     const isActive = expiresAt ? expiresAt.getTime() > now : true;
     
     return {

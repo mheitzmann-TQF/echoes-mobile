@@ -212,13 +212,16 @@ export async function verifyGoogleSubscription(
     const purchase: SubscriptionPurchase = await response.json();
     console.log('[GOOGLE_VERIFY] V1 response:', {
       orderId: purchase.orderId,
-      paymentState: purchase.paymentState
+      paymentState: purchase.paymentState,
+      cancelReason: purchase.cancelReason
     });
     
-    // Check if subscription is active
+    // Check if subscription is active based on expiry time
+    // NOTE: cancelReason indicates the user has turned off auto-renew or canceled,
+    // but they retain access until expiryTimeMillis. Do NOT revoke early.
     const now = Date.now();
     const expiryTime = parseInt(purchase.expiryTimeMillis, 10);
-    const isActive = expiryTime > now && !purchase.cancelReason;
+    const isActive = expiryTime > now;
     
     return {
       valid: true,
