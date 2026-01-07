@@ -1,0 +1,37 @@
+michelheitzmann@michels-macbook-pro TQF % cat node_modules/react-native-worklets/lib/commonjs/publicGlobals.js | head -10
+cat: node_modules/react-native-worklets/lib/commonjs/publicGlobals.js: No such file or directory
+michelheitzmann@michels-macbook-pro TQF % ls -la node_modules/react-native-worklets/lib/
+total 0
+drwxr-xr-x   4 michelheitzmann  staff   128 Jan  7 18:48 .
+drwxr-xr-x  16 michelheitzmann  staff   512 Jan  7 18:48 ..
+drwxr-xr-x  52 michelheitzmann  staff  1664 Jan  7 18:48 module
+drwxr-xr-x  50 michelheitzmann  staff  1600 Jan  7 18:48 typescript
+michelheitzmann@michels-macbook-pro TQF % cat node_modules/react-native-worklets/package.json | grep -A5 '"main"'
+  "main": "./lib/module/index",
+  "module": "./lib/module/index",
+  "react-native": "./src/index",
+  "source": "./src/index",
+  "types": "lib/typescript/index.d.ts",
+  "files": [
+michelheitzmann@michels-macbook-pro TQF % ls node_modules/react-native-worklets/lib/module/*.js | head -20
+node_modules/react-native-worklets/lib/module/WorkletsError.js
+node_modules/react-native-worklets/lib/module/bundleUnpacker.js
+node_modules/react-native-worklets/lib/module/callGuard.js
+node_modules/react-native-worklets/lib/module/deprecated.js
+node_modules/react-native-worklets/lib/module/errors.js
+node_modules/react-native-worklets/lib/module/index.js
+node_modules/react-native-worklets/lib/module/initializers.js
+node_modules/react-native-worklets/lib/module/isSynchronizable.js
+node_modules/react-native-worklets/lib/module/logger.js
+node_modules/react-native-worklets/lib/module/privateGlobals.d.js
+node_modules/react-native-worklets/lib/module/publicGlobals.js
+node_modules/react-native-worklets/lib/module/runtimeKind.js
+node_modules/react-native-worklets/lib/module/runtimes.js
+node_modules/react-native-worklets/lib/module/serializable.js
+node_modules/react-native-worklets/lib/module/serializableMappingCache.js
+node_modules/react-native-worklets/lib/module/synchronizable.js
+node_modules/react-native-worklets/lib/module/synchronizableUnpacker.js
+node_modules/react-native-worklets/lib/module/threads.js
+node_modules/react-native-worklets/lib/module/valueUnpacker.js
+node_modules/react-native-worklets/lib/module/workletFunction.js
+michelheitzmann@michels-macbook-pro TQF % 
