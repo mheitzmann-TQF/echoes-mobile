@@ -446,7 +446,7 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     const comingOfAgeDay = new Date(year, 0, firstMonday + 7);
     const mlkDay = new Date(year, 0, firstMonday + 14);
 
-    addObservance({ date: formatDate(comingOfAgeDay), name: 'Coming of Age Day', tradition: 'National', region: 'Japan', description: 'National holiday celebrating those who have reached the age of adulthood.', category: 'cultural' });
+    addObservance({ date: formatDate(comingOfAgeDay), name: 'Coming of Age Day (Seijin no Hi)', tradition: 'Japanese', region: 'Japan', description: 'National holiday celebrating those who have turned 20, marking their transition to adulthood.', category: 'cultural' });
     addObservance({ date: formatDate(mlkDay), name: 'Martin Luther King Jr. Day', tradition: 'National', region: 'United States', description: 'Federal holiday honoring the civil rights leader Dr. Martin Luther King Jr.', category: 'national' });
 
     // Verified lunar/religious calendar dates
