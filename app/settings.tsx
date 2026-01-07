@@ -2,14 +2,17 @@ import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState } from 'react';
-import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown } from 'lucide-react-native';
+import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe } from 'lucide-react-native';
 import { useTheme } from '../lib/ThemeContext';
 import { useEntitlement } from '@/lib/iap/useEntitlement';
 import Paywall from '@/components/Paywall';
+import { useTranslation } from 'react-i18next';
+import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, changeLanguage, getCurrentLanguage, type SupportedLanguage } from '../lib/i18n';
 
 const THEMES = ['Dark', 'Light'];
 
 export default function SettingsScreen() {
+  const { t } = useTranslation();
   const { 
     useCurrentLocation, 
     setUseCurrentLocation, 
@@ -27,9 +30,17 @@ export default function SettingsScreen() {
   const [manualInput, setManualInput] = useState(locationName);
   const [showManualInput, setShowManualInput] = useState(false);
   const [showThemeModal, setShowThemeModal] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState<SupportedLanguage>(getCurrentLanguage());
   
   const { isPro, isLoading: entitlementLoading, expiresAt, restorePurchasesAction } = useEntitlement();
+
+  const handleLanguageChange = async (lang: SupportedLanguage) => {
+    await changeLanguage(lang);
+    setCurrentLanguage(lang);
+    setShowLanguageModal(false);
+  };
 
   const handleSetLocation = () => {
     if (manualInput.trim()) {
@@ -41,18 +52,18 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={[styles.title, { color: colors.text }]}>Settings</Text>
+        <Text style={[styles.title, { color: colors.text }]}>{t('settings.title')}</Text>
         
         {/* Location Section */}
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={[styles.sectionLabel, { color: colors.text }]}>Location</Text>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>{t('settings.location')}</Text>
           
           {/* Current Location Toggle */}
           <View style={styles.row}>
             <View>
-              <Text style={[styles.label, { color: colors.text }]}>Use Current Location</Text>
-              {locationLoading && <Text style={styles.smallText}>Loading...</Text>}
-              {locationError && <Text style={[styles.errorText, { color: colors.error }]}>⚠ {locationError}</Text>}
+              <Text style={[styles.label, { color: colors.text }]}>{t('settings.useCurrentLocation')}</Text>
+              {locationLoading && <Text style={styles.smallText}>{t('common.loading')}</Text>}
+              {locationError && <Text style={[styles.errorText, { color: colors.error }]}>{locationError}</Text>}
             </View>
             <Switch
               value={useCurrentLocation}
@@ -69,12 +80,12 @@ export default function SettingsScreen() {
           >
             <View style={styles.locationCardHeader}>
               <MapPin size={18} color={colors.accent} />
-              <Text style={[styles.locationCardTitle, { color: colors.accent }]}>{locationName || 'Set Location'}</Text>
+              <Text style={[styles.locationCardTitle, { color: colors.accent }]}>{locationName || t('settings.setLocation')}</Text>
             </View>
             <Text style={[styles.coordinates, { color: colors.textSecondary }]}>
               {coordinates.lat.toFixed(4)}°, {coordinates.lng.toFixed(4)}°
             </Text>
-            <Text style={[styles.hint, { color: colors.textTertiary }]}>Tap to change location</Text>
+            <Text style={[styles.hint, { color: colors.textTertiary }]}>{t('settings.tapToChange')}</Text>
           </TouchableOpacity>
 
           {/* Manual Location Input */}
@@ -100,7 +111,7 @@ export default function SettingsScreen() {
                     setManualInput(locationName);
                   }}
                 >
-                  <Text style={[styles.buttonText, { color: colors.textSecondary }]}>Cancel</Text>
+                  <Text style={[styles.buttonText, { color: colors.textSecondary }]}>{t('common.cancel')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={[styles.button, styles.buttonConfirm, { 
@@ -109,7 +120,7 @@ export default function SettingsScreen() {
                   }]}
                   onPress={handleSetLocation}
                 >
-                  <Text style={[styles.buttonTextConfirm, { color: colors.accent }]}>Set Location</Text>
+                  <Text style={[styles.buttonTextConfirm, { color: colors.accent }]}>{t('settings.setLocation')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -121,25 +132,41 @@ export default function SettingsScreen() {
           <View style={styles.row}>
             <View style={styles.tzHeader}>
               <Clock size={18} color={colors.accent} />
-              <Text style={[styles.label, { color: colors.text }]}>Timezone</Text>
+              <Text style={[styles.label, { color: colors.text }]}>{t('settings.timezone')}</Text>
             </View>
             <Text style={[styles.value, { color: colors.textSecondary }]}>{timezone || 'UTC'}</Text>
           </View>
-          <Text style={[styles.hint, { color: colors.textTertiary }]}>Auto-detected from location</Text>
+          <Text style={[styles.hint, { color: colors.textTertiary }]}>{t('settings.autoDetected')}</Text>
         </View>
 
         {/* Display Section */}
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={[styles.sectionLabel, { color: colors.text }]}>Display</Text>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>{t('settings.display')}</Text>
           
           {/* Theme Selector */}
           <TouchableOpacity 
             style={styles.row}
             onPress={() => setShowThemeModal(true)}
           >
-            <Text style={[styles.label, { color: colors.text }]}>Theme</Text>
+            <Text style={[styles.label, { color: colors.text }]}>{t('settings.theme')}</Text>
             <View style={styles.valueRow}>
-              <Text style={[styles.value, { color: colors.textSecondary }]}>{theme === 'dark' ? 'Dark' : 'Light'}</Text>
+              <Text style={[styles.value, { color: colors.textSecondary }]}>{theme === 'dark' ? t('settings.dark') : t('settings.light')}</Text>
+              <ChevronRight size={16} color={colors.textTertiary} />
+            </View>
+          </TouchableOpacity>
+
+          {/* Language Selector */}
+          <TouchableOpacity 
+            style={styles.row}
+            onPress={() => setShowLanguageModal(true)}
+            data-testid="button-language"
+          >
+            <View style={styles.tzHeader}>
+              <Globe size={18} color={colors.accent} />
+              <Text style={[styles.label, { color: colors.text }]}>{t('settings.language')}</Text>
+            </View>
+            <View style={styles.valueRow}>
+              <Text style={[styles.value, { color: colors.textSecondary }]}>{LANGUAGE_NAMES[currentLanguage]}</Text>
               <ChevronRight size={16} color={colors.textTertiary} />
             </View>
           </TouchableOpacity>
@@ -149,31 +176,63 @@ export default function SettingsScreen() {
         <Modal visible={showThemeModal} transparent animationType="fade">
           <View style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
             <View style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#111' : '#FFF' }]}>
-              <Text style={[styles.modalTitle, { color: colors.text }]}>Select Theme</Text>
-              {THEMES.map((t) => (
+              <Text style={[styles.modalTitle, { color: colors.text }]}>{t('settings.theme')}</Text>
+              {THEMES.map((themeOption) => (
                 <TouchableOpacity
-                  key={t}
+                  key={themeOption}
                   style={[styles.modalOption, { backgroundColor: colors.surface }]}
                   onPress={() => {
-                    setTheme(t.toLowerCase() as 'dark' | 'light');
+                    setTheme(themeOption.toLowerCase() as 'dark' | 'light');
                     setShowThemeModal(false);
                   }}
                 >
                   <Text style={[
                     styles.modalOptionText, 
                     { color: colors.textSecondary },
-                    theme === t.toLowerCase() && { color: colors.accent, fontWeight: '700' }
+                    theme === themeOption.toLowerCase() && { color: colors.accent, fontWeight: '700' }
                   ]}>
-                    {t}
+                    {themeOption === 'Dark' ? t('settings.dark') : t('settings.light')}
                   </Text>
-                  {theme === t.toLowerCase() && <Check size={18} color={colors.accent} />}
+                  {theme === themeOption.toLowerCase() && <Check size={18} color={colors.accent} />}
                 </TouchableOpacity>
               ))}
               <TouchableOpacity 
                 style={[styles.modalCloseButton, { backgroundColor: colors.surfaceHighlight }]}
                 onPress={() => setShowThemeModal(false)}
               >
-                <Text style={[styles.modalCloseText, { color: colors.textSecondary }]}>Close</Text>
+                <Text style={[styles.modalCloseText, { color: colors.textSecondary }]}>{t('common.close')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Language Modal */}
+        <Modal visible={showLanguageModal} transparent animationType="fade">
+          <View style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
+            <View style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#111' : '#FFF' }]}>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>{t('settings.selectLanguage')}</Text>
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <TouchableOpacity
+                  key={lang}
+                  style={[styles.modalOption, { backgroundColor: colors.surface }]}
+                  onPress={() => handleLanguageChange(lang)}
+                  data-testid={`button-language-${lang}`}
+                >
+                  <Text style={[
+                    styles.modalOptionText, 
+                    { color: colors.textSecondary },
+                    currentLanguage === lang && { color: colors.accent, fontWeight: '700' }
+                  ]}>
+                    {LANGUAGE_NAMES[lang]}
+                  </Text>
+                  {currentLanguage === lang && <Check size={18} color={colors.accent} />}
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity 
+                style={[styles.modalCloseButton, { backgroundColor: colors.surfaceHighlight }]}
+                onPress={() => setShowLanguageModal(false)}
+              >
+                <Text style={[styles.modalCloseText, { color: colors.textSecondary }]}>{t('common.close')}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -181,18 +240,18 @@ export default function SettingsScreen() {
 
         {/* Subscription Section */}
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={[styles.sectionLabel, { color: colors.text }]}>Subscription</Text>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>{t('settings.subscription')}</Text>
           
           {isPro ? (
             <View style={styles.subscriptionCard}>
               <View style={styles.subscriptionHeader}>
                 <Crown size={20} color="#F59E0B" />
-                <Text style={[styles.subscriptionTitle, { color: colors.text }]}>Echoes Pro</Text>
+                <Text style={[styles.subscriptionTitle, { color: colors.text }]}>{t('settings.echoesPro')}</Text>
               </View>
               <Text style={[styles.subscriptionStatus, { color: colors.textSecondary }]}>
                 {expiresAt 
-                  ? `Active until ${new Date(expiresAt).toLocaleDateString()}` 
-                  : 'Active subscription'}
+                  ? t('settings.activeUntil', { date: new Date(expiresAt).toLocaleDateString() })
+                  : t('settings.activeSubscription')}
               </Text>
               <TouchableOpacity
                 style={[styles.manageButton, { backgroundColor: colors.surfaceHighlight }]}
@@ -205,24 +264,24 @@ export default function SettingsScreen() {
                 }}
                 data-testid="button-manage-subscription"
               >
-                <Text style={[styles.manageButtonText, { color: colors.accent }]}>Manage Subscription</Text>
+                <Text style={[styles.manageButtonText, { color: colors.accent }]}>{t('settings.manageSubscription')}</Text>
               </TouchableOpacity>
             </View>
           ) : (
             <View style={styles.subscriptionCard}>
               <View style={styles.subscriptionHeader}>
                 <Sparkles size={20} color={colors.textSecondary} />
-                <Text style={[styles.subscriptionTitle, { color: colors.text }]}>Free</Text>
+                <Text style={[styles.subscriptionTitle, { color: colors.text }]}>{t('settings.free')}</Text>
               </View>
               <Text style={[styles.subscriptionStatus, { color: colors.textSecondary }]}>
-                Unlock full access to cosmic wisdom
+                {t('settings.unlockAccess')}
               </Text>
               <TouchableOpacity
                 style={[styles.upgradeButton, { backgroundColor: colors.accent }]}
                 onPress={() => setShowPaywall(true)}
                 data-testid="button-upgrade"
               >
-                <Text style={styles.upgradeButtonText}>Upgrade to Pro</Text>
+                <Text style={styles.upgradeButtonText}>{t('settings.upgradeToPro')}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -238,8 +297,8 @@ export default function SettingsScreen() {
 
         {/* Privacy Section */}
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={[styles.sectionLabel, { color: colors.text }]}>Privacy</Text>
-          <Text style={[styles.infoText, { color: colors.textSecondary }]}>No accounts. Preferences stored on-device.</Text>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>{t('settings.privacy')}</Text>
+          <Text style={[styles.infoText, { color: colors.textSecondary }]}>{t('settings.privacyNote')}</Text>
         </View>
 
         {/* About Section */}
@@ -250,7 +309,7 @@ export default function SettingsScreen() {
             resizeMode="contain"
           />
           <Text style={[styles.aboutText, { color: colors.textTertiary }]}>
-            Part of
+            {t('settings.partOf')}
           </Text>
           <TouchableOpacity onPress={() => Linking.openURL('https://thequietframe.com')}>
             <Text style={[styles.aboutLink, { color: colors.textSecondary }]}>
@@ -258,7 +317,7 @@ export default function SettingsScreen() {
             </Text>
           </TouchableOpacity>
           <Text style={[styles.versionText, { color: colors.textTertiary }]}>
-            Echoes v1.0
+            {t('settings.version')}
           </Text>
         </View>
 

@@ -23,14 +23,13 @@ interface LocationContextType {
 
 export const LocationContext = createContext<LocationContextType | undefined>(undefined);
 
-// Map device language to API supported language code
+// Map device language to supported language code (6 European languages only)
 const mapLanguageToAPI = (locale: string): string => {
-  // Supported API languages: en, es, fr, pt, de, it, zh, ja, ar, hi, ru
+  // Supported languages: en, es, fr, pt, de, it
   const langCode = locale.split('-')[0].toLowerCase();
   
   const supportedMap: Record<string, string> = {
-    en: 'en', es: 'es', fr: 'fr', pt: 'pt', de: 'de', 
-    it: 'it', zh: 'zh', ja: 'ja', ar: 'ar', hi: 'hi', ru: 'ru'
+    en: 'en', es: 'es', fr: 'fr', pt: 'pt', de: 'de', it: 'it'
   };
   
   return supportedMap[langCode] || 'en';

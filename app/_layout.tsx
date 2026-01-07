@@ -1,11 +1,13 @@
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet, Image, Animated } from 'react-native';
+import { View, StyleSheet, Image, Animated, ActivityIndicator } from 'react-native';
 import { Svg, Path, Circle, Rect, Line } from 'react-native-svg';
 import { LocationProvider } from '../lib/LocationContext';
 import { ThemeProvider, useTheme } from '../lib/ThemeContext';
 import { useState, useEffect, useRef } from 'react';
 import { logEnvOnce } from "@/lib/env";
+import { initI18n } from '../lib/i18n';
+import { useTranslation } from 'react-i18next';
 
 function TodayIcon({ color }: { color: string }) {
   return (
@@ -94,7 +96,21 @@ function SplashScreen({ onFinish }: { onFinish: () => void }) {
 
 function ThemedApp() {
   const { theme, colors } = useTheme();
+  const { t } = useTranslation();
   const [showSplash, setShowSplash] = useState(true);
+  const [i18nReady, setI18nReady] = useState(false);
+
+  useEffect(() => {
+    initI18n().then(() => setI18nReady(true));
+  }, []);
+
+  if (!i18nReady) {
+    return (
+      <View style={[styles.splashContainer, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="small" color={colors.text} />
+      </View>
+    );
+  }
 
   if (showSplash) {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
@@ -126,35 +142,35 @@ function ThemedApp() {
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Today',
+            title: t('tabs.today'),
             tabBarIcon: ({ color }) => <TodayIcon color={color} />,
           }}
         />
         <Tabs.Screen
           name="field"
           options={{
-            title: 'Field',
+            title: t('tabs.field'),
             tabBarIcon: ({ color }) => <FieldIcon color={color} />,
           }}
         />
         <Tabs.Screen
           name="learn"
           options={{
-            title: 'Learn',
+            title: t('tabs.learn'),
             tabBarIcon: ({ color }) => <LearnIcon color={color} />,
           }}
         />
         <Tabs.Screen
           name="upcoming"
           options={{
-            title: 'Upcoming',
+            title: t('tabs.upcoming'),
             tabBarIcon: ({ color }) => <UpcomingIcon color={color} />,
           }}
         />
         <Tabs.Screen
           name="settings"
           options={{
-            title: 'Settings',
+            title: t('tabs.settings'),
             tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
           }}
         />

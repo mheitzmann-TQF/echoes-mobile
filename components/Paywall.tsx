@@ -13,6 +13,7 @@ import { Sparkles, Check, RotateCcw } from 'lucide-react-native';
 import { useEntitlement } from '@/lib/iap/useEntitlement';
 import { HAS_TRIAL_OFFER, TRIAL_DAYS, LEGAL_URLS, SUBSCRIPTION_IDS } from '@/lib/iap/products';
 import type { ProductSubscription } from 'expo-iap';
+import { useTranslation } from 'react-i18next';
 
 interface PaywallProps {
   onClose?: () => void;
@@ -33,6 +34,7 @@ function getPeriodLabel(sku: string): string {
 }
 
 export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
+  const { t } = useTranslation();
   const {
     isPro,
     isLoading,
@@ -89,9 +91,9 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
       <View style={styles.container}>
         <View style={styles.successCard}>
           <Check size={48} color="#10B981" />
-          <Text style={styles.successTitle}>You're subscribed!</Text>
+          <Text style={styles.successTitle}>{t('paywall.subscribed')}</Text>
           <Text style={styles.successText}>
-            Thank you for supporting Echoes. Enjoy full access to all features.
+            {t('paywall.thankYou')}
           </Text>
           {onClose && (
             <TouchableOpacity 
@@ -99,7 +101,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
               onPress={onClose}
               data-testid="button-close-paywall"
             >
-              <Text style={styles.closeButtonText}>Continue</Text>
+              <Text style={styles.closeButtonText}>{t('common.continue')}</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -115,17 +117,17 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
       <View style={styles.container}>
         <View style={styles.header}>
           <Sparkles size={32} color="#F59E0B" />
-          <Text style={styles.title}>Unlock Echoes</Text>
+          <Text style={styles.title}>{t('paywall.unlock')}</Text>
           <Text style={styles.subtitle}>
-            Get full access to cosmic wisdom, planetary insights, and personalized echoes.
+            {t('paywall.subtitle')}
           </Text>
         </View>
 
         <View style={styles.features}>
-          <FeatureItem text="Unlimited daily echoes" />
-          <FeatureItem text="Full planetary field analysis" />
-          <FeatureItem text="Cultural calendar insights" />
-          <FeatureItem text="Personalized content" />
+          <FeatureItem text={t('paywall.features.unlimited')} />
+          <FeatureItem text={t('paywall.features.planetary')} />
+          <FeatureItem text={t('paywall.features.cultural')} />
+          <FeatureItem text={t('paywall.features.personalized')} />
         </View>
 
         {error && (
@@ -146,17 +148,17 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
             data-testid="button-purchase-yearly"
           >
             <View style={styles.planBadge}>
-              <Text style={styles.planBadgeText}>Best Value</Text>
+              <Text style={styles.planBadgeText}>{t('paywall.bestValue')}</Text>
             </View>
-            <Text style={styles.planTitle}>Yearly</Text>
+            <Text style={styles.planTitle}>{t('paywall.yearly')}</Text>
             <Text style={styles.planPrice}>{yearlyPrice}</Text>
-            <Text style={styles.planPeriod}>per year</Text>
-            <Text style={styles.planSavings}>~2 months free</Text>
+            <Text style={styles.planPeriod}>{t('paywall.perYear')}</Text>
+            <Text style={styles.planSavings}>{t('paywall.monthsFree')}</Text>
             {purchasing === 'yearly' ? (
               <ActivityIndicator color="#FFFFFF" style={styles.planLoader} />
             ) : (
               <Text style={styles.planCta}>
-                {HAS_TRIAL_OFFER ? `Start ${TRIAL_DAYS}-day free trial` : 'Subscribe'}
+                {HAS_TRIAL_OFFER ? t('paywall.startTrial', { days: TRIAL_DAYS }) : t('paywall.subscribe')}
               </Text>
             )}
           </TouchableOpacity>
@@ -170,14 +172,14 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
             disabled={purchasing !== null || isLoading}
             data-testid="button-purchase-monthly"
           >
-            <Text style={styles.planTitle}>Monthly</Text>
+            <Text style={styles.planTitle}>{t('paywall.monthly')}</Text>
             <Text style={styles.planPrice}>{monthlyPrice}</Text>
-            <Text style={styles.planPeriod}>per month</Text>
+            <Text style={styles.planPeriod}>{t('paywall.perMonth')}</Text>
             {purchasing === 'monthly' ? (
               <ActivityIndicator color="#FFFFFF" style={styles.planLoader} />
             ) : (
               <Text style={styles.planCta}>
-                {HAS_TRIAL_OFFER ? `Start ${TRIAL_DAYS}-day free trial` : 'Subscribe'}
+                {HAS_TRIAL_OFFER ? t('paywall.startTrial', { days: TRIAL_DAYS }) : t('paywall.subscribe')}
               </Text>
             )}
           </TouchableOpacity>
@@ -185,8 +187,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
 
         {HAS_TRIAL_OFFER && (
           <Text style={styles.trialNote}>
-            {TRIAL_DAYS}-day free trial, then {monthlyPrice}/month or {yearlyPrice}/year.{'\n'}
-            Cancel anytime. Payment charged to {Platform.OS === 'ios' ? 'Apple ID' : 'Google account'} after trial.
+            {t('paywall.trialNote', { days: TRIAL_DAYS, monthlyPrice, yearlyPrice })}
           </Text>
         )}
 
@@ -201,22 +202,22 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
           ) : (
             <>
               <RotateCcw size={16} color="#9CA3AF" />
-              <Text style={styles.restoreText}>Restore Purchases</Text>
+              <Text style={styles.restoreText}>{t('paywall.restorePurchases')}</Text>
             </>
           )}
         </TouchableOpacity>
 
         <Text style={styles.restoreNote}>
-          Already subscribed? Use Restore Purchases if you're on a new device or reinstalled the app.
+          {t('paywall.restoreNote')}
         </Text>
 
         <View style={styles.legalLinks}>
           <TouchableOpacity onPress={handleOpenTerms} data-testid="link-terms">
-            <Text style={styles.legalLink}>Terms of Service</Text>
+            <Text style={styles.legalLink}>{t('paywall.termsOfService')}</Text>
           </TouchableOpacity>
           <Text style={styles.legalDivider}>·</Text>
           <TouchableOpacity onPress={handleOpenPrivacy} data-testid="link-privacy">
-            <Text style={styles.legalLink}>Privacy Policy</Text>
+            <Text style={styles.legalLink}>{t('paywall.privacyPolicy')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -226,7 +227,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
             onPress={onClose}
             data-testid="button-skip-paywall"
           >
-            <Text style={styles.skipText}>Maybe later</Text>
+            <Text style={styles.skipText}>{t('paywall.maybeLater')}</Text>
           </TouchableOpacity>
         )}
       </View>
