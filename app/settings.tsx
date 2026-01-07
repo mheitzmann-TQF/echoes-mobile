@@ -1,9 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal, Image, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal, Image, Linking, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState } from 'react';
-import { MapPin, Clock, ChevronRight, Check } from 'lucide-react-native';
+import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown } from 'lucide-react-native';
 import { useTheme } from '../lib/ThemeContext';
+import { useEntitlement } from '@/lib/iap/useEntitlement';
+import Paywall from '@/components/Paywall';
 
 const THEMES = ['Dark', 'Light'];
 
@@ -25,6 +27,9 @@ export default function SettingsScreen() {
   const [manualInput, setManualInput] = useState(locationName);
   const [showManualInput, setShowManualInput] = useState(false);
   const [showThemeModal, setShowThemeModal] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  
+  const { isPro, isLoading: entitlementLoading, expiresAt, restorePurchasesAction } = useEntitlement();
 
   const handleSetLocation = () => {
     if (manualInput.trim()) {
@@ -172,6 +177,63 @@ export default function SettingsScreen() {
               </TouchableOpacity>
             </View>
           </View>
+        </Modal>
+
+        {/* Subscription Section */}
+        <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>Subscription</Text>
+          
+          {isPro ? (
+            <View style={styles.subscriptionCard}>
+              <View style={styles.subscriptionHeader}>
+                <Crown size={20} color="#F59E0B" />
+                <Text style={[styles.subscriptionTitle, { color: colors.text }]}>Echoes Pro</Text>
+              </View>
+              <Text style={[styles.subscriptionStatus, { color: colors.textSecondary }]}>
+                {expiresAt 
+                  ? `Active until ${new Date(expiresAt).toLocaleDateString()}` 
+                  : 'Active subscription'}
+              </Text>
+              <TouchableOpacity
+                style={[styles.manageButton, { backgroundColor: colors.surfaceHighlight }]}
+                onPress={() => {
+                  if (Platform.OS === 'ios') {
+                    Linking.openURL('https://apps.apple.com/account/subscriptions');
+                  } else {
+                    Linking.openURL('https://play.google.com/store/account/subscriptions');
+                  }
+                }}
+                data-testid="button-manage-subscription"
+              >
+                <Text style={[styles.manageButtonText, { color: colors.accent }]}>Manage Subscription</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.subscriptionCard}>
+              <View style={styles.subscriptionHeader}>
+                <Sparkles size={20} color={colors.textSecondary} />
+                <Text style={[styles.subscriptionTitle, { color: colors.text }]}>Free</Text>
+              </View>
+              <Text style={[styles.subscriptionStatus, { color: colors.textSecondary }]}>
+                Unlock full access to cosmic wisdom
+              </Text>
+              <TouchableOpacity
+                style={[styles.upgradeButton, { backgroundColor: colors.accent }]}
+                onPress={() => setShowPaywall(true)}
+                data-testid="button-upgrade"
+              >
+                <Text style={styles.upgradeButtonText}>Upgrade to Pro</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+
+        {/* Paywall Modal */}
+        <Modal visible={showPaywall} animationType="slide" presentationStyle="pageSheet">
+          <Paywall 
+            onClose={() => setShowPaywall(false)}
+            onSubscribed={() => setShowPaywall(false)}
+          />
         </Modal>
 
         {/* Privacy Section */}
@@ -399,5 +461,43 @@ const styles = StyleSheet.create({
   },
   versionText: {
     fontSize: 11,
+  },
+  // Subscription Styles
+  subscriptionCard: {
+    gap: 8,
+  },
+  subscriptionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  subscriptionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  subscriptionStatus: {
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  manageButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  manageButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  upgradeButton: {
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  upgradeButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
