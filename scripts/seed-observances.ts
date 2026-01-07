@@ -322,8 +322,32 @@ function generateObservances(startYear: number, endYear: number): ObservanceEntr
     const eidAlFitr = getEidAlFitr(year);
     const passover = getPassover(year);
     const vesak = getVesak(year);
+    
+    // Mardi Gras is 47 days before Easter
+    const mardiGras = new Date(easter);
+    mardiGras.setDate(mardiGras.getDate() - 47);
+    
+    // Ash Wednesday is 46 days before Easter (day after Mardi Gras)
+    const ashWednesday = new Date(easter);
+    ashWednesday.setDate(ashWednesday.getDate() - 46);
 
     observances.push(
+      {
+        date: formatDate(mardiGras),
+        name: 'Mardi Gras',
+        tradition: 'Christian/Cultural',
+        region: 'New Orleans, Brazil, Caribbean, Europe',
+        description: 'Fat Tuesday celebration before the fasting season of Lent, known for parades and festivities.',
+        category: 'cultural',
+      },
+      {
+        date: formatDate(ashWednesday),
+        name: 'Ash Wednesday',
+        tradition: 'Christian',
+        region: 'Global (Catholic, Anglican, Lutheran, Methodist)',
+        description: 'First day of Lent, marking the beginning of 40 days of fasting and penance before Easter.',
+        category: 'religious',
+      },
       {
         date: formatDate(easter),
         name: 'Easter Sunday',
