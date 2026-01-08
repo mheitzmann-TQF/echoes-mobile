@@ -219,7 +219,12 @@
     "civil": "Civil",
     "sacred": "Sagrado",
     "lunisolar": "Lunissolar",
-    "lunar": "Lunar"
+    "lunar": "Lunar",
+    "significance": "Significado",
+    "energy": "Energia",
+    "phase": "Fase",
+    "element": "Elemento",
+    "gregorianSignificance": "Calendário civil padrão usado mundialmente para comércio e vida diária"
   },
   "upcoming": {
     "title": "Próximo",

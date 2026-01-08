@@ -353,15 +353,40 @@ export default function HomeScreen() {
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
+  const [rawCalendars, setRawCalendars] = useState<any[]>([]);
   const [dailyPhoto, setDailyPhoto] = useState<DailyPhotoData | null>(null);
   const [observances, setObservances] = useState<Observance[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedCalendar, setSelectedCalendar] = useState<any | null>(null);
+  const [calendarModalVisible, setCalendarModalVisible] = useState(false);
 
-  const handleCalendarSelect = useCallback(() => {
-    router.push('/learn');
-  }, [router]);
+  const handleCalendarSelect = useCallback((calendar: any) => {
+    const rawCal = rawCalendars.find((c: any) => {
+      const sys = (c.system || '').toLowerCase();
+      if (calendar.id === 'mayan' && (sys.includes('maya') || sys.includes('tzolkin'))) return true;
+      if (calendar.id === 'chinese' && (sys.includes('chin') || sys.includes('agricol'))) return true;
+      if (calendar.id === 'hindu' && (sys.includes('hindu') || sys.includes('panchang'))) return true;
+      if (calendar.id === 'islamic' && (sys.includes('islam') || sys.includes('hijri'))) return true;
+      if (calendar.id === 'hebrew' && (sys.includes('hebrew') || sys.includes('hébr'))) return true;
+      return false;
+    });
+    
+    const calendarDetail = rawCal ? {
+      ...calendar,
+      significance: rawCal.significance,
+      energy: rawCal.energy,
+      phase: rawCal.phase,
+      element: rawCal.element,
+    } : {
+      ...calendar,
+      significance: calendar.id === 'gregorian' ? t('calendars.gregorianSignificance') : null,
+    };
+    
+    setSelectedCalendar(calendarDetail);
+    setCalendarModalVisible(true);
+  }, [rawCalendars, t]);
 
   // Default mock data for fallbacks
   const getMockPlanetaryData = (): PlanetaryData => ({
@@ -551,6 +576,7 @@ export default function HomeScreen() {
 
       // Process Calendars
       if (calendarsData && Array.isArray(calendarsData)) {
+        setRawCalendars(calendarsData);
         const formattedCalendars = [
           { id: 'gregorian', name: t('learn.gregorian'), date: format(new Date(), 'd MMM yy', { locale: getDateLocale() }), type: t('calendars.civil') },
         ];
@@ -597,6 +623,7 @@ export default function HomeScreen() {
         
         setCalendars(formattedCalendars);
       } else {
+        setRawCalendars([]);
         setCalendars(getMockCalendars());
       }
 
@@ -604,6 +631,7 @@ export default function HomeScreen() {
       console.error('Failed to fetch data:', error);
       setPlanetary(getMockPlanetaryData());
       setEchoes(getMockEchoes());
+      setRawCalendars([]);
       setCalendars(getMockCalendars());
       
       // Still try to fetch photo independently
@@ -693,6 +721,73 @@ export default function HomeScreen() {
           />
 
         </ScrollView>
+
+        {/* Calendar Detail Modal */}
+        <Modal
+          visible={calendarModalVisible}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setCalendarModalVisible(false)}
+        >
+          <TouchableOpacity 
+            style={styles.modalOverlay} 
+            activeOpacity={1}
+            onPress={() => setCalendarModalVisible(false)}
+          >
+            <TouchableOpacity 
+              activeOpacity={1} 
+              style={[styles.modalContent, { backgroundColor: colors.surface }]}
+              onPress={(e) => e.stopPropagation()}
+            >
+              {selectedCalendar && (
+                <>
+                  <View style={styles.modalHeader}>
+                    <Text style={[styles.modalTitle, { color: colors.text }]}>{selectedCalendar.name}</Text>
+                    <Text style={[styles.modalDate, { color: colors.accent }]}>{selectedCalendar.date}</Text>
+                    <View style={[styles.modalTypeChip, { backgroundColor: colors.surfaceHighlight }]}>
+                      <Text style={[styles.modalTypeText, { color: colors.textSecondary }]}>{selectedCalendar.type}</Text>
+                    </View>
+                  </View>
+                  
+                  {selectedCalendar.significance && (
+                    <View style={styles.modalSection}>
+                      <Text style={[styles.modalLabel, { color: colors.textSecondary }]}>{t('calendars.significance')}</Text>
+                      <Text style={[styles.modalValue, { color: colors.text }]}>{selectedCalendar.significance}</Text>
+                    </View>
+                  )}
+                  
+                  {selectedCalendar.energy && (
+                    <View style={styles.modalSection}>
+                      <Text style={[styles.modalLabel, { color: colors.textSecondary }]}>{t('calendars.energy')}</Text>
+                      <Text style={[styles.modalValue, { color: colors.text }]}>{selectedCalendar.energy}</Text>
+                    </View>
+                  )}
+                  
+                  {selectedCalendar.phase && (
+                    <View style={styles.modalSection}>
+                      <Text style={[styles.modalLabel, { color: colors.textSecondary }]}>{t('calendars.phase')}</Text>
+                      <Text style={[styles.modalValue, { color: colors.text }]}>{selectedCalendar.phase}</Text>
+                    </View>
+                  )}
+                  
+                  {selectedCalendar.element && (
+                    <View style={styles.modalSection}>
+                      <Text style={[styles.modalLabel, { color: colors.textSecondary }]}>{t('calendars.element')}</Text>
+                      <Text style={[styles.modalValue, { color: colors.text }]}>{selectedCalendar.element}</Text>
+                    </View>
+                  )}
+                  
+                  <TouchableOpacity 
+                    style={[styles.modalCloseButton, { backgroundColor: colors.surfaceHighlight }]}
+                    onPress={() => setCalendarModalVisible(false)}
+                  >
+                    <Text style={[styles.modalCloseText, { color: colors.text }]}>{t('common.close')}</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </Modal>
       </SafeAreaView>
     </GestureHandlerRootView>
   );
@@ -709,5 +804,67 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 80,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    width: '100%',
+    maxWidth: 340,
+    borderRadius: 20,
+    padding: 24,
+  },
+  modalHeader: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  modalDate: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  modalTypeChip: {
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  modalTypeText: {
+    fontSize: 12,
+    fontWeight: '500',
+    textTransform: 'capitalize',
+  },
+  modalSection: {
+    marginBottom: 16,
+  },
+  modalLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
+  modalValue: {
+    fontSize: 15,
+    lineHeight: 22,
+  },
+  modalCloseButton: {
+    marginTop: 8,
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  modalCloseText: {
+    fontSize: 15,
+    fontWeight: '600',
   },
 });

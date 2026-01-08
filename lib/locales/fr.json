@@ -344,7 +344,12 @@
     "civil": "Civil",
     "sacred": "Sacré",
     "lunisolar": "Luni-solaire",
-    "lunar": "Lunaire"
+    "lunar": "Lunaire",
+    "significance": "Signification",
+    "energy": "Énergie",
+    "phase": "Phase",
+    "element": "Élément",
+    "gregorianSignificance": "Calendrier civil standard utilisé mondialement pour le commerce et la vie quotidienne"
   },
   "upcoming": {
     "title": "À Venir",

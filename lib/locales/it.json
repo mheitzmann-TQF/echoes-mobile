@@ -305,7 +305,12 @@
     "civil": "Civile",
     "sacred": "Sacro",
     "lunisolar": "Lunisolare",
-    "lunar": "Lunare"
+    "lunar": "Lunare",
+    "significance": "Significato",
+    "energy": "Energia",
+    "phase": "Fase",
+    "element": "Elemento",
+    "gregorianSignificance": "Calendario civile standard utilizzato in tutto il mondo per commercio e vita quotidiana"
   },
   "upcoming": {
     "title": "In Arrivo",

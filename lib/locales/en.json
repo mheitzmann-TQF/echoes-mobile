@@ -344,7 +344,12 @@
     "civil": "Civil",
     "sacred": "Sacred",
     "lunisolar": "Lunisolar",
-    "lunar": "Lunar"
+    "lunar": "Lunar",
+    "significance": "Significance",
+    "energy": "Energy",
+    "phase": "Phase",
+    "element": "Element",
+    "gregorianSignificance": "Standard civil calendar used worldwide for commerce and daily life"
   },
   "upcoming": {
     "title": "Upcoming",
