@@ -290,7 +290,7 @@ export default function WisdomScreen() {
               <View style={[styles.contentCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                 {plantMedicine.map((plant, idx) => {
                   const harvestText = plant.harvestTiming 
-                    ? Object.entries(plant.harvestTiming).map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`).join('\n')
+                    ? Object.entries(plant.harvestTiming).map(([k, v]) => `${k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}: ${v}`).join('\n')
                     : null;
                   const spiritualText = plant.spiritualProperties
                     ? Object.entries(plant.spiritualProperties).map(([k, v]) => `${k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}: ${v}`).join('\n')
