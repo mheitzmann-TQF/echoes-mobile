@@ -170,5 +170,99 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/proxy/planetary/optimal-timing", async (req, res) => {
+    try {
+      const { lat, lng, tz, lang } = req.query;
+      let url = `${TQF_BASE_URL}/api/planetary/optimal-timing?tz=${tz || "UTC"}&lang=${lang || "en"}`;
+      if (lat && lng) url += `&lat=${lat}&lng=${lng}`;
+      const response = await fetch(url, {
+        headers: { "x-api-key": TQF_API_KEY },
+      });
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch optimal timing" });
+    }
+  });
+
+  app.get("/api/proxy/sacred-geography/sites", async (req, res) => {
+    try {
+      const { lang, limit } = req.query;
+      const response = await fetch(
+        `${TQF_BASE_URL}/api/sacred-geography/sites?lang=${lang || "en"}&limit=${limit || 20}`,
+        {
+          headers: { "x-api-key": TQF_API_KEY },
+        }
+      );
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch sacred sites" });
+    }
+  });
+
+  app.get("/api/proxy/sacred-geography/ceremonial-timings", async (req, res) => {
+    try {
+      const { lang } = req.query;
+      const response = await fetch(
+        `${TQF_BASE_URL}/api/sacred-geography/ceremonial-timings?lang=${lang || "en"}`,
+        {
+          headers: { "x-api-key": TQF_API_KEY },
+        }
+      );
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch ceremonial timings" });
+    }
+  });
+
+  app.get("/api/proxy/sacred-geography/oral-traditions", async (req, res) => {
+    try {
+      const { lang, category } = req.query;
+      let url = `${TQF_BASE_URL}/api/sacred-geography/oral-traditions?lang=${lang || "en"}`;
+      if (category) url += `&category=${category}`;
+      const response = await fetch(url, {
+        headers: { "x-api-key": TQF_API_KEY },
+      });
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch oral traditions" });
+    }
+  });
+
+  app.get("/api/proxy/sacred-geography/weather-prophecies", async (req, res) => {
+    try {
+      const { lang } = req.query;
+      const response = await fetch(
+        `${TQF_BASE_URL}/api/sacred-geography/weather-prophecies?lang=${lang || "en"}`,
+        {
+          headers: { "x-api-key": TQF_API_KEY },
+        }
+      );
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch weather prophecies" });
+    }
+  });
+
+  app.get("/api/proxy/sacred-geography/plant-medicine-timing", async (req, res) => {
+    try {
+      const { lang } = req.query;
+      const response = await fetch(
+        `${TQF_BASE_URL}/api/sacred-geography/plant-medicine-timing?lang=${lang || "en"}`,
+        {
+          headers: { "x-api-key": TQF_API_KEY },
+        }
+      );
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch plant medicine timing" });
+    }
+  });
+
   return httpServer;
 }

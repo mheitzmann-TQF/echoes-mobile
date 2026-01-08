@@ -18,19 +18,20 @@ function TodayIcon({ color }: { color: string }) {
   );
 }
 
-function FieldIcon({ color }: { color: string }) {
+function PulseIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
-      <Path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
     </Svg>
   );
 }
 
-function LearnIcon({ color }: { color: string }) {
+function WisdomIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
-      <Path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-      <Path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <Circle cx={12} cy={12} r={10} stroke={color} strokeWidth={2} />
+      <Path d="M12 16v-4" stroke={color} strokeWidth={2} strokeLinecap="round" />
+      <Circle cx={12} cy={8} r={1} fill={color} />
     </Svg>
   );
 }
@@ -129,17 +130,17 @@ function TabsNavigator() {
           }}
         />
         <Tabs.Screen
-          name="field"
+          name="pulse"
           options={{
-            title: t('tabs.field'),
-            tabBarIcon: ({ color }) => <FieldIcon color={color} />,
+            title: t('tabs.pulse'),
+            tabBarIcon: ({ color }) => <PulseIcon color={color} />,
           }}
         />
         <Tabs.Screen
-          name="learn"
+          name="wisdom"
           options={{
-            title: t('tabs.learn'),
-            tabBarIcon: ({ color }) => <LearnIcon color={color} />,
+            title: t('tabs.wisdom'),
+            tabBarIcon: ({ color }) => <WisdomIcon color={color} />,
           }}
         />
         <Tabs.Screen
