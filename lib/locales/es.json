@@ -29,7 +29,15 @@
     "noEchoes": "No hay ecos disponibles",
     "swipeForMore": "Desliza para ver más",
     "moment": "MOMENT",
-    "photoBy": "Foto por"
+    "photoBy": "Foto por",
+    "echoes": "Ecos",
+    "allEchoesReceived": "Todos los ecos recibidos por hoy.",
+    "lunarWisdom": "Sabiduría Lunar",
+    "solarRhythm": "Ritmo Solar",
+    "globalPulseTag": "Pulso Global",
+    "culturalEcho": "Eco Cultural",
+    "ancestralVoice": "Voz Ancestral",
+    "echo": "Eco"
   },
   "field": {
     "title": "Campo",

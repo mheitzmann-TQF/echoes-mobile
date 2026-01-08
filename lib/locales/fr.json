@@ -38,7 +38,15 @@
     "calendarConfluence": "Confluence des Calendriers",
     "morningLight": "Lumière du Matin",
     "afternoonLight": "Lumière de l'Après-midi",
-    "ancestralThread": "Fil Ancestral"
+    "ancestralThread": "Fil Ancestral",
+    "echoes": "Échos",
+    "allEchoesReceived": "Tous les échos reçus pour aujourd'hui.",
+    "lunarWisdom": "Sagesse Lunaire",
+    "solarRhythm": "Rythme Solaire",
+    "globalPulseTag": "Pouls Global",
+    "culturalEcho": "Écho Culturel",
+    "ancestralVoice": "Voix Ancestrale",
+    "echo": "Écho"
   },
   "field": {
     "title": "Champ",

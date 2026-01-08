@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import EchoCard from './EchoCard';
 import { Echo } from '../lib/api';
 import { useTheme } from '../lib/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface EchoStackProps {
   echoes: Echo[];
@@ -14,12 +15,13 @@ interface EchoStackProps {
 
 export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRight, selectedMetric }: EchoStackProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   // Always show all echoes - no filtering
   const visibleEchoes = echoes.slice(currentIndex, currentIndex + 3);
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.label, { color: colors.text }]}>Echoes</Text>
+      <Text style={[styles.label, { color: colors.text }]}>{t('today.echoes')}</Text>
       
       <View style={styles.stackContainer}>
         {visibleEchoes.length > 0 ? (
@@ -35,7 +37,7 @@ export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRi
           ))
         ) : (
           <View style={[styles.emptyState, { backgroundColor: colors.surface }]}>
-            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>All echoes received for today.</Text>
+            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>{t('today.allEchoesReceived')}</Text>
           </View>
         )}
       </View>

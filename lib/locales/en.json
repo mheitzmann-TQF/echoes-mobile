@@ -38,7 +38,15 @@
     "calendarConfluence": "Calendar Confluence",
     "morningLight": "Morning Light",
     "afternoonLight": "Afternoon Light",
-    "ancestralThread": "Ancestral Thread"
+    "ancestralThread": "Ancestral Thread",
+    "echoes": "Echoes",
+    "allEchoesReceived": "All echoes received for today.",
+    "lunarWisdom": "Lunar Wisdom",
+    "solarRhythm": "Solar Rhythm",
+    "globalPulseTag": "Global Pulse",
+    "culturalEcho": "Cultural Echo",
+    "ancestralVoice": "Ancestral Voice",
+    "echo": "Echo"
   },
   "field": {
     "title": "Field",

@@ -13,6 +13,7 @@ import { Svg, Path, Circle } from 'react-native-svg';
 import { useTheme } from '../lib/ThemeContext';
 import { X, Moon, Sun, Globe, Drama, Leaf, Sparkles } from 'lucide-react-native';
 import { DEBUG_GESTURES } from '../lib/debug';
+import { useTranslation } from 'react-i18next';
 
 const gestureDebug = (...args: any[]) => {
   console.log('[GESTURE]', ...args);
@@ -89,20 +90,20 @@ const getTypeIcon = (type: string, color: string): React.ReactNode => {
   }
 };
 
-const getTypeLabel = (type: string): string => {
+const getTypeLabelKey = (type: string): string => {
   switch (type) {
     case 'lunar_guidance':
-      return 'Lunar Wisdom';
+      return 'today.lunarWisdom';
     case 'solar_rhythm':
-      return 'Solar Rhythm';
+      return 'today.solarRhythm';
     case 'global_consciousness':
-      return 'Global Pulse';
+      return 'today.globalPulseTag';
     case 'cultural_rhythms':
-      return 'Cultural Echo';
+      return 'today.culturalEcho';
     case 'ancestral_echo':
-      return 'Ancestral Voice';
+      return 'today.ancestralVoice';
     default:
-      return 'Echo';
+      return 'today.echo';
   }
 };
 
@@ -126,6 +127,7 @@ export default function EchoCard({
   onSwipeRight,
 }: EchoCardProps) {
   const { colors, theme } = useTheme();
+  const { t } = useTranslation();
   const translateX = useSharedValue(0);
   const updateCount = useSharedValue(0);
   const isActive = index === 0;
@@ -259,7 +261,7 @@ export default function EchoCard({
           <View style={styles.content}>
             <View style={[styles.typeBadge, { backgroundColor: colors.surfaceHighlight }]}>
               <View style={styles.typeIcon}>{getTypeIcon(echo.type, colors.text)}</View>
-              <Text style={[styles.typeLabel, { color: colors.text }]}>{getTypeLabel(echo.type)}</Text>
+              <Text style={[styles.typeLabel, { color: colors.text }]}>{t(getTypeLabelKey(echo.type))}</Text>
             </View>
 
             <View style={styles.messageContainer}>

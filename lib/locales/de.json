@@ -29,7 +29,15 @@
     "noEchoes": "Keine Echos verfügbar",
     "swipeForMore": "Wischen für mehr",
     "moment": "MOMENT",
-    "photoBy": "Foto von"
+    "photoBy": "Foto von",
+    "echoes": "Echos",
+    "allEchoesReceived": "Alle Echos für heute empfangen.",
+    "lunarWisdom": "Mondweisheit",
+    "solarRhythm": "Sonnenrhythmus",
+    "globalPulseTag": "Globaler Puls",
+    "culturalEcho": "Kulturelles Echo",
+    "ancestralVoice": "Ahnenstimme",
+    "echo": "Echo"
   },
   "field": {
     "title": "Feld",
