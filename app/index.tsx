@@ -117,7 +117,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
             </TouchableOpacity>
             {isUnsplashPhoto && (
               <>
-                <Text style={[photoStyles.credit, { color: colors.textTertiary }]}> on </Text>
+                <Text style={[photoStyles.credit, { color: colors.textTertiary }]}> {t('today.on')} </Text>
                 <TouchableOpacity onPress={handleUnsplashPress}>
                   <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
                     Unsplash
