@@ -776,7 +776,7 @@ export default function FieldScreen() {
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.context')}</Text>
-                {(bioRhythms?.circadian?.recommendations || generateCircadianObservations(circadianPhase, t)).slice(0, 3).map((obs: string, i: number) => (
+                {generateCircadianObservations(circadianPhase, t).slice(0, 3).map((obs: string, i: number) => (
                   <View key={i} style={styles.bulletRow}>
                     <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>
                     <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{obs}</Text>
