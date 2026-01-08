@@ -9,6 +9,21 @@ import { toTitleCase } from '../lib/labelize';
 import { getApiLang } from '../lib/lang';
 import { useTranslation } from 'react-i18next';
 
+// Map API moon phase values to translation keys
+const getMoonPhaseKey = (phase: string): string => {
+  const phaseMap: Record<string, string> = {
+    'waning_gibbous': 'waningGibbous',
+    'waxing_gibbous': 'waxingGibbous',
+    'full_moon': 'fullMoon',
+    'new_moon': 'newMoon',
+    'first_quarter': 'firstQuarter',
+    'last_quarter': 'lastQuarter',
+    'waning_crescent': 'waningCrescent',
+    'waxing_crescent': 'waxingCrescent',
+  };
+  return phaseMap[phase.toLowerCase()] || 'waningGibbous';
+};
+
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -542,7 +557,7 @@ export default function FieldScreen() {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={[styles.headerTitle, { color: colors.text }]}>{t('field.title')}</Text>
         <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{t('field.subtitle')}</Text>
-        <Text style={[styles.headerSubtext, { color: colors.textTertiary }]}>How today’s signal is shaped</Text>
+        <Text style={[styles.headerSubtext, { color: colors.textTertiary }]}>{t('field.howSignalShaped')}</Text>
 
         <StickyHeader 
           coherence={consciousnessData?.global_coherence || 0}
@@ -557,7 +572,7 @@ export default function FieldScreen() {
           <ExpandableCard
             icon={<Moon size={20} color={colors.text} />}
             title={t('field.lunar')}
-            message={toTitleCase(lunarPhase)}
+            message={t(`field.${getMoonPhaseKey(lunarPhase)}`)}
             collapsedDetail={`${Math.round(ctx?.lunar?.illumination || 0)}%`}
             isExpanded={expandedCards['lunar']}
             onToggle={() => toggleCard('lunar')}
@@ -565,8 +580,8 @@ export default function FieldScreen() {
             howToRead={['Phase cycles new → waxing → full → waning over ~29.5 days', 'Illumination shows percentage of visible surface', 'Combined with other signals to shape daily echoes']}
             expandedContent={
               <View style={styles.expandedDetails}>
-                <Text style={[styles.expandedValue, { color: colors.text }]}>{toTitleCase(lunarPhase)}</Text>
-                <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% Illuminated</Text>
+                <Text style={[styles.expandedValue, { color: colors.text }]}>{t(`field.${getMoonPhaseKey(lunarPhase)}`)}</Text>
+                <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% {t('field.illuminated')}</Text>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
                   The moon's visible portion reflects gravitational position. Waxing phases indicate increasing illumination toward full moon; waning indicates decrease toward new moon.
                 </Text>

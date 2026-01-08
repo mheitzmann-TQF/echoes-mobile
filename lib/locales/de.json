@@ -85,7 +85,16 @@
     "elevatedFieldActivity": "Erhöhte Feldaktivität.",
     "quietField": "Das geomagnetische Feld ist ruhig.",
     "stormyField": "Starke Sturmbedingungen.",
-    "peakAlertness": "Höchste Wachsamkeit"
+    "peakAlertness": "Höchste Wachsamkeit",
+    "variable": "Variabel",
+    "building": "Aufbauend",
+    "brightening": "Aufhellend",
+    "resting": "Ruhend",
+    "collectiveToneVariable": "Der kollektive Ton ist variabel.",
+    "checkingCollectivePulse": "Kollektiven Puls prüfen...",
+    "readingNotes": "Lesehinweise",
+    "usedInEchoes": "In Echos verwendet",
+    "illuminated": "Beleuchtet"
   },
   "learn": {
     "title": "Lernen",

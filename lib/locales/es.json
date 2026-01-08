@@ -85,7 +85,16 @@
     "elevatedFieldActivity": "Actividad elevada del campo.",
     "quietField": "El campo geomagnético está tranquilo.",
     "stormyField": "Condiciones de tormenta intensa.",
-    "peakAlertness": "Alerta Máxima"
+    "peakAlertness": "Alerta Máxima",
+    "variable": "Variable",
+    "building": "En construcción",
+    "brightening": "Iluminando",
+    "resting": "Descansando",
+    "collectiveToneVariable": "El tono colectivo es variable.",
+    "checkingCollectivePulse": "Verificando el pulso colectivo...",
+    "readingNotes": "Notas de lectura",
+    "usedInEchoes": "Usado en Ecos",
+    "illuminated": "Iluminado"
   },
   "learn": {
     "title": "Aprender",

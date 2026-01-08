@@ -102,7 +102,8 @@
     "collectiveToneVariable": "Collective tone is variable.",
     "checkingCollectivePulse": "Checking collective pulse...",
     "readingNotes": "Reading notes",
-    "usedInEchoes": "Used in Echoes"
+    "usedInEchoes": "Used in Echoes",
+    "illuminated": "Illuminated"
   },
   "learn": {
     "title": "Learn",

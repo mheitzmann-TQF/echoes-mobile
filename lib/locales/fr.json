@@ -102,7 +102,8 @@
     "collectiveToneVariable": "Le ton collectif est variable.",
     "checkingCollectivePulse": "Vérification du pouls collectif...",
     "readingNotes": "Notes de lecture",
-    "usedInEchoes": "Utilisé dans les Échos"
+    "usedInEchoes": "Utilisé dans les Échos",
+    "illuminated": "Illuminé"
   },
   "learn": {
     "title": "Apprendre",
