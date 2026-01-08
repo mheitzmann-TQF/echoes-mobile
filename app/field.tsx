@@ -201,7 +201,8 @@ function StickyHeader({ coherence, solarPhase, lunarPhase }: { coherence: number
 }
 
 export default function FieldScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
   const { coordinates, timezone } = useLocation();
   const { colors } = useTheme();
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
@@ -461,12 +462,27 @@ export default function FieldScreen() {
     return hours * 60 + minutes;
   };
   
+  // Helper to translate solar phase
+  const translateSolarPhase = (phase: string): string => {
+    const phaseMap: { [key: string]: string } = {
+      'night': 'night',
+      'dawn': 'morning',
+      'morning': 'morning',
+      'midday': 'midday',
+      'afternoon': 'afternoon',
+      'dusk': 'evening',
+      'evening': 'evening'
+    };
+    const key = phaseMap[phase.toLowerCase()] || 'midday';
+    return t(`field.${key}`);
+  };
+
   // Calculate actual solar phase based on current time vs sunrise/sunset
   const getSolarPhase = (): string => {
     // Prefer API-provided phase if available and meaningful
     const apiPhase = ctx?.solar?.phase || instant?.solar?.currentPhase;
     if (apiPhase && apiPhase.length > 0 && apiPhase !== 'Day') {
-      return apiPhase;
+      return translateSolarPhase(apiPhase);
     }
     
     const now = new Date();
@@ -488,19 +504,19 @@ export default function FieldScreen() {
     const middayEnd = 13 * 60;
     
     if (currentTime < dawnStart) {
-      return 'Night';
+      return t('field.night');
     } else if (currentTime < sunriseTime) {
-      return 'Dawn';
+      return t('field.morning');
     } else if (currentTime < middayStart) {
-      return 'Morning';
+      return t('field.morning');
     } else if (currentTime < middayEnd) {
-      return 'Midday';
+      return t('field.midday');
     } else if (currentTime < sunsetTime) {
-      return 'Afternoon';
+      return t('field.afternoon');
     } else if (currentTime < duskEnd) {
-      return 'Dusk';
+      return t('field.evening');
     } else {
-      return 'Night';
+      return t('field.night');
     }
   };
   
@@ -511,7 +527,7 @@ export default function FieldScreen() {
     // Get sunset from bundle or instant data
     const sunsetStr = (ctx?.solar as any)?.sunset || (instant?.solar as any)?.sunset;
     if (!sunsetStr) {
-      return { display: 'Sunset timing available when expanded', label: solarPhase };
+      return { display: t('field.sunsetIn') + ' --:--', label: solarPhase };
     }
     
     const now = new Date();
@@ -520,12 +536,17 @@ export default function FieldScreen() {
     const sunsetMin = sunsetMinutes % 60;
     const sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), sunsetHour, sunsetMin);
     
+    // Format time based on locale
+    const formatTime = (date: Date) => {
+      return date.toLocaleTimeString(language === 'en' ? 'en-US' : language, { hour: '2-digit', minute: '2-digit' });
+    };
+    
     if (sunsetDate < now) {
       // Sunset already passed, show tomorrow's sunset
       const tomorrow = new Date(sunsetDate);
       tomorrow.setDate(tomorrow.getDate() + 1);
       return { 
-        display: `Sunset tomorrow at ${tomorrow.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`,
+        display: `${t('field.sunsetAt')} ${formatTime(tomorrow)}`,
         label: solarPhase 
       };
     }
@@ -536,12 +557,12 @@ export default function FieldScreen() {
     
     if (hours < 24) {
       return { 
-        display: `Sunset in ${hours}h ${minutes}m`,
-        label: `${hours}h ${minutes}m remaining`
+        display: `${t('field.sunsetIn')} ${hours}h ${minutes}m`,
+        label: `${hours}h ${minutes}m`
       };
     } else {
       return { 
-        display: `Sunset at ${sunsetStr}`,
+        display: `${t('field.sunsetAt')} ${formatTime(sunsetDate)}`,
         label: solarPhase 
       };
     }
