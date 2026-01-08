@@ -293,42 +293,50 @@ export default function WisdomScreen() {
                   <Text style={[styles.oralSectionName, { color: colors.text }]}>{t('learn.plantWisdomTitle')}</Text>
                 </View>
                 
-                {plantMedicine.map((plant, idx) => (
+                {plantMedicine.map((plant, idx) => {
+                  const harvestText = plant.harvestTiming 
+                    ? Object.entries(plant.harvestTiming).map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`).join('\n')
+                    : null;
+                  const spiritualText = plant.spiritualProperties
+                    ? Object.entries(plant.spiritualProperties).map(([k, v]) => `${k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}: ${v}`).join('\n')
+                    : null;
+                  return (
                   <View key={idx} style={[styles.traditionCard, { borderColor: colors.border }]}>
                     <View style={styles.traditionHeader}>
                       <Star size={16} color="#27ae60" />
                       <View>
-                        <Text style={[styles.traditionName, { color: colors.text }]}>{plant.plantName || plant.name}</Text>
-                        <Text style={[styles.traditionCulture, { color: colors.textTertiary }]}>{formatCulture(plant.tradition || plant.culture || '')}</Text>
+                        <Text style={[styles.traditionName, { color: colors.text }]}>{plant.plantName}</Text>
+                        <Text style={[styles.traditionCulture, { color: colors.textTertiary }]}>{formatCulture(plant.culture || '')}</Text>
                       </View>
                     </View>
                     
-                    {plant.medicinePurpose && (
-                      <GuidanceCard title={t('learn.dailyGuidance')} content={plant.medicinePurpose} color="#27ae60" />
+                    {plant.ceremonyRole && (
+                      <GuidanceCard title={t('learn.dailyGuidance')} content={plant.ceremonyRole} color="#27ae60" />
                     )}
                     
-                    {plant.harvestTiming && (
+                    {harvestText && (
                       <View style={styles.relevanceSection}>
                         <Text style={[styles.relevanceLabel, { color: colors.textSecondary }]}>{t('learn.ceremonialTiming')}</Text>
-                        <Text style={[styles.relevanceText, { color: colors.textTertiary }]}>{plant.harvestTiming}</Text>
+                        <Text style={[styles.relevanceText, { color: colors.textTertiary }]}>{harvestText}</Text>
                       </View>
                     )}
                     
-                    {plant.spiritualSignificance && (
+                    {spiritualText && (
                       <View style={styles.relevanceSection}>
                         <Text style={[styles.relevanceLabel, { color: colors.textSecondary }]}>{t('learn.spiritualThemes')}</Text>
-                        <Text style={[styles.relevanceText, { color: colors.textTertiary }]}>{plant.spiritualSignificance}</Text>
+                        <Text style={[styles.relevanceText, { color: colors.textTertiary }]}>{spiritualText}</Text>
                       </View>
                     )}
                     
-                    {plant.modernApplication && (
+                    {plant.modernResearch && (
                       <View style={styles.relevanceSection}>
                         <Text style={[styles.relevanceLabel, { color: colors.textSecondary }]}>{t('learn.modernRelevance')}</Text>
-                        <Text style={[styles.relevanceText, { color: colors.textTertiary }]}>{plant.modernApplication}</Text>
+                        <Text style={[styles.relevanceText, { color: colors.textTertiary }]}>{plant.modernResearch}</Text>
                       </View>
                     )}
                   </View>
-                ))}
+                  );
+                })}
               </View>
             ) : (
               <View style={[styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
