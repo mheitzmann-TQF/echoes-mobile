@@ -170,39 +170,6 @@ function generateCircadianObservations(phase: string, t: (key: string) => string
   return [t('field.obsDefault1'), t('field.obsDefault2'), t('field.obsDefault3')];
 }
 
-function StickyHeader({ coherence, solarPhase, lunarPhase }: { coherence: number, solarPhase: string, lunarPhase: string }) {
-  const { colors } = useTheme();
-  const { t } = useTranslation();
-  // Derive states
-  const coherenceState = coherence > 60 ? t('field.stable') : (coherence < 40 ? t('field.variable') : t('field.building'));
-  const lightState = solarPhase.includes('Morning') || solarPhase.includes('Dawn') ? t('field.brightening') : 
-                     (solarPhase.includes('Night') || solarPhase.includes('Dusk') ? t('field.resting') : t('field.active'));
-  // Determine if moon is waxing (rising) or waning (falling) from phase name
-  const lowerPhase = lunarPhase.toLowerCase();
-  const isWaxing = lowerPhase.includes('waxing') || lowerPhase.includes('new') || lowerPhase.includes('crescent') && !lowerPhase.includes('waning');
-  const isWaning = lowerPhase.includes('waning') || lowerPhase.includes('full');
-  const moonState = isWaning ? t('field.falling') : t('field.rising');
-
-  return (
-    <View style={[styles.stickyHeader, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      <View style={styles.stickyItem}>
-        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>{t('field.coherence')}</Text>
-        <Text style={[styles.stickyValue, { color: colors.text }]}>{coherenceState}</Text>
-      </View>
-      <View style={[styles.stickyDivider, { backgroundColor: colors.border }]} />
-      <View style={styles.stickyItem}>
-        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>{t('field.light')}</Text>
-        <Text style={[styles.stickyValue, { color: colors.text }]}>{lightState}</Text>
-      </View>
-      <View style={[styles.stickyDivider, { backgroundColor: colors.border }]} />
-      <View style={styles.stickyItem}>
-        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>{t('field.moon')}</Text>
-        <Text style={[styles.stickyValue, { color: colors.text }]}>{moonState}</Text>
-      </View>
-    </View>
-  );
-}
-
 interface HeroTimingCardProps {
   optimalTiming: any;
   isExpanded: boolean;
@@ -777,12 +744,6 @@ export default function FieldScreen() {
         <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{t('field.subtitle')}</Text>
         <Text style={[styles.headerSubtext, { color: colors.textTertiary }]}>{t('field.howSignalShaped')}</Text>
 
-        <StickyHeader 
-          coherence={consciousnessData?.global_coherence || 0}
-          solarPhase={solarPhase}
-          lunarPhase={lunarPhase}
-        />
-
         {/* Hero Timing Card - Primary action-oriented content */}
         <HeroTimingCard
           optimalTiming={optimalTiming}
@@ -1007,31 +968,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 24,
     fontStyle: 'italic',
-  },
-  stickyHeader: {
-    flexDirection: 'row',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 32,
-    borderWidth: 1,
-  },
-  stickyItem: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  stickyLabel: {
-    fontSize: 10,
-    textTransform: 'uppercase',
-    marginBottom: 4,
-    letterSpacing: 0.5,
-  },
-  stickyValue: {
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  stickyDivider: {
-    width: 1,
-    marginHorizontal: 8,
   },
   section: {
     marginBottom: 32,
