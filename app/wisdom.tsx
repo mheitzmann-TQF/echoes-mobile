@@ -6,7 +6,7 @@ import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 import { cookieService } from '../lib/CookieService';
-import { Calendar, Eye, Sparkles, Moon, Clock, Star } from 'lucide-react-native';
+import { Calendar, MessageCircle, Sparkles, Moon, Clock, Star } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -278,7 +278,7 @@ export default function WisdomScreen() {
         {/* Oral Tradition Wisdom */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Eye size={20} color="#2ecc71" />
+            <MessageCircle size={20} color="#2ecc71" />
             <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('learn.oralTraditionWisdom')}</Text>
           </View>
           <Text style={[styles.sectionSubtitle, { color: colors.textSecondary }]}>{t('learn.oralTraditionDesc2')}</Text>
