@@ -272,7 +272,18 @@
     "seasonalPattern": "Rythme Saisonnier",
     "lightShift": "Changement de Lumière",
     "mayan": "Maya",
-    "hindu": "Hindou"
+    "hindu": "Hindou",
+    "todaysCookie": "Cookie du Jour",
+    "cookieFictionalDisclaimer": "Ceci est un contenu fictif créé pour la réflexion, pas comme guide.",
+    "sacredGeographyTitle": "Géographie Sacrée",
+    "sacredGeographyOrigin": "Traditions Mondiales",
+    "sacredGeographyDesc": "Lieux de signification spirituelle à travers les cultures, des montagnes sacrées aux sites cérémoniels.",
+    "oralTraditionTitle": "Tradition Orale",
+    "oralTraditionOrigin": "Sagesse Autochtone",
+    "oralTraditionDesc": "Histoires et enseignements transmis de génération en génération, porteurs de connaissances ancestrales.",
+    "seasonalRhythmsTitle": "Rythmes Saisonniers",
+    "seasonalRhythmsOrigin": "Cycles Terrestres",
+    "seasonalRhythmsDesc": "Cycles naturels de l'année, des solstices aux équinoxes, tels qu'observés à travers les traditions."
   },
   "calendars": {
     "civil": "Civil",

@@ -570,12 +570,12 @@ export default function LearnScreen() {
                 <Globe size={20} color="#3498db" />
               </View>
               <View style={styles.exploreContent}>
-                <Text style={[styles.exploreTitle, { color: colors.text }]}>Sacred Geography</Text>
-                <Text style={[styles.exploreOrigin, { color: colors.textSecondary }]}>Global Traditions</Text>
+                <Text style={[styles.exploreTitle, { color: colors.text }]}>{t('learn.sacredGeographyTitle')}</Text>
+                <Text style={[styles.exploreOrigin, { color: colors.textSecondary }]}>{t('learn.sacredGeographyOrigin')}</Text>
               </View>
             </View>
             <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>
-              Places of spiritual significance across cultures, from sacred mountains to ceremonial sites.
+              {t('learn.sacredGeographyDesc')}
             </Text>
           </View>
 
@@ -585,12 +585,12 @@ export default function LearnScreen() {
                 <BookOpen size={20} color="#9b59b6" />
               </View>
               <View style={styles.exploreContent}>
-                <Text style={[styles.exploreTitle, { color: colors.text }]}>Oral Tradition</Text>
-                <Text style={[styles.exploreOrigin, { color: colors.textSecondary }]}>Indigenous Wisdom</Text>
+                <Text style={[styles.exploreTitle, { color: colors.text }]}>{t('learn.oralTraditionTitle')}</Text>
+                <Text style={[styles.exploreOrigin, { color: colors.textSecondary }]}>{t('learn.oralTraditionOrigin')}</Text>
               </View>
             </View>
             <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>
-              Stories and teachings passed down through generations, carrying ancestral knowledge.
+              {t('learn.oralTraditionDesc')}
             </Text>
           </View>
 
@@ -600,12 +600,12 @@ export default function LearnScreen() {
                 <Leaf size={20} color="#2ecc71" />
               </View>
               <View style={styles.exploreContent}>
-                <Text style={[styles.exploreTitle, { color: colors.text }]}>Seasonal Rhythms</Text>
-                <Text style={[styles.exploreOrigin, { color: colors.textSecondary }]}>Earth Cycles</Text>
+                <Text style={[styles.exploreTitle, { color: colors.text }]}>{t('learn.seasonalRhythmsTitle')}</Text>
+                <Text style={[styles.exploreOrigin, { color: colors.textSecondary }]}>{t('learn.seasonalRhythmsOrigin')}</Text>
               </View>
             </View>
             <Text style={[styles.exploreDesc, { color: colors.textSecondary }]}>
-              Natural cycles of the year, from solstices to equinoxes, as observed across traditions.
+              {t('learn.seasonalRhythmsDesc')}
             </Text>
           </View>
         </View>
@@ -620,7 +620,7 @@ export default function LearnScreen() {
               <View style={[styles.cookieIcon, { backgroundColor: 'rgba(241, 196, 15, 0.15)' }]}>
                 <Sparkles size={20} color="#f1c40f" />
               </View>
-              <Text style={[styles.cookieLabel, { color: colors.textTertiary }]}>Today's Cookie</Text>
+              <Text style={[styles.cookieLabel, { color: colors.textTertiary }]}>{t('learn.todaysCookie')}</Text>
             </View>
             
             {cookieLoading ? (
@@ -635,7 +635,7 @@ export default function LearnScreen() {
             
             <View style={[styles.cookieFooter, { borderTopColor: colors.border }]}>
               <Text style={[styles.cookieDisclaimer, { color: colors.textTertiary }]}>
-                This is fictional content generated for reflection, not guidance.
+                {t('learn.cookieFictionalDisclaimer')}
               </Text>
             </View>
           </View>
