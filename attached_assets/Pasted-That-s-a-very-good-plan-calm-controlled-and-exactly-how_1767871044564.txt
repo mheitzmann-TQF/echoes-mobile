@@ -1,0 +1,106 @@
+That’s a very good plan — calm, controlled, and exactly how you avoid another spiral.
+
+Short answer: you’re almost complete. You’re missing only one explicit instruction, and I’ll show you how to phrase everything cleanly to Claude.
+
+⸻
+
+What you have already (✅ correct)
+
+You should tell Claude that:
+	1.	Environment is now stable
+	•	Expo SDK 54
+	•	iOS simulator works
+	•	Web build works locally
+	•	API proxy works
+	•	Env handling unified via lib/env.ts
+	2.	What was fixed
+	•	Removed duplicate TQF_API_KEY declarations
+	•	All API routes now import from @/lib/env
+	•	.env.local removed from git, secrets are local-only
+	•	Metro / ESM issues resolved
+	•	Worklets / Reanimated issues resolved
+	3.	Database is intentionally disabled
+	•	observances+api.ts is disabled
+	•	No DATABASE_URL required for dev
+	•	This is intentional, not a bug
+	4.	You pulled latest changes
+	•	Replit should now pull main
+	•	No local patches expected
+	5.	Intent
+	•	Next focus is language testing
+	•	DB will be revisited after language validation
+
+All good so far.
+
+⸻
+
+The ONE thing you should explicitly add (important)
+
+👉 Tell Claude what NOT to do
+
+Claude needs a hard boundary so it doesn’t “helpfully” undo your work.
+
+You should explicitly say:
+	•	❌ Do not reintroduce database logic
+	•	❌ Do not add new env variables
+	•	❌ Do not touch Reanimated / native config
+	•	❌ Do not refactor API routes unless language-related
+
+This prevents regression.
+
+⸻
+
+Suggested message to Claude (copy–paste)
+
+You can send exactly this:
+
+Context update (please read before acting):
+
+We stabilized the dev pipeline on Mac (iOS + web) and pushed to main.
+
+What was fixed:
+	•	Unified env handling via lib/env.ts (single source of truth)
+	•	Removed all duplicate TQF_API_KEY declarations in API routes
+	•	All proxy routes now import from @/lib/env
+	•	.env.local and .expo/* are ignored (local-only)
+	•	Reanimated / worklets issues resolved
+	•	Metro + ESM issues resolved
+
+Intentional state:
+	•	Database is DISABLED for now
+	•	observances+api.ts is disabled on purpose
+	•	No DATABASE_URL is required for dev
+
+Current goal:
+	•	Pull latest main
+	•	Test language handling end-to-end (UI → API → content)
+
+Important constraints (do not violate):
+	•	Do NOT reintroduce database logic
+	•	Do NOT add new env variables
+	•	Do NOT touch native / Reanimated config
+	•	Only modify code if strictly needed for language testing
+
+After language testing, we will reintroduce DB deliberately.
+
+⸻
+
+Are you missing anything else?
+
+Only optional (not required now):
+	•	A small language matrix (e.g. en, fr, de, it) to test against
+	•	One explicit place in code to log lang → API lang
+
+But that can come after Claude pulls.
+
+⸻
+
+Verdict
+
+✅ Your plan is solid
+✅ Sequence is correct
+✅ Risk is controlled
+
+You’re doing this like a senior engineer now — not chasing ghosts anymore.
+
+When you’re ready, you can paste Claude’s reply here and we’ll sanity-check it before you let it touch anything.
