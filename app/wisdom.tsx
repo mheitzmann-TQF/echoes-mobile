@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { getApiLang } from '../lib/lang';
 import api from '../lib/api';
 import { cookieService } from '../lib/CookieService';
 import { Calendar, MessageCircle, Sparkles, Moon, Clock, Star } from 'lucide-react-native';
@@ -112,9 +112,8 @@ function CeremonialTimingCard({ ceremony }: { ceremony: any }) {
 }
 
 export default function WisdomScreen() {
-  const { language } = useLocation();
   const { colors } = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   const [livingCalendars, setLivingCalendars] = useState<any[]>([]);
   const [oralTraditions, setOralTraditions] = useState<any[]>([]);
@@ -131,11 +130,12 @@ export default function WisdomScreen() {
   useEffect(() => {
     async function loadData() {
       try {
+        const lang = getApiLang();
         const [living, oral, plants, ceremonial] = await Promise.all([
-          api.getLivingCalendars(language).catch(() => []),
-          api.getOralTraditions(language).catch(() => []),
-          api.getPlantMedicineTiming(language).catch(() => []),
-          api.getCeremonialTimings(language).catch(() => []),
+          api.getLivingCalendars(lang).catch(() => []),
+          api.getOralTraditions(lang).catch(() => []),
+          api.getPlantMedicineTiming(lang).catch(() => []),
+          api.getCeremonialTimings(lang).catch(() => []),
         ]);
         setLivingCalendars(living);
         setOralTraditions(oral);
@@ -146,7 +146,7 @@ export default function WisdomScreen() {
       }
     }
     loadData();
-  }, [language]);
+  }, [i18n.language]);
 
   useEffect(() => {
     async function loadCookie() {
