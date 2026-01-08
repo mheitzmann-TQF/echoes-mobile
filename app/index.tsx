@@ -16,7 +16,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
-import { format } from 'date-fns';
+import { format, Locale } from 'date-fns';
+import { enUS, es, fr, pt, de, it } from 'date-fns/locale';
 import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
 import { getDailyPhoto } from '../lib/PhotoService';
 import { cleanTone } from '../lib/labelize';
@@ -24,6 +25,21 @@ import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import { getApiLang } from '../lib/lang';
 import { useTranslation } from 'react-i18next';
+import { getCurrentLanguage } from '../lib/i18n';
+
+const dateLocales: Record<string, Locale> = {
+  en: enUS,
+  es: es,
+  fr: fr,
+  pt: pt,
+  de: de,
+  it: it,
+};
+
+function getDateLocale(): Locale {
+  const lang = getCurrentLanguage();
+  return dateLocales[lang] || enUS;
+}
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -454,7 +470,7 @@ export default function HomeScreen() {
   };
 
   const getMockCalendars = () => [
-    { id: 'gregorian', name: t('learn.gregorian'), date: format(new Date(), 'd MMM yy'), type: t('calendars.civil') },
+    { id: 'gregorian', name: t('learn.gregorian'), date: format(new Date(), 'd MMM yy', { locale: getDateLocale() }), type: t('calendars.civil') },
     { id: 'mayan', name: t('learn.mayanTzolkin'), date: '7 Manik', type: t('calendars.sacred') },
     { id: 'chinese', name: t('learn.chinese'), date: 'Month 10 · Dragon', type: t('calendars.lunisolar') },
     { id: 'hebrew', name: t('learn.hebrew'), date: '20 Kislev', type: t('calendars.lunisolar') },
@@ -536,7 +552,7 @@ export default function HomeScreen() {
       // Process Calendars
       if (calendarsData && Array.isArray(calendarsData)) {
         const formattedCalendars = [
-          { id: 'gregorian', name: t('learn.gregorian'), date: format(new Date(), 'd MMM yy'), type: t('calendars.civil') },
+          { id: 'gregorian', name: t('learn.gregorian'), date: format(new Date(), 'd MMM yy', { locale: getDateLocale() }), type: t('calendars.civil') },
         ];
         
         calendarsData.forEach((cal: any) => {
