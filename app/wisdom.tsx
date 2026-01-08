@@ -165,10 +165,9 @@ export default function WisdomScreen() {
   const activeLivingCalendar = livingTab === 'vedic' ? vedic : aztec;
 
   const weatherTraditions = oralTraditions.filter(t => t.traditionType === 'weather_prophecy');
-  const plantTraditions = oralTraditions.filter(t => t.traditionType === 'plant_medicine');
   const dreamTraditions = oralTraditions.filter(t => t.traditionType === 'dream_time');
   
-  const activeOralTraditions = oralTab === 'weather' ? weatherTraditions : oralTab === 'plants' ? plantTraditions : dreamTraditions;
+  const activeOralTraditions = oralTab === 'weather' ? weatherTraditions : dreamTraditions;
 
   const formatCulture = (s: string) => s?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || '';
 
@@ -179,7 +178,6 @@ export default function WisdomScreen() {
 
   const oralTabs = [
     { key: 'weather', label: t('learn.weather') },
-    { key: 'plants', label: t('learn.plants') },
     { key: 'dreaming', label: t('learn.dreaming') },
   ];
 
