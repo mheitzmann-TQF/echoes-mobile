@@ -576,14 +576,14 @@ export default function FieldScreen() {
             collapsedDetail={`${Math.round(ctx?.lunar?.illumination || 0)}%`}
             isExpanded={expandedCards['lunar']}
             onToggle={() => toggleCard('lunar')}
-            chips={['phase', 'illumination']}
-            howToRead={['Phase cycles new → waxing → full → waning over ~29.5 days', 'Illumination shows percentage of visible surface', 'Combined with other signals to shape daily echoes']}
+            chips={[t('field.chipPhase'), t('field.chipIllumination')]}
+            howToRead={[t('field.lunarNote1'), t('field.lunarNote2'), t('field.lunarNote3')]}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{t(`field.${getMoonPhaseKey(lunarPhase)}`)}</Text>
                 <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% {t('field.illuminated')}</Text>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  The moon's visible portion reflects gravitational position. Waxing phases indicate increasing illumination toward full moon; waning indicates decrease toward new moon.
+                  {t('field.lunarExplanation')}
                 </Text>
               </View>
             }
@@ -596,16 +596,16 @@ export default function FieldScreen() {
             collapsedDetail={solarPhase}
             isExpanded={expandedCards['solar']}
             onToggle={() => toggleCard('solar')}
-            chips={['phase', 'sunset timing']}
-            howToRead={['Solar phase indicates sun position: Morning (rising), Midday (highest), Afternoon (descending), Night (below horizon)', 'Sunset marks transition to evening phase', 'Used alongside lunar and coherence signals']}
+            chips={[t('field.chipPhase'), t('field.chipSunsetTiming')]}
+            howToRead={[t('field.solarNote1'), t('field.solarNote2'), t('field.solarNote3')]}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{solarPhase}</Text>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  The sun's position shapes the light cycle and influences circadian rhythms. Sunrise begins the brightening phase; sunset marks the transition to rest.
+                  {t('field.solarExplanation')}
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
-                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Next Transition</Text>
+                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.nextTransition')}</Text>
                 <Text style={[styles.expandedSub, { color: colors.text }]}>{sunsetInfo.display}</Text>
               </View>
             }
@@ -623,20 +623,20 @@ export default function FieldScreen() {
             collapsedDetail={consciousnessData?.global_coherence !== undefined && consciousnessData?.global_coherence !== null ? `${Math.round(consciousnessData.global_coherence)}%` : "—"}
             isExpanded={expandedCards['coherence']}
             onToggle={() => toggleCard('coherence')}
-            chips={['global', 'regional', 'trend']}
-            howToRead={['Coherence above 60% indicates aligned collective sentiment', 'Below 40% shows divergent narratives', 'Synthesized from global news and contemplative sources', 'Part of echo card relevance calculation']}
+            chips={[t('field.chipGlobal'), t('field.chipRegional'), t('field.chipTrend')]}
+            howToRead={[t('field.coherenceNote1'), t('field.coherenceNote2'), t('field.coherenceNote3'), t('field.coherenceNote4')]}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Global</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.globalLabel')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{consciousnessData?.global_coherence !== undefined && consciousnessData?.global_coherence !== null ? `${Math.round(consciousnessData.global_coherence)}%` : "—"}</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Regional Avg</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.regionalAvgLabel')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{regionalAverage !== null ? `${regionalAverage}%` : "—"}</Text>
                 </View>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  Coherence measures collective sentiment alignment synthesized from global news sources and contemplative observatories. Higher values indicate more unified collective patterns across regions.
+                  {t('field.coherenceExplanation')}
                 </Text>
               </View>
             }
@@ -649,20 +649,20 @@ export default function FieldScreen() {
             collapsedDetail={geoState.label}
             isExpanded={expandedCards['geo']}
             onToggle={() => toggleCard('geo')}
-            chips={['activity', 'kp index']}
-            howToRead={['Kp 0-3: Quiet conditions', 'Kp 4-5: Active / Moderate conditions', 'Kp 6+: Storm conditions', 'Affects magnetosphere and potential auroral displays']}
+            chips={[t('field.chipActivity'), t('field.chipKpIndex')]}
+            howToRead={[t('field.geoNote1'), t('field.geoNote2'), t('field.geoNote3'), t('field.geoNote4')]}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Kp Index</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.kpIndexLabel')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{geoKp}</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>State</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.stateLabel')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{geoState.label}</Text>
                 </View>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  The Kp index measures disturbance in the Earth's magnetosphere. Higher values indicate stronger geomagnetic storms from solar wind interaction.
+                  {t('field.geoExplanation')}
                 </Text>
               </View>
             }
@@ -677,38 +677,38 @@ export default function FieldScreen() {
             icon={<Dna size={20} color={colors.text} />}
             title={t('field.body')}
             message={circadianPhase}
-            collapsedDetail={bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : 'Active'}
+            collapsedDetail={bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : t('field.active')}
             isExpanded={expandedCards['body']}
             onToggle={() => toggleCard('body')}
-            chips={['circadian', 'alertness']}
-            howToRead={['Circadian: 24-hour biological clock', 'Alertness: Current cognitive readiness', 'Cortisol/Melatonin: Hormonal balance indicators', 'Patterns derived from circadian research']}
+            chips={[t('field.chipCircadian'), t('field.chipAlertness')]}
+            howToRead={[t('field.bodyNote1'), t('field.bodyNote2'), t('field.bodyNote3'), t('field.bodyNote4')]}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Phase</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.chipPhase')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{circadianPhase}</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Time of Day</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.timeOfDay')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{timeOfDay}</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Alertness</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.chipAlertness')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : '—'}</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Cortisol</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.cortisol')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.cortisol ?? '—'}</Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>Melatonin</Text>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.melatonin')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{bioRhythms?.circadian?.melatonin ?? '—'}</Text>
                 </View>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  Circadian rhythms regulate sleep-wake cycles and hormonal patterns over 24 hours. Alertness and hormone levels shift throughout the day.
+                  {t('field.bodyExplanation')}
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
-                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Context</Text>
+                <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.context')}</Text>
                 {(bioRhythms?.circadian?.recommendations || generateCircadianObservations(circadianPhase)).slice(0, 3).map((obs: string, i: number) => (
                   <View key={i} style={styles.bulletRow}>
                     <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>

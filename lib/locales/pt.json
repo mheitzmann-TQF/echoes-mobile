@@ -134,7 +134,11 @@
     "stateLabel": "Estado",
     "nextTransition": "Próxima Transição",
     "sunsetIn": "Pôr do sol em",
-    "sunsetAt": "Pôr do sol às"
+    "sunsetAt": "Pôr do sol às",
+    "timeOfDay": "Momento do dia",
+    "cortisol": "Cortisol",
+    "melatonin": "Melatonina",
+    "context": "Contexto"
   },
   "learn": {
     "title": "Aprender",

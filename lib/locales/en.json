@@ -143,7 +143,11 @@
     "stateLabel": "State",
     "nextTransition": "Next Transition",
     "sunsetIn": "Sunset in",
-    "sunsetAt": "Sunset at"
+    "sunsetAt": "Sunset at",
+    "timeOfDay": "Time of Day",
+    "cortisol": "Cortisol",
+    "melatonin": "Melatonin",
+    "context": "Context"
   },
   "learn": {
     "title": "Learn",
