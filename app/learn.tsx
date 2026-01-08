@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
+import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 import { cookieService } from '../lib/CookieService';
 import { Bookmark, X, ArrowRight, ChevronRight, BookOpen, Sparkles, Calendar, Globe, Leaf } from 'lucide-react-native';
@@ -11,31 +12,31 @@ const { width } = Dimensions.get('window');
 
 // --- Constants & Helpers ---
 
-const CALENDAR_EXPLAINERS: Record<string, string> = {
-  gregorian: "The civil standard, tracking the solar year.",
-  mayan: "A sacred count of 260 days, weaving time and destiny.",
-  chinese: "Tracks months by the moon, corrected by the sun.",
-  hebrew: "Lunisolar rhythm aligning festivals with seasons.",
-  islamic: "Pure lunar count, drifting through the solar year.",
-  hindu: "Integrating celestial observations with spiritual timekeeping.",
+const CALENDAR_EXPLAINER_KEYS: Record<string, string> = {
+  gregorian: "calExplainerGregorian",
+  mayan: "calExplainerMayan",
+  chinese: "calExplainerChinese",
+  hebrew: "calExplainerHebrew",
+  islamic: "calExplainerIslamic",
+  hindu: "calExplainerHindu",
 };
 
-const CALENDAR_DETAILS: Record<string, string> = {
-  gregorian: "Established in 1582, the Gregorian calendar divides time into 365 days with leap years every 4 years. It's the international standard for civil use, based on the solar cycle.",
-  mayan: "The Tzolkin weaves 13 numbers with 20 day names in a sacred 260-day cycle. Mayans believed this reflected cosmic rhythms and human consciousness—used for spiritual guidance and timing ceremonies.",
-  chinese: "Combining lunar months with solar corrections, the Chinese calendar maintains harmony between celestial cycles. Each year cycles through 12 animals, each associated with elements and personality traits.",
-  hebrew: "Balancing lunar observation with solar precision, the Hebrew calendar aligns festivals with seasons while honoring the moon's cycles. Deeply spiritual, it marks sacred time through seasonal celebrations.",
-  islamic: "Following the pure lunar year of 354 days, the Islamic calendar shifts 11 days earlier each solar year, creating a complete cycle every 33 years. This cycle reconnects observers to the original revelation.",
-  hindu: "The Panchang integrates multiple calendric systems—solar, lunar, and stellar cycles—into a comprehensive framework used for auspicious timing of ceremonies and spiritual practices across Hindu traditions.",
+const CALENDAR_DETAIL_KEYS: Record<string, string> = {
+  gregorian: "calDetailGregorian",
+  mayan: "calDetailMayan",
+  chinese: "calDetailChinese",
+  hebrew: "calDetailHebrew",
+  islamic: "calDetailIslamic",
+  hindu: "calDetailHindu",
 };
 
-const CALENDAR_TYPES: Record<string, string> = {
-  gregorian: "Civil",
-  mayan: "Sacred",
-  chinese: "Lunisolar",
-  hebrew: "Lunisolar",
-  islamic: "Lunar",
-  hindu: "Lunisolar",
+const CALENDAR_TYPE_KEYS: Record<string, string> = {
+  gregorian: "civil",
+  mayan: "sacred",
+  chinese: "lunisolar",
+  hebrew: "lunisolar",
+  islamic: "lunar",
+  hindu: "lunisolar",
 };
 
 // --- Components ---
@@ -73,9 +74,15 @@ function SkeletonCard({ style }: { style?: any }) {
 }
 
 function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: () => void }) {
-  const type = CALENDAR_TYPES[id] || 'System';
-  const explainer = CALENDAR_EXPLAINERS[id] || 'A traditional system of timekeeping.';
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const typeKey = CALENDAR_TYPE_KEYS[id] || 'civil';
+  const type = t(`calendars.${typeKey}`);
+  const explainerKey = CALENDAR_EXPLAINER_KEYS[id];
+  const explainer = explainerKey ? t(`learn.${explainerKey}`) : t('learn.calendarDefault');
+  const detailKey = CALENDAR_DETAIL_KEYS[id];
+  const detail = detailKey ? t(`learn.${detailKey}`) : t('learn.calendarDefault');
+  
   const [isFlipped, setIsFlipped] = useState(false);
   const flipAnim = useRef(new Animated.Value(0)).current;
 
@@ -141,7 +148,7 @@ function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: 
         </View>
         
         <View style={styles.rotateCue}>
-          <Text style={[styles.rotateText, { color: colors.textTertiary }]}>Rotate lens</Text>
+          <Text style={[styles.rotateText, { color: colors.textTertiary }]}>{t('learn.rotateLens')}</Text>
           <ArrowRight size={14} color={colors.textTertiary} />
         </View>
       </Animated.View>
@@ -160,10 +167,10 @@ function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: 
         ]}
       >
         <View style={styles.cardBackContent}>
-          <Text style={[styles.backTitle, { color: colors.text }]}>About {name}</Text>
-          <Text style={[styles.backDescription, { color: colors.textSecondary }]}>{CALENDAR_DETAILS[id] || 'A system for understanding time cycles.'}</Text>
+          <Text style={[styles.backTitle, { color: colors.text }]}>{t('learn.about')} {name}</Text>
+          <Text style={[styles.backDescription, { color: colors.textSecondary }]}>{detail}</Text>
           <View style={[styles.backFooter, { borderTopColor: colors.border }]}>
-            <Text style={[styles.backCue, { color: colors.textTertiary }]}>Tap to flip back</Text>
+            <Text style={[styles.backCue, { color: colors.textTertiary }]}>{t('learn.tapToFlipBack')}</Text>
           </View>
         </View>
       </Animated.View>
@@ -173,13 +180,14 @@ function SystemCard({ id, name, onPress }: { id: string, name: string, onPress: 
 
 function ArtifactCard({ artifact, onSave, isSaved }: { artifact: any, onSave: () => void, isSaved: boolean }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   if (!artifact) return null;
 
   return (
     <View style={[styles.artifactCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View style={styles.artifactHeader}>
         <View style={[styles.artifactTag, { backgroundColor: colors.surfaceHighlight }]}>
-          <Text style={[styles.artifactTagText, { color: colors.text }]}>{artifact.region || 'Wisdom'}</Text>
+          <Text style={[styles.artifactTagText, { color: colors.text }]}>{artifact.region || t('learn.wisdom')}</Text>
         </View>
         <TouchableOpacity onPress={onSave}>
           <Bookmark 
@@ -194,7 +202,7 @@ function ArtifactCard({ artifact, onSave, isSaved }: { artifact: any, onSave: ()
       <Text style={[styles.artifactSummary, { color: colors.textSecondary }]}>{artifact.summary}</Text>
       
       <View style={[styles.whySurfaced, { borderTopColor: colors.border }]}>
-        <Text style={[styles.whyText, { color: colors.textTertiary }]}>Surfaced for today's coherent field.</Text>
+        <Text style={[styles.whyText, { color: colors.textTertiary }]}>{t('learn.surfacedToday')}</Text>
       </View>
     </View>
   );
@@ -219,6 +227,7 @@ function LivingCard({ item, onPress }: { item: any, onPress: () => void }) {
 
 function SavedStrip({ count }: { count: number }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   if (count === 0) return null;
   
   return (
@@ -228,7 +237,7 @@ function SavedStrip({ count }: { count: number }) {
     >
       <View style={styles.savedContent}>
         <BookOpen size={16} color={colors.text} />
-        <Text style={[styles.savedText, { color: colors.text }]}>{count} saved item{count !== 1 ? 's' : ''}</Text>
+        <Text style={[styles.savedText, { color: colors.text }]}>{count} {count !== 1 ? t('learn.savedItems') : t('learn.savedItem')}</Text>
       </View>
       <ChevronRight size={16} color={colors.textTertiary} />
     </TouchableOpacity>
@@ -238,6 +247,7 @@ function SavedStrip({ count }: { count: number }) {
 export default function LearnScreen() {
   const { coordinates, timezone, language } = useLocation();
   const { colors, theme } = useTheme();
+  const { t } = useTranslation();
   const [calendars, setCalendars] = useState<any>(null);
   const [culture, setCulture] = useState<any[]>([]);
   const [cultureLoading, setCultureLoading] = useState(true);
@@ -259,15 +269,15 @@ export default function LearnScreen() {
   const defaultLivingCalendars = [
     {
       id: 'seasonal',
-      title: 'Seasonal Pattern',
-      summary: 'The light is shifting as we approach the solstice threshold.',
-      why_now: 'We are 18 days from the turning point.'
+      title: t('learn.seasonalPattern'),
+      summary: t('learn.seasonalPatternSummary'),
+      why_now: t('learn.seasonalPatternWhy')
     },
     {
       id: 'light',
-      title: 'Light Shift',
-      summary: 'Twilight lengthens in the northern hemisphere, inviting introspection.',
-      why_now: 'Solar angle is currently at 23 degrees.'
+      title: t('learn.lightShift'),
+      summary: t('learn.lightShiftSummary'),
+      why_now: t('learn.lightShiftWhy')
     }
   ];
 
@@ -278,15 +288,17 @@ export default function LearnScreen() {
       .map((item, idx) => ({
         id: item.id || `living-${idx}`,
         // API returns: cycleName, cycleDescription, dailyGuidance
-        title: (item.cycleName || item.title || item.name || '').trim() || `Seasonal Rhythm ${idx + 1}`,
-        summary: (item.cycleDescription || item.summary || item.description || '').trim() || 'A natural cycle flowing through time.',
-        why_now: (item.dailyGuidance || item.why_now || item.relevance || '').trim() || 'Active in the current moment.',
-        origin: item.culture ? item.culture.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) : 'Traditional'
+        title: (item.cycleName || item.title || item.name || '').trim() || t('learn.seasonalRhythms'),
+        summary: (item.cycleDescription || item.summary || item.description || '').trim() || t('learn.defaultLivingSummary'),
+        why_now: (item.dailyGuidance || item.why_now || item.relevance || '').trim() || t('learn.activeNow'),
+        origin: item.culture ? item.culture.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) : t('learn.traditionalOrigin')
       }))
       .filter((item) => {
         // Only keep items if they have non-default content
-        const hasRealTitle = !(item.title.includes('Seasonal Rhythm'));
-        const hasRealContent = item.summary !== 'A natural cycle flowing through time.';
+        const defaultTitle = t('learn.seasonalRhythms');
+        const defaultSummary = t('learn.defaultLivingSummary');
+        const hasRealTitle = item.title !== defaultTitle;
+        const hasRealContent = item.summary !== defaultSummary;
         return hasRealTitle || hasRealContent;
       });
   };
@@ -304,18 +316,18 @@ export default function LearnScreen() {
 
         // Convert calendar array to object format for Learn page
         if (Array.isArray(calData)) {
-          const calendarObj: any = { gregorian: { name: 'Gregorian' } };
+          const calendarObj: any = { gregorian: { name: t('learn.gregorian') } };
           calData.forEach((cal: any) => {
             if (cal.system === 'Mayan Tzolkin') {
-              calendarObj.mayan = { name: 'Mayan Tzolkin', date: cal.date, system: cal.system };
+              calendarObj.mayan = { name: t('learn.mayanTzolkin'), date: cal.date, system: cal.system };
             } else if (cal.system === 'Chinese Agricultural') {
-              calendarObj.chinese = { name: 'Chinese', date: cal.date, system: cal.system };
+              calendarObj.chinese = { name: t('learn.chinese'), date: cal.date, system: cal.system };
             } else if (cal.system === 'Hindu Panchang') {
-              calendarObj.hindu = { name: 'Hindu Panchang', date: cal.date, system: cal.system };
+              calendarObj.hindu = { name: t('learn.hinduPanchang'), date: cal.date, system: cal.system };
             } else if (cal.system === 'Islamic Hijri') {
-              calendarObj.islamic = { name: 'Islamic', date: cal.date, system: cal.system };
+              calendarObj.islamic = { name: t('learn.islamic'), date: cal.date, system: cal.system };
             } else if (cal.system === 'Hebrew Calendar') {
-              calendarObj.hebrew = { name: 'Hebrew', date: cal.date, system: cal.system };
+              calendarObj.hebrew = { name: t('learn.hebrew'), date: cal.date, system: cal.system };
             }
           });
           setCalendars(calendarObj);
@@ -400,7 +412,7 @@ export default function LearnScreen() {
         const text = await cookieService.getCookie();
         setCookie(text);
       } catch {
-        setCookie('The echo outlives the voice that made it.');
+        setCookie(t('learn.cookieDisclaimer'));
       } finally {
         setCookieLoading(false);
       }
@@ -456,26 +468,26 @@ export default function LearnScreen() {
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <ScrollView contentContainerStyle={styles.content} scrollEnabled={false}>
           <View style={styles.pageHeader}>
-            <Text style={[styles.pageTitle, { color: colors.text }]}>Learn</Text>
-            <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
+            <Text style={[styles.pageTitle, { color: colors.text }]}>{t('learn.title')}</Text>
+            <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>{t('learn.subtitle')}</Text>
           </View>
           
           {/* Living Calendar Skeleton */}
           <View style={styles.section}>
-            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LIVING CALENDAR</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('learn.livingCalendar').toUpperCase()}</Text>
             <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16, marginBottom: 12 }} />
             <SkeletonCard style={{ width: '100%', height: 100, borderRadius: 16 }} />
           </View>
 
           {/* Artifact Skeleton */}
           <View style={styles.section}>
-            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>ARTIFACT OF THE DAY</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('learn.artifactOfDay').toUpperCase()}</Text>
             <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 16 }} />
           </View>
 
           {/* Carousel Skeleton (at bottom) */}
           <View style={styles.section}>
-            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('learn.calendarSystems').toUpperCase()}</Text>
           </View>
           
           <View style={styles.carouselContainer}>
@@ -492,14 +504,14 @@ export default function LearnScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.pageHeader}>
-          <Text style={[styles.pageTitle, { color: colors.text }]}>Learn</Text>
-          <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>Explore timekeeping traditions and cultural wisdom</Text>
+          <Text style={[styles.pageTitle, { color: colors.text }]}>{t('learn.title')}</Text>
+          <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>{t('learn.subtitle')}</Text>
         </View>
         
         {/* 1. Living Calendar */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LIVING CALENDAR</Text>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Seasonal rhythms and observances</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('learn.livingCalendar').toUpperCase()}</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>{t('learn.livingCalendarDesc')}</Text>
           {living.map((item, i) => (
             <LivingCard 
               key={i} 
@@ -511,20 +523,20 @@ export default function LearnScreen() {
 
         {/* 2. Artifact of the Day */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>ARTIFACT OF THE DAY</Text>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Cultural wisdom surfaced today</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('learn.artifactOfDay').toUpperCase()}</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>{t('learn.artifactDesc')}</Text>
           
           {cultureLoading ? (
             <SkeletonCard style={{ width: '100%', height: 250, borderRadius: 16 }} />
           ) : cultureEmpty ? (
             <View style={[styles.fallbackCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Text style={[styles.fallbackCardTitle, { color: colors.textSecondary }]}>No cultural offering surfaced today.</Text>
-              <Text style={[styles.fallbackCardSub, { color: colors.textTertiary }]}>The field is quiet here. Try again later.</Text>
+              <Text style={[styles.fallbackCardTitle, { color: colors.textSecondary }]}>{t('learn.noArtifact')}</Text>
+              <Text style={[styles.fallbackCardSub, { color: colors.textTertiary }]}>{t('learn.fieldQuiet')}</Text>
               <TouchableOpacity 
                 style={[styles.fallbackRefreshButton, { backgroundColor: colors.surfaceHighlight }]} 
                 onPress={handleRefreshCulture}
               >
-                <Text style={[styles.fallbackRefreshText, { color: colors.textSecondary }]}>Refresh</Text>
+                <Text style={[styles.fallbackRefreshText, { color: colors.textSecondary }]}>{t('learn.tryAgain')}</Text>
               </TouchableOpacity>
             </View>
           ) : culture.length > 0 ? (
@@ -535,13 +547,13 @@ export default function LearnScreen() {
             />
           ) : (
             <View style={[styles.fallbackCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Text style={[styles.fallbackCardTitle, { color: colors.textSecondary }]}>No cultural offering surfaced today.</Text>
-              <Text style={[styles.fallbackCardSub, { color: colors.textTertiary }]}>The field is quiet here. Try again later.</Text>
+              <Text style={[styles.fallbackCardTitle, { color: colors.textSecondary }]}>{t('learn.noArtifact')}</Text>
+              <Text style={[styles.fallbackCardSub, { color: colors.textTertiary }]}>{t('learn.fieldQuiet')}</Text>
               <TouchableOpacity 
                 style={[styles.fallbackRefreshButton, { backgroundColor: colors.surfaceHighlight }]} 
                 onPress={handleRefreshCulture}
               >
-                <Text style={[styles.fallbackRefreshText, { color: colors.textSecondary }]}>Refresh</Text>
+                <Text style={[styles.fallbackRefreshText, { color: colors.textSecondary }]}>{t('learn.tryAgain')}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -549,8 +561,8 @@ export default function LearnScreen() {
 
         {/* 3. Explore Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>EXPLORE</Text>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>Deep traditions and sacred knowledge</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('learn.explore').toUpperCase()}</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>{t('learn.sacredGeography')}</Text>
           
           <View style={[styles.exploreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.exploreHeader}>
@@ -600,8 +612,8 @@ export default function LearnScreen() {
 
         {/* 4. The Cookie */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>THE COOKIE</Text>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>A fictional reflection for quiet contemplation</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('learn.theCookie').toUpperCase()}</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>{t('learn.cookieSubtitle')}</Text>
           
           <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.cookieHeader}>
@@ -631,8 +643,8 @@ export default function LearnScreen() {
 
         {/* 5. Calendar Systems (static reference) */}
         <View style={[styles.section, { marginBottom: 12 }]}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>CALENDAR SYSTEMS</Text>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary, marginBottom: 0 }]}>Traditional ways of measuring time</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('learn.calendarSystems').toUpperCase()}</Text>
+          <Text style={[styles.sectionDescription, { color: colors.textSecondary, marginBottom: 0 }]}>{t('learn.calendarSystemsDesc')}</Text>
         </View>
         
         <View style={styles.carouselContainer}>
@@ -678,7 +690,7 @@ export default function LearnScreen() {
             
             {selectedSystem && calendars && calendars[selectedSystem] && (
               <View style={styles.modalBody}>
-                <Text style={[styles.modalTitle, { color: colors.text }]}>Today in {selectedSystem}</Text>
+                <Text style={[styles.modalTitle, { color: colors.text }]}>{t('learn.todayIn')} {t(`learn.${selectedSystem}`)}</Text>
                 <View style={[styles.modalDateContainer, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                   {selectedSystem === 'mayan' && (
                     <>
@@ -688,8 +700,8 @@ export default function LearnScreen() {
                   )}
                   {selectedSystem === 'chinese' && (
                     <>
-                      <Text style={[styles.modalDateMain, { color: colors.text }]}>{calendars[selectedSystem].year} Year</Text>
-                      <Text style={[styles.modalDateSub, { color: colors.textSecondary }]}>{calendars[selectedSystem].element} Element</Text>
+                      <Text style={[styles.modalDateMain, { color: colors.text }]}>{calendars[selectedSystem].year} {t('learn.year')}</Text>
+                      <Text style={[styles.modalDateSub, { color: colors.textSecondary }]}>{calendars[selectedSystem].element} {t('learn.element')}</Text>
                     </>
                   )}
                   {(selectedSystem === 'hebrew' || selectedSystem === 'islamic') && (
@@ -701,7 +713,7 @@ export default function LearnScreen() {
                 </View>
                 
                 <Text style={[styles.modalDescription, { color: colors.textSecondary }]}>
-                  {CALENDAR_EXPLAINERS[selectedSystem]} This system offers a unique lens on the passage of time, emphasizing {CALENDAR_TYPES[selectedSystem].toLowerCase()} rhythms.
+                  {t(`learn.${CALENDAR_EXPLAINER_KEYS[selectedSystem] || 'calendarDefault'}`)}
                 </Text>
               </View>
             )}
@@ -728,7 +740,7 @@ export default function LearnScreen() {
             
             {selectedLiving && (
               <View style={styles.modalBody}>
-                <Text style={[styles.modalTitle, { color: colors.textSecondary }]}>Living Rhythm</Text>
+                <Text style={[styles.modalTitle, { color: colors.textSecondary }]}>{t('learn.livingCalendar')}</Text>
                 <Text style={[styles.modalDateMain, { color: colors.text }]}>{selectedLiving.title}</Text>
                 
                 <Text style={[styles.modalDescription, { color: colors.textSecondary }]}>
@@ -740,7 +752,7 @@ export default function LearnScreen() {
                 </View>
 
                 <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.accent }]} onPress={() => setSelectedLiving(null)}>
-                  <Text style={styles.actionButtonText}>Carry into Quiet Frame</Text>
+                  <Text style={styles.actionButtonText}>{t('learn.carryForward')}</Text>
                   <ArrowRight size={16} color="#FFFFFF" />
                 </TouchableOpacity>
               </View>
