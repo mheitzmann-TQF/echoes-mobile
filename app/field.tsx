@@ -138,33 +138,30 @@ function ExpandableCard({
   );
 }
 
-function generateCircadianObservations(phase: string): string[] {
+function generateCircadianObservations(phase: string, t: (key: string) => string): string[] {
   const normalizedPhase = phase.toLowerCase();
   
-  // TQF API returns phases like: Secondary Peak, Peak, Recovery, Low, Rising, etc.
-  const phaseMap: Record<string, string[]> = {
-    // TQF circadian phases
-    'secondary peak': ['Secondary energy surge occurring', 'Afternoon alertness window', 'Good for creative or physical tasks'],
-    'peak': ['Peak mental clarity and focus', 'Energy at zenith', 'Optimal for demanding cognitive work'],
-    'rising': ['Energy levels increasing', 'Alertness building', 'Good time to start focused work'],
-    'recovery': ['Body entering restoration mode', 'Processing and consolidation active', 'Wind-down phase appropriate'],
-    'low': ['Natural energy dip occurring', 'Rest or light activity preferred', 'Conserve energy for next cycle'],
-    'trough': ['Deepest rest phase', 'Body temperature at minimum', 'Maximum recovery occurring'],
-    // Time-of-day phases (fallback)
-    'morning': ['Core body temperature rising', 'Cortisol peak aids alertness', 'Optimal for analytical work'],
-    'midday': ['Peak mental clarity and focus', 'Energy at zenith', 'Ideal for decision-making'],
-    'afternoon': ['Post-meal dip in attention', 'Secondary energy rise possible', 'Good for physical activity'],
-    'evening': ['Melatonin beginning to rise', 'Temperature cooling', 'Wind-down phase begins'],
-    'night': ['Deep sleep hormone levels peak', 'Body temperature lowest', 'Recovery and restoration mode'],
-    'balanced': ['Circadian rhythm stable', 'Energy consistent', 'Flexible for most activities']
+  // Map phases to translation key prefixes
+  const phaseMap: Record<string, string> = {
+    'secondary peak': 'obsSecondaryPeak',
+    'peak': 'obsPeak',
+    'rising': 'obsRising',
+    'recovery': 'obsRecovery',
+    'low': 'obsLow',
+    'trough': 'obsLow',
+    'morning': 'obsMorning',
+    'midday': 'obsMidday',
+    'afternoon': 'obsAfternoon',
+    'evening': 'obsEvening',
+    'night': 'obsNight'
   };
   
-  for (const [key, observations] of Object.entries(phaseMap)) {
+  for (const [key, prefix] of Object.entries(phaseMap)) {
     if (normalizedPhase.includes(key)) {
-      return observations;
+      return [t(`field.${prefix}1`), t(`field.${prefix}2`), t(`field.${prefix}3`)];
     }
   }
-  return ['Circadian rhythm active', 'Biological patterns flowing', 'Energy cycles present'];
+  return [t('field.obsDefault1'), t('field.obsDefault2'), t('field.obsDefault3')];
 }
 
 function StickyHeader({ coherence, solarPhase, lunarPhase }: { coherence: number, solarPhase: string, lunarPhase: string }) {
@@ -356,6 +353,31 @@ export default function FieldScreen() {
   
   const lunarPhase = getLunarPhase();
   
+  // Helper to translate circadian phase
+  const translateCircadianPhase = (phase: string): string => {
+    const phaseMap: { [key: string]: string } = {
+      'waking': 'waking',
+      'rising': 'rising',
+      'peak': 'peak',
+      'secondary peak': 'secondaryPeak',
+      'wind-down': 'windDown',
+      'recovery': 'recovery',
+      'deep rest': 'deepRest',
+      'midday': 'midday',
+      'morning': 'morning',
+      'afternoon': 'afternoon',
+      'evening': 'evening',
+      'night': 'night'
+    };
+    const lower = phase.toLowerCase();
+    for (const [key, value] of Object.entries(phaseMap)) {
+      if (lower.includes(key)) {
+        return t(`field.${value}`);
+      }
+    }
+    return phase;
+  };
+
   // Get appropriate circadian phase based on time of day
   const getCircadianPhase = (): string => {
     const apiPhase = bioRhythms?.circadian?.phase || '';
@@ -370,33 +392,57 @@ export default function FieldScreen() {
     
     // If it's morning (5-11) but API says evening phase, compute instead
     if (hour >= 5 && hour < 12 && isApiEveningPhase) {
-      if (hour < 7) return 'Waking';
-      if (hour < 9) return 'Rising';
-      return 'Peak';
+      if (hour < 7) return t('field.waking');
+      if (hour < 9) return t('field.rising');
+      return t('field.peak');
     }
     
     // If it's evening (18-23) but API says morning phase, compute instead
     if (hour >= 18 && isApiMorningPhase) {
-      if (hour < 21) return 'Wind-down';
-      return 'Recovery';
+      if (hour < 21) return t('field.windDown');
+      return t('field.recovery');
     }
     
-    // API phase seems reasonable, use it
-    if (apiPhase) return apiPhase;
+    // API phase seems reasonable, translate and use it
+    if (apiPhase) return translateCircadianPhase(apiPhase);
     
     // Fallback: compute from time
-    if (hour >= 5 && hour < 7) return 'Waking';
-    if (hour >= 7 && hour < 9) return 'Rising';
-    if (hour >= 9 && hour < 12) return 'Peak';
-    if (hour >= 12 && hour < 14) return 'Midday';
-    if (hour >= 14 && hour < 17) return 'Secondary Peak';
-    if (hour >= 17 && hour < 21) return 'Wind-down';
-    if (hour >= 21 || hour < 2) return 'Recovery';
-    return 'Deep Rest';
+    if (hour >= 5 && hour < 7) return t('field.waking');
+    if (hour >= 7 && hour < 9) return t('field.rising');
+    if (hour >= 9 && hour < 12) return t('field.peak');
+    if (hour >= 12 && hour < 14) return t('field.midday');
+    if (hour >= 14 && hour < 17) return t('field.secondaryPeak');
+    if (hour >= 17 && hour < 21) return t('field.windDown');
+    if (hour >= 21 || hour < 2) return t('field.recovery');
+    return t('field.deepRest');
   };
   
   const circadianPhase = getCircadianPhase();
   
+  // Helper to translate time of day
+  const translateTimeOfDay = (tod: string): string => {
+    const todMap: { [key: string]: string } = {
+      'late morning': 'lateMorning',
+      'early morning': 'earlyMorning',
+      'early afternoon': 'earlyAfternoon',
+      'late afternoon': 'lateAfternoon',
+      'early evening': 'earlyEvening',
+      'late evening': 'lateEvening',
+      'morning': 'morning',
+      'afternoon': 'afternoon',
+      'evening': 'evening',
+      'night': 'night',
+      'midday': 'midday'
+    };
+    const lower = tod.toLowerCase();
+    for (const [key, value] of Object.entries(todMap)) {
+      if (lower.includes(key)) {
+        return t(`field.${value}`);
+      }
+    }
+    return tod;
+  };
+
   // Get appropriate time of day label based on actual hour
   const getTimeOfDay = (): string => {
     const apiTimeOfDay = bioRhythms?.circadian?.timeOfDay || '';
@@ -408,27 +454,27 @@ export default function FieldScreen() {
     const eveningTerms = ['evening', 'dusk', 'sunset'];
     const nightTerms = ['night', 'midnight', 'late'];
     
-    const apiSaysMorning = morningTerms.some(t => apiTimeOfDay.toLowerCase().includes(t));
-    const apiSaysAfternoon = afternoonTerms.some(t => apiTimeOfDay.toLowerCase().includes(t));
-    const apiSaysEvening = eveningTerms.some(t => apiTimeOfDay.toLowerCase().includes(t));
-    const apiSaysNight = nightTerms.some(t => apiTimeOfDay.toLowerCase().includes(t));
+    const apiSaysMorning = morningTerms.some(term => apiTimeOfDay.toLowerCase().includes(term));
+    const apiSaysAfternoon = afternoonTerms.some(term => apiTimeOfDay.toLowerCase().includes(term));
+    const apiSaysEvening = eveningTerms.some(term => apiTimeOfDay.toLowerCase().includes(term));
+    const apiSaysNight = nightTerms.some(term => apiTimeOfDay.toLowerCase().includes(term));
     
     // Validate API response against actual time
     if (hour >= 5 && hour < 12) {
-      if (apiSaysNight || apiSaysEvening) return 'Morning';
-      if (apiSaysMorning || !apiTimeOfDay) return apiTimeOfDay || 'Morning';
+      if (apiSaysNight || apiSaysEvening) return t('field.morning');
+      if (apiSaysMorning || !apiTimeOfDay) return translateTimeOfDay(apiTimeOfDay) || t('field.morning');
     }
     if (hour >= 12 && hour < 17) {
-      if (apiSaysNight || apiSaysMorning) return 'Afternoon';
-      if (apiSaysAfternoon || !apiTimeOfDay) return apiTimeOfDay || 'Afternoon';
+      if (apiSaysNight || apiSaysMorning) return t('field.afternoon');
+      if (apiSaysAfternoon || !apiTimeOfDay) return translateTimeOfDay(apiTimeOfDay) || t('field.afternoon');
     }
     if (hour >= 17 && hour < 21) {
-      if (apiSaysNight || apiSaysMorning) return 'Evening';
-      if (apiSaysEvening || !apiTimeOfDay) return apiTimeOfDay || 'Evening';
+      if (apiSaysNight || apiSaysMorning) return t('field.evening');
+      if (apiSaysEvening || !apiTimeOfDay) return translateTimeOfDay(apiTimeOfDay) || t('field.evening');
     }
     // Night: 21-5
-    if (apiSaysMorning || apiSaysAfternoon) return 'Night';
-    return apiTimeOfDay || 'Night';
+    if (apiSaysMorning || apiSaysAfternoon) return t('field.night');
+    return translateTimeOfDay(apiTimeOfDay) || t('field.night');
   };
   
   const timeOfDay = getTimeOfDay();
@@ -730,7 +776,7 @@ export default function FieldScreen() {
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.context')}</Text>
-                {(bioRhythms?.circadian?.recommendations || generateCircadianObservations(circadianPhase)).slice(0, 3).map((obs: string, i: number) => (
+                {(bioRhythms?.circadian?.recommendations || generateCircadianObservations(circadianPhase, t)).slice(0, 3).map((obs: string, i: number) => (
                   <View key={i} style={styles.bulletRow}>
                     <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>
                     <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{obs}</Text>
@@ -743,17 +789,17 @@ export default function FieldScreen() {
 
         {/* Signals */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>INPUT SIGNALS</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.inputSignals').toUpperCase()}</Text>
           <View style={[styles.signalsContainer, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <Text style={[styles.signalsText, { color: colors.textSecondary }]}>
-              Data generated using real-time inputs from:
+              {t('field.dataFromInputs')}
             </Text>
             <View style={styles.signalTags}>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Moon: Phase & Illumination</Text>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Sun: Phase & Sunset</Text>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Coherence: Global & Trend</Text>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Geomagnetic: Activity & Kp</Text>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>Seasonal: {instant?.seasonal?.season || 'Current'}</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalMoon')}</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalSun')}</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalCoherence')}</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalGeo')}</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalSeasonal')}: {instant?.seasonal?.season || t('field.active')}</Text>
             </View>
           </View>
         </View>
