@@ -25,7 +25,12 @@ export async function GET(request: Request) {
     }
 
     const data = await response.json();
-    return Response.json(data);
+    return Response.json(data, {
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Vary": "Accept-Language",
+      },
+    });
   } catch (error) {
     return Response.json(
       { error: "Failed to fetch calendars" },
