@@ -792,50 +792,53 @@ export default function FieldScreen() {
         </View>
 
         {/* Optimal Timing Section */}
-        {optimalTiming && (
+        {optimalTiming && (optimalTiming.activities?.length > 0 || optimalTiming.recommendations?.length > 0) && (
           <View style={styles.section}>
             <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.optimalTiming').toUpperCase()}</Text>
             
             <ExpandableCard
               icon={<Clock size={20} color={colors.text} />}
               title={t('field.timing')}
-              message={optimalTiming?.lunarInfluence || t('field.timingDefault')}
+              message={optimalTiming?.currentPhase || t('field.timingDefault')}
               isExpanded={expandedCards['timing']}
               onToggle={() => toggleCard('timing')}
               chips={[t('field.chipLunarInfluence'), t('field.chipActivity')]}
               howToRead={[t('field.timingNote1'), t('field.timingNote2'), t('field.timingNote3')]}
               expandedContent={
                 <View style={styles.expandedDetails}>
-                  {optimalTiming?.lunarInfluence && (
-                    <Text style={[styles.expandedValue, { color: colors.text, marginBottom: 16 }]}>
-                      {optimalTiming.lunarInfluence}
+                  {optimalTiming?.currentPhase && (
+                    <Text style={[styles.expandedValue, { color: colors.text, marginBottom: 16, fontSize: 16, fontWeight: '500' }]}>
+                      {toTitleCase(optimalTiming.currentPhase)}
                     </Text>
                   )}
                   
-                  {optimalTiming?.bestFor && (
+                  {optimalTiming?.activities && optimalTiming.activities.length > 0 && (
                     <>
                       <Text style={[styles.subTitle, { color: colors.textSecondary, marginBottom: 8 }]}>{t('field.bestFor')}</Text>
-                      {Object.entries(optimalTiming.bestFor).map(([activity, time]) => (
-                        <View key={activity} style={styles.timingRow}>
-                          <Text style={[styles.timingActivity, { color: colors.textSecondary }]}>
-                            {t(`field.activity_${activity}`, { defaultValue: toTitleCase(activity.replace(/([A-Z])/g, ' $1').trim()) })}
-                          </Text>
-                          <Text style={[styles.timingValue, { color: colors.text }]}>{String(time)}</Text>
+                      {optimalTiming.activities.map((item: any, index: number) => (
+                        <View key={index} style={styles.timingRow}>
+                          <View style={{ flex: 1 }}>
+                            <Text style={[styles.timingActivity, { color: colors.text, fontWeight: '500' }]}>
+                              {item.activity}
+                            </Text>
+                            <Text style={[styles.timingReason, { color: colors.textSecondary }]}>
+                              {item.reason}
+                            </Text>
+                          </View>
+                          <Text style={[styles.timingValue, { color: colors.textSecondary }]}>{item.optimalTime}</Text>
                         </View>
                       ))}
                     </>
                   )}
                   
-                  {optimalTiming?.avoid && (
+                  {optimalTiming?.recommendations && optimalTiming.recommendations.length > 0 && (
                     <>
                       <View style={[styles.divider, { backgroundColor: colors.border, marginVertical: 16 }]} />
-                      <Text style={[styles.subTitle, { color: colors.textSecondary, marginBottom: 8 }]}>{t('field.avoid')}</Text>
-                      {Object.entries(optimalTiming.avoid).map(([activity, time]) => (
-                        <View key={activity} style={styles.timingRow}>
-                          <Text style={[styles.timingActivity, { color: colors.textSecondary }]}>
-                            {t(`field.avoid_${activity}`, { defaultValue: toTitleCase(activity.replace(/([A-Z])/g, ' $1').trim()) })}
-                          </Text>
-                          <Text style={[styles.timingValue, { color: colors.text }]}>{String(time)}</Text>
+                      <Text style={[styles.subTitle, { color: colors.textSecondary, marginBottom: 8 }]}>{t('field.recommendations')}</Text>
+                      {optimalTiming.recommendations.map((rec: string, index: number) => (
+                        <View key={index} style={styles.bulletRow}>
+                          <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>
+                          <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{rec}</Text>
                         </View>
                       ))}
                     </>
@@ -1109,8 +1112,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   timingValue: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
     textAlign: 'right',
+    marginLeft: 12,
+  },
+  timingReason: {
+    fontSize: 12,
+    marginTop: 2,
+    lineHeight: 16,
   },
 });

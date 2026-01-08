@@ -216,7 +216,8 @@
     "activity_rest": "Rest",
     "activity_socializing": "Socializing",
     "avoid_majorDecisions": "Major Decisions",
-    "avoid_heavyMeals": "Heavy Meals"
+    "avoid_heavyMeals": "Heavy Meals",
+    "recommendations": "Recommendations"
   },
   "learn": {
     "title": "Learn",
