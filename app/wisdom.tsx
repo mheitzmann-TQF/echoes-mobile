@@ -167,8 +167,37 @@ export default function WisdomScreen() {
   const aztec = livingCalendars.find(c => c.culture === 'aztec_mesoamerican' || c.calendarSystem === 'aztec_tonalpohualli');
   const activeLivingCalendar = livingTab === 'vedic' ? vedic : aztec;
 
-  const weatherTraditions = oralTraditions.filter(t => t.traditionType === 'weather_prophecy');
-  const dreamTraditions = oralTraditions.filter(t => t.traditionType === 'dream_time');
+  // Filter oral traditions - match both English API keys and translated values
+  // Covers all 6 supported languages: EN, ES, FR, DE, PT, IT
+  const isWeatherTradition = (type: string) => {
+    if (!type) return false;
+    const t = type.toLowerCase();
+    return t === 'weather_prophecy' || 
+      t.includes('weather') ||           // EN
+      t.includes('météo') ||              // FR
+      t.includes('prophétie') ||          // FR
+      t.includes('clima') ||              // ES/IT/PT
+      t.includes('tiempo') ||             // ES
+      t.includes('wetter') ||             // DE
+      t.includes('prophezeiung') ||       // DE
+      t.includes('previsão') ||           // PT
+      t.includes('meteorolog');           // IT/multi
+  };
+  
+  const isDreamTradition = (type: string) => {
+    if (!type) return false;
+    const t = type.toLowerCase();
+    return t === 'dream_time' || 
+      t.includes('dream') ||              // EN
+      t.includes('rêve') ||               // FR
+      t.includes('sueño') ||              // ES
+      t.includes('traum') ||              // DE
+      t.includes('sonho') ||              // PT
+      t.includes('sogno');                // IT
+  };
+  
+  const weatherTraditions = oralTraditions.filter(t => isWeatherTradition(t.traditionType));
+  const dreamTraditions = oralTraditions.filter(t => isDreamTradition(t.traditionType));
   
   const activeOralTraditions = oralTab === 'weather' ? weatherTraditions : oralTab === 'dreaming' ? dreamTraditions : [];
 
