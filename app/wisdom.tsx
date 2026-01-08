@@ -296,7 +296,7 @@ export default function WisdomScreen() {
                     ? Object.entries(plant.spiritualProperties).map(([k, v]) => `${k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}: ${v}`).join('\n')
                     : null;
                   return (
-                  <View key={idx} style={[styles.traditionCard, { borderColor: colors.border }]}>
+                  <View key={idx} style={[styles.traditionCard, idx === 0 && styles.firstTraditionCard, { borderColor: colors.border }]}>
                     <View style={styles.traditionHeader}>
                       <Star size={16} color="#27ae60" />
                       <View>
@@ -341,7 +341,7 @@ export default function WisdomScreen() {
           ) : activeOralTraditions.length > 0 ? (
             <View style={[styles.contentCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               {activeOralTraditions.map((tradition, idx) => (
-                <View key={idx} style={[styles.traditionCard, { borderColor: colors.border }]}>
+                <View key={idx} style={[styles.traditionCard, idx === 0 && styles.firstTraditionCard, { borderColor: colors.border }]}>
                   <View style={styles.traditionHeader}>
                     <Star size={16} color="#f1c40f" />
                     <View>
@@ -439,6 +439,7 @@ const styles = StyleSheet.create({
   oralHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 16 },
   oralSectionName: { fontSize: 16, fontWeight: '600' },
   traditionCard: { borderTopWidth: 1, paddingTop: 16, marginTop: 16 },
+  firstTraditionCard: { borderTopWidth: 0, paddingTop: 0, marginTop: 0 },
   traditionHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, marginBottom: 12 },
   traditionName: { fontSize: 16, fontWeight: '600', marginBottom: 2 },
   traditionCulture: { fontSize: 13 },
