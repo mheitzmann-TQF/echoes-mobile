@@ -15,7 +15,16 @@ The application is built using **React Native with Expo SDK**, leveraging **Expo
 Global state is managed using **React Contexts**: `LocationContext` for handling user location, timezone, and language, and `ThemeContext` for dark/light theme management. Data is stored locally on the device, with no user accounts, ensuring a **local-first data storage** approach.
 
 ### Component Design
-The app employs a modular component structure, including `EchoCard` for wisdom messages, `MoonPhase` for SVG-based lunar visualizations, `CalendarCarousel` for multi-calendar displays, and `MetricsGrid` for planetary data. Animations are optimized for 60fps using React Native Reanimated.
+The app employs a modular component structure, including `EchoCard` for wisdom messages, `MoonPhase` for SVG-based lunar visualizations, `CalendarCarousel` for multi-calendar displays with tap-to-expand detail modals, and `MetricsGrid` for planetary data. Animations are optimized for 60fps using React Native Reanimated.
+
+### Calendar Detail Modal
+Tapping any calendar card on the Today tab opens a detail modal showing:
+- Calendar name and current date
+- Calendar type (Civil, Sacred, Lunisolar, Lunar)
+- Significance - What this day means in that calendar system
+- Energy - The spiritual/energetic quality of the day
+- Phase - Current lunar or seasonal phase
+- Element - For calendars that track elemental associations (e.g., Chinese)
 
 ### API Integration
 Communication with The Quiet Frame (TQF) Planetary Awareness API is facilitated through a **backend proxy** for security and caching. A single primary endpoint (`/api/echoes/daily-bundle`) delivers most daily data. The app uses a **cache-first data fetching strategy** with `expires_at` timestamps from API responses and provides fallback mock data for offline scenarios. API requests include latitude, longitude, language code, and timezone for personalized content.
