@@ -126,13 +126,18 @@ export async function registerRoutes(
   app.get("/api/proxy/sacred-geography/living-calendars", async (req, res) => {
     try {
       const { lang } = req.query;
+      const cacheBust = `${lang || "en"}-${Date.now()}`;
       const response = await fetch(
-        `${TQF_BASE_URL}/api/sacred-geography/living-calendars?lang=${lang || "en"}`,
+        `${TQF_BASE_URL}/api/sacred-geography/living-calendars?lang=${lang || "en"}&_cb=${cacheBust}`,
         {
           headers: { "x-api-key": TQF_API_KEY },
+          cache: "no-store",
         }
       );
       const data = await response.json();
+      res.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+      res.set('Vary', 'Accept-Language');
+      res.removeHeader('ETag');
       res.json(data);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch living calendars" });
@@ -188,13 +193,18 @@ export async function registerRoutes(
   app.get("/api/proxy/sacred-geography/sites", async (req, res) => {
     try {
       const { lang, limit } = req.query;
+      const cacheBust = `${lang || "en"}-${Date.now()}`;
       const response = await fetch(
-        `${TQF_BASE_URL}/api/sacred-geography/sites?lang=${lang || "en"}&limit=${limit || 20}`,
+        `${TQF_BASE_URL}/api/sacred-geography/sites?lang=${lang || "en"}&limit=${limit || 20}&_cb=${cacheBust}`,
         {
           headers: { "x-api-key": TQF_API_KEY },
+          cache: "no-store",
         }
       );
       const data = await response.json();
+      res.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+      res.set('Vary', 'Accept-Language');
+      res.removeHeader('ETag');
       res.json(data);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch sacred sites" });
@@ -204,13 +214,18 @@ export async function registerRoutes(
   app.get("/api/proxy/sacred-geography/ceremonial-timings", async (req, res) => {
     try {
       const { lang } = req.query;
+      const cacheBust = `${lang || "en"}-${Date.now()}`;
       const response = await fetch(
-        `${TQF_BASE_URL}/api/sacred-geography/ceremonial-timings?lang=${lang || "en"}`,
+        `${TQF_BASE_URL}/api/sacred-geography/ceremonial-timings?lang=${lang || "en"}&_cb=${cacheBust}`,
         {
           headers: { "x-api-key": TQF_API_KEY },
+          cache: "no-store",
         }
       );
       const data = await response.json();
+      res.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+      res.set('Vary', 'Accept-Language');
+      res.removeHeader('ETag');
       res.json(data);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch ceremonial timings" });
@@ -220,12 +235,17 @@ export async function registerRoutes(
   app.get("/api/proxy/sacred-geography/oral-traditions", async (req, res) => {
     try {
       const { lang, category } = req.query;
-      let url = `${TQF_BASE_URL}/api/sacred-geography/oral-traditions?lang=${lang || "en"}`;
+      const cacheBust = `${lang || "en"}-${Date.now()}`;
+      let url = `${TQF_BASE_URL}/api/sacred-geography/oral-traditions?lang=${lang || "en"}&_cb=${cacheBust}`;
       if (category) url += `&category=${category}`;
       const response = await fetch(url, {
         headers: { "x-api-key": TQF_API_KEY },
+        cache: "no-store",
       });
       const data = await response.json();
+      res.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+      res.set('Vary', 'Accept-Language');
+      res.removeHeader('ETag');
       res.json(data);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch oral traditions" });
@@ -235,13 +255,18 @@ export async function registerRoutes(
   app.get("/api/proxy/sacred-geography/weather-prophecies", async (req, res) => {
     try {
       const { lang } = req.query;
+      const cacheBust = `${lang || "en"}-${Date.now()}`;
       const response = await fetch(
-        `${TQF_BASE_URL}/api/sacred-geography/weather-prophecies?lang=${lang || "en"}`,
+        `${TQF_BASE_URL}/api/sacred-geography/weather-prophecies?lang=${lang || "en"}&_cb=${cacheBust}`,
         {
           headers: { "x-api-key": TQF_API_KEY },
+          cache: "no-store",
         }
       );
       const data = await response.json();
+      res.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+      res.set('Vary', 'Accept-Language');
+      res.removeHeader('ETag');
       res.json(data);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch weather prophecies" });
@@ -251,13 +276,18 @@ export async function registerRoutes(
   app.get("/api/proxy/sacred-geography/plant-medicine-timing", async (req, res) => {
     try {
       const { lang } = req.query;
+      const cacheBust = `${lang || "en"}-${Date.now()}`;
       const response = await fetch(
-        `${TQF_BASE_URL}/api/sacred-geography/plant-medicine-timing?lang=${lang || "en"}`,
+        `${TQF_BASE_URL}/api/sacred-geography/plant-medicine-timing?lang=${lang || "en"}&_cb=${cacheBust}`,
         {
           headers: { "x-api-key": TQF_API_KEY },
+          cache: "no-store",
         }
       );
       const data = await response.json();
+      res.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+      res.set('Vary', 'Accept-Language');
+      res.removeHeader('ETag');
       res.json(data);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch plant medicine timing" });
