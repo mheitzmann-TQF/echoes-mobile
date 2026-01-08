@@ -22,6 +22,7 @@ import { getDailyPhoto } from '../lib/PhotoService';
 import { cleanTone } from '../lib/labelize';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
+import { getApiLang } from '../lib/lang';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -327,7 +328,7 @@ const observanceStyles = StyleSheet.create({
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { locationName, coordinates, timezone, language } = useLocation();
+  const { locationName, coordinates, timezone } = useLocation();
   const { colors, theme } = useTheme();
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
@@ -463,12 +464,13 @@ export default function HomeScreen() {
       );
 
       // Fetch Bundle + Calendars + Photo + Consciousness + Instant + Observances
+      const lang = getApiLang();
       const [bundleData, calendarsData, photoData, consciousnessData, instantData, observancesData] = await Promise.all([
         Promise.race([
-          api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone),
+          api.getDailyBundle(coordinates.lat, coordinates.lng, lang, timezone),
           timeoutPromise,
         ]) as Promise<DailyBundleResponse>,
-        api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, language).catch(() => null),
+        api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, lang).catch(() => null),
         getDailyPhoto().catch(() => null),
         api.getConsciousnessAnalysis().catch(() => null),
         api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone).catch(() => null),
@@ -596,7 +598,7 @@ export default function HomeScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [coordinates, timezone, language]);
+  }, [coordinates, timezone]);
 
   useEffect(() => {
     fetchData();

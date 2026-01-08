@@ -6,6 +6,7 @@ import { useTheme, ThemeColors } from '../lib/ThemeContext';
 import api, { DailyBundleResponse, PlanetaryData } from '../lib/api';
 import { ChevronDown, ChevronUp, Info, Moon, Sun, Globe, Zap, Dna } from 'lucide-react-native';
 import { toTitleCase } from '../lib/labelize';
+import { getApiLang } from '../lib/lang';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -182,7 +183,7 @@ function StickyHeader({ coherence, solarPhase, lunarPhase }: { coherence: number
 }
 
 export default function FieldScreen() {
-  const { coordinates, timezone, language } = useLocation();
+  const { coordinates, timezone } = useLocation();
   const { colors } = useTheme();
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
@@ -204,8 +205,9 @@ export default function FieldScreen() {
   useEffect(() => {
     async function loadData() {
       try {
+        const lang = getApiLang();
         const [bundleData, instantData, bioData, consciousnessData] = await Promise.all([
-          api.getDailyBundle(coordinates.lat, coordinates.lng, language, timezone)
+          api.getDailyBundle(coordinates.lat, coordinates.lng, lang, timezone)
             .then(res => res.success ? res.data : null)
             .catch(() => null),
           api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone)
@@ -273,7 +275,7 @@ export default function FieldScreen() {
       }
     }
     loadData();
-  }, [coordinates, timezone, language]);
+  }, [coordinates, timezone]);
 
   if (loading) {
     return (
