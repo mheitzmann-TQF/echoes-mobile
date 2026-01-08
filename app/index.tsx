@@ -362,6 +362,45 @@ export default function HomeScreen() {
   const [selectedCalendar, setSelectedCalendar] = useState<any | null>(null);
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
 
+  const translateCalendarContent = useCallback((content: string | undefined | null): string | null => {
+    if (!content) return null;
+    const lower = content.toLowerCase();
+    if (lower.includes('new beginning') || lower.includes('fresh start') || lower.includes('setting intention')) {
+      return t('calendars.newBeginnings');
+    }
+    if (lower.includes('building') && lower.includes('waning')) {
+      return t('calendars.buildingWaningEnergy');
+    }
+    if (lower.includes('sacred month') && lower.includes('reflection')) {
+      return t('calendars.sacredMonthReflection');
+    }
+    if (lower.includes('sacred month') && lower.includes('energy')) {
+      return t('calendars.sacredMonthEnergy');
+    }
+    if (lower.includes('sacred beginning')) {
+      return t('calendars.sacredBeginning');
+    }
+    if (lower.includes('deer') && lower.includes('grace')) {
+      return t('calendars.deerGrace');
+    }
+    if (lower.includes('achievement') || (lower.includes('patience') && lower.includes('perseverance'))) {
+      return t('calendars.achievementPatience');
+    }
+    if (lower.includes('waxing') && lower.includes('building')) {
+      return t('calendars.waxingPhase');
+    }
+    if (lower.includes('waning') && lower.includes('releasing')) {
+      return t('calendars.waningPhase');
+    }
+    if (lower.includes('full moon') && lower.includes('peak')) {
+      return t('calendars.fullMoonEnergy');
+    }
+    if (lower.includes('new moon') && lower.includes('fresh')) {
+      return t('calendars.newMoonEnergy');
+    }
+    return content;
+  }, [t]);
+
   const handleCalendarSelect = useCallback((calendar: any) => {
     const rawCal = rawCalendars.find((c: any) => {
       const sys = (c.system || '').toLowerCase();
@@ -375,8 +414,8 @@ export default function HomeScreen() {
     
     const calendarDetail = rawCal ? {
       ...calendar,
-      significance: rawCal.significance,
-      energy: rawCal.energy,
+      significance: translateCalendarContent(rawCal.significance),
+      energy: translateCalendarContent(rawCal.energy),
       phase: rawCal.phase,
       element: rawCal.element,
     } : {
@@ -386,7 +425,7 @@ export default function HomeScreen() {
     
     setSelectedCalendar(calendarDetail);
     setCalendarModalVisible(true);
-  }, [rawCalendars, t]);
+  }, [rawCalendars, t, translateCalendarContent]);
 
   // Default mock data for fallbacks
   const getMockPlanetaryData = (): PlanetaryData => ({

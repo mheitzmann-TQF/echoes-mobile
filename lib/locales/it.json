@@ -310,7 +310,18 @@
     "energy": "Energia",
     "phase": "Fase",
     "element": "Elemento",
-    "gregorianSignificance": "Calendario civile standard utilizzato in tutto il mondo per commercio e vita quotidiana"
+    "gregorianSignificance": "Calendario civile standard utilizzato in tutto il mondo per commercio e vita quotidiana",
+    "newBeginnings": "Nuovi inizi, ricominciare, stabilire intenzioni",
+    "buildingWaningEnergy": "Energia crescente/calante",
+    "sacredMonthReflection": "Mese sacro di riflessione e rinnovamento",
+    "sacredMonthEnergy": "Energia del mese sacro - pratiche spirituali intensificate",
+    "sacredBeginning": "Inizio sacro - tempo di riflessione e intenzione",
+    "deerGrace": "Cervo, grazia, autorità spirituale - guidare con forza gentile",
+    "achievementPatience": "Realizzazione - pazienza, perseveranza",
+    "waxingPhase": "Fase crescente - energia che si accumula verso la pienezza",
+    "waningPhase": "Fase calante - energia che si libera verso la quiete",
+    "fullMoonEnergy": "Energia di luna piena - massima illuminazione e completamento",
+    "newMoonEnergy": "Energia di luna nuova - nuovi inizi e intenzioni"
   },
   "upcoming": {
     "title": "In Arrivo",

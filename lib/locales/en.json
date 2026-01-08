@@ -348,7 +348,18 @@
     "energy": "Energy",
     "phase": "Phase",
     "element": "Element",
-    "gregorianSignificance": "Standard civil calendar used worldwide for commerce and daily life"
+    "gregorianSignificance": "Standard civil calendar used worldwide for commerce and daily life",
+    "newBeginnings": "New beginnings, fresh starts, setting intentions",
+    "buildingWaningEnergy": "Building/Waning Energy",
+    "sacredMonthReflection": "Sacred month of reflection and renewal",
+    "sacredMonthEnergy": "Sacred month energy - enhanced spiritual practices",
+    "sacredBeginning": "Sacred beginning - time for reflection and intention",
+    "deerGrace": "Deer, grace, spiritual authority - lead with gentle strength",
+    "achievementPatience": "Achievement - patience, perseverance",
+    "waxingPhase": "Waxing phase - energy building toward fullness",
+    "waningPhase": "Waning phase - energy releasing toward stillness",
+    "fullMoonEnergy": "Full moon energy - peak illumination and completion",
+    "newMoonEnergy": "New moon energy - fresh starts and intentions"
   },
   "upcoming": {
     "title": "Upcoming",

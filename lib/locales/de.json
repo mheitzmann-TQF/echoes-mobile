@@ -225,7 +225,18 @@
     "energy": "Energie",
     "phase": "Phase",
     "element": "Element",
-    "gregorianSignificance": "Standard-Zivilkalender weltweit für Handel und tägliches Leben verwendet"
+    "gregorianSignificance": "Standard-Zivilkalender weltweit für Handel und tägliches Leben verwendet",
+    "newBeginnings": "Neuanfänge, frische Starts, Absichten setzen",
+    "buildingWaningEnergy": "Zunehmende/abnehmende Energie",
+    "sacredMonthReflection": "Heiliger Monat der Reflexion und Erneuerung",
+    "sacredMonthEnergy": "Heilige Monatsenergie - verstärkte spirituelle Praktiken",
+    "sacredBeginning": "Heiliger Beginn - Zeit für Reflexion und Absicht",
+    "deerGrace": "Hirsch, Anmut, spirituelle Autorität - mit sanfter Stärke führen",
+    "achievementPatience": "Vollendung - Geduld, Ausdauer",
+    "waxingPhase": "Zunehmende Phase - Energie baut sich zur Fülle auf",
+    "waningPhase": "Abnehmende Phase - Energie löst sich zur Stille auf",
+    "fullMoonEnergy": "Vollmondenergie - höchste Erleuchtung und Vollendung",
+    "newMoonEnergy": "Neumondenergie - Neuanfänge und Absichten"
   },
   "upcoming": {
     "title": "Bevorstehend",
