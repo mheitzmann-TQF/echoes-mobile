@@ -343,7 +343,98 @@ class EchoesAPI {
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('❌ Important dates error:', error);
-      // Return empty array to use fallback
+      return [];
+    }
+  }
+
+  async getOptimalTiming(lat?: number, lng?: number, tz: string = 'UTC', lang: string = 'en'): Promise<any> {
+    try {
+      let url = `/api/proxy/planetary/optimal-timing?tz=${tz}&lang=${lang}`;
+      if (lat && lng) url += `&lat=${lat}&lng=${lng}`;
+      
+      const response = await fetch(url, { headers: this.getHeaders() });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('❌ Optimal timing error:', error);
+      return null;
+    }
+  }
+
+  async getSacredSites(lang: string = 'en', limit: number = 20): Promise<any[]> {
+    try {
+      const url = `/api/proxy/sacred-geography/sites?lang=${lang}&limit=${limit}`;
+      
+      const response = await fetch(url, { headers: this.getHeaders() });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('❌ Sacred sites error:', error);
+      return [];
+    }
+  }
+
+  async getCeremonialTimings(lang: string = 'en'): Promise<any[]> {
+    try {
+      const url = `/api/proxy/sacred-geography/ceremonial-timings?lang=${lang}`;
+      
+      const response = await fetch(url, { headers: this.getHeaders() });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('❌ Ceremonial timings error:', error);
+      return [];
+    }
+  }
+
+  async getOralTraditions(lang: string = 'en', category?: string): Promise<any[]> {
+    try {
+      let url = `/api/proxy/sacred-geography/oral-traditions?lang=${lang}`;
+      if (category) url += `&category=${category}`;
+      
+      const response = await fetch(url, { headers: this.getHeaders() });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('❌ Oral traditions error:', error);
+      return [];
+    }
+  }
+
+  async getWeatherProphecies(lang: string = 'en'): Promise<any[]> {
+    try {
+      const url = `/api/proxy/sacred-geography/weather-prophecies?lang=${lang}`;
+      
+      const response = await fetch(url, { headers: this.getHeaders() });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('❌ Weather prophecies error:', error);
+      return [];
+    }
+  }
+
+  async getPlantMedicineTiming(lang: string = 'en'): Promise<any[]> {
+    try {
+      const url = `/api/proxy/sacred-geography/plant-medicine-timing?lang=${lang}`;
+      
+      const response = await fetch(url, { headers: this.getHeaders() });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('❌ Plant medicine timing error:', error);
       return [];
     }
   }
