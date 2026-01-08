@@ -32,7 +32,13 @@
     "photoBy": "Photo par",
     "on": "sur",
     "tapToClose": "Appuyez pour fermer",
-    "todaysObservances": "OBSERVANCES DU JOUR"
+    "todaysObservances": "OBSERVANCES DU JOUR",
+    "lunarNote": "Note Lunaire",
+    "globalPulse": "Pouls Global",
+    "calendarConfluence": "Confluence des Calendriers",
+    "morningLight": "Lumière du Matin",
+    "afternoonLight": "Lumière de l'Après-midi",
+    "ancestralThread": "Fil Ancestral"
   },
   "field": {
     "title": "Champ",

@@ -32,7 +32,13 @@
     "photoBy": "Photo by",
     "on": "on",
     "tapToClose": "Tap anywhere to close",
-    "todaysObservances": "TODAY'S OBSERVANCES"
+    "todaysObservances": "TODAY'S OBSERVANCES",
+    "lunarNote": "Lunar Note",
+    "globalPulse": "Global Pulse",
+    "calendarConfluence": "Calendar Confluence",
+    "morningLight": "Morning Light",
+    "afternoonLight": "Afternoon Light",
+    "ancestralThread": "Ancestral Thread"
   },
   "field": {
     "title": "Field",

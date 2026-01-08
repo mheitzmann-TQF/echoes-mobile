@@ -408,7 +408,7 @@ export default function HomeScreen() {
       {
         id: '1',
         type: 'lunar_guidance',
-        title: 'Lunar Note',
+        title: t('today.lunarNote'),
         message: getRandomItem(lunarMessages, seed),
         background_theme: 'lunar',
         relevance_score: 0.9,
@@ -417,7 +417,7 @@ export default function HomeScreen() {
       {
         id: '2',
         type: 'global_consciousness',
-        title: 'Global Pulse',
+        title: t('today.globalPulse'),
         message: getRandomItem(consciousnessMessages, seed + 1),
         background_theme: 'consciousness',
         relevance_score: 0.85,
@@ -426,7 +426,7 @@ export default function HomeScreen() {
       {
         id: '3',
         type: 'cultural_rhythms',
-        title: 'Calendar Confluence',
+        title: t('today.calendarConfluence'),
         message: getRandomItem(culturalMessages, seed + 2),
         background_theme: 'culture',
         relevance_score: 0.88,
@@ -435,7 +435,7 @@ export default function HomeScreen() {
       {
         id: '4',
         type: 'solar_rhythm',
-        title: hour >= 12 ? 'Afternoon Light' : 'Morning Light',
+        title: hour >= 12 ? t('today.afternoonLight') : t('today.morningLight'),
         message: getRandomItem(solarMessages, seed + 3),
         background_theme: 'solar',
         relevance_score: 0.84,
@@ -444,7 +444,7 @@ export default function HomeScreen() {
       {
         id: '5',
         type: 'ancestral_echo',
-        title: 'Ancestral Thread',
+        title: t('today.ancestralThread'),
         message: getRandomItem(ancestralMessages, seed + 4),
         background_theme: 'ancestral',
         relevance_score: 0.86,

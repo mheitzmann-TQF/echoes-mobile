@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Moon, Zap, Globe } from 'lucide-react-native';
 import { PlanetaryData } from '../lib/api';
 import { useTheme } from '../lib/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface MetricsGridProps {
   planetary: PlanetaryData;
@@ -10,6 +11,7 @@ interface MetricsGridProps {
 
 export default function MetricsGrid({ planetary }: MetricsGridProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const lunarIllumination = Math.round(planetary.lunar.illumination);
   const geoKpIndex = planetary.geomagnetic.kpIndex || 2;
@@ -19,26 +21,26 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
     {
       id: 'lunar',
       number: `${lunarIllumination}%`,
-      numberLabel: 'Lunar',
+      numberLabel: t('field.lunar'),
       icon: <Moon size={22} color={colors.text} />,
       cardTitle: planetary.lunar.phase,
-      cardDesc: 'Lunar Phase',
+      cardDesc: t('field.lunarPhase'),
     },
     {
       id: 'geomagnetism',
       number: `${geoKpIndex}`,
-      numberLabel: 'Geomagnetism',
+      numberLabel: t('field.geomagnetic'),
       icon: <Zap size={22} color={colors.text} />,
       cardTitle: planetary.geomagnetic.activity,
-      cardDesc: 'Geomagnetic',
+      cardDesc: t('field.geomagneticField'),
     },
     {
       id: 'coherence',
       number: `${Math.round(coherence)}%`,
-      numberLabel: 'Coherence',
+      numberLabel: t('field.coherence'),
       icon: <Globe size={22} color={colors.text} />,
-      cardTitle: 'Active',
-      cardDesc: 'Field Strength',
+      cardTitle: t('field.active'),
+      cardDesc: t('field.globalCoherence'),
     },
   ];
 
