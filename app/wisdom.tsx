@@ -288,11 +288,6 @@ export default function WisdomScreen() {
           {oralTab === 'plants' ? (
             plantMedicine.length > 0 ? (
               <View style={[styles.contentCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <View style={styles.oralHeader}>
-                  <Star size={18} color="#27ae60" />
-                  <Text style={[styles.oralSectionName, { color: colors.text }]}>{t('learn.plantWisdomTitle')}</Text>
-                </View>
-                
                 {plantMedicine.map((plant, idx) => {
                   const harvestText = plant.harvestTiming 
                     ? Object.entries(plant.harvestTiming).map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`).join('\n')
@@ -345,13 +340,6 @@ export default function WisdomScreen() {
             )
           ) : activeOralTraditions.length > 0 ? (
             <View style={[styles.contentCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <View style={styles.oralHeader}>
-                <Star size={18} color="#2ecc71" />
-                <Text style={[styles.oralSectionName, { color: colors.text }]}>
-                  {oralTab === 'weather' ? t('learn.weatherProphecyTitle') : t('learn.dreamTimeTitle')}
-                </Text>
-              </View>
-              
               {activeOralTraditions.map((tradition, idx) => (
                 <View key={idx} style={[styles.traditionCard, { borderColor: colors.border }]}>
                   <View style={styles.traditionHeader}>
