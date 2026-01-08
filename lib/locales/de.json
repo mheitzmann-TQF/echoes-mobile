@@ -41,8 +41,7 @@
   },
   "field": {
     "title": "Puls",
-    "subtitle": "Kosmos · Erde · Körper",
-    "howSignalShaped": "Wie das heutige Signal geformt ist",
+    "subtitle": "Kosmische, Erd- & Körperrhythmen",
     "cosmos": "KOSMOS",
     "earth": "ERDE",
     "body": "KÖRPER",
@@ -173,6 +172,7 @@
   },
   "learn": {
     "title": "Weisheit",
+    "subtitle": "Was heute bedeutete",
     "explore": "Erkunden",
     "sacredGeography": "Heilige Geographie",
     "oralTradition": "Mündliche Überlieferung",

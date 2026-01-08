@@ -742,7 +742,6 @@ export default function FieldScreen() {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={[styles.headerTitle, { color: colors.text }]}>{t('field.title')}</Text>
         <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{t('field.subtitle')}</Text>
-        <Text style={[styles.headerSubtext, { color: colors.textTertiary }]}>{t('field.howSignalShaped')}</Text>
 
         {/* Hero Timing Card - Primary action-oriented content */}
         <HeroTimingCard
@@ -962,12 +961,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 16,
-    marginBottom: 4,
-  },
-  headerSubtext: {
-    fontSize: 14,
     marginBottom: 24,
-    fontStyle: 'italic',
   },
   section: {
     marginBottom: 32,

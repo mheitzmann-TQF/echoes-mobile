@@ -50,8 +50,7 @@
   },
   "field": {
     "title": "Pouls",
-    "subtitle": "Cosmos · Terre · Corps",
-    "howSignalShaped": "Comment le signal d'aujourd'hui est façonné",
+    "subtitle": "Rythmes cosmiques, terrestres et corporels",
     "cosmos": "COSMOS",
     "earth": "TERRE",
     "body": "CORPS",
@@ -235,7 +234,7 @@
   },
   "learn": {
     "title": "Sagesse",
-    "subtitle": "Explorez les traditions de mesure du temps et la sagesse culturelle",
+    "subtitle": "Ce qu'aujourd'hui a signifié",
     "explore": "Explorer",
     "sacredGeography": "Géographie Sacrée",
     "oralTradition": "Tradition Orale",

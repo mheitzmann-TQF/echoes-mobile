@@ -41,8 +41,7 @@
   },
   "field": {
     "title": "Pulso",
-    "subtitle": "Cosmos · Tierra · Cuerpo",
-    "howSignalShaped": "Cómo se forma la señal de hoy",
+    "subtitle": "Ritmos cósmicos, terrestres y corporales",
     "cosmos": "COSMOS",
     "earth": "TIERRA",
     "body": "CUERPO",
@@ -173,6 +172,7 @@
   },
   "learn": {
     "title": "Sabiduría",
+    "subtitle": "Lo que hoy significó",
     "explore": "Explorar",
     "sacredGeography": "Geografía Sagrada",
     "oralTradition": "Tradición Oral",
