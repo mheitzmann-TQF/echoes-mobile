@@ -138,6 +138,12 @@ function ExpandableCard({
   );
 }
 
+function translateOptimalTiming(text: string, t: (key: string, options?: any) => string): string {
+  const key = text.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+  const translated = t(`field.timing_${key}`, { defaultValue: '' });
+  return translated || text;
+}
+
 function generateCircadianObservations(phase: string, t: (key: string) => string): string[] {
   const normalizedPhase = phase.toLowerCase();
   
@@ -799,7 +805,7 @@ export default function FieldScreen() {
             <ExpandableCard
               icon={<Clock size={20} color={colors.text} />}
               title={t('field.timing')}
-              message={optimalTiming?.currentPhase || t('field.timingDefault')}
+              message={translateOptimalTiming(optimalTiming?.currentPhase || '', t) || t('field.timingDefault')}
               isExpanded={expandedCards['timing']}
               onToggle={() => toggleCard('timing')}
               chips={[t('field.chipLunarInfluence'), t('field.chipActivity')]}
@@ -808,7 +814,7 @@ export default function FieldScreen() {
                 <View style={styles.expandedDetails}>
                   {optimalTiming?.currentPhase && (
                     <Text style={[styles.expandedValue, { color: colors.text, marginBottom: 16, fontSize: 16, fontWeight: '500' }]}>
-                      {toTitleCase(optimalTiming.currentPhase)}
+                      {translateOptimalTiming(optimalTiming.currentPhase, t)}
                     </Text>
                   )}
                   
@@ -819,13 +825,13 @@ export default function FieldScreen() {
                         <View key={index} style={styles.timingRow}>
                           <View style={{ flex: 1 }}>
                             <Text style={[styles.timingActivity, { color: colors.text, fontWeight: '500' }]}>
-                              {item.activity}
+                              {translateOptimalTiming(item.activity, t)}
                             </Text>
                             <Text style={[styles.timingReason, { color: colors.textSecondary }]}>
-                              {item.reason}
+                              {translateOptimalTiming(item.reason, t)}
                             </Text>
                           </View>
-                          <Text style={[styles.timingValue, { color: colors.textSecondary }]}>{item.optimalTime}</Text>
+                          <Text style={[styles.timingValue, { color: colors.textSecondary }]}>{translateOptimalTiming(item.optimalTime, t)}</Text>
                         </View>
                       ))}
                     </>
@@ -838,7 +844,7 @@ export default function FieldScreen() {
                       {optimalTiming.recommendations.map((rec: string, index: number) => (
                         <View key={index} style={styles.bulletRow}>
                           <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>
-                          <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{rec}</Text>
+                          <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{translateOptimalTiming(rec, t)}</Text>
                         </View>
                       ))}
                     </>

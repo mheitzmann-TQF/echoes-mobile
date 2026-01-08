@@ -40,7 +40,7 @@
     "echo": "Echo"
   },
   "field": {
-    "title": "Feld",
+    "title": "Puls",
     "subtitle": "Kosmos · Erde · Körper",
     "howSignalShaped": "Wie das heutige Signal geformt ist",
     "cosmos": "KOSMOS",
@@ -155,7 +155,21 @@
     "activity_socializing": "Geselligkeit",
     "avoid_majorDecisions": "Wichtige Entscheidungen",
     "avoid_heavyMeals": "Schwere Mahlzeiten",
-    "recommendations": "Empfehlungen"
+    "recommendations": "Empfehlungen",
+    "timing_meditation_contemplation": "Meditation und Kontemplation",
+    "timing_creative_work": "Kreative Arbeit",
+    "timing_decision_making": "Entscheidungsfindung",
+    "timing_new_beginnings": "Neuanfänge",
+    "timing_early_evening": "Früher Abend",
+    "timing_morning_to_midday": "Morgen bis Mittag",
+    "timing_wait_for_quarter_moon": "Auf Viertelmond warten",
+    "timing_wait_20_days": "20 Tage warten",
+    "timing_natural_rhythms_support_inner_harmony": "Natürliche Rhythmen unterstützen innere Harmonie",
+    "timing_solar_energy_supports_focused_creative_expression": "Sonnenenergie unterstützt fokussierten kreativen Ausdruck",
+    "timing_quarter_moons_bring_clarity_to_decisions": "Viertelmonde bringen Klarheit in Entscheidungen",
+    "timing_new_moon_energy_supports_fresh_starts": "Neumondenergie unterstützt Neuanfänge",
+    "timing_waning_gibbous_moon_with_quiet_geomagnetic_field": "Abnehmender Dreiviertelmond mit ruhigem geomagnetischem Feld",
+    "timing_releasing_energy_supports_clearing_and_gratitude": "Loslassende Energie unterstützt Klärung und Dankbarkeit"
   },
   "learn": {
     "title": "Lernen",

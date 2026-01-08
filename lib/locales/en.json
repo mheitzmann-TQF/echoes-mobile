@@ -49,7 +49,7 @@
     "echo": "Echo"
   },
   "field": {
-    "title": "Field",
+    "title": "Pulse",
     "subtitle": "Cosmos · Earth · Body",
     "howSignalShaped": "How today's signal is shaped",
     "cosmos": "COSMOS",
@@ -217,7 +217,21 @@
     "activity_socializing": "Socializing",
     "avoid_majorDecisions": "Major Decisions",
     "avoid_heavyMeals": "Heavy Meals",
-    "recommendations": "Recommendations"
+    "recommendations": "Recommendations",
+    "timing_meditation_contemplation": "Meditation & Contemplation",
+    "timing_creative_work": "Creative Work",
+    "timing_decision_making": "Decision Making",
+    "timing_new_beginnings": "New Beginnings",
+    "timing_early_evening": "Early evening",
+    "timing_morning_to_midday": "Morning to Midday",
+    "timing_wait_for_quarter_moon": "Wait for quarter moon",
+    "timing_wait_20_days": "Wait 20 days",
+    "timing_natural_rhythms_support_inner_harmony": "Natural rhythms support inner harmony",
+    "timing_solar_energy_supports_focused_creative_expression": "Solar energy supports focused creative expression",
+    "timing_quarter_moons_bring_clarity_to_decisions": "Quarter moons bring clarity to decisions",
+    "timing_new_moon_energy_supports_fresh_starts": "New moon energy supports fresh starts",
+    "timing_waning_gibbous_moon_with_quiet_geomagnetic_field": "Waning gibbous moon with quiet geomagnetic field",
+    "timing_releasing_energy_supports_clearing_and_gratitude": "Releasing energy supports clearing and gratitude"
   },
   "learn": {
     "title": "Learn",

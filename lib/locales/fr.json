@@ -49,7 +49,7 @@
     "echo": "Écho"
   },
   "field": {
-    "title": "Champ",
+    "title": "Pouls",
     "subtitle": "Cosmos · Terre · Corps",
     "howSignalShaped": "Comment le signal d'aujourd'hui est façonné",
     "cosmos": "COSMOS",
@@ -217,7 +217,21 @@
     "activity_socializing": "Socialisation",
     "avoid_majorDecisions": "Décisions importantes",
     "avoid_heavyMeals": "Repas lourds",
-    "recommendations": "Recommandations"
+    "recommendations": "Recommandations",
+    "timing_meditation_contemplation": "Méditation et contemplation",
+    "timing_creative_work": "Travail créatif",
+    "timing_decision_making": "Prise de décision",
+    "timing_new_beginnings": "Nouveaux départs",
+    "timing_early_evening": "Début de soirée",
+    "timing_morning_to_midday": "Matin à midi",
+    "timing_wait_for_quarter_moon": "Attendre le quartier de lune",
+    "timing_wait_20_days": "Attendre 20 jours",
+    "timing_natural_rhythms_support_inner_harmony": "Les rythmes naturels soutiennent l'harmonie intérieure",
+    "timing_solar_energy_supports_focused_creative_expression": "L'énergie solaire soutient l'expression créative concentrée",
+    "timing_quarter_moons_bring_clarity_to_decisions": "Les quartiers de lune apportent de la clarté aux décisions",
+    "timing_new_moon_energy_supports_fresh_starts": "L'énergie de la nouvelle lune soutient les nouveaux départs",
+    "timing_waning_gibbous_moon_with_quiet_geomagnetic_field": "Lune gibbeuse décroissante avec champ géomagnétique calme",
+    "timing_releasing_energy_supports_clearing_and_gratitude": "L'énergie de libération soutient le nettoyage et la gratitude"
   },
   "learn": {
     "title": "Apprendre",

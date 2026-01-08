@@ -40,7 +40,7 @@
     "echo": "Eco"
   },
   "field": {
-    "title": "Campo",
+    "title": "Pulso",
     "subtitle": "Cosmos · Tierra · Cuerpo",
     "howSignalShaped": "Cómo se forma la señal de hoy",
     "cosmos": "COSMOS",
@@ -155,7 +155,21 @@
     "activity_socializing": "Socialización",
     "avoid_majorDecisions": "Decisiones importantes",
     "avoid_heavyMeals": "Comidas pesadas",
-    "recommendations": "Recomendaciones"
+    "recommendations": "Recomendaciones",
+    "timing_meditation_contemplation": "Meditación y contemplación",
+    "timing_creative_work": "Trabajo creativo",
+    "timing_decision_making": "Toma de decisiones",
+    "timing_new_beginnings": "Nuevos comienzos",
+    "timing_early_evening": "Primera hora de la tarde",
+    "timing_morning_to_midday": "Mañana a mediodía",
+    "timing_wait_for_quarter_moon": "Esperar al cuarto de luna",
+    "timing_wait_20_days": "Esperar 20 días",
+    "timing_natural_rhythms_support_inner_harmony": "Los ritmos naturales apoyan la armonía interior",
+    "timing_solar_energy_supports_focused_creative_expression": "La energía solar apoya la expresión creativa enfocada",
+    "timing_quarter_moons_bring_clarity_to_decisions": "Los cuartos de luna aportan claridad a las decisiones",
+    "timing_new_moon_energy_supports_fresh_starts": "La energía de la luna nueva apoya los nuevos comienzos",
+    "timing_waning_gibbous_moon_with_quiet_geomagnetic_field": "Luna gibosa menguante con campo geomagnético tranquilo",
+    "timing_releasing_energy_supports_clearing_and_gratitude": "La energía de liberación apoya la limpieza y la gratitud"
   },
   "learn": {
     "title": "Aprender",
