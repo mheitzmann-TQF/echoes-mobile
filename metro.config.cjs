@@ -2,18 +2,9 @@ const { getDefaultConfig } = require('expo/metro-config');
 
 const config = getDefaultConfig(__dirname);
 
-config.resolver.sourceExts = [
-  'web.js',
-  'web.jsx',
-  'web.ts',
-  'web.tsx',
-  'js',
-  'jsx',
-  'ts',
-  'tsx',
-  'json',
-  'cjs',
-  'mjs',
-];
+// Keep Expo defaults. Just ensure cjs is supported if needed.
+if (!config.resolver.sourceExts.includes('cjs')) {
+  config.resolver.sourceExts.push('cjs');
+}
 
 module.exports = config;

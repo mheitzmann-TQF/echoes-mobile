@@ -1,5 +1,5 @@
 // lib/env.ts
-// Single source of truth for env values (works in Expo app + Expo Router API routes)
+// Single source of truth for env values (Expo app + Expo Router API routes)
 
 export const API_URL =
   process.env.EXPO_PUBLIC_API_URL ??
