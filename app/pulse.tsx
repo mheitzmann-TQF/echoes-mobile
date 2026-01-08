@@ -203,11 +203,150 @@ function StickyHeader({ coherence, solarPhase, lunarPhase }: { coherence: number
   );
 }
 
+interface HeroTimingCardProps {
+  optimalTiming: any;
+  isExpanded: boolean;
+  onToggle: () => void;
+  colors: ThemeColors;
+  theme: 'dark' | 'light';
+  t: (key: string, options?: any) => string;
+}
+
+function HeroTimingCard({ optimalTiming, isExpanded, onToggle, colors, theme, t }: HeroTimingCardProps) {
+  if (!optimalTiming || (!optimalTiming.activities?.length && !optimalTiming.recommendations?.length)) {
+    return null;
+  }
+
+  const heroGradientDark = 'rgba(99, 102, 241, 0.15)';
+  const heroGradientLight = 'rgba(99, 102, 241, 0.08)';
+  const accentBorder = 'rgba(99, 102, 241, 0.4)';
+
+  return (
+    <TouchableOpacity 
+      style={[
+        styles.heroCard, 
+        { 
+          backgroundColor: theme === 'dark' ? heroGradientDark : heroGradientLight,
+          borderColor: accentBorder 
+        }
+      ]} 
+      onPress={onToggle}
+      activeOpacity={0.9}
+    >
+      <View style={styles.heroHeader}>
+        <View style={styles.heroIconContainer}>
+          <Clock size={24} color={colors.accent} />
+        </View>
+        <View style={styles.heroTitleContainer}>
+          <Text style={[styles.heroTitle, { color: colors.text }]}>{t('field.optimalTiming')}</Text>
+          <Text style={[styles.heroSubtitle, { color: colors.textSecondary }]}>
+            {translateOptimalTiming(optimalTiming?.currentPhase || '', t) || t('field.timingDefault')}
+          </Text>
+        </View>
+        <View style={styles.chevronContainer}>
+          {isExpanded ? 
+            <ChevronUp size={20} color={colors.textTertiary} /> : 
+            <ChevronDown size={20} color={colors.textTertiary} />
+          }
+        </View>
+      </View>
+      
+      {isExpanded && (
+        <View style={styles.heroContent}>
+          {optimalTiming?.activities && optimalTiming.activities.length > 0 && (
+            <>
+              <Text style={[styles.heroSectionTitle, { color: colors.accent }]}>{t('field.bestFor')}</Text>
+              {optimalTiming.activities.map((item: any, index: number) => (
+                <View key={index} style={styles.heroTimingRow}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.heroActivity, { color: colors.text }]}>
+                      {translateOptimalTiming(item.activity, t)}
+                    </Text>
+                    <Text style={[styles.heroReason, { color: colors.textSecondary }]}>
+                      {translateOptimalTiming(item.reason, t)}
+                    </Text>
+                  </View>
+                  <View style={[styles.heroTimeBadge, { backgroundColor: colors.surfaceHighlight }]}>
+                    <Text style={[styles.heroTimeText, { color: colors.text }]}>
+                      {translateOptimalTiming(item.optimalTime, t)}
+                    </Text>
+                  </View>
+                </View>
+              ))}
+            </>
+          )}
+          
+          {optimalTiming?.recommendations && optimalTiming.recommendations.length > 0 && (
+            <>
+              <View style={[styles.heroDivider, { backgroundColor: colors.border }]} />
+              <Text style={[styles.heroSectionTitle, { color: colors.accent }]}>{t('field.recommendations')}</Text>
+              {optimalTiming.recommendations.map((rec: string, index: number) => (
+                <View key={index} style={styles.bulletRow}>
+                  <Text style={[styles.bulletChar, { color: colors.accent }]}>•</Text>
+                  <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{translateOptimalTiming(rec, t)}</Text>
+                </View>
+              ))}
+            </>
+          )}
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+}
+
+interface PulseSnapshotProps {
+  coherence: number | null;
+  circadianPhase: string;
+  geoActivity: string;
+  geoKpIndex: number;
+  colors: ThemeColors;
+  t: (key: string) => string;
+}
+
+function PulseSnapshot({ coherence, circadianPhase, geoActivity, geoKpIndex, colors, t }: PulseSnapshotProps) {
+  const getCoherenceColor = () => {
+    if (!coherence) return colors.textSecondary;
+    if (coherence >= 70) return '#10B981';
+    if (coherence >= 50) return '#F59E0B';
+    return '#EF4444';
+  };
+
+  const getGeoColor = () => {
+    if (geoKpIndex <= 2) return '#10B981';
+    if (geoKpIndex <= 5) return '#F59E0B';
+    return '#EF4444';
+  };
+
+  return (
+    <View style={styles.snapshotContainer}>
+      <View style={[styles.snapshotChip, { backgroundColor: colors.surfaceHighlight }]}>
+        <View style={[styles.snapshotDot, { backgroundColor: getCoherenceColor() }]} />
+        <Text style={[styles.snapshotLabel, { color: colors.textSecondary }]}>{t('field.coherence')}</Text>
+        <Text style={[styles.snapshotValue, { color: colors.text }]}>
+          {coherence !== null ? `${Math.round(coherence)}%` : '—'}
+        </Text>
+      </View>
+      
+      <View style={[styles.snapshotChip, { backgroundColor: colors.surfaceHighlight }]}>
+        <View style={[styles.snapshotDot, { backgroundColor: colors.accent }]} />
+        <Text style={[styles.snapshotLabel, { color: colors.textSecondary }]}>{t('field.body')}</Text>
+        <Text style={[styles.snapshotValue, { color: colors.text }]}>{circadianPhase}</Text>
+      </View>
+      
+      <View style={[styles.snapshotChip, { backgroundColor: colors.surfaceHighlight }]}>
+        <View style={[styles.snapshotDot, { backgroundColor: getGeoColor() }]} />
+        <Text style={[styles.snapshotLabel, { color: colors.textSecondary }]}>{t('field.geomagnetic')}</Text>
+        <Text style={[styles.snapshotValue, { color: colors.text }]}>{geoActivity}</Text>
+      </View>
+    </View>
+  );
+}
+
 export default function FieldScreen() {
   const { t, i18n } = useTranslation();
   const language = i18n.language;
   const { coordinates, timezone } = useLocation();
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
   const [bioRhythms, setBioRhythms] = useState<any>(null);
@@ -215,8 +354,10 @@ export default function FieldScreen() {
   const [optimalTiming, setOptimalTiming] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
-  // Expanded states
-  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+  // Expanded states - timing expanded by default for immediate value
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({
+    timing: true
+  });
 
   const toggleCard = (id: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -642,6 +783,26 @@ export default function FieldScreen() {
           lunarPhase={lunarPhase}
         />
 
+        {/* Hero Timing Card - Primary action-oriented content */}
+        <HeroTimingCard
+          optimalTiming={optimalTiming}
+          isExpanded={expandedCards['timing']}
+          onToggle={() => toggleCard('timing')}
+          colors={colors}
+          theme={theme}
+          t={t}
+        />
+
+        {/* Pulse Snapshot - Quick metrics at a glance */}
+        <PulseSnapshot
+          coherence={consciousnessData?.global_coherence || null}
+          circadianPhase={circadianPhase}
+          geoActivity={geoState.label}
+          geoKpIndex={geoKp}
+          colors={colors}
+          t={t}
+        />
+
         {/* Cosmos Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.cosmos')}</Text>
@@ -796,64 +957,6 @@ export default function FieldScreen() {
             }
           />
         </View>
-
-        {/* Optimal Timing Section */}
-        {optimalTiming && (optimalTiming.activities?.length > 0 || optimalTiming.recommendations?.length > 0) && (
-          <View style={styles.section}>
-            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.optimalTiming').toUpperCase()}</Text>
-            
-            <ExpandableCard
-              icon={<Clock size={20} color={colors.text} />}
-              title={t('field.timing')}
-              message={translateOptimalTiming(optimalTiming?.currentPhase || '', t) || t('field.timingDefault')}
-              isExpanded={expandedCards['timing']}
-              onToggle={() => toggleCard('timing')}
-              chips={[t('field.chipLunarInfluence'), t('field.chipActivity')]}
-              howToRead={[t('field.timingNote1'), t('field.timingNote2'), t('field.timingNote3')]}
-              expandedContent={
-                <View style={styles.expandedDetails}>
-                  {optimalTiming?.currentPhase && (
-                    <Text style={[styles.expandedValue, { color: colors.text, marginBottom: 16, fontSize: 16, fontWeight: '500' }]}>
-                      {translateOptimalTiming(optimalTiming.currentPhase, t)}
-                    </Text>
-                  )}
-                  
-                  {optimalTiming?.activities && optimalTiming.activities.length > 0 && (
-                    <>
-                      <Text style={[styles.subTitle, { color: colors.textSecondary, marginBottom: 8 }]}>{t('field.bestFor')}</Text>
-                      {optimalTiming.activities.map((item: any, index: number) => (
-                        <View key={index} style={styles.timingRow}>
-                          <View style={{ flex: 1 }}>
-                            <Text style={[styles.timingActivity, { color: colors.text, fontWeight: '500' }]}>
-                              {translateOptimalTiming(item.activity, t)}
-                            </Text>
-                            <Text style={[styles.timingReason, { color: colors.textSecondary }]}>
-                              {translateOptimalTiming(item.reason, t)}
-                            </Text>
-                          </View>
-                          <Text style={[styles.timingValue, { color: colors.textSecondary }]}>{translateOptimalTiming(item.optimalTime, t)}</Text>
-                        </View>
-                      ))}
-                    </>
-                  )}
-                  
-                  {optimalTiming?.recommendations && optimalTiming.recommendations.length > 0 && (
-                    <>
-                      <View style={[styles.divider, { backgroundColor: colors.border, marginVertical: 16 }]} />
-                      <Text style={[styles.subTitle, { color: colors.textSecondary, marginBottom: 8 }]}>{t('field.recommendations')}</Text>
-                      {optimalTiming.recommendations.map((rec: string, index: number) => (
-                        <View key={index} style={styles.bulletRow}>
-                          <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>
-                          <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{translateOptimalTiming(rec, t)}</Text>
-                        </View>
-                      ))}
-                    </>
-                  )}
-                </View>
-              }
-            />
-          </View>
-        )}
 
         {/* Signals */}
         <View style={styles.section}>
@@ -1127,5 +1230,108 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
     lineHeight: 16,
+  },
+  heroCard: {
+    borderRadius: 20,
+    marginBottom: 16,
+    borderWidth: 1.5,
+    overflow: 'hidden',
+  },
+  heroHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+  },
+  heroIconContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(99, 102, 241, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 14,
+  },
+  heroTitleContainer: {
+    flex: 1,
+  },
+  heroTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  heroSubtitle: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  heroContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  heroSectionTitle: {
+    fontSize: 12,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 12,
+    marginTop: 8,
+  },
+  heroTimingRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 14,
+  },
+  heroActivity: {
+    fontSize: 15,
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  heroReason: {
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  heroTimeBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    marginLeft: 12,
+  },
+  heroTimeText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  heroDivider: {
+    height: 1,
+    marginVertical: 16,
+  },
+  snapshotContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 28,
+  },
+  snapshotChip: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+  },
+  snapshotDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginBottom: 6,
+  },
+  snapshotLabel: {
+    fontSize: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 0.3,
+    marginBottom: 2,
+    textAlign: 'center',
+  },
+  snapshotValue: {
+    fontSize: 13,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
