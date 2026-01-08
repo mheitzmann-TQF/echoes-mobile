@@ -118,6 +118,7 @@ export default function WisdomScreen() {
   
   const [livingCalendars, setLivingCalendars] = useState<any[]>([]);
   const [oralTraditions, setOralTraditions] = useState<any[]>([]);
+  const [plantMedicine, setPlantMedicine] = useState<any[]>([]);
   const [ceremonialTimings, setCeremonialTimings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -130,13 +131,15 @@ export default function WisdomScreen() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [living, oral, ceremonial] = await Promise.all([
+        const [living, oral, plants, ceremonial] = await Promise.all([
           api.getLivingCalendars(language).catch(() => []),
           api.getOralTraditions(language).catch(() => []),
+          api.getPlantMedicineTiming(language).catch(() => []),
           api.getCeremonialTimings(language).catch(() => []),
         ]);
         setLivingCalendars(living);
         setOralTraditions(oral);
+        setPlantMedicine(plants);
         setCeremonialTimings(ceremonial);
       } finally {
         setLoading(false);
@@ -167,7 +170,7 @@ export default function WisdomScreen() {
   const weatherTraditions = oralTraditions.filter(t => t.traditionType === 'weather_prophecy');
   const dreamTraditions = oralTraditions.filter(t => t.traditionType === 'dream_time');
   
-  const activeOralTraditions = oralTab === 'weather' ? weatherTraditions : dreamTraditions;
+  const activeOralTraditions = oralTab === 'weather' ? weatherTraditions : oralTab === 'dreaming' ? dreamTraditions : [];
 
   const formatCulture = (s: string) => s?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || '';
 
@@ -178,6 +181,7 @@ export default function WisdomScreen() {
 
   const oralTabs = [
     { key: 'weather', label: t('learn.weather') },
+    { key: 'plants', label: t('learn.plants') },
     { key: 'dreaming', label: t('learn.dreaming') },
   ];
 
@@ -281,12 +285,62 @@ export default function WisdomScreen() {
           
           <TabSelector tabs={oralTabs} activeTab={oralTab} onTabChange={setOralTab} />
           
-          {activeOralTraditions.length > 0 ? (
+          {oralTab === 'plants' ? (
+            plantMedicine.length > 0 ? (
+              <View style={[styles.contentCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <View style={styles.oralHeader}>
+                  <Star size={18} color="#27ae60" />
+                  <Text style={[styles.oralSectionName, { color: colors.text }]}>{t('learn.plantWisdomTitle')}</Text>
+                </View>
+                
+                {plantMedicine.map((plant, idx) => (
+                  <View key={idx} style={[styles.traditionCard, { borderColor: colors.border }]}>
+                    <View style={styles.traditionHeader}>
+                      <Star size={16} color="#27ae60" />
+                      <View>
+                        <Text style={[styles.traditionName, { color: colors.text }]}>{plant.plantName || plant.name}</Text>
+                        <Text style={[styles.traditionCulture, { color: colors.textTertiary }]}>{formatCulture(plant.tradition || plant.culture || '')}</Text>
+                      </View>
+                    </View>
+                    
+                    {plant.medicinePurpose && (
+                      <GuidanceCard title={t('learn.dailyGuidance')} content={plant.medicinePurpose} color="#27ae60" />
+                    )}
+                    
+                    {plant.harvestTiming && (
+                      <View style={styles.relevanceSection}>
+                        <Text style={[styles.relevanceLabel, { color: colors.textSecondary }]}>{t('learn.ceremonialTiming')}</Text>
+                        <Text style={[styles.relevanceText, { color: colors.textTertiary }]}>{plant.harvestTiming}</Text>
+                      </View>
+                    )}
+                    
+                    {plant.spiritualSignificance && (
+                      <View style={styles.relevanceSection}>
+                        <Text style={[styles.relevanceLabel, { color: colors.textSecondary }]}>{t('learn.spiritualThemes')}</Text>
+                        <Text style={[styles.relevanceText, { color: colors.textTertiary }]}>{plant.spiritualSignificance}</Text>
+                      </View>
+                    )}
+                    
+                    {plant.modernApplication && (
+                      <View style={styles.relevanceSection}>
+                        <Text style={[styles.relevanceLabel, { color: colors.textSecondary }]}>{t('learn.modernRelevance')}</Text>
+                        <Text style={[styles.relevanceText, { color: colors.textTertiary }]}>{plant.modernApplication}</Text>
+                      </View>
+                    )}
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <View style={[styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <Text style={[styles.emptyText, { color: colors.textSecondary }]}>{t('learn.noDataAvailable')}</Text>
+              </View>
+            )
+          ) : activeOralTraditions.length > 0 ? (
             <View style={[styles.contentCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <View style={styles.oralHeader}>
                 <Star size={18} color="#2ecc71" />
                 <Text style={[styles.oralSectionName, { color: colors.text }]}>
-                  {oralTab === 'weather' ? t('learn.weatherProphecyTitle') : oralTab === 'plants' ? t('learn.plantWisdomTitle') : t('learn.dreamTimeTitle')}
+                  {oralTab === 'weather' ? t('learn.weatherProphecyTitle') : t('learn.dreamTimeTitle')}
                 </Text>
               </View>
               
