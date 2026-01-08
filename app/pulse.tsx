@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme, ThemeColors } from '../lib/ThemeContext';
 import api, { DailyBundleResponse, PlanetaryData } from '../lib/api';
-import { ChevronDown, ChevronUp, Info, Moon, Sun, Globe, Zap, Dna } from 'lucide-react-native';
+import { ChevronDown, ChevronUp, Info, Moon, Sun, Globe, Zap, Dna, Clock } from 'lucide-react-native';
 import { toTitleCase } from '../lib/labelize';
 import { getApiLang } from '../lib/lang';
 import { useTranslation } from 'react-i18next';
@@ -206,6 +206,7 @@ export default function FieldScreen() {
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
   const [bioRhythms, setBioRhythms] = useState<any>(null);
   const [consciousness, setConsciousness] = useState<any>(null);
+  const [optimalTiming, setOptimalTiming] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
   // Expanded states
@@ -223,7 +224,7 @@ export default function FieldScreen() {
     async function loadData() {
       try {
         const lang = getApiLang();
-        const [bundleData, instantData, bioData, consciousnessData] = await Promise.all([
+        const [bundleData, instantData, bioData, consciousnessData, timingData] = await Promise.all([
           api.getDailyBundle(coordinates.lat, coordinates.lng, lang, timezone)
             .then(res => res.success ? res.data : null)
             .catch(() => null),
@@ -232,6 +233,8 @@ export default function FieldScreen() {
           api.getBiologicalRhythms(coordinates.lat, coordinates.lng, timezone)
             .catch(() => null),
           api.getConsciousnessAnalysis()
+            .catch(() => null),
+          api.getOptimalTiming(coordinates.lat, coordinates.lng, timezone, lang)
             .catch(() => null)
         ]);
 
@@ -287,6 +290,7 @@ export default function FieldScreen() {
         setInstant(instantData || mockInstant);
         setBioRhythms(bioData || mockBioRhythms);
         setConsciousness(consciousnessData);
+        setOptimalTiming(timingData);
       } finally {
         setLoading(false);
       }
@@ -787,6 +791,61 @@ export default function FieldScreen() {
           />
         </View>
 
+        {/* Optimal Timing Section */}
+        {optimalTiming && (
+          <View style={styles.section}>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.optimalTiming').toUpperCase()}</Text>
+            
+            <ExpandableCard
+              icon={<Clock size={20} color={colors.text} />}
+              title={t('field.timing')}
+              message={optimalTiming?.lunarInfluence || t('field.timingDefault')}
+              isExpanded={expandedCards['timing']}
+              onToggle={() => toggleCard('timing')}
+              chips={[t('field.chipLunarInfluence'), t('field.chipActivity')]}
+              howToRead={[t('field.timingNote1'), t('field.timingNote2'), t('field.timingNote3')]}
+              expandedContent={
+                <View style={styles.expandedDetails}>
+                  {optimalTiming?.lunarInfluence && (
+                    <Text style={[styles.expandedValue, { color: colors.text, marginBottom: 16 }]}>
+                      {optimalTiming.lunarInfluence}
+                    </Text>
+                  )}
+                  
+                  {optimalTiming?.bestFor && (
+                    <>
+                      <Text style={[styles.subTitle, { color: colors.textSecondary, marginBottom: 8 }]}>{t('field.bestFor')}</Text>
+                      {Object.entries(optimalTiming.bestFor).map(([activity, time]) => (
+                        <View key={activity} style={styles.timingRow}>
+                          <Text style={[styles.timingActivity, { color: colors.textSecondary }]}>
+                            {t(`field.activity_${activity}`, { defaultValue: toTitleCase(activity.replace(/([A-Z])/g, ' $1').trim()) })}
+                          </Text>
+                          <Text style={[styles.timingValue, { color: colors.text }]}>{String(time)}</Text>
+                        </View>
+                      ))}
+                    </>
+                  )}
+                  
+                  {optimalTiming?.avoid && (
+                    <>
+                      <View style={[styles.divider, { backgroundColor: colors.border, marginVertical: 16 }]} />
+                      <Text style={[styles.subTitle, { color: colors.textSecondary, marginBottom: 8 }]}>{t('field.avoid')}</Text>
+                      {Object.entries(optimalTiming.avoid).map(([activity, time]) => (
+                        <View key={activity} style={styles.timingRow}>
+                          <Text style={[styles.timingActivity, { color: colors.textSecondary }]}>
+                            {t(`field.avoid_${activity}`, { defaultValue: toTitleCase(activity.replace(/([A-Z])/g, ' $1').trim()) })}
+                          </Text>
+                          <Text style={[styles.timingValue, { color: colors.text }]}>{String(time)}</Text>
+                        </View>
+                      ))}
+                    </>
+                  )}
+                </View>
+              }
+            />
+          </View>
+        )}
+
         {/* Signals */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.inputSignals').toUpperCase()}</Text>
@@ -1036,5 +1095,22 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 4,
     overflow: 'hidden',
+  },
+  timingRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
+  },
+  timingActivity: {
+    fontSize: 14,
+    flex: 1,
+  },
+  timingValue: {
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'right',
   },
 });
