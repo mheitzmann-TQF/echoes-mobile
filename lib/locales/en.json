@@ -29,7 +29,10 @@
     "noEchoes": "No echoes available",
     "swipeForMore": "Swipe for more",
     "moment": "MOMENT",
-    "photoBy": "Photo by"
+    "photoBy": "Photo by",
+    "on": "on",
+    "tapToClose": "Tap anywhere to close",
+    "todaysObservances": "TODAY'S OBSERVANCES"
   },
   "field": {
     "title": "Field",
@@ -77,7 +80,15 @@
     "elevatedFieldActivity": "Elevated field activity.",
     "quietField": "Geomagnetic field is calm.",
     "stormyField": "Strong storm conditions.",
-    "peakAlertness": "Peak Alertness"
+    "peakAlertness": "Peak Alertness",
+    "variable": "Variable",
+    "building": "Building",
+    "brightening": "Brightening",
+    "resting": "Resting",
+    "collectiveToneVariable": "Collective tone is variable.",
+    "checkingCollectivePulse": "Checking collective pulse...",
+    "readingNotes": "Reading notes",
+    "usedInEchoes": "Used in Echoes"
   },
   "learn": {
     "title": "Learn",

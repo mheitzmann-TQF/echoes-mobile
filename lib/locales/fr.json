@@ -29,7 +29,10 @@
     "noEchoes": "Aucun écho disponible",
     "swipeForMore": "Glissez pour plus",
     "moment": "MOMENT",
-    "photoBy": "Photo par"
+    "photoBy": "Photo par",
+    "on": "sur",
+    "tapToClose": "Appuyez pour fermer",
+    "todaysObservances": "OBSERVANCES DU JOUR"
   },
   "field": {
     "title": "Champ",
@@ -77,7 +80,15 @@
     "elevatedFieldActivity": "Activité élevée du champ.",
     "quietField": "Le champ géomagnétique est calme.",
     "stormyField": "Conditions de tempête intenses.",
-    "peakAlertness": "Éveil Maximal"
+    "peakAlertness": "Éveil Maximal",
+    "variable": "Variable",
+    "building": "En construction",
+    "brightening": "S'éclaircit",
+    "resting": "Au repos",
+    "collectiveToneVariable": "Le ton collectif est variable.",
+    "checkingCollectivePulse": "Vérification du pouls collectif...",
+    "readingNotes": "Notes de lecture",
+    "usedInEchoes": "Utilisé dans les Échos"
   },
   "learn": {
     "title": "Apprendre",

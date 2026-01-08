@@ -7,6 +7,7 @@ import api, { DailyBundleResponse, PlanetaryData } from '../lib/api';
 import { ChevronDown, ChevronUp, Info, Moon, Sun, Globe, Zap, Dna } from 'lucide-react-native';
 import { toTitleCase } from '../lib/labelize';
 import { getApiLang } from '../lib/lang';
+import { useTranslation } from 'react-i18next';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -39,6 +40,7 @@ function ExpandableCard({
   howToRead
 }: ExpandableCardProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   
   return (
     <TouchableOpacity 
@@ -92,7 +94,7 @@ function ExpandableCard({
           {/* Reading Notes Section */}
           {howToRead && (
             <View style={[styles.howToReadContainer, { backgroundColor: colors.surface }]}>
-              <Text style={[styles.subTitle, { color: colors.textSecondary }]}>Reading notes</Text>
+              <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.readingNotes')}</Text>
               {howToRead.map((item, i) => (
                 <View key={i} style={styles.bulletRow}>
                   <Text style={[styles.bulletChar, { color: colors.textSecondary }]}>•</Text>
@@ -105,7 +107,7 @@ function ExpandableCard({
           {/* Chips Section */}
           {chips && (
             <View style={styles.chipsContainer}>
-              <Text style={[styles.chipsLabel, { color: colors.textTertiary }]}>Used in Echoes</Text>
+              <Text style={[styles.chipsLabel, { color: colors.textTertiary }]}>{t('field.usedInEchoes')}</Text>
               <View style={styles.chipRow}>
                 {chips.map((chip, i) => (
                   <View key={i} style={[styles.chip, { backgroundColor: colors.surfaceHighlight }]}>
@@ -152,30 +154,31 @@ function generateCircadianObservations(phase: string): string[] {
 
 function StickyHeader({ coherence, solarPhase, lunarPhase }: { coherence: number, solarPhase: string, lunarPhase: string }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   // Derive states
-  const coherenceState = coherence > 60 ? 'Stable' : (coherence < 40 ? 'Variable' : 'Building');
-  const lightState = solarPhase.includes('Morning') || solarPhase.includes('Dawn') ? 'Brightening' : 
-                     (solarPhase.includes('Night') || solarPhase.includes('Dusk') ? 'Resting' : 'Active');
+  const coherenceState = coherence > 60 ? t('field.stable') : (coherence < 40 ? t('field.variable') : t('field.building'));
+  const lightState = solarPhase.includes('Morning') || solarPhase.includes('Dawn') ? t('field.brightening') : 
+                     (solarPhase.includes('Night') || solarPhase.includes('Dusk') ? t('field.resting') : t('field.active'));
   // Determine if moon is waxing (rising) or waning (falling) from phase name
   const lowerPhase = lunarPhase.toLowerCase();
   const isWaxing = lowerPhase.includes('waxing') || lowerPhase.includes('new') || lowerPhase.includes('crescent') && !lowerPhase.includes('waning');
   const isWaning = lowerPhase.includes('waning') || lowerPhase.includes('full');
-  const moonState = isWaning ? 'Falling' : 'Rising';
+  const moonState = isWaning ? t('field.falling') : t('field.rising');
 
   return (
     <View style={[styles.stickyHeader, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View style={styles.stickyItem}>
-        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>Coherence</Text>
+        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>{t('field.coherence')}</Text>
         <Text style={[styles.stickyValue, { color: colors.text }]}>{coherenceState}</Text>
       </View>
       <View style={[styles.stickyDivider, { backgroundColor: colors.border }]} />
       <View style={styles.stickyItem}>
-        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>Light</Text>
+        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>{t('field.light')}</Text>
         <Text style={[styles.stickyValue, { color: colors.text }]}>{lightState}</Text>
       </View>
       <View style={[styles.stickyDivider, { backgroundColor: colors.border }]} />
       <View style={styles.stickyItem}>
-        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>Moon</Text>
+        <Text style={[styles.stickyLabel, { color: colors.textSecondary }]}>{t('field.moon')}</Text>
         <Text style={[styles.stickyValue, { color: colors.text }]}>{moonState}</Text>
       </View>
     </View>
@@ -183,6 +186,7 @@ function StickyHeader({ coherence, solarPhase, lunarPhase }: { coherence: number
 }
 
 export default function FieldScreen() {
+  const { t } = useTranslation();
   const { coordinates, timezone } = useLocation();
   const { colors } = useTheme();
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
@@ -306,9 +310,9 @@ export default function FieldScreen() {
   
   // Normalize geomagnetic state
   const getGeoState = (kp: number): { label: string; message: string } => {
-    if (kp <= 2) return { label: 'Quiet', message: 'Geomagnetic field is calm.' };
-    if (kp <= 5) return { label: 'Active', message: 'Elevated field activity.' };
-    return { label: 'Stormy', message: 'Strong storm conditions.' };
+    if (kp <= 2) return { label: t('field.quiet'), message: t('field.quietField') };
+    if (kp <= 5) return { label: t('field.active'), message: t('field.elevatedFieldActivity') };
+    return { label: t('field.stormy'), message: t('field.stormyField') };
   };
   
   const geoState = getGeoState(geoKp);
@@ -536,8 +540,8 @@ export default function FieldScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Field</Text>
-        <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>Cosmos · Earth · Body</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>{t('field.title')}</Text>
+        <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{t('field.subtitle')}</Text>
         <Text style={[styles.headerSubtext, { color: colors.textTertiary }]}>How today’s signal is shaped</Text>
 
         <StickyHeader 
@@ -548,11 +552,11 @@ export default function FieldScreen() {
 
         {/* Cosmos Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>COSMOS</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.cosmos')}</Text>
           
           <ExpandableCard
             icon={<Moon size={20} color={colors.text} />}
-            title="Lunar"
+            title={t('field.lunar')}
             message={toTitleCase(lunarPhase)}
             collapsedDetail={`${Math.round(ctx?.lunar?.illumination || 0)}%`}
             isExpanded={expandedCards['lunar']}
@@ -572,7 +576,7 @@ export default function FieldScreen() {
 
           <ExpandableCard
             icon={<Sun size={20} color={colors.text} />}
-            title="Solar"
+            title={t('field.solar')}
             message={solarPhase}
             collapsedDetail={solarPhase}
             isExpanded={expandedCards['solar']}
@@ -595,12 +599,12 @@ export default function FieldScreen() {
 
         {/* Earth Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>EARTH</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.earth')}</Text>
           
           <ExpandableCard
             icon={<Globe size={20} color={colors.text} />}
-            title="Coherence"
-            message={consciousnessData?.global_coherence && consciousnessData.global_coherence > 60 ? "Collective tone is stable." : consciousnessData ? "Collective tone is variable." : "Checking collective pulse..."}
+            title={t('field.coherence')}
+            message={consciousnessData?.global_coherence && consciousnessData.global_coherence > 60 ? t('field.collectiveToneStable') : consciousnessData ? t('field.collectiveToneVariable') : t('field.checkingCollectivePulse')}
             collapsedDetail={consciousnessData?.global_coherence !== undefined && consciousnessData?.global_coherence !== null ? `${Math.round(consciousnessData.global_coherence)}%` : "—"}
             isExpanded={expandedCards['coherence']}
             onToggle={() => toggleCard('coherence')}
@@ -625,7 +629,7 @@ export default function FieldScreen() {
 
           <ExpandableCard
             icon={<Zap size={20} color={colors.text} />}
-            title="Geomagnetic"
+            title={t('field.geomagnetic')}
             message={geoState.message}
             collapsedDetail={geoState.label}
             isExpanded={expandedCards['geo']}
@@ -652,11 +656,11 @@ export default function FieldScreen() {
 
         {/* Body Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>BODY</Text>
+          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.body')}</Text>
           
           <ExpandableCard
             icon={<Dna size={20} color={colors.text} />}
-            title="Body"
+            title={t('field.body')}
             message={circadianPhase}
             collapsedDetail={bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : 'Active'}
             isExpanded={expandedCards['body']}

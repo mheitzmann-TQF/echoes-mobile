@@ -138,7 +138,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           <View style={photoStyles.fullscreenCredit}>
             {photo.photographer && (
               <View style={photoStyles.fullscreenCreditRow}>
-                <Text style={photoStyles.fullscreenCreditText}>Photo by </Text>
+                <Text style={photoStyles.fullscreenCreditText}>{t('today.photoBy')} </Text>
                 <TouchableOpacity 
                   onPress={(e) => { e.stopPropagation(); handlePhotographerPress(); }}
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -147,7 +147,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
                 </TouchableOpacity>
                 {isUnsplashPhoto && (
                   <>
-                    <Text style={photoStyles.fullscreenCreditText}> on </Text>
+                    <Text style={photoStyles.fullscreenCreditText}> {t('today.on')} </Text>
                     <TouchableOpacity 
                       onPress={(e) => { e.stopPropagation(); handleUnsplashPress(); }}
                       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -158,7 +158,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
                 )}
               </View>
             )}
-            <Text style={photoStyles.fullscreenHintText}>Tap anywhere to close</Text>
+            <Text style={photoStyles.fullscreenHintText}>{t('today.tapToClose')}</Text>
           </View>
         </TouchableOpacity>
       </Modal>
@@ -246,6 +246,7 @@ const photoStyles = StyleSheet.create({
 
 function TodayObservances({ observances }: { observances: Observance[] }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   
   if (!observances || observances.length === 0) {
     return null;
@@ -254,7 +255,7 @@ function TodayObservances({ observances }: { observances: Observance[] }) {
   return (
     <View style={observanceStyles.container}>
       <Text style={[observanceStyles.sectionLabel, { color: colors.textTertiary }]}>
-        TODAY'S OBSERVANCES
+        {t('today.todaysObservances')}
       </Text>
       {observances.map((obs) => (
         <View 
