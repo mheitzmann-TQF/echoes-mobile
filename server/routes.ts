@@ -9,6 +9,15 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  // Disable ETag caching for sacred-geography routes to ensure fresh language-specific content
+  app.use("/api/proxy/sacred-geography", (req, res, next) => {
+    req.headers["if-none-match"] = "";
+    req.headers["if-modified-since"] = "";
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
+    next();
+  });
   // User Settings Routes
   app.get("/api/user/:userId/settings", async (req, res) => {
     try {
