@@ -556,35 +556,36 @@ export default function HomeScreen() {
         ];
         
         calendarsData.forEach((cal: any) => {
-          if (cal.system === 'Mayan Tzolkin') {
+          const sys = (cal.system || '').toLowerCase();
+          if (sys.includes('maya') || sys.includes('tzolkin')) {
             formattedCalendars.push({
               id: 'mayan',
               name: t('learn.mayanTzolkin'),
               date: cal.date,
               type: t('calendars.sacred')
             });
-          } else if (cal.system === 'Chinese Agricultural') {
+          } else if (sys.includes('chin') || sys.includes('agricol')) {
             formattedCalendars.push({
               id: 'chinese',
               name: t('learn.chinese'),
               date: cal.date,
               type: t('calendars.lunisolar')
             });
-          } else if (cal.system === 'Hindu Panchang') {
+          } else if (sys.includes('hindu') || sys.includes('panchang')) {
             formattedCalendars.push({
               id: 'hindu',
               name: t('learn.hinduPanchang'),
               date: cal.date,
               type: t('calendars.lunisolar')
             });
-          } else if (cal.system === 'Islamic Hijri') {
+          } else if (sys.includes('islam') || sys.includes('hijri')) {
             formattedCalendars.push({
               id: 'islamic',
               name: t('learn.islamic'),
               date: cal.date,
               type: t('calendars.lunar')
             });
-          } else if (cal.system === 'Hebrew Calendar') {
+          } else if (sys.includes('hebrew') || sys.includes('hébr')) {
             formattedCalendars.push({
               id: 'hebrew',
               name: t('learn.hebrew'),
