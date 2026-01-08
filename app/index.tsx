@@ -454,11 +454,11 @@ export default function HomeScreen() {
   };
 
   const getMockCalendars = () => [
-    { id: 'gregorian', name: 'Gregorian', date: format(new Date(), 'd MMM yy'), type: 'Civil' },
-    { id: 'mayan', name: 'Mayan Tzolkin', date: '7 Manik', type: 'Sacred' },
-    { id: 'chinese', name: 'Chinese', date: 'Month 10 · Dragon', type: 'Lunisolar' },
-    { id: 'hebrew', name: 'Hebrew', date: '20 Kislev', type: 'Lunisolar' },
-    { id: 'islamic', name: 'Islamic', date: '16 Jumada I', type: 'Lunar' },
+    { id: 'gregorian', name: t('learn.gregorian'), date: format(new Date(), 'd MMM yy'), type: t('calendars.civil') },
+    { id: 'mayan', name: t('learn.mayanTzolkin'), date: '7 Manik', type: t('calendars.sacred') },
+    { id: 'chinese', name: t('learn.chinese'), date: 'Month 10 · Dragon', type: t('calendars.lunisolar') },
+    { id: 'hebrew', name: t('learn.hebrew'), date: '20 Kislev', type: t('calendars.lunisolar') },
+    { id: 'islamic', name: t('learn.islamic'), date: '16 Jumada I', type: t('calendars.lunar') },
   ];
 
   const fetchData = useCallback(async () => {
@@ -536,44 +536,44 @@ export default function HomeScreen() {
       // Process Calendars
       if (calendarsData && Array.isArray(calendarsData)) {
         const formattedCalendars = [
-          { id: 'gregorian', name: 'Gregorian', date: format(new Date(), 'd MMM yy'), type: 'Civil' },
+          { id: 'gregorian', name: t('learn.gregorian'), date: format(new Date(), 'd MMM yy'), type: t('calendars.civil') },
         ];
         
         calendarsData.forEach((cal: any) => {
           if (cal.system === 'Mayan Tzolkin') {
             formattedCalendars.push({
               id: 'mayan',
-              name: 'Mayan Tzolkin',
+              name: t('learn.mayanTzolkin'),
               date: cal.date,
-              type: 'Sacred'
+              type: t('calendars.sacred')
             });
           } else if (cal.system === 'Chinese Agricultural') {
             formattedCalendars.push({
               id: 'chinese',
-              name: 'Chinese',
+              name: t('learn.chinese'),
               date: cal.date,
-              type: 'Lunisolar'
+              type: t('calendars.lunisolar')
             });
           } else if (cal.system === 'Hindu Panchang') {
             formattedCalendars.push({
               id: 'hindu',
-              name: 'Hindu Panchang',
+              name: t('learn.hinduPanchang'),
               date: cal.date,
-              type: 'Lunisolar'
+              type: t('calendars.lunisolar')
             });
           } else if (cal.system === 'Islamic Hijri') {
             formattedCalendars.push({
               id: 'islamic',
-              name: 'Islamic',
+              name: t('learn.islamic'),
               date: cal.date,
-              type: 'Lunar'
+              type: t('calendars.lunar')
             });
           } else if (cal.system === 'Hebrew Calendar') {
             formattedCalendars.push({
               id: 'hebrew',
-              name: 'Hebrew',
+              name: t('learn.hebrew'),
               date: cal.date,
-              type: 'Lunisolar'
+              type: t('calendars.lunisolar')
             });
           }
         });
