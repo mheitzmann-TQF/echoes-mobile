@@ -23,6 +23,7 @@ import { cleanTone } from '../lib/labelize';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import { getApiLang } from '../lib/lang';
+import { useTranslation } from 'react-i18next';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -50,6 +51,7 @@ interface DailyPhotoData {
 
 function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const { height: screenHeight } = Dimensions.get('window');
@@ -68,7 +70,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 
   return (
     <View style={photoStyles.container}>
-      <Text style={[photoStyles.sectionLabel, { color: colors.textTertiary }]}>MOMENT</Text>
+      <Text style={[photoStyles.sectionLabel, { color: colors.textTertiary }]}>{t('today.moment')}</Text>
       <TouchableOpacity 
         activeOpacity={0.9} 
         onPress={() => setFullscreen(true)}
@@ -88,7 +90,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
       </TouchableOpacity>
       <View style={photoStyles.creditContainer}>
         <Text style={[photoStyles.credit, { color: colors.textTertiary }]}>
-          Photo by{' '}
+          {t('today.photoBy')}{' '}
         </Text>
         {photo.photographer ? (
           <>
@@ -328,6 +330,7 @@ const observanceStyles = StyleSheet.create({
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { locationName, coordinates, timezone } = useLocation();
   const { colors, theme } = useTheme();
   const [echoes, setEchoes] = useState<Echo[]>([]);
@@ -648,7 +651,7 @@ export default function HomeScreen() {
           scrollEnabled={true}
         >
           <Hero 
-            title="Today" 
+            title={t('today.title')} 
             subtitle="" 
           />
 
