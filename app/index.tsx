@@ -350,7 +350,7 @@ const observanceStyles = StyleSheet.create({
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { locationName, coordinates, timezone } = useLocation();
   const { colors, theme } = useTheme();
   const [echoes, setEchoes] = useState<Echo[]>([]);
@@ -697,8 +697,6 @@ export default function HomeScreen() {
     fetchData();
   }, [fetchData]);
 
-  const currentLang = getCurrentLanguage();
-  
   useEffect(() => {
     async function loadCookie() {
       setCookieLoading(true);
@@ -712,7 +710,7 @@ export default function HomeScreen() {
       }
     }
     loadCookie();
-  }, [currentLang]);
+  }, [i18n.language]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

@@ -67,13 +67,10 @@ class CookieService {
       return this.memoryCache.text;
     }
 
-    if (!this.initialized) {
-      this.initialized = true;
-      const stored = this.loadFromStorage(lang);
-      if (stored && stored.date === todayKey && stored.language === lang && stored.expiresAt > now) {
-        this.memoryCache = stored;
-        return stored.text;
-      }
+    const stored = this.loadFromStorage(lang);
+    if (stored && stored.date === todayKey && stored.language === lang && stored.expiresAt > now) {
+      this.memoryCache = stored;
+      return stored.text;
     }
 
     try {
