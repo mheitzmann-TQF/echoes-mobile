@@ -1,0 +1,295 @@
+# Global Consciousness Monitor - Mobile App Integration Guide
+
+**Version:** 1.0  
+**Base URL:** `https://source.thequietframe.com`  
+**Last Updated:** January 2026
+
+---
+
+## Overview
+
+The Global Consciousness Monitor (GCM) is a real-time index measuring how aligned global media content is with transformative principles. It analyzes news and cultural content from 52+ international sources, scoring each article on a 0-100 scale to determine whether content promotes wisdom, growth, and connection (transformational) or focuses on conflict, fear, and division (destructive).
+
+### What It Shows
+
+- **Current state of global media consciousness** - Is the collective narrative uplifting or fear-based?
+- **Trend direction** - Is consciousness improving or declining?
+- **Content breakdown** - What percentage of content is transformational vs destructive?
+- **Hope indicators** - How much solution-focused content exists?
+
+---
+
+## The TQF Scale (0-100)
+
+The **Transformative Questioning Framework (TQF)** scale measures how aligned content is with principles of growth, wisdom, and positive transformation.
+
+| Score Range | Category | Definition | Examples |
+|-------------|----------|------------|----------|
+| **70-100** | Transformational | Content promoting wisdom, growth, solutions, connection, hope | Solutions journalism, breakthrough discoveries, community success stories |
+| **30-69** | Neutral | Mixed or purely informational content | News updates, factual reporting, event coverage |
+| **0-29** | Destructive | Content focused on conflict, fear, division, hopelessness | Sensationalism, fear-mongering, divisive rhetoric |
+
+### How Scores Are Calculated
+
+Each article is analyzed by AI (GPT-4o) and scored based on:
+- Language tone and emotional impact
+- Focus on problems vs solutions
+- Promotion of unity vs division
+- Presence of hope, wisdom, or growth themes
+- Alignment with transformative principles
+
+---
+
+## Key Metrics
+
+| Metric | Definition | Current Value |
+|--------|------------|---------------|
+| **Global Coherence** | Average TQF score of all analyzed articles | 15% |
+| **Transformational %** | Percentage of articles scoring 70+ | 4% |
+| **Destructive %** | Percentage of articles scoring below 30 | 81% |
+| **Neutral %** | Percentage of articles scoring 30-69 | 15% |
+| **Hope Level** | Content containing hope/solution keywords | 51% |
+| **7-day Trend** | Change in coherence vs previous week | +14.2% |
+| **Articles Analyzed** | Total articles in 30-day rolling window | ~27,000 |
+
+### Data Window
+
+- **30-day rolling window**: Only the most recent 30 days of articles are counted
+- **Real-time updates**: New articles are scored as they're collected
+- **Cache duration**: 15 minutes (fresh data on each request after cache expires)
+
+---
+
+## API Endpoints
+
+### 1. Global Consciousness Current State
+
+**Endpoint:** `GET /api/consciousness/current`
+
+Returns the current global consciousness metrics.
+
+**Request:**
+```bash
+curl https://source.thequietframe.com/api/consciousness/current
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "cache_status": "miss",
+  "response_time_ms": 1142,
+  "global_coherence": 15,
+  "transformational_percent": 4,
+  "destructive_percent": 81,
+  "hope_level": 51,
+  "articles_analyzed": 26867,
+  "dominant_themes": ["challenge", "growth", "adaptation"],
+  "trend_7d": "+14.2",
+  "synchronicity_level": "minimal",
+  "collective_mood": "awakening",
+  "last_updated": "2026-01-09T09:48:10.762Z",
+  "next_update": "2026-01-09T10:03:10.762Z",
+  "methodology": "Real-time analysis of global news and cultural content for TQF alignment"
+}
+```
+
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `global_coherence` | number | Average TQF alignment (0-100) |
+| `transformational_percent` | number | % of articles scoring 70+ |
+| `destructive_percent` | number | % of articles scoring below 30 |
+| `hope_level` | number | Hope/solution content indicator (0-100) |
+| `articles_analyzed` | number | Articles in 30-day window |
+| `dominant_themes` | array | Current prevalent themes |
+| `trend_7d` | string | 7-day change ("+X.X" or "-X.X") |
+| `synchronicity_level` | string | "minimal", "low", "moderate", "high", "very_high" |
+| `collective_mood` | string | Current collective state interpretation |
+| `last_updated` | string | ISO timestamp of last calculation |
+
+---
+
+### 2. Companion Context (Full)
+
+**Endpoint:** `GET /api/companion/context`
+
+Returns rich contextual data for location-aware experiences including planetary data, lunar phases, solar timing, and geomagnetic activity.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `lat` | number | Yes | Latitude (-90 to 90) |
+| `lon` | number | Yes | Longitude (-180 to 180) |
+| `location` | string | Alternative | Location name (e.g., "Tokyo", "New York") |
+
+**Request:**
+```bash
+curl "https://source.thequietframe.com/api/companion/context?lat=40.7128&lon=-74.006"
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "location": {
+    "coordinates": {
+      "lat": "40.7128",
+      "lng": "-74.006"
+    },
+    "city": "New York",
+    "timezone": "America/New_York"
+  },
+  "planetary": {
+    "lunar": {
+      "phase": "waning_gibbous",
+      "age": 20.34,
+      "illumination": 64,
+      "phaseMessage": "Declutter one drawer — waning moon aids letting go"
+    },
+    "solar": {
+      "sunrise": "2026-01-09T12:18:02.000Z",
+      "sunset": "2026-01-09T21:48:24.000Z",
+      "solarNoon": "2026-01-09T17:03:13.000Z",
+      "dayLength": 9.51,
+      "currentPhase": "morning",
+      "solarMessage": "Walk around your local park — early afternoon boosts creativity",
+      "timeToSunset": 720.15
+    },
+    "geomagnetic": {
+      "kpIndex": 2.33,
+      "activity": "unsettled",
+      "humanEffect": "slightly heightened sensitivity, mild restlessness",
+      "message": "The earth's energy is stirred today. You might feel more sensitive - honor that awareness."
+    },
+    "seasonal": {
+      "season": "winter",
+      "progress": 100,
+      "message": "The deep inward time of rest and renewal."
+    },
+    "source": "live"
+  },
+  "timestamp": "2026-01-09T09:48:17.107Z"
+}
+```
+
+**Planetary Data Fields:**
+
+| Field | Description |
+|-------|-------------|
+| `lunar.phase` | Moon phase name (new_moon, waxing_crescent, first_quarter, waxing_gibbous, full_moon, waning_gibbous, last_quarter, waning_crescent) |
+| `lunar.illumination` | Moon brightness percentage (0-100) |
+| `lunar.phaseMessage` | Actionable suggestion based on lunar phase |
+| `solar.currentPhase` | Time of day (dawn, morning, afternoon, evening, night) |
+| `solar.solarMessage` | Actionable suggestion based on solar timing |
+| `geomagnetic.kpIndex` | Geomagnetic activity index (0-9) |
+| `geomagnetic.activity` | Activity level (quiet, unsettled, active, storm) |
+
+---
+
+### 3. Companion Simple (Lightweight)
+
+**Endpoint:** `GET /api/companion/simple`
+
+Returns a simplified, lightweight response optimized for widgets and quick displays.
+
+**Parameters:** Same as `/api/companion/context`
+
+**Request:**
+```bash
+curl "https://source.thequietframe.com/api/companion/simple?location=Tokyo"
+```
+
+---
+
+## Authentication
+
+**Browser/Web:** No authentication required for web interface users.
+
+**Mobile App/API:** Include the API key in the header:
+
+```bash
+curl -H "X-API-Key: YOUR_API_KEY" https://source.thequietframe.com/api/consciousness/current
+```
+
+Contact the TQF team to obtain an API key for your mobile application.
+
+---
+
+## Rate Limits
+
+| Tier | Rate Limit | Cache |
+|------|------------|-------|
+| Web Interface | Unlimited | 15 min |
+| API Key | 100 requests/minute | 15 min |
+
+**Note:** Data is cached for 15 minutes. Multiple requests within the cache window return the same data at no additional cost.
+
+---
+
+## Best Practices
+
+### For Mobile Widgets
+
+1. **Cache locally**: Store the last response and display it while fetching updates
+2. **Refresh interval**: Poll every 15-30 minutes (data updates every 15 min)
+3. **Use `/api/companion/simple`**: Lighter payload for lock screen widgets
+4. **Handle offline**: Display last known values with a "last updated" timestamp
+
+### Display Recommendations
+
+| Coherence Level | Color | Label |
+|-----------------|-------|-------|
+| 70-100 | Green | Highly Aligned |
+| 50-69 | Blue | Moderately Aligned |
+| 30-49 | Yellow | Transitional |
+| 0-29 | Red | Misaligned |
+
+### Example Widget Copy
+
+```
+Global Coherence: 15%
+Trend: ↑ +14.2% (7 days)
+"Global media is currently misaligned with transformative principles"
+```
+
+---
+
+## Error Handling
+
+**HTTP Status Codes:**
+
+| Code | Meaning |
+|------|---------|
+| 200 | Success |
+| 400 | Bad request (missing parameters) |
+| 401 | Unauthorized (invalid API key) |
+| 429 | Rate limit exceeded |
+| 500 | Server error |
+
+**Error Response Format:**
+```json
+{
+  "success": false,
+  "error": "Error message description"
+}
+```
+
+---
+
+## Support
+
+For API keys, technical questions, or integration support:
+- Contact: TQF Development Team
+- Documentation: https://source.thequietframe.com/api-docs
+
+---
+
+## Changelog
+
+**v1.0 (January 2026)**
+- Initial API documentation
+- 30-day rolling window implementation
+- Global Consciousness Monitor launch
