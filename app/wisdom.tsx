@@ -599,7 +599,7 @@ export default function WisdomScreen() {
 
                 {/* SIGNAL WITHIN - Filtered gauge (green) with trend - moved before article count */}
                 {hasFilteredData && (
-                  <View style={styles.narrativeSection}>
+                  <View style={styles.narrativeSectionSpaced}>
                     <View style={styles.signalWithTrendRow}>
                       <TQFGauge 
                         score={filteredScore} 
@@ -801,6 +801,7 @@ const styles = StyleSheet.create({
   gaugeLabel: { fontSize: 11, marginTop: 2, textAlign: 'center' },
   gaugeSubtitle: { fontSize: 10, marginTop: 4, textAlign: 'center' },
   narrativeSection: { alignItems: 'center', marginBottom: 32 },
+  narrativeSectionSpaced: { alignItems: 'center', marginTop: 16, marginBottom: 40 },
   signalWithTrendRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 16 },
   trendSideBadge: { marginLeft: 8 },
   signalNoiseHint: { alignItems: 'center', marginBottom: 20, paddingHorizontal: 16 },
