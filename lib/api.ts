@@ -101,6 +101,31 @@ export interface ConsciousnessData {
   dominantEmotions: string[];
 }
 
+export interface RegionalBreakdown {
+  region: string;
+  regionDisplay: string;
+  articleCount: number;
+  percentOfTotal: number;
+  avgAlignment: number;
+  filteredAlignment: number;
+  breakdown: {
+    transformational: number;
+    neutral: number;
+    misaligned: number;
+  };
+}
+
+export interface RegionalBreakdownResponse {
+  success: boolean;
+  data: {
+    totalArticles: number;
+    regionCount: number;
+    regions: RegionalBreakdown[];
+    dataWindow: string;
+    lastUpdated: string;
+  };
+}
+
 class EchoesAPI {
   private baseUrl: string;
 
@@ -476,6 +501,25 @@ class EchoesAPI {
     } catch (error) {
       console.error('❌ Plant medicine timing error:', error);
       return [];
+    }
+  }
+
+  async getRegionalBreakdown(): Promise<RegionalBreakdownResponse | null> {
+    try {
+      const response = await fetch('/api/proxy/consciousness/regional-breakdown', {
+        headers: this.getHeaders(),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log('✅ Regional breakdown received:', data);
+      return data;
+    } catch (error) {
+      console.error('❌ Regional breakdown error:', error);
+      return null;
     }
   }
 }
