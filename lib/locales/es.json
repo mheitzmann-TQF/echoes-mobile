@@ -257,7 +257,10 @@
     "today": "Hoy",
     "now": "Ahora",
     "hoursShort": "{{count}}h",
-    "daysShort": "{{count}}d"
+    "daysShort": "{{count}}d",
+    "timingWindows": "VENTANAS DE TIEMPO",
+    "lunarPlanetaryMilestones": "HITOS LUNARES Y PLANETARIOS",
+    "seasonalTurningPoints": "PUNTOS DE INFLEXIÓN ESTACIONALES"
   },
   "settings": {
     "title": "Ajustes",

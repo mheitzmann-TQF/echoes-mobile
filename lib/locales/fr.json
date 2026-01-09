@@ -380,7 +380,10 @@
     "today": "Aujourd'hui",
     "now": "Maintenant",
     "hoursShort": "{{count}}h",
-    "daysShort": "{{count}}j"
+    "daysShort": "{{count}}j",
+    "timingWindows": "FENÊTRES DE TEMPS",
+    "lunarPlanetaryMilestones": "JALONS LUNAIRES ET PLANÉTAIRES",
+    "seasonalTurningPoints": "TOURNANTS SAISONNIERS"
   },
   "settings": {
     "title": "Paramètres",

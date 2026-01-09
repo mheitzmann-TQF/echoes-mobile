@@ -257,7 +257,10 @@
     "today": "Hoje",
     "now": "Agora",
     "hoursShort": "{{count}}h",
-    "daysShort": "{{count}}d"
+    "daysShort": "{{count}}d",
+    "timingWindows": "JANELAS DE TEMPO",
+    "lunarPlanetaryMilestones": "MARCOS LUNARES E PLANETÁRIOS",
+    "seasonalTurningPoints": "PONTOS DE VIRADA SAZONAIS"
   },
   "settings": {
     "title": "Ajustes",

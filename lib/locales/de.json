@@ -257,7 +257,10 @@
     "today": "Heute",
     "now": "Jetzt",
     "hoursShort": "{{count}}h",
-    "daysShort": "{{count}}T"
+    "daysShort": "{{count}}T",
+    "timingWindows": "ZEITFENSTER",
+    "lunarPlanetaryMilestones": "MOND- UND PLANETENMEILENSTEINE",
+    "seasonalTurningPoints": "JAHRESZEITLICHE WENDEPUNKTE"
   },
   "settings": {
     "title": "Einstellungen",

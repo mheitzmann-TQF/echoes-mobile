@@ -342,7 +342,10 @@
     "today": "Oggi",
     "now": "Ora",
     "hoursShort": "{{count}}h",
-    "daysShort": "{{count}}g"
+    "daysShort": "{{count}}g",
+    "timingWindows": "FINESTRE TEMPORALI",
+    "lunarPlanetaryMilestones": "TRAGUARDI LUNARI E PLANETARI",
+    "seasonalTurningPoints": "PUNTI DI SVOLTA STAGIONALI"
   },
   "settings": {
     "title": "Impostazioni",

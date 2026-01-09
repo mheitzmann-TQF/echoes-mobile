@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
+import { useTranslation } from 'react-i18next';
 import contentService from '../lib/ContentService';
 import { cleanTone, getCategoryLabel, formatOrigin } from '../lib/labelize';
 import { Clock, Moon, Leaf, Sparkles, Globe, Star } from 'lucide-react-native';
@@ -14,32 +15,19 @@ type Category = 'all' | 'astronomical' | 'cultural';
 
 // --- Utility Functions ---
 
-function getDateRange(band: Band): { start: Date; end: Date; label: string } {
+function getDateRange(band: Band): { start: Date; end: Date } {
   const now = new Date();
   const start = new Date(now);
   let end = new Date(now);
 
   if (band === 'soon') {
     end.setDate(now.getDate() + 14);
-    return { start, end, label: 'Next 14 days' };
   } else if (band === 'cycle') {
     end.setDate(now.getDate() + 30);
-    return { start, end, label: 'Next 30 days' };
   } else {
     end.setDate(now.getDate() + 90);
-    return { start, end, label: 'Next 90 days' };
   }
-}
-
-function timeUntil(date: Date): string {
-  const now = new Date();
-  const diff = date.getTime() - now.getTime();
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const days = Math.floor(hours / 24);
-
-  if (hours < 1) return 'Now';
-  if (hours < 24) return `${hours}h`;
-  return `${days}d`;
+  return { start, end };
 }
 
 function formatDate(date: Date): string {
@@ -126,6 +114,7 @@ const FALLBACK_SEASON = [
 
 function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) => void }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   return (
     <View style={[styles.bandControl, { backgroundColor: colors.surface }]}>
       {(['soon', 'cycle', 'season'] as Band[]).map((band) => (
@@ -142,7 +131,7 @@ function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) 
             { color: colors.textSecondary },
             value === band && { color: colors.text, fontWeight: '700' }
           ]}>
-            {band === 'soon' ? 'Soon' : band === 'cycle' ? 'Cycle' : 'Season'}
+            {t(`upcoming.${band}`)}
           </Text>
         </TouchableOpacity>
       ))}
@@ -152,6 +141,7 @@ function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) 
 
 function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: Category) => void }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   return (
     <View style={styles.categoryFilter}>
       {(['all', 'astronomical', 'cultural'] as Category[]).map((cat) => (
@@ -169,7 +159,7 @@ function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: 
             { color: colors.textSecondary },
             value === cat && { color: colors.text }
           ]}>
-            {cat === 'all' ? 'All' : cat === 'astronomical' ? 'Astronomical' : 'Cultural'}
+            {cat === 'all' ? t('upcoming.all') : cat === 'astronomical' ? t('upcoming.astronomicalFilter') : t('upcoming.culturalFilter')}
           </Text>
         </TouchableOpacity>
       ))}
@@ -179,6 +169,7 @@ function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: 
 
 function EventCard({ event }: { event: any }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   
   // Handle date formatting
   const eventDate = event.date ? new Date(event.date) : new Date();
@@ -193,6 +184,12 @@ function EventCard({ event }: { event: any }) {
       case 'indigenous': return '#e67e22';
       default: return colors.accent;
     }
+  };
+
+  // Get translated time label
+  const getTimeLabel = () => {
+    if (daysUntil <= 0) return t('upcoming.today');
+    return t('upcoming.daysShort', { count: daysUntil });
   };
   
   return (
@@ -214,7 +211,7 @@ function EventCard({ event }: { event: any }) {
         </View>
         <Text style={[styles.eventDesc, { color: colors.textTertiary }]}>{event.description}</Text>
       </View>
-      <Text style={[styles.eventTime, { color: colors.textSecondary }]}>{daysUntil <= 0 ? 'Today' : `${daysUntil}d`}</Text>
+      <Text style={[styles.eventTime, { color: colors.textSecondary }]}>{getTimeLabel()}</Text>
     </View>
   );
 }
@@ -224,10 +221,18 @@ function EventCard({ event }: { event: any }) {
 export default function UpcomingScreen() {
   const { coordinates, timezone, language } = useLocation();
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const [band, setBand] = useState<Band>('soon');
   const [category, setCategory] = useState<Category>('all');
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Get translated date range label
+  const getDateRangeLabel = (b: Band): string => {
+    if (b === 'soon') return t('upcoming.next14Days');
+    if (b === 'cycle') return t('upcoming.next30Days');
+    return t('upcoming.next90Days');
+  };
 
   useEffect(() => {
     async function loadEvents() {
@@ -324,14 +329,12 @@ export default function UpcomingScreen() {
     );
   }
 
-  const { label } = getDateRange(band);
-
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={[styles.headerTitle, { color: colors.text }]}>Upcoming</Text>
-          <Text style={[styles.headerLabel, { color: colors.textSecondary }]}>{label}</Text>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>{t('upcoming.title')}</Text>
+          <Text style={[styles.headerLabel, { color: colors.textSecondary }]}>{getDateRangeLabel(band)}</Text>
         </View>
 
         {/* Band Control */}
@@ -343,7 +346,7 @@ export default function UpcomingScreen() {
         {/* Content by Band */}
         {band === 'soon' && (
           <View style={styles.bandContent}>
-            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>TIMING WINDOWS</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('upcoming.timingWindows')}</Text>
             {bucketedEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
@@ -352,7 +355,7 @@ export default function UpcomingScreen() {
 
         {band === 'cycle' && (
           <View style={styles.bandContent}>
-            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>LUNAR & PLANETARY MILESTONES</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('upcoming.lunarPlanetaryMilestones')}</Text>
             {bucketedEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
@@ -361,7 +364,7 @@ export default function UpcomingScreen() {
 
         {band === 'season' && (
           <View style={styles.bandContent}>
-            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>SEASONAL TURNING POINTS</Text>
+            <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('upcoming.seasonalTurningPoints')}</Text>
             {bucketedEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}

@@ -380,7 +380,10 @@
     "today": "Today",
     "now": "Now",
     "hoursShort": "{{count}}h",
-    "daysShort": "{{count}}d"
+    "daysShort": "{{count}}d",
+    "timingWindows": "TIMING WINDOWS",
+    "lunarPlanetaryMilestones": "LUNAR & PLANETARY MILESTONES",
+    "seasonalTurningPoints": "SEASONAL TURNING POINTS"
   },
   "settings": {
     "title": "Settings",
