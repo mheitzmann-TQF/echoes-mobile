@@ -4,8 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getApiLang } from '../lib/lang';
-import api from '../lib/api';
-import { Brain, Calendar, TrendingUp, TrendingDown, Minus, ChevronRight, Info, X, FileText } from 'lucide-react-native';
+import api, { RegionalBreakdown } from '../lib/api';
+import { Brain, Calendar, TrendingUp, TrendingDown, Minus, ChevronRight, Info, X, FileText, Globe } from 'lucide-react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import i18next from 'i18next';
 
@@ -358,6 +358,89 @@ function CalendarCard({ calendar, onPress, lang }: { calendar: any; onPress: () 
   );
 }
 
+function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t: any }) {
+  const { colors } = useTheme();
+  
+  const getRegionTranslationKey = (region: string): string => {
+    const regionMap: Record<string, string> = {
+      'Asia': 'region_asia',
+      'Africa': 'region_africa',
+      'Europe': 'region_europe',
+      'Latin America': 'region_latinAmerica',
+      'Middle East': 'region_middleEast',
+      'North America': 'region_northAmerica',
+      'Oceania': 'region_oceania',
+    };
+    return regionMap[region] || 'region_asia';
+  };
+  
+  const getScoreColor = (score: number) => {
+    if (score >= 70) return '#10b981';
+    if (score >= 50) return '#3b82f6';
+    if (score >= 30) return '#f59e0b';
+    return '#ef4444';
+  };
+  
+  const sortedRegions = [...regions].sort((a, b) => b.articleCount - a.articleCount);
+  
+  return (
+    <View style={styles.regionalSection}>
+      <View style={styles.regionalHeader}>
+        <Globe size={16} color={colors.textSecondary} />
+        <Text style={[styles.regionalTitle, { color: colors.text }]}>{t('learn.regionalBreakdown')}</Text>
+      </View>
+      <View style={styles.regionalGrid}>
+        {sortedRegions.map((region, idx) => (
+          <View key={idx} style={[styles.regionCard, { backgroundColor: colors.surfaceHighlight }]}>
+            <View style={styles.regionHeader}>
+              <Text style={[styles.regionName, { color: colors.text }]}>
+                {t(`learn.${getRegionTranslationKey(region.regionDisplay || region.region)}`)}
+              </Text>
+              <Text style={[styles.regionScore, { color: getScoreColor(region.avgAlignment) }]}>
+                {Math.round(region.avgAlignment)}
+              </Text>
+            </View>
+            <Text style={[styles.regionArticles, { color: colors.textTertiary }]}>
+              {formatNumberByLocale(region.articleCount)} {t('learn.articlesShort')}
+            </Text>
+            <View style={styles.regionBreakdown}>
+              <View style={[styles.regionBar, { backgroundColor: colors.border }]}>
+                <View 
+                  style={[
+                    styles.regionBarSegment, 
+                    { 
+                      width: `${region.breakdown?.transformational || 0}%`, 
+                      backgroundColor: '#10b981' 
+                    }
+                  ]} 
+                />
+                <View 
+                  style={[
+                    styles.regionBarSegment, 
+                    { 
+                      width: `${region.breakdown?.neutral || 0}%`, 
+                      backgroundColor: '#6b7280' 
+                    }
+                  ]} 
+                />
+                <View 
+                  style={[
+                    styles.regionBarSegment, 
+                    { 
+                      width: `${region.breakdown?.misaligned || 0}%`, 
+                      backgroundColor: '#ef4444' 
+                    }
+                  ]} 
+                />
+              </View>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
 function CalendarDetailModal({ calendar, visible, onClose }: { calendar: any; visible: boolean; onClose: () => void }) {
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
@@ -431,6 +514,7 @@ export default function WisdomScreen() {
   
   const [consciousness, setConsciousness] = useState<any>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
+  const [regionalData, setRegionalData] = useState<RegionalBreakdown[]>([]);
   const [loading, setLoading] = useState(true);
   const [methodologyVisible, setMethodologyVisible] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState<any>(null);
@@ -443,18 +527,23 @@ export default function WisdomScreen() {
     setLoading(true);
     setCalendars([]);
     setConsciousness(null);
+    setRegionalData([]);
     
     async function loadData() {
       try {
         console.log('[WisdomScreen] Loading data with lang:', currentLang);
         
-        const [consciousnessData, calendarsData] = await Promise.all([
+        const [consciousnessData, calendarsData, regionalResponse] = await Promise.all([
           api.getConsciousnessAnalysis().catch(() => null),
           api.getTraditionalCalendars(40.7128, -74.006, 'UTC', currentLang).catch(() => []),
+          api.getRegionalBreakdown().catch(() => null),
         ]);
         
         setConsciousness(consciousnessData);
         setCalendars(calendarsData || []);
+        if (regionalResponse?.success && regionalResponse?.data?.regions) {
+          setRegionalData(regionalResponse.data.regions);
+        }
       } finally {
         setLoading(false);
       }
@@ -574,6 +663,11 @@ export default function WisdomScreen() {
                     </View>
                   )}
                 </View>
+
+                {/* REGIONAL BREAKDOWN - Geographic distribution */}
+                {regionalData.length > 0 && (
+                  <RegionalBreakdownCard regions={regionalData} t={t} />
+                )}
 
                 {/* SIGNAL WITHIN - Second gauge (green, highly aligned) with trend */}
                 {hasFilteredData && (
@@ -721,14 +815,14 @@ const styles = StyleSheet.create({
   gaugeScore: { fontSize: 36, fontWeight: '700' },
   gaugeLabel: { fontSize: 11, marginTop: 2, textAlign: 'center' },
   gaugeSubtitle: { fontSize: 10, marginTop: 4, textAlign: 'center' },
-  narrativeSection: { alignItems: 'center', marginBottom: 24 },
+  narrativeSection: { alignItems: 'center', marginBottom: 32 },
   signalWithTrendRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 16 },
   trendSideBadge: { marginLeft: 8 },
-  signalNoiseHint: { alignItems: 'center', marginBottom: 24, paddingHorizontal: 16 },
+  signalNoiseHint: { alignItems: 'center', marginBottom: 20, paddingHorizontal: 16 },
   signalNoiseText: { fontSize: 12, textAlign: 'center', fontStyle: 'italic', lineHeight: 18 },
   
-  breakdownSection: { marginBottom: 28, gap: 16 },
-  analysisSummary: { marginBottom: 24, paddingHorizontal: 8, gap: 12 },
+  breakdownSection: { marginBottom: 32, gap: 20 },
+  analysisSummary: { marginBottom: 32, paddingHorizontal: 8, gap: 12 },
   articleCountRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   articleCountText: { fontSize: 14, fontWeight: '600' },
   contentSourcesRow: { gap: 8 },
@@ -800,4 +894,17 @@ const styles = StyleSheet.create({
   methodologySectionDesc: { fontSize: 13, lineHeight: 20 },
   methodologyCloseBtn: { paddingVertical: 12, borderRadius: 8, alignItems: 'center' },
   methodologyCloseText: { fontSize: 15, fontWeight: '500' },
+  
+  regionalSection: { marginBottom: 32, paddingTop: 8 },
+  regionalHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 },
+  regionalTitle: { fontSize: 13, fontWeight: '600', letterSpacing: 0.5 },
+  regionalGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  regionCard: { width: '48%', borderRadius: 12, padding: 14 },
+  regionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
+  regionName: { fontSize: 13, fontWeight: '600' },
+  regionScore: { fontSize: 18, fontWeight: '700' },
+  regionArticles: { fontSize: 11, marginBottom: 8 },
+  regionBreakdown: { marginTop: 4 },
+  regionBar: { height: 4, borderRadius: 2, flexDirection: 'row', overflow: 'hidden' },
+  regionBarSegment: { height: '100%' },
 });
