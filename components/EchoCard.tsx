@@ -265,7 +265,13 @@ export default function EchoCard({
             </View>
 
             <View style={styles.messageContainer}>
-              <Text style={[styles.message, { color: colors.text }]}>{echo.message}</Text>
+              <Text 
+                style={[styles.message, { color: colors.text }]}
+                numberOfLines={4}
+                adjustsFontSizeToFit={false}
+              >
+                {echo.message}
+              </Text>
             </View>
 
             <View style={styles.footer}>
@@ -371,15 +377,18 @@ const styles = StyleSheet.create({
   messageContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingVertical: 16,
+    paddingVertical: 8,
+    width: '100%',
   },
   message: {
     color: '#FFFFFF',
-    fontSize: 19,
+    fontSize: 17,
     fontWeight: '500',
     textAlign: 'left',
-    lineHeight: 28,
-    letterSpacing: -0.3,
+    lineHeight: 26,
+    letterSpacing: -0.2,
+    flexWrap: 'wrap',
+    flexShrink: 1,
   },
   footer: {
     alignItems: 'flex-start',
