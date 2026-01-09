@@ -616,7 +616,7 @@ export default function WisdomScreen() {
                 )}
                 
                 {/* ANALYSIS SUMMARY - Article count and content sources */}
-                <View style={styles.analysisSummary}>
+                <View style={[styles.analysisSummary, { borderTopColor: colors.border }]}>
                   <View style={styles.articleCountRow}>
                     <FileText size={16} color={colors.textSecondary} />
                     <Text style={[styles.articleCountText, { color: colors.text }]}>
@@ -808,7 +808,7 @@ const styles = StyleSheet.create({
   signalNoiseText: { fontSize: 12, textAlign: 'center', fontStyle: 'italic', lineHeight: 18 },
   
   breakdownSection: { marginBottom: 32, gap: 20 },
-  analysisSummary: { marginBottom: 32, paddingHorizontal: 8, gap: 12 },
+  analysisSummary: { marginTop: 24, paddingTop: 20, marginBottom: 32, paddingHorizontal: 8, gap: 12, borderTopWidth: 1 },
   articleCountRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   articleCountText: { fontSize: 14, fontWeight: '600' },
   contentSourcesRow: { gap: 8 },
