@@ -223,6 +223,70 @@ function TrendIndicator({ trend }: { trend: string | number }) {
   );
 }
 
+// Calendar system name translations
+const CALENDAR_TRANSLATIONS: Record<string, Record<string, string>> = {
+  en: {
+    maya: 'Mayan Tzolkin',
+    chinese: 'Chinese Agricultural',
+    hindu: 'Hindu Panchang',
+    islamic: 'Islamic Hijri',
+    hebrew: 'Hebrew Calendar',
+  },
+  fr: {
+    maya: 'Tzolkin Maya',
+    chinese: 'Calendrier Agricole Chinois',
+    hindu: 'Panchang Hindou',
+    islamic: 'Calendrier Hijri Islamique',
+    hebrew: 'Calendrier Hébraïque',
+  },
+  es: {
+    maya: 'Tzolkin Maya',
+    chinese: 'Calendario Agrícola Chino',
+    hindu: 'Panchang Hindú',
+    islamic: 'Calendario Hijri Islámico',
+    hebrew: 'Calendario Hebreo',
+  },
+  de: {
+    maya: 'Maya Tzolkin',
+    chinese: 'Chinesischer Landwirtschaftskalender',
+    hindu: 'Hindu Panchang',
+    islamic: 'Islamischer Hijri Kalender',
+    hebrew: 'Hebräischer Kalender',
+  },
+  pt: {
+    maya: 'Tzolkin Maia',
+    chinese: 'Calendário Agrícola Chinês',
+    hindu: 'Panchang Hindu',
+    islamic: 'Calendário Hijri Islâmico',
+    hebrew: 'Calendário Hebraico',
+  },
+  it: {
+    maya: 'Tzolkin Maya',
+    chinese: 'Calendario Agricolo Cinese',
+    hindu: 'Panchang Indù',
+    islamic: 'Calendario Hijri Islamico',
+    hebrew: 'Calendario Ebraico',
+  },
+};
+
+function getCalendarKey(systemName: string): string | null {
+  const name = systemName.toLowerCase();
+  if (name.includes('maya') || name.includes('tzolkin')) return 'maya';
+  if (name.includes('chinese') || name.includes('chin') || name.includes('agricol')) return 'chinese';
+  if (name.includes('hindu') || name.includes('panchang')) return 'hindu';
+  if (name.includes('islam') || name.includes('hijri') || name.includes('muharram')) return 'islamic';
+  if (name.includes('hebrew') || name.includes('hébr') || name.includes('tevet') || name.includes('jewish')) return 'hebrew';
+  return null;
+}
+
+function translateCalendarName(systemName: string, lang: string): string {
+  const key = getCalendarKey(systemName);
+  if (!key) return systemName;
+  
+  const translations = CALENDAR_TRANSLATIONS[lang] || CALENDAR_TRANSLATIONS.en;
+  return translations[key] || systemName;
+}
+
 function getCalendarColor(calendar: any): string {
   // First try type-based color (for backward compatibility)
   if (calendar.type) {
@@ -234,28 +298,31 @@ function getCalendarColor(calendar: any): string {
     }
   }
   // Fallback to system name-based color
-  const system = (calendar.system || calendar.name || '').toLowerCase();
-  if (system.includes('maya') || system.includes('tzolkin')) return '#9b59b6';
-  if (system.includes('chinese') || system.includes('agricol')) return '#e74c3c';
-  if (system.includes('hindu') || system.includes('panchang')) return '#f39c12';
-  if (system.includes('islamic') || system.includes('hijri')) return '#2ecc71';
-  if (system.includes('hebrew') || system.includes('hébraïque')) return '#3498db';
-  return '#9b59b6';
+  const key = getCalendarKey(calendar.system || calendar.name || '');
+  switch (key) {
+    case 'maya': return '#9b59b6';
+    case 'chinese': return '#e74c3c';
+    case 'hindu': return '#f39c12';
+    case 'islamic': return '#2ecc71';
+    case 'hebrew': return '#3498db';
+    default: return '#9b59b6';
+  }
 }
 
-function normalizeCalendar(calendar: any): { name: string; date: string; phase?: string } {
+function normalizeCalendar(calendar: any, lang: string = 'en'): { name: string; date: string; phase?: string } {
+  const systemName = calendar.system || calendar.name || 'Unknown Calendar';
   return {
-    name: calendar.system || calendar.name || 'Unknown Calendar',
+    name: translateCalendarName(systemName, lang),
     date: calendar.date || calendar.currentDate || '',
     phase: calendar.phase || undefined,
   };
 }
 
-function CalendarCard({ calendar, onPress }: { calendar: any; onPress: () => void }) {
+function CalendarCard({ calendar, onPress, lang }: { calendar: any; onPress: () => void; lang: string }) {
   const { colors } = useTheme();
   
   const color = getCalendarColor(calendar);
-  const { name, date, phase } = normalizeCalendar(calendar);
+  const { name, date, phase } = normalizeCalendar(calendar, lang);
   
   return (
     <TouchableOpacity
@@ -276,14 +343,14 @@ function CalendarCard({ calendar, onPress }: { calendar: any; onPress: () => voi
   );
 }
 
-function CalendarDetailModal({ calendar, visible, onClose }: { calendar: any; visible: boolean; onClose: () => void }) {
+function CalendarDetailModal({ calendar, visible, onClose, lang }: { calendar: any; visible: boolean; onClose: () => void; lang: string }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   
   if (!calendar) return null;
   
   const color = getCalendarColor(calendar);
-  const { name: calendarName, date: calendarDate } = normalizeCalendar(calendar);
+  const { name: calendarName, date: calendarDate } = normalizeCalendar(calendar, lang);
   
   return (
     <Modal visible={visible} animationType="slide" transparent>
@@ -471,6 +538,7 @@ export default function WisdomScreen() {
                   key={idx} 
                   calendar={cal} 
                   onPress={() => setSelectedCalendar(cal)} 
+                  lang={i18n.language}
                 />
               ))}
             </View>
@@ -536,6 +604,7 @@ export default function WisdomScreen() {
         calendar={selectedCalendar} 
         visible={!!selectedCalendar} 
         onClose={() => setSelectedCalendar(null)} 
+        lang={i18n.language}
       />
     </SafeAreaView>
   );
