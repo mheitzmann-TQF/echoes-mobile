@@ -65,10 +65,13 @@ function TQFGauge({ score, size = 160, label, subtitle, forceColor }: { score: n
   
   const color = forceColor || getScoreColor(clampedScore);
   
+  const hasSubtitle = !!subtitle;
+  const svgHeight = size / 2 + (hasSubtitle ? 60 : 20);
+  
   return (
     <View style={styles.gaugeContainer}>
       {label && <Text style={[styles.gaugeTitle, { color: colors.textSecondary }]}>{label}</Text>}
-      <Svg width={size} height={size / 2 + 20}>
+      <Svg width={size} height={svgHeight}>
         <Circle
           cx={centerX}
           cy={centerY}
@@ -92,7 +95,7 @@ function TQFGauge({ score, size = 160, label, subtitle, forceColor }: { score: n
           strokeDasharray={`${progress}, ${circumference}`}
         />
       </Svg>
-      <View style={[styles.gaugeValue, { top: size / 2 - 24 }]}>
+      <View style={[styles.gaugeValue, { top: size / 2 - 30 }]}>
         <Text style={[styles.gaugeScore, { color, fontSize: size > 120 ? 36 : 28 }]}>{Math.round(clampedScore)}</Text>
         <Text style={[styles.gaugeLabel, { color: colors.textSecondary }]}>{getScoreLabel(clampedScore)}</Text>
         {subtitle && <Text style={[styles.gaugeSubtitle, { color: colors.textTertiary }]}>{subtitle}</Text>}
