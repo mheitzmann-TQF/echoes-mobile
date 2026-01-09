@@ -1,4 +1,5 @@
 import { getApiLang } from './lang';
+import { SUPPORTED_LANGUAGES } from './i18n';
 
 const CACHE_KEY_PREFIX = 'echoes_cookie_cache_';
 
@@ -18,7 +19,18 @@ function getStorage(): Storage | null {
 
 class CookieService {
   private memoryCache: CachedCookie | null = null;
-  private initialized = false;
+
+  invalidateCache(): void {
+    this.memoryCache = null;
+    // Also clear localStorage for all languages to force fresh fetch
+    const storage = getStorage();
+    if (storage) {
+      SUPPORTED_LANGUAGES.forEach(lang => {
+        storage.removeItem(`${CACHE_KEY_PREFIX}${lang}`);
+      });
+    }
+    console.log('[Cookie] Cache invalidated - will fetch fresh');
+  }
 
   private getTodayKey(): string {
     const now = new Date();
@@ -55,23 +67,24 @@ class CookieService {
     }
   }
 
-  async getCookie(): Promise<string> {
-    const lang = getApiLang();
+  async getCookie(langOverride?: string): Promise<string> {
+    const lang = langOverride || getApiLang();
     const todayKey = this.getTodayKey();
     const now = Date.now();
     
+    console.log('[Cookie] Loading cookie for language:', lang);
+    
+    // Only use memory cache if it matches the exact language requested
     if (this.memoryCache && 
         this.memoryCache.date === todayKey && 
         this.memoryCache.language === lang &&
         this.memoryCache.expiresAt > now) {
+      console.log('[Cookie] Returning from memory cache');
       return this.memoryCache.text;
     }
-
-    const stored = this.loadFromStorage(lang);
-    if (stored && stored.date === todayKey && stored.language === lang && stored.expiresAt > now) {
-      this.memoryCache = stored;
-      return stored.text;
-    }
+    
+    // Always fetch fresh from API to ensure correct language
+    console.log('[Cookie] Fetching from API for language:', lang);
 
     try {
       const response = await fetch(`/api/proxy/cookie?lang=${lang}`);

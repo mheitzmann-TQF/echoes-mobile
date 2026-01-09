@@ -699,9 +699,13 @@ export default function HomeScreen() {
 
   useEffect(() => {
     async function loadCookie() {
+      // Skip if i18n hasn't initialized yet
+      if (!i18n.language) return;
+      
       setCookieLoading(true);
       try {
-        const text = await cookieService.getCookie();
+        // Pass language explicitly to ensure correct language is used
+        const text = await cookieService.getCookie(i18n.language);
         setCookie(text);
       } catch {
         setCookie(null);

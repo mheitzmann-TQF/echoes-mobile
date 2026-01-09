@@ -102,6 +102,10 @@ export async function initI18n(): Promise<void> {
 export async function changeLanguage(lang: SupportedLanguage): Promise<void> {
   await i18n.changeLanguage(lang);
   await saveLanguage(lang);
+  
+  // Invalidate cookie cache to force re-fetch in new language
+  const { cookieService } = await import('./CookieService');
+  cookieService.invalidateCache();
 }
 
 export function getCurrentLanguage(): SupportedLanguage {
