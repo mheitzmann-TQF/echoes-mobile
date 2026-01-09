@@ -374,28 +374,6 @@ function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t
     return regionMap[region] || 'region_asia';
   };
   
-  const getScoreColor = (score: number) => {
-    if (score >= 70) return '#10b981';
-    if (score >= 50) return '#3b82f6';
-    if (score >= 30) return '#f59e0b';
-    return '#ef4444';
-  };
-  
-  const getDisplayScore = (region: RegionalBreakdown): number => {
-    if (region.filteredAlignment && region.filteredAlignment > 0) {
-      return region.filteredAlignment;
-    }
-    if (region.avgAlignment && region.avgAlignment > 0) {
-      return region.avgAlignment;
-    }
-    if (region.breakdown) {
-      const transformational = region.breakdown.transformational || 0;
-      const neutral = region.breakdown.neutral || 0;
-      return Math.round(transformational * 2 + neutral * 0.5);
-    }
-    return 0;
-  };
-  
   const sortedRegions = [...regions].sort((a, b) => b.articleCount - a.articleCount);
   
   return (
@@ -411,8 +389,8 @@ function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t
               <Text style={[styles.regionName, { color: colors.text }]}>
                 {t(`learn.${getRegionTranslationKey(region.regionDisplay || region.region)}`)}
               </Text>
-              <Text style={[styles.regionScore, { color: getScoreColor(getDisplayScore(region)) }]}>
-                {Math.round(getDisplayScore(region))}
+              <Text style={[styles.regionPercent, { color: colors.textSecondary }]}>
+                {region.percentOfTotal?.toFixed(1) || 0}%
               </Text>
             </View>
             <Text style={[styles.regionArticles, { color: colors.textTertiary }]}>
@@ -917,7 +895,7 @@ const styles = StyleSheet.create({
   regionCard: { width: '48%', borderRadius: 12, padding: 14 },
   regionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
   regionName: { fontSize: 13, fontWeight: '600' },
-  regionScore: { fontSize: 18, fontWeight: '700' },
+  regionPercent: { fontSize: 14, fontWeight: '500' },
   regionArticles: { fontSize: 11, marginBottom: 8 },
   regionBreakdown: { marginTop: 4 },
   regionBar: { height: 4, borderRadius: 2, flexDirection: 'row', overflow: 'hidden' },
