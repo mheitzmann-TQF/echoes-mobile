@@ -430,18 +430,23 @@ export default function WisdomScreen() {
   const [loading, setLoading] = useState(true);
   const [methodologyVisible, setMethodologyVisible] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState<any>(null);
+  
+  // Track current language for proper re-fetching
+  const currentLang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
 
   useEffect(() => {
+    // Reset state when language changes to trigger fresh fetch
+    setLoading(true);
+    setCalendars([]);
+    setConsciousness(null);
+    
     async function loadData() {
       try {
-        // Use i18n.language directly (already in scope from the hook)
-        // to ensure we get the correct language when user switches
-        const lang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
-        console.log('[WisdomScreen] Loading data with lang:', lang);
+        console.log('[WisdomScreen] Loading data with lang:', currentLang);
         
         const [consciousnessData, calendarsData] = await Promise.all([
           api.getConsciousnessAnalysis().catch(() => null),
-          api.getTraditionalCalendars(40.7128, -74.006, 'UTC', lang).catch(() => []),
+          api.getTraditionalCalendars(40.7128, -74.006, 'UTC', currentLang).catch(() => []),
         ]);
         
         setConsciousness(consciousnessData);
@@ -451,7 +456,7 @@ export default function WisdomScreen() {
       }
     }
     loadData();
-  }, [i18n.language]);
+  }, [currentLang]);
 
   if (loading) {
     return (
