@@ -21,7 +21,7 @@ const gestureDebug = (...args: any[]) => {
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH - 40;
-const CARD_HEIGHT = 420;
+const CARD_HEIGHT = 280;
 
 const MAX_TRANSLATE_X = 300;
 const MAX_ROTATION = 15;
@@ -371,14 +371,14 @@ const styles = StyleSheet.create({
   messageContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingVertical: 24,
+    paddingVertical: 16,
   },
   message: {
     color: '#FFFFFF',
-    fontSize: 21,
+    fontSize: 19,
     fontWeight: '500',
     textAlign: 'left',
-    lineHeight: 30,
+    lineHeight: 28,
     letterSpacing: -0.3,
   },
   footer: {
