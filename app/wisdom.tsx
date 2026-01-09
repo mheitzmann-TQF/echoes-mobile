@@ -65,35 +65,37 @@ function TQFGauge({ score, size = 160, label, subtitle, forceColor }: { score: n
   
   const color = forceColor || getScoreColor(clampedScore);
   
+  const svgHeight = size / 2 + strokeWidth;
+  
   return (
     <View style={styles.gaugeContainer}>
       {label && <Text style={[styles.gaugeTitle, { color: colors.textSecondary }]}>{label}</Text>}
-      <View>
-        <Svg width={size} height={size / 2 + 10}>
+      <View style={{ width: size, height: svgHeight }}>
+        <Svg width={size} height={size} style={{ position: 'absolute', top: 0 }}>
           <Circle
             cx={centerX}
-            cy={centerY}
+            cy={size / 2}
             r={radius}
             stroke={colors.surfaceHighlight}
             strokeWidth={strokeWidth}
             fill="none"
             strokeLinecap="round"
-            transform={`rotate(180 ${centerX} ${centerY})`}
+            transform={`rotate(180 ${centerX} ${size / 2})`}
             strokeDasharray={`${circumference}, ${circumference}`}
           />
           <Circle
             cx={centerX}
-            cy={centerY}
+            cy={size / 2}
             r={radius}
             stroke={color}
             strokeWidth={strokeWidth}
             fill="none"
             strokeLinecap="round"
-            transform={`rotate(180 ${centerX} ${centerY})`}
+            transform={`rotate(180 ${centerX} ${size / 2})`}
             strokeDasharray={`${progress}, ${circumference}`}
           />
         </Svg>
-        <View style={[styles.gaugeValueInner, { top: size / 2 - 50 }]}>
+        <View style={[styles.gaugeValueInner, { top: svgHeight / 2 - 20 }]}>
           <Text style={[styles.gaugeScore, { color, fontSize: size > 120 ? 36 : 28 }]}>{Math.round(clampedScore)}</Text>
           <Text style={[styles.gaugeLabel, { color: colors.textSecondary }]}>{getScoreLabel(clampedScore)}</Text>
         </View>
