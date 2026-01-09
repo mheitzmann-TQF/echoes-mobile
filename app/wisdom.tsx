@@ -65,41 +65,40 @@ function TQFGauge({ score, size = 160, label, subtitle, forceColor }: { score: n
   
   const color = forceColor || getScoreColor(clampedScore);
   
-  const hasSubtitle = !!subtitle;
-  const svgHeight = size / 2 + (hasSubtitle ? 60 : 20);
-  
   return (
     <View style={styles.gaugeContainer}>
       {label && <Text style={[styles.gaugeTitle, { color: colors.textSecondary }]}>{label}</Text>}
-      <Svg width={size} height={svgHeight}>
-        <Circle
-          cx={centerX}
-          cy={centerY}
-          r={radius}
-          stroke={colors.surfaceHighlight}
-          strokeWidth={strokeWidth}
-          fill="none"
-          strokeLinecap="round"
-          transform={`rotate(180 ${centerX} ${centerY})`}
-          strokeDasharray={`${circumference}, ${circumference}`}
-        />
-        <Circle
-          cx={centerX}
-          cy={centerY}
-          r={radius}
-          stroke={color}
-          strokeWidth={strokeWidth}
-          fill="none"
-          strokeLinecap="round"
-          transform={`rotate(180 ${centerX} ${centerY})`}
-          strokeDasharray={`${progress}, ${circumference}`}
-        />
-      </Svg>
-      <View style={[styles.gaugeValue, { top: size / 2 - 30 }]}>
-        <Text style={[styles.gaugeScore, { color, fontSize: size > 120 ? 36 : 28 }]}>{Math.round(clampedScore)}</Text>
-        <Text style={[styles.gaugeLabel, { color: colors.textSecondary }]}>{getScoreLabel(clampedScore)}</Text>
-        {subtitle && <Text style={[styles.gaugeSubtitle, { color: colors.textTertiary }]}>{subtitle}</Text>}
+      <View>
+        <Svg width={size} height={size / 2 + 10}>
+          <Circle
+            cx={centerX}
+            cy={centerY}
+            r={radius}
+            stroke={colors.surfaceHighlight}
+            strokeWidth={strokeWidth}
+            fill="none"
+            strokeLinecap="round"
+            transform={`rotate(180 ${centerX} ${centerY})`}
+            strokeDasharray={`${circumference}, ${circumference}`}
+          />
+          <Circle
+            cx={centerX}
+            cy={centerY}
+            r={radius}
+            stroke={color}
+            strokeWidth={strokeWidth}
+            fill="none"
+            strokeLinecap="round"
+            transform={`rotate(180 ${centerX} ${centerY})`}
+            strokeDasharray={`${progress}, ${circumference}`}
+          />
+        </Svg>
+        <View style={[styles.gaugeValueInner, { top: size / 2 - 50 }]}>
+          <Text style={[styles.gaugeScore, { color, fontSize: size > 120 ? 36 : 28 }]}>{Math.round(clampedScore)}</Text>
+          <Text style={[styles.gaugeLabel, { color: colors.textSecondary }]}>{getScoreLabel(clampedScore)}</Text>
+        </View>
       </View>
+      {subtitle && <Text style={[styles.gaugeSubtitleBelow, { color: colors.textTertiary }]}>{subtitle}</Text>}
     </View>
   );
 }
@@ -800,9 +799,11 @@ const styles = StyleSheet.create({
   tqfLabel: { fontSize: 12, fontWeight: '600', letterSpacing: 1, marginBottom: 8 },
   gaugeContainer: { alignItems: 'center' },
   gaugeValue: { position: 'absolute', alignItems: 'center', width: '100%' },
+  gaugeValueInner: { position: 'absolute', alignItems: 'center', width: '100%' },
   gaugeScore: { fontSize: 36, fontWeight: '700' },
   gaugeLabel: { fontSize: 11, marginTop: 2, textAlign: 'center' },
   gaugeSubtitle: { fontSize: 10, marginTop: 4, textAlign: 'center' },
+  gaugeSubtitleBelow: { fontSize: 11, marginTop: 8, textAlign: 'center', paddingHorizontal: 10, lineHeight: 16 },
   narrativeSection: { alignItems: 'center', marginBottom: 32 },
   narrativeSectionSpaced: { alignItems: 'center', marginTop: 16, marginBottom: 40 },
   signalWithTrendRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 16 },
