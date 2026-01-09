@@ -434,7 +434,11 @@ export default function WisdomScreen() {
   useEffect(() => {
     async function loadData() {
       try {
-        const lang = getApiLang();
+        // Use i18n.language directly (already in scope from the hook)
+        // to ensure we get the correct language when user switches
+        const lang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
+        console.log('[WisdomScreen] Loading data with lang:', lang);
+        
         const [consciousnessData, calendarsData] = await Promise.all([
           api.getConsciousnessAnalysis().catch(() => null),
           api.getTraditionalCalendars(40.7128, -74.006, 'UTC', lang).catch(() => []),
