@@ -60,6 +60,7 @@ import Hero from '../components/Hero';
 import CalendarCarousel from '../components/CalendarCarousel';
 import MetricsGrid from '../components/MetricsGrid';
 import EchoStack from '../components/EchoStack';
+import ConsciousnessSummaryCard from '../components/ConsciousnessSummaryCard';
 
 interface DailyPhotoData {
   url: string;
@@ -769,6 +770,10 @@ export default function HomeScreen() {
             <MetricsGrid planetary={planetary} />
           )}
 
+          <View style={styles.consciousnessSection}>
+            <ConsciousnessSummaryCard compact />
+          </View>
+
           <TodayObservances observances={observances} />
 
           {/* Daily Cookie */}
@@ -937,6 +942,11 @@ const styles = StyleSheet.create({
   modalCloseText: {
     fontSize: 15,
     fontWeight: '600',
+  },
+  consciousnessSection: {
+    marginHorizontal: 20,
+    marginTop: 16,
+    marginBottom: 8,
   },
   cookieSection: {
     marginHorizontal: 20,
