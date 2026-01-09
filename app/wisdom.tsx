@@ -37,7 +37,7 @@ function SkeletonCard({ style }: { style?: any }) {
   );
 }
 
-function TQFGauge({ score, size = 160, label }: { score: number; size?: number; label?: string }) {
+function TQFGauge({ score, size = 160, label, subtitle, forceColor }: { score: number; size?: number; label?: string; subtitle?: string; forceColor?: string }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   
@@ -46,6 +46,8 @@ function TQFGauge({ score, size = 160, label }: { score: number; size?: number; 
   const radius = (size - strokeWidth) / 2;
   const circumference = Math.PI * radius;
   const progress = (clampedScore / 100) * circumference;
+  const centerX = size / 2;
+  const centerY = size / 2;
   
   const getScoreColor = (s: number) => {
     if (s >= 70) return '#10b981';
@@ -61,46 +63,45 @@ function TQFGauge({ score, size = 160, label }: { score: number; size?: number; 
     return t('learn.misaligned');
   };
   
-  const color = getScoreColor(clampedScore);
+  const color = forceColor || getScoreColor(clampedScore);
   
   return (
     <View style={styles.gaugeContainer}>
       {label && <Text style={[styles.gaugeTitle, { color: colors.textSecondary }]}>{label}</Text>}
       <Svg width={size} height={size / 2 + 20}>
         <Circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={centerX}
+          cy={centerY}
           r={radius}
           stroke={colors.surfaceHighlight}
           strokeWidth={strokeWidth}
           fill="none"
           strokeLinecap="round"
-          rotation={180}
-          origin={`${size / 2}, ${size / 2}`}
+          transform={`rotate(180 ${centerX} ${centerY})`}
           strokeDasharray={`${circumference}, ${circumference}`}
         />
         <Circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={centerX}
+          cy={centerY}
           r={radius}
           stroke={color}
           strokeWidth={strokeWidth}
           fill="none"
           strokeLinecap="round"
-          rotation={180}
-          origin={`${size / 2}, ${size / 2}`}
+          transform={`rotate(180 ${centerX} ${centerY})`}
           strokeDasharray={`${progress}, ${circumference}`}
         />
       </Svg>
       <View style={[styles.gaugeValue, { top: size / 2 - 24 }]}>
         <Text style={[styles.gaugeScore, { color, fontSize: size > 120 ? 36 : 28 }]}>{Math.round(clampedScore)}</Text>
         <Text style={[styles.gaugeLabel, { color: colors.textSecondary }]}>{getScoreLabel(clampedScore)}</Text>
+        {subtitle && <Text style={[styles.gaugeSubtitle, { color: colors.textTertiary }]}>{subtitle}</Text>}
       </View>
     </View>
   );
 }
 
-function PercentageBar({ label, value, color }: { label: string; value: number; color: string }) {
+function PercentageBar({ label, hint, value, color }: { label: string; hint?: string; value: number; color: string }) {
   const { colors } = useTheme();
   const clampedValue = Math.max(0, Math.min(100, value));
   
@@ -108,7 +109,10 @@ function PercentageBar({ label, value, color }: { label: string; value: number; 
     <View style={styles.percentageRow}>
       <View style={styles.percentageLabel}>
         <View style={[styles.percentageDot, { backgroundColor: color }]} />
-        <Text style={[styles.percentageText, { color: colors.text }]}>{label}</Text>
+        <View style={styles.percentageLabelText}>
+          <Text style={[styles.percentageText, { color: colors.text }]}>{label}</Text>
+          {hint && <Text style={[styles.percentageHint, { color: colors.textTertiary }]}>{hint}</Text>}
+        </View>
       </View>
       <View style={styles.percentageBarContainer}>
         <View style={[styles.percentageBarBg, { backgroundColor: colors.surfaceHighlight }]}>
@@ -513,56 +517,61 @@ export default function WisdomScreen() {
               </View>
             ) : (
               <>
-                {/* Dual Gauge Display: Raw vs Filtered */}
-                {hasFilteredData ? (
-                  <>
-                    <View style={styles.dualGaugeSection}>
-                      <View style={styles.gaugeColumn}>
-                        <TQFGauge score={tqfScore} size={120} label={t('learn.rawScore')} />
-                      </View>
-                      <View style={styles.gaugeColumn}>
-                        <TQFGauge score={filteredScore} size={120} label={t('learn.filteredScore')} />
-                      </View>
-                    </View>
-                    <View style={styles.signalNoiseHint}>
-                      <Text style={[styles.signalNoiseText, { color: colors.textTertiary }]}>
-                        {t('learn.signalBeneathNoise')}
-                      </Text>
-                    </View>
-                  </>
-                ) : (
-                  <View style={styles.gaugeSection}>
-                    <Text style={[styles.tqfLabel, { color: colors.textSecondary }]}>{t('learn.tqfScore')}</Text>
-                    <TQFGauge score={tqfScore} />
-                  </View>
-                )}
+                {/* MEDIA REALITY - First gauge (red, misaligned) */}
+                <View style={styles.narrativeSection}>
+                  <TQFGauge 
+                    score={tqfScore} 
+                    size={140} 
+                    label={t('learn.rawScore')} 
+                    subtitle={t('learn.mediaRealityDesc').replace('{{count}}', formatNumberByLocale(articlesAnalyzed))}
+                    forceColor="#ef4444"
+                  />
+                </View>
                 
+                {/* CONTENT BREAKDOWN - Shows why media is broken */}
                 <View style={styles.breakdownSection}>
                   <PercentageBar 
-                    label={t('learn.transformational')} 
-                    value={transformationalPercent} 
-                    color="#10b981" 
+                    label={t('learn.destructive')} 
+                    hint={t('learn.destructiveHint')}
+                    value={destructivePercent} 
+                    color="#ef4444" 
                   />
                   <PercentageBar 
                     label={t('learn.neutral')} 
+                    hint={t('learn.neutralHint')}
                     value={neutralPercent} 
                     color="#6b7280" 
                   />
                   <PercentageBar 
-                    label={t('learn.destructive')} 
-                    value={destructivePercent} 
-                    color="#ef4444" 
+                    label={t('learn.transformational')} 
+                    hint={t('learn.transformationalHint')}
+                    value={transformationalPercent} 
+                    color="#10b981" 
                   />
                 </View>
                 
-                <View style={styles.metricsRow}>
-                  <HopeMeter level={hopeLevel} />
-                  <TrendIndicator trend={trend7d} />
-                </View>
+                {/* SIGNAL WITHIN - Second gauge (green, highly aligned) with trend */}
+                {hasFilteredData && (
+                  <View style={styles.narrativeSection}>
+                    <View style={styles.signalWithTrendRow}>
+                      <TQFGauge 
+                        score={filteredScore} 
+                        size={140} 
+                        label={t('learn.filteredScore')} 
+                        subtitle={t('learn.signalWithinDesc').replace('{{count}}', formatNumberByLocale(Math.round(articlesAnalyzed * transformationalPercent / 100)))}
+                        forceColor="#10b981"
+                      />
+                      <View style={styles.trendSideBadge}>
+                        <TrendIndicator trend={trend7d} />
+                      </View>
+                    </View>
+                  </View>
+                )}
                 
-                <View style={styles.articlesRow}>
-                  <Text style={[styles.articlesText, { color: colors.textTertiary }]}>
-                    {formatNumberByLocale(articlesAnalyzed)} {t('learn.articlesAnalyzed').toLowerCase()}
+                {/* Narrative hint */}
+                <View style={styles.signalNoiseHint}>
+                  <Text style={[styles.signalNoiseText, { color: colors.textTertiary }]}>
+                    {t('learn.signalBeneathNoise')}
                   </Text>
                 </View>
               </>
@@ -619,8 +628,13 @@ export default function WisdomScreen() {
               <Text style={[styles.methodologyDesc, { color: colors.textSecondary }]}>{t('learn.methodologyDesc')}</Text>
               
               <View style={styles.methodologySection}>
-                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.tqfScoreExplained')}</Text>
-                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.tqfScoreExplainedDesc')}</Text>
+                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.rawScore')}</Text>
+                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.mediaRealityExplainedDesc')}</Text>
+              </View>
+              
+              <View style={styles.methodologySection}>
+                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.filteredScore')}</Text>
+                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.signalWithinExplainedDesc')}</Text>
               </View>
               
               <View style={styles.methodologySection}>
@@ -631,11 +645,6 @@ export default function WisdomScreen() {
               <View style={styles.methodologySection}>
                 <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.destructiveExplained')}</Text>
                 <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.destructiveExplainedDesc')}</Text>
-              </View>
-              
-              <View style={styles.methodologySection}>
-                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.hopeLevelExplained')}</Text>
-                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.hopeLevelExplainedDesc')}</Text>
               </View>
               
               <View style={styles.methodologySection}>
@@ -686,14 +695,20 @@ const styles = StyleSheet.create({
   gaugeValue: { position: 'absolute', alignItems: 'center', width: '100%' },
   gaugeScore: { fontSize: 36, fontWeight: '700' },
   gaugeLabel: { fontSize: 11, marginTop: 2, textAlign: 'center' },
+  gaugeSubtitle: { fontSize: 10, marginTop: 4, textAlign: 'center' },
+  narrativeSection: { alignItems: 'center', marginBottom: 24 },
+  signalWithTrendRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 16 },
+  trendSideBadge: { marginLeft: 8 },
   signalNoiseHint: { alignItems: 'center', marginBottom: 24, paddingHorizontal: 16 },
   signalNoiseText: { fontSize: 12, textAlign: 'center', fontStyle: 'italic', lineHeight: 18 },
   
   breakdownSection: { marginBottom: 28, gap: 16 },
   percentageRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  percentageLabel: { flexDirection: 'row', alignItems: 'center', gap: 8, width: 130 },
-  percentageDot: { width: 8, height: 8, borderRadius: 4 },
+  percentageLabel: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, width: 160 },
+  percentageLabelText: { flexDirection: 'column' },
+  percentageDot: { width: 8, height: 8, borderRadius: 4, marginTop: 4 },
   percentageText: { fontSize: 13, fontWeight: '500' },
+  percentageHint: { fontSize: 10, marginTop: 2 },
   percentageBarContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 10, marginLeft: 12 },
   percentageBarBg: { flex: 1, height: 8, borderRadius: 4, overflow: 'hidden' },
   percentageBarFill: { height: '100%', borderRadius: 4 },
