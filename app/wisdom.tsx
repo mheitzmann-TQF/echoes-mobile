@@ -763,6 +763,34 @@ export default function WisdomScreen() {
                 <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.trendExplained')}</Text>
                 <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.trendExplainedDesc')}</Text>
               </View>
+              
+              <View style={[styles.faqDivider, { backgroundColor: colors.border }]} />
+              <Text style={[styles.faqSectionTitle, { color: colors.text }]}>{t('learn.aboutThisData')}</Text>
+              
+              <View style={styles.faqItem}>
+                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq1Question')}</Text>
+                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq1Answer')}</Text>
+              </View>
+              
+              <View style={styles.faqItem}>
+                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq2Question')}</Text>
+                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq2Answer')}</Text>
+              </View>
+              
+              <View style={styles.faqItem}>
+                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq3Question')}</Text>
+                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq3Answer')}</Text>
+              </View>
+              
+              <View style={styles.faqItem}>
+                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq4Question')}</Text>
+                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq4Answer')}</Text>
+              </View>
+              
+              <View style={styles.faqItem}>
+                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq5Question')}</Text>
+                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq5Answer')}</Text>
+              </View>
             </ScrollView>
             
             <TouchableOpacity 
@@ -900,4 +928,10 @@ const styles = StyleSheet.create({
   regionBreakdown: { marginTop: 4 },
   regionBar: { height: 4, borderRadius: 2, flexDirection: 'row', overflow: 'hidden' },
   regionBarSegment: { height: '100%' },
+  
+  faqDivider: { height: 1, marginVertical: 20 },
+  faqSectionTitle: { fontSize: 15, fontWeight: '600', marginBottom: 16 },
+  faqItem: { marginBottom: 16 },
+  faqQuestion: { fontSize: 13, fontWeight: '600', marginBottom: 4 },
+  faqAnswer: { fontSize: 13, lineHeight: 19 },
 });
