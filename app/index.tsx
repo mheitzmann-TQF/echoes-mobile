@@ -691,7 +691,7 @@ export default function HomeScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [coordinates, timezone]);
+  }, [coordinates, timezone, i18n.language, t]);
 
   useEffect(() => {
     fetchData();

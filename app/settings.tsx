@@ -8,6 +8,8 @@ import { useEntitlement } from '@/lib/iap/useEntitlement';
 import Paywall from '@/components/Paywall';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, changeLanguage, getCurrentLanguage, type SupportedLanguage } from '../lib/i18n';
+import { contentService } from '../lib/ContentService';
+import { cookieService } from '../lib/CookieService';
 
 const THEMES = ['Dark', 'Light'];
 
@@ -37,6 +39,10 @@ export default function SettingsScreen() {
   const { isPro, isLoading: entitlementLoading, expiresAt, restorePurchasesAction } = useEntitlement();
 
   const handleLanguageChange = async (lang: SupportedLanguage) => {
+    // Clear all cached content when language changes
+    contentService.clearCache();
+    cookieService.invalidateCache();
+    
     await changeLanguage(lang);
     setCurrentLanguage(lang);
     setShowLanguageModal(false);
