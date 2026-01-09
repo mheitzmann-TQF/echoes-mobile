@@ -198,6 +198,8 @@
     "moderatelyAligned": "Moderadamente Alinhado",
     "transitional": "Transicional",
     "misaligned": "Desalinhado",
+    "dataTemporarilyUnavailable": "Dados Temporariamente Indisponíveis",
+    "consciousnessUnavailableDesc": "Os dados de consciência global estão sendo atualizados. Por favor, volte mais tarde.",
     "calendarWisdom": "Sabedoria do Calendário",
     "calendarWisdomDesc": "Formas tradicionais de medir o tempo",
     "noDataAvailable": "Sem dados disponíveis",

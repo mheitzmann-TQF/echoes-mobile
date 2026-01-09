@@ -263,6 +263,8 @@
     "moderatelyAligned": "Modérément Aligné",
     "transitional": "En Transition",
     "misaligned": "Désaligné",
+    "dataTemporarilyUnavailable": "Données Temporairement Indisponibles",
+    "consciousnessUnavailableDesc": "Les données de conscience globale sont en cours de mise à jour. Veuillez réessayer plus tard.",
     "tapToExplore": "Appuyez pour explorer",
     "calendarWisdom": "Sagesse des Calendriers",
     "calendarWisdomDesc": "Façons traditionnelles de mesurer le temps",

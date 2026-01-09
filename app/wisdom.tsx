@@ -474,13 +474,15 @@ export default function WisdomScreen() {
     );
   }
 
-  const tqfScore = consciousness?.global_coherence ?? consciousness?.tqf_score ?? 50;
-  const transformationalPercent = consciousness?.transformational_percent ?? 33;
-  const destructivePercent = consciousness?.destructive_percent ?? 33;
-  const neutralPercent = consciousness?.neutral_percent ?? 34;
-  const hopeLevel = consciousness?.hope_level ?? 'moderate';
+  const tqfScore = consciousness?.global_coherence ?? consciousness?.tqf_score ?? 0;
+  const transformationalPercent = consciousness?.transformational_percent ?? 0;
+  const destructivePercent = consciousness?.destructive_percent ?? 0;
+  const neutralPercent = consciousness?.neutral_percent ?? 0;
+  const hopeLevel = consciousness?.hope_level ?? 0;
   const trend7d = consciousness?.trend_7d ?? 'stable';
-  const articlesAnalyzed = consciousness?.articles_analyzed ?? 52;
+  const articlesAnalyzed = consciousness?.articles_analyzed ?? 0;
+  
+  const isConsciousnessUnavailable = tqfScore === 0 && articlesAnalyzed === 0;
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -499,39 +501,49 @@ export default function WisdomScreen() {
           <Text style={[styles.sectionSubtitle, { color: colors.textSecondary }]}>{t('learn.globalConsciousnessDesc')}</Text>
           
           <View style={[styles.consciousnessCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <View style={styles.gaugeSection}>
-              <Text style={[styles.tqfLabel, { color: colors.textSecondary }]}>{t('learn.tqfScore')}</Text>
-              <TQFGauge score={tqfScore} />
-            </View>
-            
-            <View style={styles.breakdownSection}>
-              <PercentageBar 
-                label={t('learn.transformational')} 
-                value={transformationalPercent} 
-                color="#10b981" 
-              />
-              <PercentageBar 
-                label={t('learn.neutral')} 
-                value={neutralPercent} 
-                color="#6b7280" 
-              />
-              <PercentageBar 
-                label={t('learn.destructive')} 
-                value={destructivePercent} 
-                color="#ef4444" 
-              />
-            </View>
-            
-            <View style={styles.metricsRow}>
-              <HopeMeter level={hopeLevel} />
-              <TrendIndicator trend={trend7d} />
-            </View>
-            
-            <View style={styles.articlesRow}>
-              <Text style={[styles.articlesText, { color: colors.textTertiary }]}>
-                {formatNumberByLocale(articlesAnalyzed)} {t('learn.articlesAnalyzed').toLowerCase()}
-              </Text>
-            </View>
+            {isConsciousnessUnavailable ? (
+              <View style={styles.unavailableContainer}>
+                <Brain size={40} color={colors.textTertiary} />
+                <Text style={[styles.unavailableTitle, { color: colors.text }]}>{t('learn.dataTemporarilyUnavailable')}</Text>
+                <Text style={[styles.unavailableDesc, { color: colors.textSecondary }]}>{t('learn.consciousnessUnavailableDesc')}</Text>
+              </View>
+            ) : (
+              <>
+                <View style={styles.gaugeSection}>
+                  <Text style={[styles.tqfLabel, { color: colors.textSecondary }]}>{t('learn.tqfScore')}</Text>
+                  <TQFGauge score={tqfScore} />
+                </View>
+                
+                <View style={styles.breakdownSection}>
+                  <PercentageBar 
+                    label={t('learn.transformational')} 
+                    value={transformationalPercent} 
+                    color="#10b981" 
+                  />
+                  <PercentageBar 
+                    label={t('learn.neutral')} 
+                    value={neutralPercent} 
+                    color="#6b7280" 
+                  />
+                  <PercentageBar 
+                    label={t('learn.destructive')} 
+                    value={destructivePercent} 
+                    color="#ef4444" 
+                  />
+                </View>
+                
+                <View style={styles.metricsRow}>
+                  <HopeMeter level={hopeLevel} />
+                  <TrendIndicator trend={trend7d} />
+                </View>
+                
+                <View style={styles.articlesRow}>
+                  <Text style={[styles.articlesText, { color: colors.textTertiary }]}>
+                    {formatNumberByLocale(articlesAnalyzed)} {t('learn.articlesAnalyzed').toLowerCase()}
+                  </Text>
+                </View>
+              </>
+            )}
             
             <TouchableOpacity 
               style={[styles.methodologyBtn, { borderColor: colors.border }]}
@@ -686,6 +698,9 @@ const styles = StyleSheet.create({
   
   emptyCard: { borderRadius: 16, padding: 40, borderWidth: 1, alignItems: 'center' },
   emptyText: { fontSize: 14 },
+  unavailableContainer: { alignItems: 'center', paddingVertical: 30 },
+  unavailableTitle: { fontSize: 16, fontWeight: '600', marginTop: 16, marginBottom: 8 },
+  unavailableDesc: { fontSize: 14, textAlign: 'center', lineHeight: 20, paddingHorizontal: 20 },
   
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
   modalContent: { borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '80%' },
