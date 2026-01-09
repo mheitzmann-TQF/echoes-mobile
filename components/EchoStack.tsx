@@ -51,16 +51,15 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   label: {
-    fontSize: 34,
-    fontWeight: '700',
+    fontSize: 20,
+    fontWeight: '600',
     color: '#FFFFFF',
-    lineHeight: 40,
-    letterSpacing: -0.5,
+    lineHeight: 28,
     marginBottom: 16,
     paddingHorizontal: 20,
   },
   stackContainer: {
-    height: 520,
+    height: 360,
     alignItems: 'center',
   },
   emptyState: {

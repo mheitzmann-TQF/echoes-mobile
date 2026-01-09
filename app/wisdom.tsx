@@ -5,8 +5,7 @@ import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getApiLang } from '../lib/lang';
 import api from '../lib/api';
-import { cookieService } from '../lib/CookieService';
-import { Calendar, MessageCircle, Sparkles, Moon, Clock, Star } from 'lucide-react-native';
+import { Calendar, MessageCircle, Moon, Clock, Star } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -123,9 +122,6 @@ export default function WisdomScreen() {
   
   const [livingTab, setLivingTab] = useState('vedic');
   const [oralTab, setOralTab] = useState('weather');
-  
-  const [cookie, setCookie] = useState<string | null>(null);
-  const [cookieLoading, setCookieLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
@@ -147,21 +143,6 @@ export default function WisdomScreen() {
     }
     loadData();
   }, [i18n.language]);
-
-  useEffect(() => {
-    async function loadCookie() {
-      setCookieLoading(true);
-      try {
-        const text = await cookieService.getCookie();
-        setCookie(text);
-      } catch {
-        setCookie(t('learn.cookieDisclaimer'));
-      } finally {
-        setCookieLoading(false);
-      }
-    }
-    loadCookie();
-  }, []);
 
   const vedic = livingCalendars.find(c => c.culture === 'hindu_vedic' || c.calendarSystem === 'vedic_panchang');
   const aztec = livingCalendars.find(c => c.culture === 'aztec_mesoamerican' || c.calendarSystem === 'aztec_tonalpohualli');
@@ -403,29 +384,6 @@ export default function WisdomScreen() {
           )}
         </View>
 
-        {/* The Cookie */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Sparkles size={20} color="#f1c40f" />
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('learn.theCookie')}</Text>
-          </View>
-          <Text style={[styles.sectionSubtitle, { color: colors.textSecondary }]}>{t('learn.cookieSubtitle')}</Text>
-          
-          <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            {cookieLoading ? (
-              <SkeletonCard style={{ width: '100%', height: 60, borderRadius: 8 }} />
-            ) : (
-              <Text style={[styles.cookieText, { color: colors.text }]}>"{cookie}"</Text>
-            )}
-            
-            <View style={[styles.cookieFooter, { borderTopColor: colors.border }]}>
-              <Text style={[styles.cookieDisclaimer, { color: colors.textTertiary }]}>
-                {t('learn.cookieFictionalDisclaimer')}
-              </Text>
-            </View>
-          </View>
-        </View>
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -477,9 +435,5 @@ const styles = StyleSheet.create({
   relevanceText: { fontSize: 14, lineHeight: 20 },
   emptyCard: { borderRadius: 16, padding: 40, borderWidth: 1, alignItems: 'center' },
   emptyText: { fontSize: 14 },
-  cookieCard: { borderRadius: 16, padding: 20, borderWidth: 1 },
-  cookieText: { fontSize: 18, fontStyle: 'italic', lineHeight: 28, textAlign: 'center' },
-  cookieFooter: { borderTopWidth: 1, marginTop: 16, paddingTop: 12 },
-  cookieDisclaimer: { fontSize: 12, textAlign: 'center' },
   skeleton: { borderRadius: 8 },
 });

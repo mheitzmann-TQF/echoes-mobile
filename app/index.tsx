@@ -21,6 +21,8 @@ import { enUS, es, fr, pt, de, it } from 'date-fns/locale';
 import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
 import { getDailyPhoto } from '../lib/PhotoService';
 import { cleanTone } from '../lib/labelize';
+import { cookieService } from '../lib/CookieService';
+import { Sparkles } from 'lucide-react-native';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import { getApiLang } from '../lib/lang';
@@ -361,6 +363,8 @@ export default function HomeScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCalendar, setSelectedCalendar] = useState<any | null>(null);
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
+  const [cookie, setCookie] = useState<string | null>(null);
+  const [cookieLoading, setCookieLoading] = useState(true);
 
   const translateCalendarContent = useCallback((content: string | undefined | null): string | null => {
     if (!content) return null;
@@ -692,6 +696,21 @@ export default function HomeScreen() {
     fetchData();
   }, [fetchData]);
 
+  useEffect(() => {
+    async function loadCookie() {
+      setCookieLoading(true);
+      try {
+        const text = await cookieService.getCookie();
+        setCookie(text);
+      } catch {
+        setCookie(null);
+      } finally {
+        setCookieLoading(false);
+      }
+    }
+    loadCookie();
+  }, []);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setCurrentIndex(0);
@@ -751,6 +770,19 @@ export default function HomeScreen() {
           )}
 
           <TodayObservances observances={observances} />
+
+          {/* Daily Cookie */}
+          {!cookieLoading && cookie && (
+            <View style={styles.cookieSection}>
+              <View style={styles.cookieHeader}>
+                <Sparkles size={18} color={colors.accent} />
+                <Text style={[styles.cookieSectionTitle, { color: colors.text }]}>{t('learn.theCookie')}</Text>
+              </View>
+              <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <Text style={[styles.cookieText, { color: colors.text }]}>"{cookie}"</Text>
+              </View>
+            </View>
+          )}
 
           <EchoStack 
             echoes={echoes}
@@ -905,5 +937,31 @@ const styles = StyleSheet.create({
   modalCloseText: {
     fontSize: 15,
     fontWeight: '600',
+  },
+  cookieSection: {
+    marginHorizontal: 20,
+    marginTop: 24,
+    marginBottom: 8,
+  },
+  cookieHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 12,
+  },
+  cookieSectionTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  cookieCard: {
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+  },
+  cookieText: {
+    fontSize: 17,
+    fontStyle: 'italic',
+    lineHeight: 26,
+    textAlign: 'center',
   },
 });
