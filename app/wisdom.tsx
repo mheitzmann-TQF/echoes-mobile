@@ -381,6 +381,21 @@ function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t
     return '#ef4444';
   };
   
+  const getDisplayScore = (region: RegionalBreakdown): number => {
+    if (region.filteredAlignment && region.filteredAlignment > 0) {
+      return region.filteredAlignment;
+    }
+    if (region.avgAlignment && region.avgAlignment > 0) {
+      return region.avgAlignment;
+    }
+    if (region.breakdown) {
+      const transformational = region.breakdown.transformational || 0;
+      const neutral = region.breakdown.neutral || 0;
+      return Math.round(transformational * 2 + neutral * 0.5);
+    }
+    return 0;
+  };
+  
   const sortedRegions = [...regions].sort((a, b) => b.articleCount - a.articleCount);
   
   return (
@@ -396,8 +411,8 @@ function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t
               <Text style={[styles.regionName, { color: colors.text }]}>
                 {t(`learn.${getRegionTranslationKey(region.regionDisplay || region.region)}`)}
               </Text>
-              <Text style={[styles.regionScore, { color: getScoreColor(region.avgAlignment) }]}>
-                {Math.round(region.avgAlignment)}
+              <Text style={[styles.regionScore, { color: getScoreColor(getDisplayScore(region)) }]}>
+                {Math.round(getDisplayScore(region))}
               </Text>
             </View>
             <Text style={[styles.regionArticles, { color: colors.textTertiary }]}>
