@@ -44,10 +44,8 @@ function TQFGauge({ score, size = 160, label, subtitle, forceColor }: { score: n
   const clampedScore = Math.max(0, Math.min(100, score));
   const strokeWidth = 10;
   const radius = (size - strokeWidth) / 2;
-  const circumference = Math.PI * radius;
-  const progress = (clampedScore / 100) * circumference;
   const centerX = size / 2;
-  const centerY = size / 2;
+  const centerY = radius + strokeWidth / 2;
   
   const getScoreColor = (s: number) => {
     if (s >= 70) return '#10b981';
@@ -65,37 +63,44 @@ function TQFGauge({ score, size = 160, label, subtitle, forceColor }: { score: n
   
   const color = forceColor || getScoreColor(clampedScore);
   
-  const svgHeight = size / 2 + strokeWidth;
+  const svgHeight = radius + strokeWidth;
+  
+  const createArcPath = (startAngle: number, endAngle: number) => {
+    const startRad = (startAngle * Math.PI) / 180;
+    const endRad = (endAngle * Math.PI) / 180;
+    const x1 = centerX + radius * Math.cos(startRad);
+    const y1 = centerY + radius * Math.sin(startRad);
+    const x2 = centerX + radius * Math.cos(endRad);
+    const y2 = centerY + radius * Math.sin(endRad);
+    const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+    return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`;
+  };
+  
+  const bgArcPath = createArcPath(180, 360);
+  const progressAngle = 180 + (clampedScore / 100) * 180;
+  const progressArcPath = createArcPath(180, progressAngle);
   
   return (
     <View style={styles.gaugeContainer}>
       {label && <Text style={[styles.gaugeTitle, { color: colors.textSecondary }]}>{label}</Text>}
-      <View style={{ width: size, height: svgHeight }}>
-        <Svg width={size} height={size} style={{ position: 'absolute', top: 0 }}>
-          <Circle
-            cx={centerX}
-            cy={size / 2}
-            r={radius}
+      <View style={{ width: size, height: svgHeight, overflow: 'hidden' }}>
+        <Svg width={size} height={svgHeight}>
+          <Path
+            d={bgArcPath}
             stroke={colors.surfaceHighlight}
             strokeWidth={strokeWidth}
             fill="none"
             strokeLinecap="round"
-            transform={`rotate(180 ${centerX} ${size / 2})`}
-            strokeDasharray={`${circumference}, ${circumference}`}
           />
-          <Circle
-            cx={centerX}
-            cy={size / 2}
-            r={radius}
+          <Path
+            d={progressArcPath}
             stroke={color}
             strokeWidth={strokeWidth}
             fill="none"
             strokeLinecap="round"
-            transform={`rotate(180 ${centerX} ${size / 2})`}
-            strokeDasharray={`${progress}, ${circumference}`}
           />
         </Svg>
-        <View style={[styles.gaugeValueInner, { top: svgHeight / 2 - 20 }]}>
+        <View style={[styles.gaugeValueInner, { top: svgHeight - 60 }]}>
           <Text style={[styles.gaugeScore, { color, fontSize: size > 120 ? 36 : 28 }]}>{Math.round(clampedScore)}</Text>
           <Text style={[styles.gaugeLabel, { color: colors.textSecondary }]}>{getScoreLabel(clampedScore)}</Text>
         </View>
