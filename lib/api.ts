@@ -191,6 +191,7 @@ class EchoesAPI {
       let destructiveContent = null;
       let articlesAnalyzed = null;
       let contentSources: string[] = [];
+      let rawTrend7d = null;
       
       if (rawResponse.ok) {
         const rawData = await rawResponse.json();
@@ -204,6 +205,7 @@ class EchoesAPI {
           destructiveContent = rawData.data.destructiveContent;
           articlesAnalyzed = rawData.data.scoredArticles;
           contentSources = rawData.data.metadata?.contentSources || [];
+          rawTrend7d = rawData.data.trend7d;
         }
       }
       
@@ -214,6 +216,10 @@ class EchoesAPI {
       const mainTransformational = currentData.transformational_percent;
       const mainDestructive = currentData.destructive_percent;
       const mainArticles = currentData.articles_analyzed;
+      
+      // Use raw-analysis trend if main endpoint returns suspicious data (0 articles = bad data)
+      const mainTrend = currentData.trend_7d;
+      const useTrend = mainArticles > 0 ? mainTrend : (rawTrend7d !== null ? `+${rawTrend7d}` : mainTrend);
       
       return {
         ...currentData,
@@ -226,6 +232,7 @@ class EchoesAPI {
         destructive_percent: mainDestructive > 0 ? mainDestructive : (destructiveContent ?? 0),
         articles_analyzed: mainArticles > 0 ? mainArticles : (articlesAnalyzed ?? 0),
         content_sources: contentSources,
+        trend_7d: useTrend,
       };
     } catch (error) {
       console.error('❌ Consciousness analysis error:', error);
