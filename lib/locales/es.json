@@ -244,7 +244,20 @@
     "thisMonth": "Este Mes",
     "astronomical": "Eventos Astronómicos",
     "cultural": "Observancias Culturales",
-    "noEvents": "No hay eventos próximos"
+    "noEvents": "No hay eventos próximos",
+    "soon": "Pronto",
+    "cycle": "Ciclo",
+    "season": "Estación",
+    "next14Days": "Próximos 14 días",
+    "next30Days": "Próximos 30 días",
+    "next90Days": "Próximos 90 días",
+    "all": "Todos",
+    "astronomicalFilter": "Astronómico",
+    "culturalFilter": "Cultural",
+    "today": "Hoy",
+    "now": "Ahora",
+    "hoursShort": "{{count}}h",
+    "daysShort": "{{count}}d"
   },
   "settings": {
     "title": "Ajustes",
