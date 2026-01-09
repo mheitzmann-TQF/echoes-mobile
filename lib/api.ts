@@ -159,6 +159,7 @@ class EchoesAPI {
       
       // Try to get filtered consciousness from raw-analysis
       let filteredCoherence = null;
+      let rawCoherence = null;
       let noiseLevel = null;
       let signalStrength = null;
       
@@ -167,15 +168,20 @@ class EchoesAPI {
         console.log('✅ Raw analysis data received:', rawData);
         if (rawData.success && rawData.data) {
           filteredCoherence = rawData.data.filteredCoherence;
+          rawCoherence = rawData.data.rawCoherence;
           noiseLevel = rawData.data.noiseLevel;
           signalStrength = rawData.data.signalStrength;
         }
       }
       
       // Return merged data with filtered consciousness
+      // Use rawCoherence as fallback for global_coherence if main endpoint returns 0
+      const mainScore = currentData.global_coherence || currentData.tqf_score || 0;
       return {
         ...currentData,
+        global_coherence: mainScore > 0 ? mainScore : (rawCoherence || 0),
         filtered_coherence: filteredCoherence,
+        raw_coherence: rawCoherence,
         noise_level: noiseLevel,
         signal_strength: signalStrength,
       };

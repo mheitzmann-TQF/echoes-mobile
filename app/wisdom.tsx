@@ -484,8 +484,9 @@ export default function WisdomScreen() {
   const trend7d = consciousness?.trend_7d ?? 'stable';
   const articlesAnalyzed = consciousness?.articles_analyzed ?? 0;
   
-  const isConsciousnessUnavailable = tqfScore === 0 && articlesAnalyzed === 0;
   const hasFilteredData = filteredScore !== null && filteredScore > 0;
+  // Data is only unavailable if BOTH main consciousness AND filtered data are missing/zero
+  const isConsciousnessUnavailable = tqfScore === 0 && articlesAnalyzed === 0 && !hasFilteredData;
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
