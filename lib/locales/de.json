@@ -205,7 +205,12 @@
     "hope_moderate": "Mäßig",
     "hope_elevated": "Erhöht",
     "hope_high": "Hoch",
-    "hope_very_high": "Sehr Hoch"
+    "hope_very_high": "Sehr Hoch",
+    "calendarType": "Typ",
+    "significance": "Bedeutung",
+    "energy": "Energie",
+    "phase": "Phase",
+    "element": "Element"
   },
   "calendars": {
     "civil": "Zivil",
