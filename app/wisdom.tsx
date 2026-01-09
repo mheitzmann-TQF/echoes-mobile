@@ -320,7 +320,8 @@ function normalizeCalendar(calendar: any, lang: string = 'en'): { name: string; 
 
 function CalendarCard({ calendar, onPress }: { calendar: any; onPress: () => void }) {
   const { colors } = useTheme();
-  const lang = getApiLang();
+  const { i18n } = useTranslation();
+  const lang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
   
   const color = getCalendarColor(calendar);
   const { name, date, phase } = normalizeCalendar(calendar, lang);
@@ -346,8 +347,8 @@ function CalendarCard({ calendar, onPress }: { calendar: any; onPress: () => voi
 
 function CalendarDetailModal({ calendar, visible, onClose }: { calendar: any; visible: boolean; onClose: () => void }) {
   const { colors } = useTheme();
-  const { t } = useTranslation();
-  const lang = getApiLang();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
   
   if (!calendar) return null;
   
