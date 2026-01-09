@@ -7,8 +7,17 @@ import { getApiLang } from '../lib/lang';
 import api from '../lib/api';
 import { Brain, Calendar, TrendingUp, TrendingDown, Minus, ChevronRight, Info, X } from 'lucide-react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
+import i18next from 'i18next';
 
 const { width } = Dimensions.get('window');
+
+function formatNumberByLocale(num: number): string {
+  const lang = i18next.language || 'en';
+  if (lang === 'en') {
+    return num.toLocaleString('en-US');
+  }
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+}
 
 function SkeletonCard({ style }: { style?: any }) {
   const opacity = useRef(new Animated.Value(0.3)).current;
@@ -118,33 +127,35 @@ function HopeMeter({ level }: { level: string | number }) {
   
   // Handle numeric values (0-100) or string levels
   let activeIndex = 1; // default to moderate
-  let displayLabel = 'Moderate';
+  let levelKey = 'moderate';
   
   if (typeof level === 'number') {
     // Convert 0-100 to 0-4 index
     const clampedLevel = Math.max(0, Math.min(100, level));
     if (clampedLevel < 20) {
       activeIndex = 0;
-      displayLabel = 'Low';
+      levelKey = 'low';
     } else if (clampedLevel < 40) {
       activeIndex = 1;
-      displayLabel = 'Moderate';
+      levelKey = 'moderate';
     } else if (clampedLevel < 60) {
       activeIndex = 2;
-      displayLabel = 'Elevated';
+      levelKey = 'elevated';
     } else if (clampedLevel < 80) {
       activeIndex = 3;
-      displayLabel = 'High';
+      levelKey = 'high';
     } else {
       activeIndex = 4;
-      displayLabel = 'Very High';
+      levelKey = 'very_high';
     }
   } else if (typeof level === 'string') {
     const normalizedLevel = level?.toLowerCase().replace(/\s+/g, '_') || 'moderate';
     const idx = levels.indexOf(normalizedLevel);
     activeIndex = idx >= 0 ? idx : 1;
-    displayLabel = level?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'Moderate';
+    levelKey = idx >= 0 ? normalizedLevel : 'moderate';
   }
+  
+  const displayLabel = t(`learn.hope_${levelKey}`);
   
   return (
     <View style={styles.hopeMeterContainer}>
@@ -165,21 +176,40 @@ function HopeMeter({ level }: { level: string | number }) {
   );
 }
 
-function TrendIndicator({ trend }: { trend: string }) {
+function TrendIndicator({ trend }: { trend: string | number }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   
-  const normalizedTrend = trend?.toLowerCase() || 'stable';
   let Icon = Minus;
   let color = colors.textSecondary;
-  let label = trend?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'Stable';
+  let label = '0';
   
-  if (normalizedTrend.includes('up') || normalizedTrend.includes('rising') || normalizedTrend.includes('increasing')) {
-    Icon = TrendingUp;
-    color = '#10b981';
-  } else if (normalizedTrend.includes('down') || normalizedTrend.includes('falling') || normalizedTrend.includes('decreasing')) {
-    Icon = TrendingDown;
-    color = '#ef4444';
+  // Handle numeric trend values (e.g., +14.4 or -5.2)
+  if (typeof trend === 'number' || !isNaN(parseFloat(trend))) {
+    const numValue = typeof trend === 'number' ? trend : parseFloat(trend);
+    if (numValue > 0) {
+      Icon = TrendingUp;
+      color = '#10b981';
+      label = `+${numValue.toFixed(1)}`;
+    } else if (numValue < 0) {
+      Icon = TrendingDown;
+      color = '#ef4444';
+      label = numValue.toFixed(1);
+    } else {
+      label = '0';
+    }
+  } else {
+    // Handle string trend values (e.g., "rising", "falling", "stable")
+    const normalizedTrend = trend?.toLowerCase() || 'stable';
+    label = trend?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'Stable';
+    
+    if (normalizedTrend.includes('up') || normalizedTrend.includes('rising') || normalizedTrend.includes('increasing')) {
+      Icon = TrendingUp;
+      color = '#10b981';
+    } else if (normalizedTrend.includes('down') || normalizedTrend.includes('falling') || normalizedTrend.includes('decreasing')) {
+      Icon = TrendingDown;
+      color = '#ef4444';
+    }
   }
   
   return (
@@ -400,7 +430,7 @@ export default function WisdomScreen() {
             
             <View style={styles.articlesRow}>
               <Text style={[styles.articlesText, { color: colors.textTertiary }]}>
-                {articlesAnalyzed} {t('learn.articlesAnalyzed').toLowerCase()}
+                {formatNumberByLocale(articlesAnalyzed)} {t('learn.articlesAnalyzed').toLowerCase()}
               </Text>
             </View>
             

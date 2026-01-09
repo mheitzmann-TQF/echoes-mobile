@@ -67,7 +67,7 @@
     "stormy": "Tempestoso",
     "stable": "Stabile",
     "falling": "In calo",
-    "rising": "In aumento",
+    "rising": "Salita",
     "waningGibbous": "Gibbosa Calante",
     "waxingGibbous": "Gibbosa Crescente",
     "fullMoon": "Luna Piena",
@@ -138,9 +138,7 @@
     "timeOfDay": "Momento della giornata",
     "cortisol": "Cortisolo",
     "melatonin": "Melatonina",
-    "context": "Contesto",
     "waking": "Risveglio",
-    "rising": "Salita",
     "peak": "Picco",
     "secondaryPeak": "Picco Secondario",
     "windDown": "Rallentamento",
@@ -327,7 +325,12 @@
     "defaultLivingSummary": "Un ciclo naturale che scorre attraverso il tempo.",
     "activeNow": "Attivo in questo momento.",
     "traditionalOrigin": "Tradizionale",
-    "calendarDefault": "Un sistema per comprendere i cicli del tempo."
+    "calendarDefault": "Un sistema per comprendere i cicli del tempo.",
+    "hope_low": "Basso",
+    "hope_moderate": "Moderato",
+    "hope_elevated": "Elevato",
+    "hope_high": "Alto",
+    "hope_very_high": "Molto Alto"
   },
   "calendars": {
     "civil": "Civile",
