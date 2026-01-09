@@ -450,7 +450,35 @@ export default function WisdomScreen() {
         >
           <View style={[styles.methodologyContent, { backgroundColor: colors.surface }]}>
             <Text style={[styles.methodologyTitle, { color: colors.text }]}>{t('learn.methodology')}</Text>
-            <Text style={[styles.methodologyDesc, { color: colors.textSecondary }]}>{t('learn.methodologyDesc')}</Text>
+            <ScrollView showsVerticalScrollIndicator={false} style={{ maxHeight: 400 }}>
+              <Text style={[styles.methodologyDesc, { color: colors.textSecondary }]}>{t('learn.methodologyDesc')}</Text>
+              
+              <View style={styles.methodologySection}>
+                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.tqfScoreExplained')}</Text>
+                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.tqfScoreExplainedDesc')}</Text>
+              </View>
+              
+              <View style={styles.methodologySection}>
+                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.transformationalExplained')}</Text>
+                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.transformationalExplainedDesc')}</Text>
+              </View>
+              
+              <View style={styles.methodologySection}>
+                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.destructiveExplained')}</Text>
+                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.destructiveExplainedDesc')}</Text>
+              </View>
+              
+              <View style={styles.methodologySection}>
+                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.hopeLevelExplained')}</Text>
+                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.hopeLevelExplainedDesc')}</Text>
+              </View>
+              
+              <View style={styles.methodologySection}>
+                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.trendExplained')}</Text>
+                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.trendExplainedDesc')}</Text>
+              </View>
+            </ScrollView>
+            
             <TouchableOpacity 
               style={[styles.methodologyCloseBtn, { backgroundColor: colors.surfaceHighlight }]}
               onPress={() => setMethodologyVisible(false)}
@@ -542,10 +570,13 @@ const styles = StyleSheet.create({
   modalLabel: { fontSize: 12, fontWeight: '600', letterSpacing: 0.5, marginBottom: 6 },
   modalValue: { fontSize: 16, lineHeight: 24 },
   
-  methodologyOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
-  methodologyContent: { borderRadius: 16, padding: 24, width: '100%', maxWidth: 340 },
-  methodologyTitle: { fontSize: 18, fontWeight: '600', marginBottom: 12 },
+  methodologyOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.75)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  methodologyContent: { borderRadius: 16, padding: 24, width: '100%', maxWidth: 380, maxHeight: '80%' },
+  methodologyTitle: { fontSize: 18, fontWeight: '600', marginBottom: 16 },
   methodologyDesc: { fontSize: 14, lineHeight: 22, marginBottom: 20 },
+  methodologySection: { marginBottom: 16 },
+  methodologySectionTitle: { fontSize: 14, fontWeight: '600', marginBottom: 4 },
+  methodologySectionDesc: { fontSize: 13, lineHeight: 20 },
   methodologyCloseBtn: { paddingVertical: 12, borderRadius: 8, alignItems: 'center' },
   methodologyCloseText: { fontSize: 15, fontWeight: '500' },
 });
