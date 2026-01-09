@@ -223,19 +223,39 @@ function TrendIndicator({ trend }: { trend: string | number }) {
   );
 }
 
-function CalendarCard({ calendar, onPress }: { calendar: any; onPress: () => void }) {
-  const { colors } = useTheme();
-  
-  const getCalendarColor = (type: string) => {
-    switch (type?.toLowerCase()) {
+function getCalendarColor(calendar: any): string {
+  // First try type-based color (for backward compatibility)
+  if (calendar.type) {
+    switch (calendar.type?.toLowerCase()) {
       case 'sacred': return '#9b59b6';
       case 'lunisolar': return '#3498db';
       case 'lunar': return '#f1c40f';
-      default: return '#2ecc71';
+      case 'civil': return '#2ecc71';
     }
+  }
+  // Fallback to system name-based color
+  const system = (calendar.system || calendar.name || '').toLowerCase();
+  if (system.includes('maya') || system.includes('tzolkin')) return '#9b59b6';
+  if (system.includes('chinese') || system.includes('agricol')) return '#e74c3c';
+  if (system.includes('hindu') || system.includes('panchang')) return '#f39c12';
+  if (system.includes('islamic') || system.includes('hijri')) return '#2ecc71';
+  if (system.includes('hebrew') || system.includes('hébraïque')) return '#3498db';
+  return '#9b59b6';
+}
+
+function normalizeCalendar(calendar: any): { name: string; date: string; phase?: string } {
+  return {
+    name: calendar.system || calendar.name || 'Unknown Calendar',
+    date: calendar.date || calendar.currentDate || '',
+    phase: calendar.phase || undefined,
   };
+}
+
+function CalendarCard({ calendar, onPress }: { calendar: any; onPress: () => void }) {
+  const { colors } = useTheme();
   
-  const color = getCalendarColor(calendar.type);
+  const color = getCalendarColor(calendar);
+  const { name, date, phase } = normalizeCalendar(calendar);
   
   return (
     <TouchableOpacity
@@ -245,10 +265,10 @@ function CalendarCard({ calendar, onPress }: { calendar: any; onPress: () => voi
     >
       <View style={[styles.calendarColorBar, { backgroundColor: color }]} />
       <View style={styles.calendarContent}>
-        <Text style={[styles.calendarName, { color: colors.text }]}>{calendar.name}</Text>
-        <Text style={[styles.calendarDate, { color: colors.textSecondary }]}>{calendar.currentDate}</Text>
-        {calendar.phase && (
-          <Text style={[styles.calendarPhase, { color: colors.textTertiary }]}>{calendar.phase}</Text>
+        <Text style={[styles.calendarName, { color: colors.text }]}>{name}</Text>
+        <Text style={[styles.calendarDate, { color: colors.textSecondary }]}>{date}</Text>
+        {phase && (
+          <Text style={[styles.calendarPhase, { color: colors.textTertiary }]}>{phase}</Text>
         )}
       </View>
       <ChevronRight size={20} color={colors.textTertiary} />
@@ -262,16 +282,8 @@ function CalendarDetailModal({ calendar, visible, onClose }: { calendar: any; vi
   
   if (!calendar) return null;
   
-  const getCalendarColor = (type: string) => {
-    switch (type?.toLowerCase()) {
-      case 'sacred': return '#9b59b6';
-      case 'lunisolar': return '#3498db';
-      case 'lunar': return '#f1c40f';
-      default: return '#2ecc71';
-    }
-  };
-  
-  const color = getCalendarColor(calendar.type);
+  const color = getCalendarColor(calendar);
+  const { name: calendarName, date: calendarDate } = normalizeCalendar(calendar);
   
   return (
     <Modal visible={visible} animationType="slide" transparent>
@@ -280,8 +292,8 @@ function CalendarDetailModal({ calendar, visible, onClose }: { calendar: any; vi
           <View style={styles.modalHeader}>
             <View style={[styles.modalColorBar, { backgroundColor: color }]} />
             <View style={styles.modalHeaderText}>
-              <Text style={[styles.modalTitle, { color: colors.text }]}>{calendar.name}</Text>
-              <Text style={[styles.modalSubtitle, { color: colors.textSecondary }]}>{calendar.currentDate}</Text>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>{calendarName}</Text>
+              <Text style={[styles.modalSubtitle, { color: colors.textSecondary }]}>{calendarDate}</Text>
             </View>
             <TouchableOpacity onPress={onClose} style={styles.modalClose}>
               <X size={24} color={colors.textSecondary} />
