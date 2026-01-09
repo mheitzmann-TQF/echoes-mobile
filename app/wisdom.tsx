@@ -270,21 +270,22 @@ const CALENDAR_TRANSLATIONS: Record<string, Record<string, string>> = {
 };
 
 function getCalendarKey(systemName: string): string | null {
-  const name = systemName.toLowerCase();
+  // Normalize: lowercase and strip diacritics (é→e, ã→a, etc.)
+  const name = systemName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  
   // Maya/Mayan Tzolkin calendar (matches EN, FR, DE, ES, PT, IT)
   if (name.includes('maya') || name.includes('maia') || name.includes('tzolkin')) return 'maya';
-  // Chinese Agricultural calendar (matches various translations)
+  // Chinese Agricultural calendar (matches various translations including accented forms)
   if (name.includes('chinese') || name.includes('chin') || name.includes('agricol') || 
       name.includes('chines') || name.includes('landwirtschaft')) return 'chinese';
   // Hindu Panchang calendar
-  if (name.includes('hindu') || name.includes('hindou') || name.includes('hindú') || 
-      name.includes('indù') || name.includes('panchang')) return 'hindu';
-  // Islamic Hijri calendar
-  if (name.includes('islam') || name.includes('hijri') || name.includes('muharram') ||
-      name.includes('islamique') || name.includes('islám') || name.includes('islamico') || name.includes('islamischer')) return 'islamic';
-  // Hebrew calendar
-  if (name.includes('hebrew') || name.includes('hébr') || name.includes('hebreo') ||
-      name.includes('tevet') || name.includes('jewish') || name.includes('ebraico') || name.includes('hebräisch')) return 'hebrew';
+  if (name.includes('hindu') || name.includes('hindou') || name.includes('panchang') || 
+      name.includes('indu')) return 'hindu';
+  // Islamic Hijri calendar (accents stripped: islâmico→islamico, hébraïque→hebraique)
+  if (name.includes('islam') || name.includes('hijri') || name.includes('muharram')) return 'islamic';
+  // Hebrew calendar (accents stripped)
+  if (name.includes('hebrew') || name.includes('hebr') || name.includes('hebreo') ||
+      name.includes('tevet') || name.includes('jewish') || name.includes('ebraico')) return 'hebrew';
   return null;
 }
 
@@ -327,10 +328,8 @@ function normalizeCalendar(calendar: any, lang: string = 'en'): { name: string; 
   };
 }
 
-function CalendarCard({ calendar, onPress }: { calendar: any; onPress: () => void }) {
+function CalendarCard({ calendar, onPress, lang }: { calendar: any; onPress: () => void; lang: string }) {
   const { colors } = useTheme();
-  const { i18n } = useTranslation();
-  const lang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
   
   const color = getCalendarColor(calendar);
   const { name, date, phase } = normalizeCalendar(calendar, lang);
@@ -556,8 +555,9 @@ export default function WisdomScreen() {
             <View style={styles.calendarList}>
               {calendars.map((cal, idx) => (
                 <CalendarCard 
-                  key={`${idx}-${i18n.language}`} 
+                  key={`${idx}-${currentLang}`} 
                   calendar={cal} 
+                  lang={currentLang}
                   onPress={() => setSelectedCalendar(cal)} 
                 />
               ))}

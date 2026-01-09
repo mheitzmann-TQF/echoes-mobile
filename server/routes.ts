@@ -18,15 +18,8 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // Disable ETag caching for sacred-geography routes to ensure fresh language-specific content
-  app.use("/api/proxy/sacred-geography", (req, res, next) => {
-    req.headers["if-none-match"] = "";
-    req.headers["if-modified-since"] = "";
-    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-    res.set("Pragma", "no-cache");
-    res.set("Expires", "0");
-    next();
-  });
+  // Disable ETag globally to prevent 304 responses for language-dependent content
+  app.disable('etag');
   // User Settings Routes
   app.get("/api/user/:userId/settings", async (req, res) => {
     try {
@@ -86,8 +79,13 @@ export async function registerRoutes(
       if (lat && lng) url += `&lat=${lat}&lng=${lng}`;
       const response = await fetch(url, {
         headers: { "x-api-key": TQF_API_KEY },
+        cache: 'no-store',
       });
       const data = await response.json();
+      res.set("Cache-Control", "no-store, no-cache, must-revalidate");
+      res.set("Pragma", "no-cache");
+      res.set("Expires", "0");
+      res.set("Vary", "Accept-Language");
       res.json(data);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch calendars" });
