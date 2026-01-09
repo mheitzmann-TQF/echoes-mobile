@@ -241,6 +241,7 @@
     "signalBeneathNoise": "Le signal sous le bruit — la sagesse existe quand on la filtre",
     "mediaRealityDesc": "Moyenne de {{count}} articles",
     "signalWithinDesc": "Qualité moyenne de {{count}} articles de sagesse",
+    "contentSources": "Sources",
     "transformationalHint": "sagesse, solutions, croissance",
     "destructiveHint": "peur, conflit, division",
     "neutralHint": "bruit informationnel",

@@ -241,6 +241,8 @@
     "signalBeneathNoise": "The signal beneath the noise — wisdom exists when we filter for it",
     "mediaRealityDesc": "Average of {{count}} articles",
     "signalWithinDesc": "Average quality of {{count}} wisdom articles",
+    "articlesAnalyzed": "articles analyzed",
+    "contentSources": "Sources",
     "transformational": "Transformational",
     "transformationalHint": "wisdom, solutions, growth",
     "destructive": "Destructive",

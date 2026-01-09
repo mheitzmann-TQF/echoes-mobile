@@ -165,6 +165,7 @@ class EchoesAPI {
       let transformationalContent = null;
       let destructiveContent = null;
       let articlesAnalyzed = null;
+      let contentSources: string[] = [];
       
       if (rawResponse.ok) {
         const rawData = await rawResponse.json();
@@ -177,6 +178,7 @@ class EchoesAPI {
           transformationalContent = rawData.data.transformationalContent;
           destructiveContent = rawData.data.destructiveContent;
           articlesAnalyzed = rawData.data.scoredArticles;
+          contentSources = rawData.data.metadata?.contentSources || [];
         }
       }
       
@@ -198,6 +200,7 @@ class EchoesAPI {
         transformational_percent: mainTransformational > 0 ? mainTransformational : (transformationalContent ?? 0),
         destructive_percent: mainDestructive > 0 ? mainDestructive : (destructiveContent ?? 0),
         articles_analyzed: mainArticles > 0 ? mainArticles : (articlesAnalyzed ?? 0),
+        content_sources: contentSources,
       };
     } catch (error) {
       console.error('❌ Consciousness analysis error:', error);

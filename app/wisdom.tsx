@@ -5,7 +5,7 @@ import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getApiLang } from '../lib/lang';
 import api from '../lib/api';
-import { Brain, Calendar, TrendingUp, TrendingDown, Minus, ChevronRight, Info, X } from 'lucide-react-native';
+import { Brain, Calendar, TrendingUp, TrendingDown, Minus, ChevronRight, Info, X, FileText } from 'lucide-react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import i18next from 'i18next';
 
@@ -487,6 +487,7 @@ export default function WisdomScreen() {
   const hopeLevel = consciousness?.hope_level ?? 0;
   const trend7d = consciousness?.trend_7d ?? 'stable';
   const articlesAnalyzed = consciousness?.articles_analyzed ?? 0;
+  const contentSources: string[] = consciousness?.content_sources ?? [];
   
   const hasFilteredData = filteredScore !== null && filteredScore > 0;
   // Data is only unavailable if BOTH main consciousness AND filtered data are missing/zero
@@ -550,6 +551,30 @@ export default function WisdomScreen() {
                   />
                 </View>
                 
+                {/* ANALYSIS SUMMARY - Article count and content sources */}
+                <View style={styles.analysisSummary}>
+                  <View style={styles.articleCountRow}>
+                    <FileText size={16} color={colors.textSecondary} />
+                    <Text style={[styles.articleCountText, { color: colors.text }]}>
+                      {formatNumberByLocale(articlesAnalyzed)} {t('learn.articlesAnalyzed')}
+                    </Text>
+                  </View>
+                  {contentSources.length > 0 && (
+                    <View style={styles.contentSourcesRow}>
+                      <Text style={[styles.contentSourcesLabel, { color: colors.textSecondary }]}>
+                        {t('learn.contentSources')}:
+                      </Text>
+                      <View style={styles.sourceTagsContainer}>
+                        {contentSources.map((source, idx) => (
+                          <View key={idx} style={[styles.sourceTag, { backgroundColor: colors.border }]}>
+                            <Text style={[styles.sourceTagText, { color: colors.textSecondary }]}>{source}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  )}
+                </View>
+
                 {/* SIGNAL WITHIN - Second gauge (green, highly aligned) with trend */}
                 {hasFilteredData && (
                   <View style={styles.narrativeSection}>
@@ -703,6 +728,14 @@ const styles = StyleSheet.create({
   signalNoiseText: { fontSize: 12, textAlign: 'center', fontStyle: 'italic', lineHeight: 18 },
   
   breakdownSection: { marginBottom: 28, gap: 16 },
+  analysisSummary: { marginBottom: 24, paddingHorizontal: 8, gap: 12 },
+  articleCountRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  articleCountText: { fontSize: 14, fontWeight: '600' },
+  contentSourcesRow: { gap: 8 },
+  contentSourcesLabel: { fontSize: 12 },
+  sourceTagsContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  sourceTag: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 },
+  sourceTagText: { fontSize: 11 },
   percentageRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   percentageLabel: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, width: 160 },
   percentageLabelText: { flexDirection: 'column' },

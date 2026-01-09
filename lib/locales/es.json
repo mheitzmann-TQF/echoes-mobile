@@ -181,6 +181,7 @@
     "signalBeneathNoise": "La señal bajo el ruido — la sabiduría existe cuando la filtramos",
     "mediaRealityDesc": "Promedio de {{count}} artículos",
     "signalWithinDesc": "Calidad promedio de {{count}} artículos de sabiduría",
+    "contentSources": "Fuentes",
     "transformationalHint": "sabiduría, soluciones, crecimiento",
     "destructiveHint": "miedo, conflicto, división",
     "neutralHint": "ruido informativo",
