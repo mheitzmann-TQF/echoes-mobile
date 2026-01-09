@@ -965,13 +965,16 @@ const styles = StyleSheet.create({
   },
   cookieCard: {
     borderRadius: 16,
-    padding: 20,
+    paddingVertical: 24,
+    paddingHorizontal: 20,
     borderWidth: 1,
+    alignItems: 'center',
   },
   cookieText: {
-    fontSize: 17,
+    fontSize: 16,
     fontStyle: 'italic',
-    lineHeight: 26,
+    lineHeight: 24,
     textAlign: 'center',
+    opacity: 0.9,
   },
 });
