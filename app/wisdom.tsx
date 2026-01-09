@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
   modalLabel: { fontSize: 12, fontWeight: '600', letterSpacing: 0.5, marginBottom: 6 },
   modalValue: { fontSize: 16, lineHeight: 24 },
   
-  methodologyOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.75)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  methodologyOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 20 },
   methodologyContent: { borderRadius: 16, padding: 24, width: '100%', maxWidth: 380, maxHeight: '80%' },
   methodologyTitle: { fontSize: 18, fontWeight: '600', marginBottom: 16 },
   methodologyDesc: { fontSize: 14, lineHeight: 22, marginBottom: 20 },
