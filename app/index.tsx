@@ -697,6 +697,8 @@ export default function HomeScreen() {
     fetchData();
   }, [fetchData]);
 
+  const currentLang = getCurrentLanguage();
+  
   useEffect(() => {
     async function loadCookie() {
       setCookieLoading(true);
@@ -710,7 +712,7 @@ export default function HomeScreen() {
       }
     }
     loadCookie();
-  }, []);
+  }, [currentLang]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
