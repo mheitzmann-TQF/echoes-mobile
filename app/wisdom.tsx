@@ -810,7 +810,7 @@ const styles = StyleSheet.create({
   gaugeScore: { fontSize: 36, fontWeight: '700' },
   gaugeLabel: { fontSize: 11, marginTop: 2, textAlign: 'center' },
   gaugeSubtitle: { fontSize: 10, marginTop: 4, textAlign: 'center' },
-  gaugeSubtitleBelow: { fontSize: 11, marginTop: 8, textAlign: 'center', paddingHorizontal: 10, lineHeight: 16 },
+  gaugeSubtitleBelow: { fontSize: 11, marginTop: 8, textAlign: 'center', paddingHorizontal: 20, lineHeight: 16, maxWidth: 160 },
   narrativeSection: { alignItems: 'center', marginBottom: 32 },
   narrativeSectionSpaced: { alignItems: 'center', marginTop: 16, marginBottom: 40 },
   signalWithTrendRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 16 },
