@@ -110,14 +110,41 @@ function PercentageBar({ label, value, color }: { label: string; value: number; 
   );
 }
 
-function HopeMeter({ level }: { level: string }) {
+function HopeMeter({ level }: { level: string | number }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   
   const levels = ['low', 'moderate', 'elevated', 'high', 'very_high'];
-  const normalizedLevel = level?.toLowerCase().replace(/\s+/g, '_') || 'moderate';
-  const currentIndex = levels.indexOf(normalizedLevel);
-  const activeIndex = currentIndex >= 0 ? currentIndex : 1;
+  
+  // Handle numeric values (0-100) or string levels
+  let activeIndex = 1; // default to moderate
+  let displayLabel = 'Moderate';
+  
+  if (typeof level === 'number') {
+    // Convert 0-100 to 0-4 index
+    const clampedLevel = Math.max(0, Math.min(100, level));
+    if (clampedLevel < 20) {
+      activeIndex = 0;
+      displayLabel = 'Low';
+    } else if (clampedLevel < 40) {
+      activeIndex = 1;
+      displayLabel = 'Moderate';
+    } else if (clampedLevel < 60) {
+      activeIndex = 2;
+      displayLabel = 'Elevated';
+    } else if (clampedLevel < 80) {
+      activeIndex = 3;
+      displayLabel = 'High';
+    } else {
+      activeIndex = 4;
+      displayLabel = 'Very High';
+    }
+  } else if (typeof level === 'string') {
+    const normalizedLevel = level?.toLowerCase().replace(/\s+/g, '_') || 'moderate';
+    const idx = levels.indexOf(normalizedLevel);
+    activeIndex = idx >= 0 ? idx : 1;
+    displayLabel = level?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'Moderate';
+  }
   
   return (
     <View style={styles.hopeMeterContainer}>
@@ -133,9 +160,7 @@ function HopeMeter({ level }: { level: string }) {
           />
         ))}
       </View>
-      <Text style={[styles.hopeMeterValue, { color: colors.text }]}>
-        {level?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'Moderate'}
-      </Text>
+      <Text style={[styles.hopeMeterValue, { color: colors.text }]}>{displayLabel}</Text>
     </View>
   );
 }
@@ -289,16 +314,13 @@ export default function WisdomScreen() {
     async function loadData() {
       try {
         const lang = getApiLang();
-        const [consciousnessData, dailyBundle] = await Promise.all([
+        const [consciousnessData, calendarsData] = await Promise.all([
           api.getConsciousnessAnalysis().catch(() => null),
-          api.getDailyBundle(lang, 0, 0).catch(() => null),
+          api.getTraditionalCalendars(40.7128, -74.006, 'UTC', lang).catch(() => []),
         ]);
         
         setConsciousness(consciousnessData);
-        
-        if (dailyBundle?.calendars) {
-          setCalendars(dailyBundle.calendars);
-        }
+        setCalendars(calendarsData || []);
       } finally {
         setLoading(false);
       }
