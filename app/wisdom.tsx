@@ -382,51 +382,15 @@ function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t
         <Globe size={16} color={colors.textSecondary} />
         <Text style={[styles.regionalTitle, { color: colors.text }]}>{t('learn.regionalBreakdown')}</Text>
       </View>
-      <View style={styles.regionalGrid}>
+      <View style={styles.regionalCompactGrid}>
         {sortedRegions.map((region, idx) => (
-          <View key={idx} style={[styles.regionCard, { backgroundColor: colors.surfaceHighlight }]}>
-            <View style={styles.regionHeader}>
-              <Text style={[styles.regionName, { color: colors.text }]}>
-                {t(`learn.${getRegionTranslationKey(region.regionDisplay || region.region)}`)}
-              </Text>
-              <Text style={[styles.regionPercent, { color: colors.textSecondary }]}>
-                {region.percentOfTotal?.toFixed(1) || 0}%
-              </Text>
-            </View>
-            <Text style={[styles.regionArticles, { color: colors.textTertiary }]}>
-              {formatNumberByLocale(region.articleCount)} {t('learn.articlesShort')}
+          <View key={idx} style={[styles.regionCompactItem, { backgroundColor: colors.surfaceHighlight }]}>
+            <Text style={[styles.regionCompactName, { color: colors.text }]}>
+              {t(`learn.${getRegionTranslationKey(region.regionDisplay || region.region)}`)}
             </Text>
-            <View style={styles.regionBreakdown}>
-              <View style={[styles.regionBar, { backgroundColor: colors.border }]}>
-                <View 
-                  style={[
-                    styles.regionBarSegment, 
-                    { 
-                      width: `${region.breakdown?.transformational || 0}%`, 
-                      backgroundColor: '#10b981' 
-                    }
-                  ]} 
-                />
-                <View 
-                  style={[
-                    styles.regionBarSegment, 
-                    { 
-                      width: `${region.breakdown?.neutral || 0}%`, 
-                      backgroundColor: '#6b7280' 
-                    }
-                  ]} 
-                />
-                <View 
-                  style={[
-                    styles.regionBarSegment, 
-                    { 
-                      width: `${region.breakdown?.misaligned || 0}%`, 
-                      backgroundColor: '#ef4444' 
-                    }
-                  ]} 
-                />
-              </View>
-            </View>
+            <Text style={[styles.regionCompactPercent, { color: colors.textSecondary }]}>
+              {region.percentOfTotal?.toFixed(1) || 0}%
+            </Text>
           </View>
         ))}
       </View>
@@ -632,6 +596,24 @@ export default function WisdomScreen() {
                     color="#10b981" 
                   />
                 </View>
+
+                {/* SIGNAL WITHIN - Filtered gauge (green) with trend - moved before article count */}
+                {hasFilteredData && (
+                  <View style={styles.narrativeSection}>
+                    <View style={styles.signalWithTrendRow}>
+                      <TQFGauge 
+                        score={filteredScore} 
+                        size={140} 
+                        label={t('learn.filteredScore')} 
+                        subtitle={t('learn.signalWithinDesc').replace('{{count}}', formatNumberByLocale(Math.round(articlesAnalyzed * transformationalPercent / 100)))}
+                        forceColor="#10b981"
+                      />
+                      <View style={styles.trendSideBadge}>
+                        <TrendIndicator trend={trend7d} />
+                      </View>
+                    </View>
+                  </View>
+                )}
                 
                 {/* ANALYSIS SUMMARY - Article count and content sources */}
                 <View style={styles.analysisSummary}>
@@ -657,27 +639,9 @@ export default function WisdomScreen() {
                   )}
                 </View>
 
-                {/* REGIONAL BREAKDOWN - Geographic distribution */}
+                {/* REGIONAL BREAKDOWN - Geographic distribution (compact) */}
                 {regionalData.length > 0 && (
                   <RegionalBreakdownCard regions={regionalData} t={t} />
-                )}
-
-                {/* SIGNAL WITHIN - Second gauge (green, highly aligned) with trend */}
-                {hasFilteredData && (
-                  <View style={styles.narrativeSection}>
-                    <View style={styles.signalWithTrendRow}>
-                      <TQFGauge 
-                        score={filteredScore} 
-                        size={140} 
-                        label={t('learn.filteredScore')} 
-                        subtitle={t('learn.signalWithinDesc').replace('{{count}}', formatNumberByLocale(Math.round(articlesAnalyzed * transformationalPercent / 100)))}
-                        forceColor="#10b981"
-                      />
-                      <View style={styles.trendSideBadge}>
-                        <TrendIndicator trend={trend7d} />
-                      </View>
-                    </View>
-                  </View>
                 )}
                 
                 {/* Narrative hint */}
@@ -916,18 +880,14 @@ const styles = StyleSheet.create({
   methodologyCloseBtn: { paddingVertical: 12, borderRadius: 8, alignItems: 'center' },
   methodologyCloseText: { fontSize: 15, fontWeight: '500' },
   
-  regionalSection: { marginBottom: 32, paddingTop: 8 },
-  regionalHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 },
+  regionalSection: { marginBottom: 24, paddingTop: 8 },
+  regionalHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
   regionalTitle: { fontSize: 13, fontWeight: '600', letterSpacing: 0.5 },
-  regionalGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  regionCard: { width: '48%', borderRadius: 12, padding: 14 },
-  regionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
-  regionName: { fontSize: 13, fontWeight: '600' },
-  regionPercent: { fontSize: 14, fontWeight: '500' },
-  regionArticles: { fontSize: 11, marginBottom: 8 },
-  regionBreakdown: { marginTop: 4 },
-  regionBar: { height: 4, borderRadius: 2, flexDirection: 'row', overflow: 'hidden' },
-  regionBarSegment: { height: '100%' },
+  regionalCompactGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  regionCompactItem: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 16 },
+  regionCompactName: { fontSize: 12, fontWeight: '500', marginRight: 6 },
+  regionCompactPercent: { fontSize: 12, fontWeight: '600' },
+  analysisSummaryCompact: { marginBottom: 20, paddingHorizontal: 8, alignItems: 'center' },
   
   faqDivider: { height: 1, marginVertical: 20 },
   faqSectionTitle: { fontSize: 15, fontWeight: '600', marginBottom: 16 },
