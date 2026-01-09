@@ -162,6 +162,9 @@ class EchoesAPI {
       let rawCoherence = null;
       let noiseLevel = null;
       let signalStrength = null;
+      let transformationalContent = null;
+      let destructiveContent = null;
+      let articlesAnalyzed = null;
       
       if (rawResponse.ok) {
         const rawData = await rawResponse.json();
@@ -171,12 +174,20 @@ class EchoesAPI {
           rawCoherence = rawData.data.rawCoherence;
           noiseLevel = rawData.data.noiseLevel;
           signalStrength = rawData.data.signalStrength;
+          transformationalContent = rawData.data.transformationalContent;
+          destructiveContent = rawData.data.destructiveContent;
+          articlesAnalyzed = rawData.data.scoredArticles;
         }
       }
       
       // Return merged data with filtered consciousness
       // Use rawCoherence as fallback for global_coherence if main endpoint returns 0
       const mainScore = currentData.global_coherence || currentData.tqf_score || 0;
+      // Use raw-analysis values as fallback for percentages if main returns 0
+      const mainTransformational = currentData.transformational_percent;
+      const mainDestructive = currentData.destructive_percent;
+      const mainArticles = currentData.articles_analyzed;
+      
       return {
         ...currentData,
         global_coherence: mainScore > 0 ? mainScore : (rawCoherence || 0),
@@ -184,6 +195,9 @@ class EchoesAPI {
         raw_coherence: rawCoherence,
         noise_level: noiseLevel,
         signal_strength: signalStrength,
+        transformational_percent: mainTransformational > 0 ? mainTransformational : (transformationalContent ?? 0),
+        destructive_percent: mainDestructive > 0 ? mainDestructive : (destructiveContent ?? 0),
+        articles_analyzed: mainArticles > 0 ? mainArticles : (articlesAnalyzed ?? 0),
       };
     } catch (error) {
       console.error('❌ Consciousness analysis error:', error);
