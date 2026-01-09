@@ -271,11 +271,20 @@ const CALENDAR_TRANSLATIONS: Record<string, Record<string, string>> = {
 
 function getCalendarKey(systemName: string): string | null {
   const name = systemName.toLowerCase();
-  if (name.includes('maya') || name.includes('tzolkin')) return 'maya';
-  if (name.includes('chinese') || name.includes('chin') || name.includes('agricol')) return 'chinese';
-  if (name.includes('hindu') || name.includes('panchang')) return 'hindu';
-  if (name.includes('islam') || name.includes('hijri') || name.includes('muharram')) return 'islamic';
-  if (name.includes('hebrew') || name.includes('hébr') || name.includes('tevet') || name.includes('jewish')) return 'hebrew';
+  // Maya/Mayan Tzolkin calendar (matches EN, FR, DE, ES, PT, IT)
+  if (name.includes('maya') || name.includes('maia') || name.includes('tzolkin')) return 'maya';
+  // Chinese Agricultural calendar (matches various translations)
+  if (name.includes('chinese') || name.includes('chin') || name.includes('agricol') || 
+      name.includes('chines') || name.includes('landwirtschaft')) return 'chinese';
+  // Hindu Panchang calendar
+  if (name.includes('hindu') || name.includes('hindou') || name.includes('hindú') || 
+      name.includes('indù') || name.includes('panchang')) return 'hindu';
+  // Islamic Hijri calendar
+  if (name.includes('islam') || name.includes('hijri') || name.includes('muharram') ||
+      name.includes('islamique') || name.includes('islám') || name.includes('islamico') || name.includes('islamischer')) return 'islamic';
+  // Hebrew calendar
+  if (name.includes('hebrew') || name.includes('hébr') || name.includes('hebreo') ||
+      name.includes('tevet') || name.includes('jewish') || name.includes('ebraico') || name.includes('hebräisch')) return 'hebrew';
   return null;
 }
 
@@ -538,7 +547,7 @@ export default function WisdomScreen() {
             <View style={styles.calendarList}>
               {calendars.map((cal, idx) => (
                 <CalendarCard 
-                  key={idx} 
+                  key={`${idx}-${i18n.language}`} 
                   calendar={cal} 
                   onPress={() => setSelectedCalendar(cal)} 
                 />
