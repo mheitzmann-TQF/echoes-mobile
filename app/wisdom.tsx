@@ -318,8 +318,9 @@ function normalizeCalendar(calendar: any, lang: string = 'en'): { name: string; 
   };
 }
 
-function CalendarCard({ calendar, onPress, lang }: { calendar: any; onPress: () => void; lang: string }) {
+function CalendarCard({ calendar, onPress }: { calendar: any; onPress: () => void }) {
   const { colors } = useTheme();
+  const lang = getApiLang();
   
   const color = getCalendarColor(calendar);
   const { name, date, phase } = normalizeCalendar(calendar, lang);
@@ -343,9 +344,10 @@ function CalendarCard({ calendar, onPress, lang }: { calendar: any; onPress: () 
   );
 }
 
-function CalendarDetailModal({ calendar, visible, onClose, lang }: { calendar: any; visible: boolean; onClose: () => void; lang: string }) {
+function CalendarDetailModal({ calendar, visible, onClose }: { calendar: any; visible: boolean; onClose: () => void }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
+  const lang = getApiLang();
   
   if (!calendar) return null;
   
@@ -538,7 +540,6 @@ export default function WisdomScreen() {
                   key={idx} 
                   calendar={cal} 
                   onPress={() => setSelectedCalendar(cal)} 
-                  lang={i18n.language}
                 />
               ))}
             </View>
@@ -604,7 +605,6 @@ export default function WisdomScreen() {
         calendar={selectedCalendar} 
         visible={!!selectedCalendar} 
         onClose={() => setSelectedCalendar(null)} 
-        lang={i18n.language}
       />
     </SafeAreaView>
   );
