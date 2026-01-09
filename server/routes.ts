@@ -1,6 +1,15 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import OpenAI from "openai";
+import { db } from "../lib/db";
+import { dailyCookies } from "../shared/schema";
+import { eq, and } from "drizzle-orm";
+
+const openai = new OpenAI({
+  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+});
 
 const TQF_API_KEY = process.env.TQF_MOBILE_API_KEY || "";
 const TQF_BASE_URL = "https://source.thequietframe.com";
@@ -300,6 +309,117 @@ export async function registerRoutes(
       res.json(data);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch plant medicine timing" });
+    }
+  });
+
+  // Daily Cookie endpoint - generates/retrieves daily wisdom in requested language
+  app.get("/api/proxy/cookie", async (req, res) => {
+    try {
+      const lang = (req.query.lang as string) || "en";
+      const validLangs = ["en", "es", "fr", "de", "pt", "it"];
+      const normalizedLang = validLangs.includes(lang) ? lang : "en";
+      
+      // Get today's date in YYYY-MM-DD format
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Check if we already have today's cookie for this language
+      const existing = await db.select().from(dailyCookies)
+        .where(and(
+          eq(dailyCookies.date, today),
+          eq(dailyCookies.language, normalizedLang)
+        ))
+        .limit(1);
+      
+      if (existing.length > 0) {
+        return res.json({ success: true, cookie: existing[0].cookie });
+      }
+      
+      // Generate new cookie using OpenAI
+      const languageNames: Record<string, string> = {
+        en: "English",
+        es: "Spanish",
+        fr: "French",
+        de: "German",
+        pt: "Portuguese",
+        it: "Italian",
+      };
+      
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: `You are a wise, poetic oracle who creates short, contemplative reflections. Generate a single fictional wisdom statement or reflection prompt. It should be:
+- Mysterious but not dark
+- Evocative and thought-provoking
+- 1-2 sentences maximum
+- Written in ${languageNames[normalizedLang]}
+- In the style of a fortune cookie, but more cosmic/philosophical
+- Never include quotes around the text
+- Do not include any prefix like "Cookie:" or similar`,
+          },
+          {
+            role: "user",
+            content: `Generate today's contemplative reflection in ${languageNames[normalizedLang]}.`,
+          },
+        ],
+        max_tokens: 100,
+        temperature: 0.9,
+      });
+      
+      const cookie = completion.choices[0]?.message?.content?.trim() || "";
+      
+      if (!cookie) {
+        throw new Error("No cookie generated");
+      }
+      
+      // Save to database
+      await db.insert(dailyCookies).values({
+        date: today,
+        language: normalizedLang,
+        cookie,
+      });
+      
+      res.json({ success: true, cookie });
+    } catch (error) {
+      console.error("Cookie generation error:", error);
+      // Fallback cookies for each language
+      const fallbacks: Record<string, string[]> = {
+        en: [
+          "A door left ajar lets in more than light.",
+          "The rain does not ask permission to fall.",
+          "Even shadows need something to lean against.",
+        ],
+        es: [
+          "Una puerta entreabierta deja entrar más que luz.",
+          "La lluvia no pide permiso para caer.",
+          "Incluso las sombras necesitan algo en qué apoyarse.",
+        ],
+        fr: [
+          "Une porte entrouverte laisse entrer plus que la lumière.",
+          "La pluie ne demande pas la permission de tomber.",
+          "Même les ombres ont besoin de quelque chose sur quoi s'appuyer.",
+        ],
+        de: [
+          "Eine angelehnte Tür lässt mehr als Licht herein.",
+          "Der Regen fragt nicht um Erlaubnis zu fallen.",
+          "Auch Schatten brauchen etwas, woran sie sich lehnen können.",
+        ],
+        pt: [
+          "Uma porta entreaberta deixa entrar mais que luz.",
+          "A chuva não pede permissão para cair.",
+          "Até as sombras precisam de algo para se apoiar.",
+        ],
+        it: [
+          "Una porta socchiusa lascia entrare più della luce.",
+          "La pioggia non chiede il permesso di cadere.",
+          "Anche le ombre hanno bisogno di qualcosa su cui appoggiarsi.",
+        ],
+      };
+      const lang = (req.query.lang as string) || "en";
+      const validLang = fallbacks[lang] ? lang : "en";
+      const fallback = fallbacks[validLang][Math.floor(Math.random() * fallbacks[validLang].length)];
+      res.json({ success: true, cookie: fallback });
     }
   });
 

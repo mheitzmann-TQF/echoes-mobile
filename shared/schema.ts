@@ -73,3 +73,20 @@ export const insertEntitlementSchema = createInsertSchema(entitlementRecords).om
 
 export type InsertEntitlement = z.infer<typeof insertEntitlementSchema>;
 export type EntitlementRecord = typeof entitlementRecords.$inferSelect;
+
+// Daily cookies table for caching AI-generated wisdom per language
+export const dailyCookies = pgTable("daily_cookies", {
+  id: serial("id").primaryKey(),
+  date: date("date").notNull(), // Format: YYYY-MM-DD
+  language: varchar("language", { length: 5 }).notNull(), // en, es, fr, de, pt, it
+  cookie: text("cookie").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertDailyCookieSchema = createInsertSchema(dailyCookies).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertDailyCookie = z.infer<typeof insertDailyCookieSchema>;
+export type DailyCookie = typeof dailyCookies.$inferSelect;
