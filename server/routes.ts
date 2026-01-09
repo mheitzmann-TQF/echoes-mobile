@@ -175,6 +175,22 @@ export async function registerRoutes(
     }
   });
 
+  // Raw consciousness analysis with filtered consciousness data
+  app.get("/api/proxy/consciousness/raw-analysis", async (req, res) => {
+    try {
+      const response = await fetch(
+        `${TQF_BASE_URL}/api/consciousness-analysis/raw-analysis`,
+        {
+          headers: { "x-api-key": TQF_API_KEY },
+        }
+      );
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch raw consciousness analysis" });
+    }
+  });
+
   app.get("/api/proxy/important-dates/upcoming", async (req, res) => {
     try {
       const { lang } = req.query;

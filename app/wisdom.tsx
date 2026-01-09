@@ -37,12 +37,12 @@ function SkeletonCard({ style }: { style?: any }) {
   );
 }
 
-function TQFGauge({ score, size = 160 }: { score: number; size?: number }) {
+function TQFGauge({ score, size = 160, label }: { score: number; size?: number; label?: string }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   
   const clampedScore = Math.max(0, Math.min(100, score));
-  const strokeWidth = 12;
+  const strokeWidth = 10;
   const radius = (size - strokeWidth) / 2;
   const circumference = Math.PI * radius;
   const progress = (clampedScore / 100) * circumference;
@@ -65,6 +65,7 @@ function TQFGauge({ score, size = 160 }: { score: number; size?: number }) {
   
   return (
     <View style={styles.gaugeContainer}>
+      {label && <Text style={[styles.gaugeTitle, { color: colors.textSecondary }]}>{label}</Text>}
       <Svg width={size} height={size / 2 + 20}>
         <Circle
           cx={size / 2}
@@ -91,8 +92,8 @@ function TQFGauge({ score, size = 160 }: { score: number; size?: number }) {
           strokeDasharray={`${progress}, ${circumference}`}
         />
       </Svg>
-      <View style={[styles.gaugeValue, { top: size / 2 - 30 }]}>
-        <Text style={[styles.gaugeScore, { color }]}>{Math.round(clampedScore)}</Text>
+      <View style={[styles.gaugeValue, { top: size / 2 - 24 }]}>
+        <Text style={[styles.gaugeScore, { color, fontSize: size > 120 ? 36 : 28 }]}>{Math.round(clampedScore)}</Text>
         <Text style={[styles.gaugeLabel, { color: colors.textSecondary }]}>{getScoreLabel(clampedScore)}</Text>
       </View>
     </View>
@@ -475,14 +476,16 @@ export default function WisdomScreen() {
   }
 
   const tqfScore = consciousness?.global_coherence ?? consciousness?.tqf_score ?? 0;
+  const filteredScore = consciousness?.filtered_coherence ?? null;
   const transformationalPercent = consciousness?.transformational_percent ?? 0;
   const destructivePercent = consciousness?.destructive_percent ?? 0;
-  const neutralPercent = consciousness?.neutral_percent ?? 0;
+  const neutralPercent = 100 - transformationalPercent - destructivePercent;
   const hopeLevel = consciousness?.hope_level ?? 0;
   const trend7d = consciousness?.trend_7d ?? 'stable';
   const articlesAnalyzed = consciousness?.articles_analyzed ?? 0;
   
   const isConsciousnessUnavailable = tqfScore === 0 && articlesAnalyzed === 0;
+  const hasFilteredData = filteredScore !== null && filteredScore > 0;
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -509,10 +512,29 @@ export default function WisdomScreen() {
               </View>
             ) : (
               <>
-                <View style={styles.gaugeSection}>
-                  <Text style={[styles.tqfLabel, { color: colors.textSecondary }]}>{t('learn.tqfScore')}</Text>
-                  <TQFGauge score={tqfScore} />
-                </View>
+                {/* Dual Gauge Display: Raw vs Filtered */}
+                {hasFilteredData ? (
+                  <>
+                    <View style={styles.dualGaugeSection}>
+                      <View style={styles.gaugeColumn}>
+                        <TQFGauge score={tqfScore} size={120} label={t('learn.rawScore')} />
+                      </View>
+                      <View style={styles.gaugeColumn}>
+                        <TQFGauge score={filteredScore} size={120} label={t('learn.filteredScore')} />
+                      </View>
+                    </View>
+                    <View style={styles.signalNoiseHint}>
+                      <Text style={[styles.signalNoiseText, { color: colors.textTertiary }]}>
+                        {t('learn.signalBeneathNoise')}
+                      </Text>
+                    </View>
+                  </>
+                ) : (
+                  <View style={styles.gaugeSection}>
+                    <Text style={[styles.tqfLabel, { color: colors.textSecondary }]}>{t('learn.tqfScore')}</Text>
+                    <TQFGauge score={tqfScore} />
+                  </View>
+                )}
                 
                 <View style={styles.breakdownSection}>
                   <PercentageBar 
@@ -653,39 +675,44 @@ const styles = StyleSheet.create({
   sectionSubtitle: { fontSize: 14, marginBottom: 16, lineHeight: 20 },
   skeleton: { borderRadius: 8 },
   
-  consciousnessCard: { borderRadius: 16, padding: 20, borderWidth: 1 },
-  gaugeSection: { alignItems: 'center', marginBottom: 20 },
+  consciousnessCard: { borderRadius: 16, padding: 24, borderWidth: 1 },
+  gaugeSection: { alignItems: 'center', marginBottom: 28 },
+  dualGaugeSection: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 8, paddingHorizontal: 8 },
+  gaugeColumn: { alignItems: 'center', flex: 1 },
+  gaugeTitle: { fontSize: 11, fontWeight: '600', letterSpacing: 1, marginBottom: 8, textTransform: 'uppercase' },
   tqfLabel: { fontSize: 12, fontWeight: '600', letterSpacing: 1, marginBottom: 8 },
   gaugeContainer: { alignItems: 'center' },
   gaugeValue: { position: 'absolute', alignItems: 'center', width: '100%' },
-  gaugeScore: { fontSize: 42, fontWeight: '700' },
-  gaugeLabel: { fontSize: 13, marginTop: 4 },
+  gaugeScore: { fontSize: 36, fontWeight: '700' },
+  gaugeLabel: { fontSize: 11, marginTop: 2, textAlign: 'center' },
+  signalNoiseHint: { alignItems: 'center', marginBottom: 24, paddingHorizontal: 16 },
+  signalNoiseText: { fontSize: 12, textAlign: 'center', fontStyle: 'italic', lineHeight: 18 },
   
-  breakdownSection: { marginBottom: 20 },
-  percentageRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
-  percentageLabel: { flexDirection: 'row', alignItems: 'center', gap: 8, width: 120 },
+  breakdownSection: { marginBottom: 28, gap: 16 },
+  percentageRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  percentageLabel: { flexDirection: 'row', alignItems: 'center', gap: 8, width: 130 },
   percentageDot: { width: 8, height: 8, borderRadius: 4 },
   percentageText: { fontSize: 13, fontWeight: '500' },
-  percentageBarContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8, marginLeft: 12 },
-  percentageBarBg: { flex: 1, height: 6, borderRadius: 3, overflow: 'hidden' },
-  percentageBarFill: { height: '100%', borderRadius: 3 },
-  percentageValue: { fontSize: 12, width: 36, textAlign: 'right' },
+  percentageBarContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 10, marginLeft: 12 },
+  percentageBarBg: { flex: 1, height: 8, borderRadius: 4, overflow: 'hidden' },
+  percentageBarFill: { height: '100%', borderRadius: 4 },
+  percentageValue: { fontSize: 13, width: 40, textAlign: 'right', fontWeight: '500' },
   
-  metricsRow: { flexDirection: 'row', gap: 16, marginBottom: 16 },
+  metricsRow: { flexDirection: 'row', gap: 24, marginBottom: 24, paddingTop: 8 },
   hopeMeterContainer: { flex: 1 },
-  metricLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 0.5, marginBottom: 8 },
-  hopeMeterBar: { flexDirection: 'row', gap: 3, marginBottom: 6 },
-  hopeMeterSegment: { flex: 1, height: 6, borderRadius: 3 },
-  hopeMeterValue: { fontSize: 13, fontWeight: '500' },
+  metricLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 0.5, marginBottom: 10 },
+  hopeMeterBar: { flexDirection: 'row', gap: 4, marginBottom: 8 },
+  hopeMeterSegment: { flex: 1, height: 8, borderRadius: 4 },
+  hopeMeterValue: { fontSize: 14, fontWeight: '500' },
   
   trendContainer: { flex: 1 },
-  trendRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  trendValue: { fontSize: 13, fontWeight: '500' },
+  trendRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  trendValue: { fontSize: 14, fontWeight: '600' },
   
-  articlesRow: { alignItems: 'center', marginBottom: 16 },
-  articlesText: { fontSize: 12 },
+  articlesRow: { alignItems: 'center', marginBottom: 20 },
+  articlesText: { fontSize: 13 },
   
-  methodologyBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 10, borderTopWidth: 1 },
+  methodologyBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 12, borderTopWidth: 1, marginTop: 4 },
   methodologyText: { fontSize: 13 },
   
   calendarList: { gap: 12 },

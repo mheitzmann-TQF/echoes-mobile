@@ -144,24 +144,41 @@ class EchoesAPI {
 
   async getConsciousnessAnalysis(): Promise<any> {
     try {
-      const url = `/api/proxy/consciousness`;
-      console.log('📡 Fetching consciousness analysis from:', url);
+      // Fetch both current and raw-analysis endpoints in parallel
+      const [currentResponse, rawResponse] = await Promise.all([
+        fetch('/api/proxy/consciousness', { headers: this.getHeaders() }),
+        fetch('/api/proxy/consciousness/raw-analysis', { headers: this.getHeaders() }),
+      ]);
       
-      const response = await fetch(url, {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      if (!currentResponse.ok) {
+        throw new Error(`HTTP ${currentResponse.status}: ${currentResponse.statusText}`);
       }
       
-      const data = await response.json();
-      console.log('✅ Consciousness data received:', data);
+      const currentData = await currentResponse.json();
+      console.log('✅ Consciousness data received:', currentData);
       
-      if (!data.success) throw new Error('Failed to fetch consciousness data');
-      // API returns metrics at root level (global_coherence, regional_coherence, etc.)
-      // not nested under data, so return the full response
-      return data;
+      // Try to get filtered consciousness from raw-analysis
+      let filteredCoherence = null;
+      let noiseLevel = null;
+      let signalStrength = null;
+      
+      if (rawResponse.ok) {
+        const rawData = await rawResponse.json();
+        console.log('✅ Raw analysis data received:', rawData);
+        if (rawData.success && rawData.data) {
+          filteredCoherence = rawData.data.filteredCoherence;
+          noiseLevel = rawData.data.noiseLevel;
+          signalStrength = rawData.data.signalStrength;
+        }
+      }
+      
+      // Return merged data with filtered consciousness
+      return {
+        ...currentData,
+        filtered_coherence: filteredCoherence,
+        noise_level: noiseLevel,
+        signal_strength: signalStrength,
+      };
     } catch (error) {
       console.error('❌ Consciousness analysis error:', error);
       throw error;
