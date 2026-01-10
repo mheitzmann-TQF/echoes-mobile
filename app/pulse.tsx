@@ -877,6 +877,7 @@ export default function FieldScreen() {
         {/* Body Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.body')}</Text>
+          <Text style={[styles.sectionHint, { color: colors.textTertiary }]}>{t('field.bodyIndicator')}</Text>
           
           <ExpandableCard
             icon={<Dna size={20} color={colors.text} />}
@@ -978,10 +979,17 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
     color: 'rgba(255,255,255,0.35)',
-    marginBottom: 16,
+    marginBottom: 4,
     paddingHorizontal: 20,
     letterSpacing: 1,
     textTransform: 'uppercase',
+  },
+  sectionHint: {
+    fontSize: 10,
+    fontStyle: 'italic',
+    marginBottom: 12,
+    paddingHorizontal: 20,
+    opacity: 0.6,
   },
   card: {
     borderRadius: 16,
