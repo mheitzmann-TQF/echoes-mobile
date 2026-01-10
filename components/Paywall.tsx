@@ -127,7 +127,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
           <FeatureItem text={t('paywall.features.unlimited')} />
           <FeatureItem text={t('paywall.features.planetary')} />
           <FeatureItem text={t('paywall.features.cultural')} />
-          <FeatureItem text={t('paywall.features.personalized')} />
+          <FeatureItem text={t('paywall.features.contextual')} />
         </View>
 
         {error && (
