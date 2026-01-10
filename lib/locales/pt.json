@@ -249,7 +249,13 @@
     "phase": "Fase",
     "element": "Elemento",
     "paused": "Pausado",
-    "pausedMessage": "Sabedoria está pausada. Continue com acesso completo para explorar padrões."
+    "pausedMessage": "Sabedoria está pausada. Continue com acesso completo para explorar padrões.",
+    "gregorian": "Gregoriano",
+    "mayanTzolkin": "Tzolkin Maia",
+    "chinese": "Chinês",
+    "hebrew": "Hebraico",
+    "islamic": "Islâmico",
+    "hinduPanchang": "Panchang Hindu"
   },
   "calendars": {
     "civil": "Civil",

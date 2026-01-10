@@ -249,7 +249,13 @@
     "phase": "Phase",
     "element": "Element",
     "paused": "Pausiert",
-    "pausedMessage": "Weisheit ist pausiert. Fahren Sie mit vollem Zugang fort, um Muster zu erkunden."
+    "pausedMessage": "Weisheit ist pausiert. Fahren Sie mit vollem Zugang fort, um Muster zu erkunden.",
+    "gregorian": "Gregorianisch",
+    "mayanTzolkin": "Maya Tzolkin",
+    "chinese": "Chinesisch",
+    "hebrew": "Hebräisch",
+    "islamic": "Islamisch",
+    "hinduPanchang": "Hindu Panchang"
   },
   "calendars": {
     "civil": "Zivil",
