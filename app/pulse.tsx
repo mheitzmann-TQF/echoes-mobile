@@ -822,32 +822,6 @@ export default function FieldScreen() {
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.earth')}</Text>
           
           <ExpandableCard
-            icon={<Globe size={20} color={colors.text} />}
-            title={t('field.coherence')}
-            message={consciousnessData?.global_coherence && consciousnessData.global_coherence > 60 ? t('field.collectiveToneStable') : consciousnessData ? t('field.collectiveToneVariable') : t('field.checkingCollectivePulse')}
-            collapsedDetail={consciousnessData?.global_coherence !== undefined && consciousnessData?.global_coherence !== null ? `${Math.round(consciousnessData.global_coherence)}%` : "—"}
-            isExpanded={expandedCards['coherence']}
-            onToggle={() => toggleCard('coherence')}
-            chips={[t('field.chipGlobal'), t('field.chipRegional'), t('field.chipTrend')]}
-            howToRead={[t('field.coherenceNote1'), t('field.coherenceNote2'), t('field.coherenceNote3'), t('field.coherenceNote4')]}
-            expandedContent={
-              <View style={styles.expandedDetails}>
-                <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.globalLabel')}</Text>
-                  <Text style={[styles.detailValue, { color: colors.text }]}>{consciousnessData?.global_coherence !== undefined && consciousnessData?.global_coherence !== null ? `${Math.round(consciousnessData.global_coherence)}%` : "—"}</Text>
-                </View>
-                <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.regionalAvgLabel')}</Text>
-                  <Text style={[styles.detailValue, { color: colors.text }]}>{regionalAverage !== null ? `${regionalAverage}%` : "—"}</Text>
-                </View>
-                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {t('field.coherenceExplanation')}
-                </Text>
-              </View>
-            }
-          />
-
-          <ExpandableCard
             icon={<Zap size={20} color={colors.text} />}
             title={t('field.geomagnetic')}
             message={geoState.message}
