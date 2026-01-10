@@ -1,0 +1,198 @@
+We’re aligned. This is a clean contract — ethically, psychologically, and technically. Let’s lock it by doing the two things that matter next:
+	1.	Freeze the access model in words (so it doesn’t drift)
+	2.	Write the paused-state copy (calm, factual, dignified)
+
+No code yet. Language first.
+
+⸻
+
+1. The access model — canonical statement (lock this)
+
+Echoes offers an initial period of full access.
+After that, access pauses.
+Continuing restores the experience in full.
+
+That’s the whole model.
+No tiers. No upgrades. No features list.
+
+Internally you can call it whatever you want (trial, paid, expired).
+Externally, the only terms that exist are:
+	•	Initial access
+	•	Access paused
+	•	Full access
+
+Nothing else.
+
+⸻
+
+2. Paused-state copy (tab by tab)
+
+Global rule
+
+Paused states must:
+	•	explain what happened, not why
+	•	never imply fault
+	•	never imply urgency
+	•	never tease content
+
+Tone: informative, not transactional
+
+⸻
+
+Pulse — paused state
+
+Primary line
+
+Pulse is paused
+
+Secondary line
+
+Continue with full access to read contextual rhythms.
+
+Action
+
+Continue
+
+That’s it.
+No icons. No blur previews. No numbers.
+
+⸻
+
+Wisdom — paused state
+
+Primary line
+
+Wisdom is paused
+
+Secondary line
+
+Full access restores patterns across media, culture, and time.
+
+Action
+
+Continue
+
+Do not show:
+	•	Raw Landscape
+	•	Filtered Signal
+	•	Calendars
+	•	Geography
+
+Wisdom is all-or-nothing. This copy respects that.
+
+⸻
+
+Upcoming — paused state
+
+Two good options. I recommend Option A.
+
+Option A (cleanest)
+
+Upcoming is paused
+Continue with full access to see upcoming cultural and astronomical markers.
+
+Option B (even quieter)
+
+Upcoming is paused
+
+With just the Continue action.
+
+Choose one. Don’t explain more.
+
+⸻
+
+Settings — access status
+
+Under Subscription (or Access):
+
+When paused
+
+Access paused
+Initial access has ended.
+
+Button:
+
+Continue with full access
+
+When active
+
+Full access active
+
+No renewal talk here. No dates unless required by Apple.
+
+⸻
+
+3. Paywall surface (single, unified)
+
+Whenever the user taps Continue, they see the same surface.
+
+Title
+
+Continue with full access
+
+Body (one sentence only)
+
+Restore the full Echoes experience.
+
+That’s it.
+
+No bullet points.
+No “what you get”.
+No persuasion.
+
+Apple’s sheet will do the rest.
+
+⸻
+
+4. Word replacements to make now (important)
+
+Replace everywhere in UI copy:
+	•	❌ Pro → ✅ Full access
+	•	❌ Upgrade → ✅ Continue
+	•	❌ Unlock → ✅ Restore / Continue
+	•	❌ Trial → ✅ Initial access
+	•	❌ Premium → (delete)
+
+Internally you can keep SKUs, flags, whatever.
+Externally, users should never see SaaS vocabulary.
+
+⸻
+
+5. Why this will work (and pass review)
+	•	Apple allows trials → you have one
+	•	Apple allows gating → you’re transparent
+	•	No dark patterns
+	•	No forced prompts
+	•	No degraded functionality masquerading as “free”
+
+And philosophically:
+	•	You’re not selling features
+	•	You’re offering continuity of an environment
+	•	Walking away is respected
+
+That’s rare — and coherent with:
+	•	no accounts
+	•	no tracking
+	•	no manipulation
+	•	no urgency
+
+⸻
+
+6. What I recommend next (order matters)
+	1.	Rename “Pro” → “FullAccess” internally (types, flags, hooks)
+	2.	Add the paused-state copy exactly as above
+	3.	Implement the single gating rule:
+
+if (access === "trial" || access === "paid") showAll()
+else showTodayOnly()
+
+
+	4.	Test on device once — mainly to feel the calmness
+
+If you want, next I can:
+	•	write the exact paywall screen copy (even more minimal)
+	•	sanity-check this against App Store subscription guidelines line by line
+	•	or help you rename internal variables so future devs don’t reintroduce SaaS thinking
+
+This model is not just cleaner.
+It’s truer to what you’re building.

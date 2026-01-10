@@ -17,7 +17,7 @@ import { SUBSCRIPTION_IDS } from './products';
 import Constants from 'expo-constants';
 
 export interface EntitlementState {
-  isPro: boolean;
+  isFullAccess: boolean;
   isLoading: boolean;
   products: ProductSubscription[];
   expiresAt: string | null;
@@ -44,7 +44,7 @@ function getApiBase(): string {
 }
 
 async function checkEntitlementStatus(installId: string): Promise<{
-  entitlement: 'pro' | 'free';
+  entitlement: 'full' | 'free';
   expiresAt: string | null;
 }> {
   try {
@@ -73,7 +73,7 @@ async function verifyPurchaseWithBackend(
   installId: string,
   purchase: Purchase
 ): Promise<{
-  entitlement: 'pro' | 'free';
+  entitlement: 'full' | 'free';
   expiresAt: string | null;
 }> {
   try {
@@ -111,7 +111,7 @@ async function verifyPurchaseWithBackend(
 }
 
 export function useEntitlement(): EntitlementState & EntitlementActions {
-  const [isPro, setIsPro] = useState(false);
+  const [isFullAccess, setIsFullAccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<ProductSubscription[]>([]);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
@@ -124,7 +124,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     setIsLoading(true);
     try {
       const status = await checkEntitlementStatus(installId);
-      setIsPro(status.entitlement === 'pro');
+      setIsFullAccess(status.entitlement === 'full');
       setExpiresAt(status.expiresAt);
       setError(null);
     } catch (err) {
@@ -146,7 +146,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         setInstallId(id);
         
         const status = await checkEntitlementStatus(id);
-        setIsPro(status.entitlement === 'pro');
+        setIsFullAccess(status.entitlement === 'full');
         setExpiresAt(status.expiresAt);
 
         if (Platform.OS !== 'web') {
@@ -158,7 +158,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
           purchaseUpdateSub = purchaseUpdatedListener(async (purchase) => {
             console.log('[ENTITLEMENT] Purchase updated:', purchase.productId);
             const result = await verifyPurchaseWithBackend(id, purchase);
-            setIsPro(result.entitlement === 'pro');
+            setIsFullAccess(result.entitlement === 'full');
             setExpiresAt(result.expiresAt);
           });
           
@@ -212,9 +212,9 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     
     if (result.purchase) {
       const verification = await verifyPurchaseWithBackend(installId, result.purchase);
-      setIsPro(verification.entitlement === 'pro');
+      setIsFullAccess(verification.entitlement === 'full');
       setExpiresAt(verification.expiresAt);
-      return verification.entitlement === 'pro';
+      return verification.entitlement === 'full';
     }
     
     return false;
@@ -233,9 +233,9 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     
     if (result.purchase) {
       const verification = await verifyPurchaseWithBackend(installId, result.purchase);
-      setIsPro(verification.entitlement === 'pro');
+      setIsFullAccess(verification.entitlement === 'full');
       setExpiresAt(verification.expiresAt);
-      return verification.entitlement === 'pro';
+      return verification.entitlement === 'full';
     }
     
     return false;
@@ -257,8 +257,8 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       
       for (const purchase of purchases) {
         const verification = await verifyPurchaseWithBackend(installId, purchase);
-        if (verification.entitlement === 'pro') {
-          setIsPro(true);
+        if (verification.entitlement === 'full') {
+          setIsFullAccess(true);
           setExpiresAt(verification.expiresAt);
           return true;
         }
@@ -276,7 +276,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   }, [installId]);
 
   return {
-    isPro,
+    isFullAccess,
     isLoading,
     products,
     expiresAt,

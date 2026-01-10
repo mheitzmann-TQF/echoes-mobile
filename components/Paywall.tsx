@@ -12,7 +12,7 @@ import {
 import { Sparkles, Check, RotateCcw } from 'lucide-react-native';
 import { useEntitlement } from '@/lib/iap/useEntitlement';
 import { HAS_TRIAL_OFFER, TRIAL_DAYS, LEGAL_URLS, SUBSCRIPTION_IDS } from '@/lib/iap/products';
-import type { ProductSubscription } from 'expo-iap';
+import type { ProductSubscription } from '@/lib/iap/iap';
 import { useTranslation } from 'react-i18next';
 
 interface PaywallProps {
@@ -21,9 +21,9 @@ interface PaywallProps {
 }
 
 function getLocalizedPrice(products: ProductSubscription[], sku: string, fallback: string): string {
-  const product = products.find(p => p.id === sku);
-  if (product && product.displayPrice) {
-    return product.displayPrice;
+  const product = products.find((p: any) => p.id === sku);
+  if (product && (product as any).displayPrice) {
+    return (product as any).displayPrice;
   }
   return fallback;
 }
@@ -36,7 +36,7 @@ function getPeriodLabel(sku: string): string {
 export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
   const { t } = useTranslation();
   const {
-    isPro,
+    isFullAccess,
     isLoading,
     products,
     error,
@@ -86,7 +86,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
     Linking.openURL(LEGAL_URLS.privacy);
   };
 
-  if (isPro) {
+  if (isFullAccess) {
     return (
       <View style={styles.container}>
         <View style={styles.successCard}>
