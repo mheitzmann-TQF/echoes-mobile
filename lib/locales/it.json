@@ -459,10 +459,10 @@
     "continue": "Continua con Echoes",
     "subtitle": "Accesso completo a tutte le schede e funzionalità.",
     "features": {
-      "unlimited": "Echi giornalieri illimitati",
-      "planetary": "Analisi completa del campo planetario",
-      "cultural": "Intuizioni del calendario culturale",
-      "contextual": "Contenuto basato sulla posizione"
+      "pulseWisdom": "Accesso completo a Polso e Saggezza",
+      "mediaClimate": "Clima Mediatico: Segnale Grezzo + Filtrato",
+      "calendars": "Modi di segnare il tempo (tutti i calendari)",
+      "timing": "Finestre di tempo in arrivo (quando disponibili)"
     },
     "yearly": "Annuale",
     "monthly": "Mensile",

@@ -334,10 +334,10 @@
     "continue": "Continuar con Echoes",
     "subtitle": "Acceso completo a todas las pestañas y funciones.",
     "features": {
-      "unlimited": "Ecos diarios ilimitados",
-      "planetary": "Análisis completo del campo planetario",
-      "cultural": "Perspectivas del calendario cultural",
-      "contextual": "Contenido según ubicación"
+      "pulseWisdom": "Acceso completo a Pulso y Sabiduría",
+      "mediaClimate": "Clima Mediático: Señal Cruda + Filtrada",
+      "calendars": "Formas de marcar el tiempo (todos los calendarios)",
+      "timing": "Ventanas de tiempo próximas (cuando disponibles)"
     },
     "yearly": "Anual",
     "monthly": "Mensual",

@@ -334,10 +334,10 @@
     "continue": "Continuar com Echoes",
     "subtitle": "Acesso completo a todas as abas e recursos.",
     "features": {
-      "unlimited": "Ecos diários ilimitados",
-      "planetary": "Análise completa do campo planetário",
-      "cultural": "Insights do calendário cultural",
-      "contextual": "Conteúdo baseado em localização"
+      "pulseWisdom": "Acesso completo a Pulso e Sabedoria",
+      "mediaClimate": "Clima da Mídia: Sinal Bruto + Filtrado",
+      "calendars": "Formas de marcar o tempo (todos os calendários)",
+      "timing": "Janelas de tempo próximas (quando disponíveis)"
     },
     "yearly": "Anual",
     "monthly": "Mensal",

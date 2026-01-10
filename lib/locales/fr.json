@@ -486,10 +486,10 @@
     "continue": "Continuer avec Echoes",
     "subtitle": "Accès complet à tous les onglets et fonctionnalités.",
     "features": {
-      "unlimited": "Échos quotidiens illimités",
-      "planetary": "Analyse complète du champ planétaire",
-      "cultural": "Perspectives du calendrier culturel",
-      "contextual": "Contenu adapté à la localisation"
+      "pulseWisdom": "Accès complet à Pouls et Sagesse",
+      "mediaClimate": "Climat Médiatique: Signal Brut + Filtré",
+      "calendars": "Façons de marquer le temps (tous les calendriers)",
+      "timing": "Fenêtres de temps à venir (quand disponibles)"
     },
     "yearly": "Annuel",
     "monthly": "Mensuel",

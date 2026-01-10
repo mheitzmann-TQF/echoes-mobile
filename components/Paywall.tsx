@@ -124,10 +124,10 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
         </View>
 
         <View style={styles.features}>
-          <FeatureItem text={t('paywall.features.unlimited')} />
-          <FeatureItem text={t('paywall.features.planetary')} />
-          <FeatureItem text={t('paywall.features.cultural')} />
-          <FeatureItem text={t('paywall.features.contextual')} />
+          <FeatureItem text={t('paywall.features.pulseWisdom')} />
+          <FeatureItem text={t('paywall.features.mediaClimate')} />
+          <FeatureItem text={t('paywall.features.calendars')} />
+          <FeatureItem text={t('paywall.features.timing')} />
         </View>
 
         {error && (

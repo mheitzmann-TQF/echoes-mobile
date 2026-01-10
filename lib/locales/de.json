@@ -334,10 +334,10 @@
     "continue": "Mit Echoes fortfahren",
     "subtitle": "Voller Zugang zu allen Tabs und Funktionen.",
     "features": {
-      "unlimited": "Unbegrenzte tägliche Echos",
-      "planetary": "Vollständige Planetenfeldanalyse",
-      "cultural": "Kulturelle Kalendereinblicke",
-      "contextual": "Standortbezogene Inhalte"
+      "pulseWisdom": "Voller Zugang zu Puls und Weisheit",
+      "mediaClimate": "Medienklima: Rohes + Gefiltertes Signal",
+      "calendars": "Arten die Zeit zu messen (alle Kalender)",
+      "timing": "Kommende Zeitfenster (wenn verfügbar)"
     },
     "yearly": "Jährlich",
     "monthly": "Monatlich",

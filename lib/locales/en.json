@@ -487,10 +487,10 @@
     "continue": "Continue with Echoes",
     "subtitle": "Full access to all tabs and features.",
     "features": {
-      "unlimited": "Unlimited daily echoes",
-      "planetary": "Full planetary field analysis",
-      "cultural": "Cultural calendar insights",
-      "contextual": "Location-aware content"
+      "pulseWisdom": "Full access to Pulse and Wisdom",
+      "mediaClimate": "Media Climate: Raw + Filtered Signal",
+      "calendars": "Ways of marking time (all calendars)",
+      "timing": "Upcoming timing windows (when available)"
     },
     "yearly": "Yearly",
     "monthly": "Monthly",
