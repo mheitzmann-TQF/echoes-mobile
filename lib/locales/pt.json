@@ -321,8 +321,8 @@
     "free": "Acesso Inicial",
     "activeUntil": "Ativo até {{date}}",
     "activeSubscription": "Assinatura ativa",
-    "unlockAccess": "Explore todas as abas e recursos",
-    "upgradeToPro": "Continuar com acesso completo",
+    "exploreAccess": "Explore todas as abas e recursos",
+    "continueWithFullAccess": "Continuar com acesso completo",
     "manageSubscription": "Gerenciar assinatura",
     "privacy": "Privacidade",
     "privacyNote": "Sem contas. Preferências armazenadas no dispositivo.",
@@ -331,7 +331,7 @@
     "version": "Echoes v1.0"
   },
   "paywall": {
-    "unlock": "Continuar com Echoes",
+    "continue": "Continuar com Echoes",
     "subtitle": "Acesso completo a todas as abas e recursos.",
     "features": {
       "unlimited": "Ecos diários ilimitados",
@@ -345,9 +345,9 @@
     "perMonth": "por mês",
     "bestValue": "Melhor Valor",
     "monthsFree": "~2 meses grátis",
-    "startTrial": "Iniciar acesso de {{days}} dias",
+    "startAccess": "Iniciar acesso de {{days}} dias",
     "subscribe": "Assinar",
-    "trialNote": "Teste grátis de {{days}} dias, depois {{monthlyPrice}}/mês ou {{yearlyPrice}}/ano. Cancele quando quiser.",
+    "accessNote": "Acesso inicial de {{days}} dias, depois {{monthlyPrice}}/mês ou {{yearlyPrice}}/ano. Cancele quando quiser.",
     "restorePurchases": "Restaurar Compras",
     "restoreNote": "Já é assinante? Use Restaurar Compras se estiver em um novo dispositivo ou reinstalou o app.",
     "termsOfService": "Termos de Serviço",

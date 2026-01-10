@@ -321,8 +321,8 @@
     "free": "Anfänglicher Zugang",
     "activeUntil": "Aktiv bis {{date}}",
     "activeSubscription": "Aktives Abonnement",
-    "unlockAccess": "Alle Tabs und Funktionen erkunden",
-    "upgradeToPro": "Mit vollem Zugang fortfahren",
+    "exploreAccess": "Alle Tabs und Funktionen erkunden",
+    "continueWithFullAccess": "Mit vollem Zugang fortfahren",
     "manageSubscription": "Abonnement verwalten",
     "privacy": "Datenschutz",
     "privacyNote": "Keine Konten. Einstellungen auf dem Gerät gespeichert.",
@@ -331,7 +331,7 @@
     "version": "Echoes v1.0"
   },
   "paywall": {
-    "unlock": "Mit Echoes fortfahren",
+    "continue": "Mit Echoes fortfahren",
     "subtitle": "Voller Zugang zu allen Tabs und Funktionen.",
     "features": {
       "unlimited": "Unbegrenzte tägliche Echos",
@@ -345,9 +345,9 @@
     "perMonth": "pro Monat",
     "bestValue": "Bester Wert",
     "monthsFree": "~2 Monate gratis",
-    "startTrial": "{{days}}-tägigen Zugang starten",
+    "startAccess": "{{days}}-tägigen Zugang starten",
     "subscribe": "Abonnieren",
-    "trialNote": "{{days}} Tage kostenlos, dann {{monthlyPrice}}/Monat oder {{yearlyPrice}}/Jahr. Jederzeit kündbar.",
+    "accessNote": "{{days}} Tage Anfangszugang, dann {{monthlyPrice}}/Monat oder {{yearlyPrice}}/Jahr. Jederzeit kündbar.",
     "restorePurchases": "Käufe wiederherstellen",
     "restoreNote": "Bereits abonniert? Nutze Käufe wiederherstellen auf einem neuen Gerät oder nach Neuinstallation.",
     "termsOfService": "Nutzungsbedingungen",

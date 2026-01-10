@@ -9,13 +9,20 @@ interface PausedOverlayProps {
   section: 'pulse' | 'learn' | 'upcoming';
 }
 
+const sectionToNamespace: Record<string, string> = {
+  pulse: 'field',
+  learn: 'learn',
+  upcoming: 'upcoming'
+};
+
 export default function PausedOverlay({ section }: PausedOverlayProps) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const [paywallVisible, setPaywallVisible] = useState(false);
 
-  const pausedTitle = t(`${section}.paused`);
-  const pausedMessage = t(`${section}.pausedMessage`);
+  const namespace = sectionToNamespace[section];
+  const pausedTitle = t(`${namespace}.paused`);
+  const pausedMessage = t(`${namespace}.pausedMessage`);
   const continueText = t('common.continue');
 
   return (

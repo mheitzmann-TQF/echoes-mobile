@@ -473,8 +473,8 @@
     "free": "Accès Initial",
     "activeUntil": "Actif jusqu'au {{date}}",
     "activeSubscription": "Abonnement actif",
-    "unlockAccess": "Explorez tous les onglets et fonctionnalités",
-    "upgradeToPro": "Continuer avec l'accès complet",
+    "exploreAccess": "Explorez tous les onglets et fonctionnalités",
+    "continueWithFullAccess": "Continuer avec l'accès complet",
     "manageSubscription": "Gérer l'abonnement",
     "privacy": "Confidentialité",
     "privacyNote": "Pas de compte. Préférences stockées sur l'appareil.",
@@ -483,7 +483,7 @@
     "version": "Echoes v1.0"
   },
   "paywall": {
-    "unlock": "Continuer avec Echoes",
+    "continue": "Continuer avec Echoes",
     "subtitle": "Accès complet à tous les onglets et fonctionnalités.",
     "features": {
       "unlimited": "Échos quotidiens illimités",
@@ -497,9 +497,9 @@
     "perMonth": "par mois",
     "bestValue": "Meilleure Valeur",
     "monthsFree": "~2 mois gratuits",
-    "startTrial": "Commencer l'accès de {{days}} jours",
+    "startAccess": "Commencer l'accès de {{days}} jours",
     "subscribe": "S'abonner",
-    "trialNote": "Essai gratuit de {{days}} jours, puis {{monthlyPrice}}/mois ou {{yearlyPrice}}/an. Annulez à tout moment.",
+    "accessNote": "Accès initial de {{days}} jours, puis {{monthlyPrice}}/mois ou {{yearlyPrice}}/an. Annulez à tout moment.",
     "restorePurchases": "Restaurer les achats",
     "restoreNote": "Déjà abonné? Utilisez Restaurer les achats si vous êtes sur un nouvel appareil ou avez réinstallé l'app.",
     "termsOfService": "Conditions d'utilisation",

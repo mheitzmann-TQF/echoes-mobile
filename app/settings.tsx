@@ -280,14 +280,14 @@ export default function SettingsScreen() {
                 <Text style={[styles.subscriptionTitle, { color: colors.text }]}>{t('settings.free')}</Text>
               </View>
               <Text style={[styles.subscriptionStatus, { color: colors.textSecondary }]}>
-                {t('settings.unlockAccess')}
+                {t('settings.exploreAccess')}
               </Text>
               <TouchableOpacity
                 style={[styles.upgradeButton, { backgroundColor: colors.accent }]}
                 onPress={() => setShowPaywall(true)}
-                data-testid="button-upgrade"
+                data-testid="button-continue-access"
               >
-                <Text style={styles.upgradeButtonText}>{t('settings.upgradeToPro')}</Text>
+                <Text style={styles.upgradeButtonText}>{t('settings.continueWithFullAccess')}</Text>
               </TouchableOpacity>
             </View>
           )}

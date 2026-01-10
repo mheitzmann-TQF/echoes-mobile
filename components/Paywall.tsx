@@ -117,7 +117,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
       <View style={styles.container}>
         <View style={styles.header}>
           <Sparkles size={32} color="#F59E0B" />
-          <Text style={styles.title}>{t('paywall.unlock')}</Text>
+          <Text style={styles.title}>{t('paywall.continue')}</Text>
           <Text style={styles.subtitle}>
             {t('paywall.subtitle')}
           </Text>
@@ -158,7 +158,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
               <ActivityIndicator color="#FFFFFF" style={styles.planLoader} />
             ) : (
               <Text style={styles.planCta}>
-                {HAS_TRIAL_OFFER ? t('paywall.startTrial', { days: TRIAL_DAYS }) : t('paywall.subscribe')}
+                {HAS_TRIAL_OFFER ? t('paywall.startAccess', { days: TRIAL_DAYS }) : t('paywall.subscribe')}
               </Text>
             )}
           </TouchableOpacity>
@@ -179,15 +179,15 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
               <ActivityIndicator color="#FFFFFF" style={styles.planLoader} />
             ) : (
               <Text style={styles.planCta}>
-                {HAS_TRIAL_OFFER ? t('paywall.startTrial', { days: TRIAL_DAYS }) : t('paywall.subscribe')}
+                {HAS_TRIAL_OFFER ? t('paywall.startAccess', { days: TRIAL_DAYS }) : t('paywall.subscribe')}
               </Text>
             )}
           </TouchableOpacity>
         </View>
 
         {HAS_TRIAL_OFFER && (
-          <Text style={styles.trialNote}>
-            {t('paywall.trialNote', { days: TRIAL_DAYS, monthlyPrice, yearlyPrice })}
+          <Text style={styles.accessNote}>
+            {t('paywall.accessNote', { days: TRIAL_DAYS, monthlyPrice, yearlyPrice })}
           </Text>
         )}
 
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginTop: 8,
   },
-  trialNote: {
+  accessNote: {
     fontSize: 13,
     color: 'rgba(255,255,255,0.4)',
     textAlign: 'center',
