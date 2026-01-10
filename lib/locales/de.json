@@ -216,7 +216,7 @@
     "hopeLevelExplainedDesc": "Misst die Präsenz hoffnungsvoller, lösungsorientierter Erzählungen im globalen Diskurs. Reicht von Niedrig (unter 20) bis Sehr Hoch (80+). Spiegelt wider, wie viel positive Möglichkeit kommuniziert wird.",
     "trendExplained": "7-Tage-Trend",
     "trendExplainedDesc": "Zeigt, wie sich der Medienklima-Index in der vergangenen Woche verändert hat. Positive Trends zeigen mehr integrativen Inhalt (Lösungen, Verbindung); negative Trends deuten auf mehr reaktiven Inhalt (Konflikt, Angst, Spaltung) hin.",
-    "highlyAligned": "Starkes Integratives Signal",
+    "highlyAligned": "Hohe Integration",
     "moderatelyAligned": "Moderat Integrativ",
     "transitional": "Im Übergang",
     "misaligned": "Reaktiv",
