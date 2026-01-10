@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal, Image, Linking, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe } from 'lucide-react-native';
 import { useTheme } from '../lib/ThemeContext';
 import { useEntitlement } from '@/lib/iap/useEntitlement';
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, changeLanguage, getCurrentLanguage, type SupportedLanguage } from '../lib/i18n';
 import { contentService } from '../lib/ContentService';
 import { cookieService } from '../lib/CookieService';
+import { cycleDevAccessState, type DevAccessState } from '@/lib/iap/devAccessOverride';
 
 const THEMES = ['Dark', 'Light'];
 
@@ -36,7 +37,14 @@ export default function SettingsScreen() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<SupportedLanguage>(getCurrentLanguage());
   
-  const { isFullAccess, isLoading: entitlementLoading, expiresAt, restorePurchasesAction } = useEntitlement();
+  const { isFullAccess, isLoading: entitlementLoading, expiresAt, restorePurchasesAction, devOverride, isDevMode, refresh: refreshEntitlement } = useEntitlement();
+  
+  const handleDevAccessCycle = useCallback(async () => {
+    if (!isDevMode) return;
+    const newState = await cycleDevAccessState();
+    console.log('[SETTINGS] Dev access cycled to:', newState);
+    await refreshEntitlement();
+  }, [isDevMode, refreshEntitlement]);
 
   const handleLanguageChange = async (lang: SupportedLanguage) => {
     // Clear all cached content when language changes
@@ -322,9 +330,20 @@ export default function SettingsScreen() {
               The Quiet Frame
             </Text>
           </TouchableOpacity>
-          <Text style={[styles.versionText, { color: colors.textTertiary }]}>
-            {t('settings.version')}
-          </Text>
+          <TouchableOpacity 
+            onLongPress={handleDevAccessCycle}
+            delayLongPress={1000}
+            activeOpacity={isDevMode ? 0.6 : 1}
+          >
+            <Text style={[styles.versionText, { color: colors.textTertiary }]}>
+              {t('settings.version')}
+            </Text>
+            {isDevMode && (
+              <Text style={[styles.devOverrideText, { color: devOverride ? colors.accent : colors.textTertiary }]}>
+                DEV: {devOverride || 'none'}
+              </Text>
+            )}
+          </TouchableOpacity>
         </View>
 
       </ScrollView>
@@ -526,6 +545,13 @@ const styles = StyleSheet.create({
   },
   versionText: {
     fontSize: 11,
+    textAlign: 'center',
+  },
+  devOverrideText: {
+    fontSize: 10,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginTop: 4,
   },
   // Subscription Styles
   subscriptionCard: {

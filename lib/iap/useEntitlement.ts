@@ -15,6 +15,12 @@ import {
 import { getInstallId } from './installId';
 import { SUBSCRIPTION_IDS } from './products';
 import Constants from 'expo-constants';
+import {
+  getDevAccessOverride,
+  devStateToEntitlement,
+  isDevOverrideAvailable,
+  type DevAccessState,
+} from './devAccessOverride';
 
 export interface EntitlementState {
   isFullAccess: boolean;
@@ -22,6 +28,8 @@ export interface EntitlementState {
   products: ProductSubscription[];
   expiresAt: string | null;
   error: string | null;
+  devOverride: DevAccessState;
+  isDevMode: boolean;
 }
 
 export interface EntitlementActions {
@@ -117,9 +125,32 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [installId, setInstallId] = useState<string | null>(null);
+  const [devOverride, setDevOverride] = useState<DevAccessState>(null);
+  const [isDevMode] = useState(isDevOverrideAvailable());
 
   const refresh = useCallback(async () => {
-    if (!installId) return;
+    if (isDevMode) {
+      const override = await getDevAccessOverride();
+      setDevOverride(override);
+      if (override) {
+        const mapped = devStateToEntitlement(override);
+        if (mapped) {
+          setIsFullAccess(mapped.isFullAccess);
+          setExpiresAt(mapped.expiresAt);
+          setError(null);
+          setIsLoading(false);
+          console.log('[ENTITLEMENT] Dev override active:', override);
+          return;
+        }
+      } else {
+        console.log('[ENTITLEMENT] Dev override cleared, falling through to backend');
+      }
+    }
+    
+    if (!installId) {
+      console.log('[ENTITLEMENT] No installId, skipping refresh');
+      return;
+    }
     
     setIsLoading(true);
     try {
@@ -127,13 +158,14 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       setIsFullAccess(status.entitlement === 'full');
       setExpiresAt(status.expiresAt);
       setError(null);
+      console.log('[ENTITLEMENT] Refreshed from backend:', status);
     } catch (err) {
       console.error('[ENTITLEMENT] Error refreshing:', err);
       setError('Failed to check subscription status');
     } finally {
       setIsLoading(false);
     }
-  }, [installId]);
+  }, [installId, isDevMode]);
 
   useEffect(() => {
     let cleanup: (() => Promise<void>) | null = null;
@@ -144,6 +176,21 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       try {
         const id = await getInstallId();
         setInstallId(id);
+        
+        if (isDevMode) {
+          const override = await getDevAccessOverride();
+          setDevOverride(override);
+          if (override) {
+            const mapped = devStateToEntitlement(override);
+            if (mapped) {
+              setIsFullAccess(mapped.isFullAccess);
+              setExpiresAt(mapped.expiresAt);
+              setIsLoading(false);
+              console.log('[ENTITLEMENT] Init with dev override:', override);
+              return;
+            }
+          }
+        }
         
         const status = await checkEntitlementStatus(id);
         setIsFullAccess(status.entitlement === 'full');
@@ -281,6 +328,8 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     products,
     expiresAt,
     error,
+    devOverride,
+    isDevMode,
     purchaseMonthly,
     purchaseYearly,
     restorePurchasesAction,
