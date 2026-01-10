@@ -1,0 +1,120 @@
+Yes — and this is exactly the right moment to do it.
+
+Below is a clean, precise instruction you can paste directly to Claude. It’s scoped, technical, and aligned with your access philosophy. No product debate, no UI creep.
+
+⸻
+
+Instruction to Claude — Dev Trigger for Subscription State (iOS Simulator)
+
+We need a development-only trigger to force subscription states during local development and iOS Simulator testing.
+
+Context
+
+The app uses an entitlement-based subscription system with three internal states:
+	•	trial (initial 3-day full access)
+	•	paid (full access)
+	•	expired (access paused)
+
+There are no user accounts. Access is tied to installId.
+
+For UI and UX testing, we need to manually override the access state without affecting production behavior or App Store builds.
+
+⸻
+
+Requirements
+
+1. Dev-only behavior
+	•	The trigger must be disabled in production builds
+	•	It should only work in:
+	•	development mode
+	•	iOS Simulator
+	•	or when an explicit dev flag is set
+
+Acceptable approaches:
+	•	__DEV__
+	•	environment variable (e.g. EXPO_PUBLIC_DEV_ACCESS_OVERRIDE)
+	•	simulator detection
+	•	or a combination
+
+⸻
+
+2. Supported override states
+The trigger must allow forcing exactly one of:
+	•	trial → full access (initial access)
+	•	paid → full access
+	•	expired → access paused (Today-only)
+
+Internally this can override the result of:
+	•	useEntitlement
+	•	or the /api/billing/status response
+
+But must not modify backend data or receipts.
+
+⸻
+
+3. Implementation preference (simple)
+Preferred approach:
+	•	Add a local override in useEntitlement.ts
+	•	If dev override is present:
+	•	bypass network check
+	•	return mocked entitlement state
+	•	Otherwise:
+	•	fall back to normal billing status logic
+
+Example (conceptual):
+
+if (__DEV__ && DEV_ACCESS_OVERRIDE) {
+  return {
+    accessLevel: DEV_ACCESS_OVERRIDE, // "trial" | "paid" | "expired"
+    isFullAccess: DEV_ACCESS_OVERRIDE !== "expired",
+    source: "dev-override"
+  }
+}
+
+Exact implementation is up to you — this is illustrative only.
+
+⸻
+
+4. Optional dev UI (only if trivial)
+If easy, add a hidden dev-only control to switch states, for example:
+	•	long-press on app version in Settings
+	•	or a temporary debug screen
+
+This is optional. A static env flag is sufficient.
+
+⸻
+
+What NOT to do
+	•	Do not change production billing logic
+	•	Do not touch receipt validation
+	•	Do not persist overrides to backend or database
+	•	Do not expose this in TestFlight or App Store builds
+
+⸻
+
+Goal
+
+Enable fast, reliable testing of:
+	•	initial full access
+	•	access paused behavior (Today-only)
+	•	full access restored
+
+…in the iOS Simulator, without hacks or redeploys.
+
+⸻
+
+Once this is in place, we’ll use it to:
+	•	test tab gating
+	•	validate paused-state copy
+	•	confirm paywall triggers behave calmly
+
+This is a dev-only affordance. Keep it boring and invisible.
+
+⸻
+
+If you want, after Claude implements this, I can help you:
+	•	sanity-check the override logic
+	•	define a naming convention so it never leaks
+	•	or remove it cleanly before TestFlight
+
+This is exactly the right technical step now.
