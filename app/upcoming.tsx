@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import contentService from '../lib/ContentService';
 import { cleanTone, getCategoryLabel, formatOrigin } from '../lib/labelize';
 import { Clock, Moon, Leaf, Sparkles, Globe, Star } from 'lucide-react-native';
+import { useEntitlement } from '../lib/iap/useEntitlement';
+import PausedOverlay from '../components/PausedOverlay';
 
 const { width } = Dimensions.get('window');
 
@@ -222,6 +224,7 @@ export default function UpcomingScreen() {
   const { coordinates, timezone, language } = useLocation();
   const { colors } = useTheme();
   const { t } = useTranslation();
+  const { isFullAccess } = useEntitlement();
   const [band, setBand] = useState<Band>('soon');
   const [category, setCategory] = useState<Category>('all');
   const [events, setEvents] = useState<any[]>([]);
@@ -371,6 +374,7 @@ export default function UpcomingScreen() {
           </View>
         )}
       </ScrollView>
+      {!isFullAccess && <PausedOverlay section="upcoming" />}
     </SafeAreaView>
   );
 }

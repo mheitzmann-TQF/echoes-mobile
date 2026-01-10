@@ -8,6 +8,8 @@ import api, { RegionalBreakdown } from '../lib/api';
 import { Brain, Calendar, TrendingUp, TrendingDown, Minus, ChevronRight, Info, X, FileText, Globe } from 'lucide-react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import i18next from 'i18next';
+import { useEntitlement } from '../lib/iap/useEntitlement';
+import PausedOverlay from '../components/PausedOverlay';
 
 const { width } = Dimensions.get('window');
 
@@ -477,6 +479,7 @@ function CalendarDetailModal({ calendar, visible, onClose }: { calendar: any; vi
 export default function WisdomScreen() {
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
+  const { isFullAccess } = useEntitlement();
   
   const [consciousness, setConsciousness] = useState<any>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
@@ -782,6 +785,7 @@ export default function WisdomScreen() {
         visible={!!selectedCalendar} 
         onClose={() => setSelectedCalendar(null)} 
       />
+      {!isFullAccess && <PausedOverlay section="learn" />}
     </SafeAreaView>
   );
 }

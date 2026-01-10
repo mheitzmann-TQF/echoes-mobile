@@ -229,7 +229,9 @@
     "timing_quarter_moons_bring_clarity_to_decisions": "Quarter phases traditionally linked with review and clarity",
     "timing_new_moon_energy_supports_fresh_starts": "New moon phase often observed during new cycles",
     "timing_waning_gibbous_moon_with_quiet_geomagnetic_field": "Waning gibbous moon with quiet geomagnetic field",
-    "timing_releasing_energy_supports_clearing_and_gratitude": "Waning phase traditionally associated with release"
+    "timing_releasing_energy_supports_clearing_and_gratitude": "Waning phase traditionally associated with release",
+    "paused": "Paused",
+    "pausedMessage": "Pulse is paused. Continue with full access to explore rhythms."
   },
   "learn": {
     "title": "Wisdom",
@@ -398,7 +400,9 @@
     "calendarType": "Type",
     "significance": "Significance",
     "energy": "Energy",
-    "phase": "Phase"
+    "phase": "Phase",
+    "paused": "Paused",
+    "pausedMessage": "Wisdom is paused. Continue with full access to explore patterns."
   },
   "calendars": {
     "civil": "Civil",
@@ -444,7 +448,9 @@
     "daysShort": "{{count}}d",
     "timingWindows": "TIMING WINDOWS",
     "lunarPlanetaryMilestones": "LUNAR & PLANETARY MILESTONES",
-    "seasonalTurningPoints": "SEASONAL TURNING POINTS"
+    "seasonalTurningPoints": "SEASONAL TURNING POINTS",
+    "paused": "Paused",
+    "pausedMessage": "This tab is paused. Continue with full access to explore."
   },
   "settings": {
     "title": "Settings",
@@ -463,12 +469,13 @@
     "systemDefault": "System default",
     "selectLanguage": "Select Language",
     "subscription": "Subscription",
-    "echoesPro": "Echoes Pro",
-    "free": "Free",
+    "echoesFullAccess": "Full Access",
+    "echoesPro": "Full Access",
+    "free": "Initial Access",
     "activeUntil": "Active until {{date}}",
     "activeSubscription": "Active subscription",
-    "unlockAccess": "Unlock full access to cosmic wisdom",
-    "upgradeToPro": "Upgrade to Pro",
+    "unlockAccess": "Explore all tabs and features",
+    "upgradeToPro": "Continue with full access",
     "manageSubscription": "Manage Subscription",
     "privacy": "Privacy",
     "privacyNote": "No accounts. Preferences stored on-device.",
@@ -477,8 +484,8 @@
     "version": "Echoes v1.0"
   },
   "paywall": {
-    "unlock": "Unlock Echoes",
-    "subtitle": "Get full access to cosmic wisdom, planetary insights, and personalized echoes.",
+    "unlock": "Continue with Echoes",
+    "subtitle": "Full access to all tabs and features.",
     "features": {
       "unlimited": "Unlimited daily echoes",
       "planetary": "Full planetary field analysis",
@@ -491,9 +498,9 @@
     "perMonth": "per month",
     "bestValue": "Best Value",
     "monthsFree": "~2 months free",
-    "startTrial": "Start {{days}}-day free trial",
+    "startTrial": "Start {{days}}-day access",
     "subscribe": "Subscribe",
-    "trialNote": "{{days}}-day free trial, then {{monthlyPrice}}/month or {{yearlyPrice}}/year. Cancel anytime.",
+    "trialNote": "{{days}}-day initial access, then {{monthlyPrice}}/month or {{yearlyPrice}}/year. Cancel anytime.",
     "restorePurchases": "Restore Purchases",
     "restoreNote": "Already subscribed? Use Restore Purchases if you're on a new device or reinstalled the app.",
     "termsOfService": "Terms of Service",

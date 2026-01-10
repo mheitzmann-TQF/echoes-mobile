@@ -8,6 +8,8 @@ import { ChevronDown, ChevronUp, Info, Moon, Sun, Globe, Zap, Dna, Clock } from 
 import { toTitleCase } from '../lib/labelize';
 import { getApiLang } from '../lib/lang';
 import { useTranslation } from 'react-i18next';
+import { useEntitlement } from '../lib/iap/useEntitlement';
+import PausedOverlay from '../components/PausedOverlay';
 
 // Map API moon phase values to translation keys
 const getMoonPhaseKey = (phase: string): string => {
@@ -323,6 +325,7 @@ export default function FieldScreen() {
   const language = i18n.language;
   const { coordinates, timezone } = useLocation();
   const { colors, theme } = useTheme();
+  const { isFullAccess } = useEntitlement();
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
   const [bioRhythms, setBioRhythms] = useState<any>(null);
@@ -747,13 +750,14 @@ export default function FieldScreen() {
   const shorten = (msg?: string) => msg ? msg.split('.')[0] + '.' : '';
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>{t('field.title')}</Text>
-        <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{t('field.subtitle')}</Text>
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+        <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>{t('field.title')}</Text>
+          <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{t('field.subtitle')}</Text>
 
-        {/* Hero Timing Card - Primary action-oriented content */}
-        <HeroTimingCard
+          {/* Hero Timing Card - Primary action-oriented content */}
+          <HeroTimingCard
           optimalTiming={optimalTiming}
           isExpanded={expandedCards['timing']}
           onToggle={() => toggleCard('timing')}
@@ -909,8 +913,10 @@ export default function FieldScreen() {
           </View>
         </View>
 
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+      {!isFullAccess && <PausedOverlay section="pulse" />}
+    </View>
   );
 }
 

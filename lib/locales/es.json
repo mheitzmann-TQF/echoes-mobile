@@ -170,6 +170,8 @@
     "timing_new_moon_energy_supports_fresh_starts": "Luna nueva a menudo observada durante nuevos ciclos",
     "timing_waning_gibbous_moon_with_quiet_geomagnetic_field": "Luna gibosa menguante con campo geomagnético tranquilo",
     "timing_releasing_energy_supports_clearing_and_gratitude": "Fase menguante tradicionalmente asociada con soltar",
+    "paused": "Pausado",
+    "pausedMessage": "Pulso está pausado. Continúa con acceso completo para explorar ritmos."
   },
   "learn": {
     "title": "Sabiduría",
@@ -245,7 +247,9 @@
     "significance": "Significado",
     "energy": "Energía",
     "phase": "Fase",
-    "element": "Elemento"
+    "element": "Elemento",
+    "paused": "Pausado",
+    "pausedMessage": "Sabiduría está pausada. Continúa con acceso completo para explorar patrones."
   },
   "calendars": {
     "civil": "Civil",
@@ -291,7 +295,9 @@
     "daysShort": "{{count}}d",
     "timingWindows": "VENTANAS DE TIEMPO",
     "lunarPlanetaryMilestones": "HITOS LUNARES Y PLANETARIOS",
-    "seasonalTurningPoints": "PUNTOS DE INFLEXIÓN ESTACIONALES"
+    "seasonalTurningPoints": "PUNTOS DE INFLEXIÓN ESTACIONALES",
+    "paused": "Pausado",
+    "pausedMessage": "Esta pestaña está pausada. Continúa con acceso completo para explorar."
   },
   "settings": {
     "title": "Ajustes",
@@ -310,12 +316,13 @@
     "systemDefault": "Predeterminado del sistema",
     "selectLanguage": "Seleccionar idioma",
     "subscription": "Suscripción",
-    "echoesPro": "Echoes Pro",
-    "free": "Gratis",
+    "echoesFullAccess": "Acceso Completo",
+    "echoesPro": "Acceso Completo",
+    "free": "Acceso Inicial",
     "activeUntil": "Activo hasta {{date}}",
     "activeSubscription": "Suscripción activa",
-    "unlockAccess": "Desbloquea acceso completo a la sabiduría cósmica",
-    "upgradeToPro": "Mejorar a Pro",
+    "unlockAccess": "Explora todas las pestañas y funciones",
+    "upgradeToPro": "Continuar con acceso completo",
     "manageSubscription": "Gestionar suscripción",
     "privacy": "Privacidad",
     "privacyNote": "Sin cuentas. Preferencias guardadas en el dispositivo.",
@@ -324,8 +331,8 @@
     "version": "Echoes v1.0"
   },
   "paywall": {
-    "unlock": "Desbloquear Echoes",
-    "subtitle": "Obtén acceso completo a la sabiduría cósmica, perspectivas planetarias y ecos personalizados.",
+    "unlock": "Continuar con Echoes",
+    "subtitle": "Acceso completo a todas las pestañas y funciones.",
     "features": {
       "unlimited": "Ecos diarios ilimitados",
       "planetary": "Análisis completo del campo planetario",
@@ -338,9 +345,9 @@
     "perMonth": "por mes",
     "bestValue": "Mejor Valor",
     "monthsFree": "~2 meses gratis",
-    "startTrial": "Iniciar prueba de {{days}} días",
+    "startTrial": "Iniciar acceso de {{days}} días",
     "subscribe": "Suscribirse",
-    "trialNote": "Prueba gratuita de {{days}} días, luego {{monthlyPrice}}/mes o {{yearlyPrice}}/año. Cancela cuando quieras.",
+    "trialNote": "Acceso inicial de {{days}} días, luego {{monthlyPrice}}/mes o {{yearlyPrice}}/año. Cancela cuando quieras.",
     "restorePurchases": "Restaurar Compras",
     "restoreNote": "¿Ya estás suscrito? Usa Restaurar Compras si estás en un nuevo dispositivo o reinstalaste la app.",
     "termsOfService": "Términos de Servicio",
