@@ -51,7 +51,7 @@ function TQFGauge({ score, size = 160, label, subtitle, forceColor }: { score: n
     if (s >= 70) return '#10b981';
     if (s >= 50) return '#3b82f6';
     if (s >= 30) return '#f59e0b';
-    return '#ef4444';
+    return '#c9787a';
   };
   
   const getScoreLabel = (s: number) => {
@@ -207,7 +207,7 @@ function TrendIndicator({ trend }: { trend: string | number }) {
       label = `+${numValue.toFixed(1)}`;
     } else if (numValue < 0) {
       Icon = TrendingDown;
-      color = '#ef4444';
+      color = '#c9787a';
       label = numValue.toFixed(1);
     } else {
       label = '0';
@@ -222,7 +222,7 @@ function TrendIndicator({ trend }: { trend: string | number }) {
       color = '#10b981';
     } else if (normalizedTrend.includes('down') || normalizedTrend.includes('falling') || normalizedTrend.includes('decreasing')) {
       Icon = TrendingDown;
-      color = '#ef4444';
+      color = '#c9787a';
     }
   }
   
@@ -580,7 +580,7 @@ export default function WisdomScreen() {
                     size={140} 
                     label={t('learn.rawScore')} 
                     subtitle={t('learn.mediaRealityDesc').replace('{{count}}', formatNumberByLocale(articlesAnalyzed))}
-                    forceColor="#ef4444"
+                    forceColor="#c9787a"
                   />
                 </View>
                 
@@ -590,7 +590,7 @@ export default function WisdomScreen() {
                     label={t('learn.destructive')} 
                     hint={t('learn.destructiveHint')}
                     value={destructivePercent} 
-                    color="#ef4444" 
+                    color="#c9787a" 
                   />
                   <PercentageBar 
                     label={t('learn.neutral')} 

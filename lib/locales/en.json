@@ -282,7 +282,7 @@
     "hopeLevelExplainedDesc": "Measures the presence of hopeful, solution-oriented narratives in global discourse. Ranges from Low (under 20) to Very High (80+). This reflects how much positive possibility is being communicated.",
     "trendExplained": "7-Day Trend",
     "trendExplainedDesc": "Shows how the Media Climate Index has changed over the past week. Positive trends indicate increasing integrative content (solutions, connection); negative trends suggest rising reactive content (conflict, fear, division).",
-    "highlyAligned": "Highly Integrative",
+    "highlyAligned": "Strong Integrative Signal",
     "moderatelyAligned": "Moderately Integrative",
     "transitional": "Transitional",
     "misaligned": "Reactive",
