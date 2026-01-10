@@ -232,14 +232,9 @@ function HeroTimingCard({ optimalTiming, isExpanded, onToggle, colors, theme, t 
               <Text style={[styles.heroSectionTitle, { color: colors.accent }]}>{t('field.bestFor')}</Text>
               {optimalTiming.activities.map((item: any, index: number) => (
                 <View key={index} style={styles.heroTimingRow}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={[styles.heroActivity, { color: colors.text }]}>
-                      {translateOptimalTiming(item.activity, t)}
-                    </Text>
-                    <Text style={[styles.heroReason, { color: colors.textSecondary }]}>
-                      {translateOptimalTiming(item.reason, t)}
-                    </Text>
-                  </View>
+                  <Text style={[styles.heroActivity, { color: colors.text }]}>
+                    {translateOptimalTiming(item.activity, t)}
+                  </Text>
                   <View style={[styles.heroTimeBadge, { backgroundColor: colors.surfaceHighlight }]}>
                     <Text style={[styles.heroTimeText, { color: colors.text }]}>
                       {translateOptimalTiming(item.optimalTime, t)}
