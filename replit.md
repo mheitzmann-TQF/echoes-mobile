@@ -73,6 +73,13 @@ Tapping any calendar card on the Today tab opens a detail modal showing:
 - Phase - Current lunar or seasonal phase
 - Element - For calendars that track elemental associations (e.g., Chinese)
 
+### Hebrew Calendar Implementation
+The Hebrew calendar uses the Hebcal API (`https://www.hebcal.com/converter`) for accurate date conversion:
+- `lib/hebrewCalendar.ts` exports `fetchHebrewDate()` for async API calls with caching
+- Successful responses are cached for 24 hours
+- Fallback shows neutral "—" when API is unavailable (no incorrect dates shown)
+- All 6 calendars have localized names in all 6 supported languages
+
 ### API Integration
 Communication with The Quiet Frame (TQF) Planetary Awareness API is facilitated through a **backend proxy** for security and caching. A single primary endpoint (`/api/echoes/daily-bundle`) delivers most daily data. The app uses a **cache-first data fetching strategy** with `expires_at` timestamps from API responses and provides fallback mock data for offline scenarios.
 
