@@ -762,16 +762,6 @@ export default function FieldScreen() {
           t={t}
         />
 
-        {/* Pulse Snapshot - Quick metrics at a glance */}
-        <PulseSnapshot
-          coherence={consciousnessData?.global_coherence || null}
-          circadianPhase={circadianPhase}
-          geoActivity={geoState.label}
-          geoKpIndex={geoKp}
-          colors={colors}
-          t={t}
-        />
-
         {/* Cosmos Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.cosmos')}</Text>
