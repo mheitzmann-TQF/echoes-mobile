@@ -223,6 +223,7 @@
     "timing_morning_to_midday": "Matin à midi",
     "timing_wait_for_quarter_moon": "Quartier de lune approchant",
     "timing_wait_20_days": "Prochain cycle dans ~20 jours",
+    "timing_next_new_moon": "Prochaine nouvelle lune dans ~{{days}} jours",
     "timing_natural_rhythms_support_inner_harmony": "Rythmes actuels favorisant le calme",
     "timing_solar_energy_supports_focused_creative_expression": "Phase solaire souvent liée à la concentration créative",
     "timing_quarter_moons_bring_clarity_to_decisions": "Les phases de quartier sont traditionnellement liées à la réflexion",
