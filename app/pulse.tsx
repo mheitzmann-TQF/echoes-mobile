@@ -8,7 +8,6 @@ import { ChevronDown, ChevronUp, Info, Moon, Sun, Globe, Zap, Dna, Clock } from 
 import { toTitleCase } from '../lib/labelize';
 import { getApiLang } from '../lib/lang';
 import { useTranslation } from 'react-i18next';
-import ConsciousnessSummaryCard from '../components/ConsciousnessSummaryCard';
 
 // Map API moon phase values to translation keys
 const getMoonPhaseKey = (phase: string): string => {
@@ -764,11 +763,6 @@ export default function FieldScreen() {
           t={t}
         />
 
-        {/* Consciousness Summary - Navigate to Wisdom */}
-        <View style={styles.consciousnessSection}>
-          <ConsciousnessSummaryCard />
-        </View>
-
         {/* Cosmos Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.cosmos')}</Text>
@@ -958,10 +952,6 @@ const styles = StyleSheet.create({
   content: {
     padding: 20,
     paddingBottom: 40,
-  },
-  consciousnessSection: {
-    marginTop: 16,
-    marginBottom: 8,
   },
   headerTitle: {
     fontSize: 34,
