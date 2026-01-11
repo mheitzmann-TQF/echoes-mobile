@@ -1,0 +1,78 @@
+Logs for your project will appear below. Press Ctrl+C to exit.
+› Opening on iOS...
+› Opening exp+echoes://expo-development-client/?url=http%3A%2F%2F192.168.1.218%3A8081 on iPhone 16e
+› Press ? │ show all commands
+iOS Bundled 754ms index.js (4069 modules)
+ LOG  🔑 API Config: {"baseUrl": "https://source.thequietframe.com", "mode": "backend-proxy"}
+ LOG  🔐 BOOT: {"API_URL": "https://source.thequietframe.com", "EXPO_PUBLIC_API_URL_present": true, "EXPO_PUBLIC_TQF_API_KEY_present": true, "TQF_API_KEY": "tqf-…4b07 (len=36)"}
+ LOG  🌍 Detected language: en → API code: en
+ WARN  [Layout children]: Too many screens defined. Route "global" is extraneous.
+ WARN  [Layout children]: Too many screens defined. Route "journey" is extraneous.
+ WARN  [Layout children]: Too many screens defined. Route "you" is extraneous.
+ LOG  📡 Fetching daily bundle from: /api/proxy/echoes/daily-bundle?lat=40.7128&lng=-74.006&lang=en&tz=UTC
+ LOG  📡 Fetching calendars from: /api/proxy/planetary/traditional-calendars?tz=UTC&lang=en&lat=40.7128&lng=-74.006
+ LOG  📡 Fetching planetary data from: /api/proxy/echoes/instant?lat=40.7128&lng=-74.006&tz=UTC
+ LOG  [Cookie] Loading cookie for language: en
+ LOG  [Cookie] Fetching from API for language: en
+λ Bundled 123ms app/api/proxy/consciousness+api.ts (1 module)
+λ Bundled 129ms app/api/proxy/echoes/daily-bundle+api.ts (1 module)
+λ Bundled 131ms app/api/proxy/planetary/traditional-calendars+api.ts (1 module)
+λ Bundled 221ms app/api/proxy/echoes/instant+api.ts (1 module)
+ LOG  ✅ Planetary data received: {"cache_status": "hit", "data": {"geomagnetic": {"activity": "unsettled", "kp_index": 3}, "lunar": {"illumination": 45, "phase": "waning_crescent"}, "seasonal": {"progress": 100, "season": "winter"}, "solar": {"current_phase": "morning", "sunrise": "2026-01-11T12:17:34.000Z", "sunset": "2026-01-11T21:50:28.000Z"}}, "expires_at": "2026-01-11T09:20:16.640Z", "response_time_ms": 0, "success": true}
+Web Bundled 992ms index.js (3647 modules)
+Web Bundled 997ms index.js (1 module)
+λ Bundled 1029ms node_modules/expo-router/node/render.js (3661 modules)
+λ Bundled 1079ms node_modules/expo-router/node/render.js (1 module)
+λ app/api/proxy/cookie+api.ts ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 91.2% (106/111)
+🔑 API Config: { mode: 'backend-proxy', baseUrl: 'https://source.thequietframe.com' }
+λ app/api/proxy/cookie+api.ts ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 91.2% (106/111)
+🔑 API Config: { mode: 'backend-proxy', baseUrl: 'https://source.thequietframe.com' }
+λ Bundled 1652ms app/api/proxy/cookie+api.ts (111 modules)
+ LOG  ✅ Daily bundle received: {"cache_status": "hit", "data": {"echo_cards": [[Object], [Object], [Object], [Object], [Object]], "location": {"coordinates": [Object], "local_time": "2026-01-11T09:05:18.335Z", "timezone": "UTC"}, "planetary_context": {"consciousness_index": [Object], "lunar": [Object], "solar": [Object]}}, "expires_at": "2026-01-11T09:35:18.335Z", "generated_at": "2026-01-11T09:05:18.335Z", "response_time_ms": 1705, "success": true}
+ LOG  ✅ Consciousness data received: {"articles_analyzed": 0, "cache_status": "hit", "collective_mood": "integration_phase", "destructive_percent": 0, "dominant_themes": ["transformation", "awareness", "connection"], "global_coherence": 0, "hope_level": 0, "is_stale": false, "last_updated": "2026-01-11T08:53:42.942Z", "methodology": "Real-time analysis of global news and cultural content for TQF alignment", "next_update": "2026-01-11T09:20:16.641Z", "response_time_ms": 0, "success": true, "synchronicity_level": "minimal", "transformational_percent": 0, "trend_7d": "-2.3"}
+ LOG  📡 Fetching daily bundle from: /api/proxy/echoes/daily-bundle?lat=40.7128&lng=-74.006&lang=en&tz=UTC
+ LOG  📡 Fetching planetary data from: /api/proxy/echoes/instant?lat=40.7128&lng=-74.006&tz=UTC
+ LOG  📡 Fetching biological rhythms from: /api/proxy/planetary/biological-rhythms?tz=UTC&lat=40.7128&lng=-74.006
+λ Bundled 55ms node_modules/expo-router/node/render.js (1 module)
+ LOG  [IAP] Retrieved existing installId: 825e6709-d4af-4a15-8709-851a4b2a0bd2
+Web ./index.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+ LOG  [ENTITLEMENT] Init dev mode, state: trial
+ LOG  [ENTITLEMENT] Dev mode active, state: trial
+🔑 API Config: { mode: 'backend-proxy', baseUrl: 'https://source.thequietframe.com' }
+"shadow*" style props are deprecated. Use "boxShadow".
+λ Bundled 25ms node_modules/expo-router/node/render.js (1 module)
+🔑 API Config: { mode: 'backend-proxy', baseUrl: 'https://source.thequietframe.com' }
+Web Bundled 425ms index.js (1 module)
+Web Bundled 185ms index.js (1 module)
+λ Bundled 23ms app/api/proxy/planetary/biological-rhythms+api.ts (1 module)
+ LOG  ✅ Consciousness data received: {"articles_analyzed": 0, "cache_status": "hit", "collective_mood": "integration_phase", "destructive_percent": 0, "dominant_themes": ["transformation", "awareness", "connection"], "global_coherence": 0, "hope_level": 0, "is_stale": false, "last_updated": "2026-01-11T08:53:42.942Z", "methodology": "Real-time analysis of global news and cultural content for TQF alignment", "next_update": "2026-01-11T09:20:24.162Z", "response_time_ms": 0, "success": true, "synchronicity_level": "minimal", "transformational_percent": 0, "trend_7d": "-2.3"}
+ LOG  ✅ Biological rhythms received: {"circadian": {"alertness": 70, "bodyTemp": 96.8, "cortisol": 85, "melatonin": 10, "phase": "Cortisol Rising", "recommendations": ["Natural awakening time - gentle movement and hydration", "Ideal for light exercise and protein-rich breakfast", "Set intentions for the day during this clarity window", "Expose yourself to natural light to anchor circadian rhythm"], "timeOfDay": "Early Morning"}, "geomagnetic": {"description": "Stable earth magnetic field supports normal biological rhythms", "intensity": 20, "phase": "Stable Field", "planetaryCorrelations": ["Earth's magnetic field changes affect human pineal gland and melatonin production", "Geomagnetic activity correlates with increased hospital admissions", "Heart rate variability changes during geomagnetic disturbances", "Migratory animals use geomagnetic fields for navigation - humans retain sensitivity"], "recommendations": ["Optimal time for meditation and inner work", "Clear thinking and stable mood typically supported", "Good time for important decisions and planning", "Normal sleep patterns and circadian rhythm stability"], "type": "Geomagnetic"}, "lunar": {"description": "Strong lunar pull may intensify emotions and physical sensations", "intensity": 70, "phase": "Dynamic Tension", "planetaryCorrelations": ["Lunar gravitational pull affects all body fluids (60% of human body)", "Moon phases correlate with sleep quality and dream intensity", "Traditional medicine systems worldwide recognize lunar health influences", "Emergency room visits and childbirth rates show lunar correlations"], "recommendations": ["Stay well-hydrated as body water content is influenced", "May experience heightened intuition and psychic sensitivity", "Physical energy peaks - excellent for challenging workouts", "Practice grounding techniques if feeling overstimulated"], "type": "Lunar"}, "seasonal": {"description": "Reduced daylight affects circadian rhythm, natural slowing down for deep rest and renewal", "intensity": 90, "phase": "Inner Renewal", "planetaryCorrelations": ["Solar angle affects vitamin D synthesis and mood regulation", "Daylight duration influences melatonin production cycles", "Natural temperature rhythms guide metabolic adjustments"], "recommendations": ["Support mood with light therapy if experiencing seasonal changes", "Allow for more sleep and indoor contemplative practices", "Focus on warming foods and immune-supporting nutrition", "Use this restorative time for deep healing and visioning"], "type": "Seasonal"}}
+ LOG  ✅ Planetary data received: {"cache_status": "hit", "data": {"geomagnetic": {"activity": "unsettled", "kp_index": 3}, "lunar": {"illumination": 45, "phase": "waning_crescent"}, "seasonal": {"progress": 100, "season": "winter"}, "solar": {"current_phase": "morning", "sunrise": "2026-01-11T12:17:34.000Z", "sunset": "2026-01-11T21:50:28.000Z"}}, "expires_at": "2026-01-11T09:20:24.568Z", "response_time_ms": 0, "success": true}
+ LOG  ✅ Daily bundle received: {"cache_status": "hit", "data": {"echo_cards": [[Object], [Object], [Object], [Object], [Object]], "location": {"coordinates": [Object], "local_time": "2026-01-11T09:05:25.917Z", "timezone": "UTC"}, "planetary_context": {"consciousness_index": [Object], "lunar": [Object], "solar": [Object]}}, "expires_at": "2026-01-11T09:35:25.917Z", "generated_at": "2026-01-11T09:05:25.917Z", "response_time_ms": 1713, "success": true}
+ LOG  [WisdomScreen] Loading data with lang: en
+"shadow*" style props are deprecated. Use "boxShadow".
+ LOG  📡 Fetching calendars from: /api/proxy/planetary/traditional-calendars?tz=UTC&lang=en&lat=40.7128&lng=-74.006
+λ Bundled 61ms node_modules/expo-router/node/render.js (1 module)
+λ Bundled 27ms node_modules/expo-router/node/render.js (1 module)
+🔑 API Config: { mode: 'backend-proxy', baseUrl: 'https://source.thequietframe.com' }
+ LOG  [IAP] Retrieved existing installId: 825e6709-d4af-4a15-8709-851a4b2a0bd2
+Web ./index.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+ LOG  [ENTITLEMENT] Init dev mode, state: trial
+ LOG  [ENTITLEMENT] Dev mode active, state: trial
+🔑 API Config: { mode: 'backend-proxy', baseUrl: 'https://source.thequietframe.com' }
+Web Bundled 458ms index.js (1 module)
+Web Bundled 353ms index.js (1 module)
+ ERROR  ❌ Regional breakdown error: [Error: HTTP 404: ] 
+
+Code: api.ts
+  526 |       
+  527 |       if (!response.ok) {
+> 528 |         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      |                        ^
+  529 |       }
+  530 |       
+  531 |       const data = await response.json();
+Call Stack
+  EchoesAPI#getRegionalBreakdown (lib/api.ts:528:24)
+ LOG  ✅ Consciousness data received: {"articles_analyzed": 0, "cache_status": "hit", "collective_mood": "integration_phase", "destructive_percent": 0, "dominant_themes": ["transformation", "awareness", "connection"], "global_coherence": 0, "hope_level": 0, "is_stale": false, "last_updated": "2026-01-11T08:53:42.942Z", "methodology": "Real-time analysis of global news and cultural content for TQF alignment", "next_update": "2026-01-11T09:20:36.473Z", "response_time_ms": 0, "success": true, "synchronicity_level": "minimal", "transformational_percent": 0, "trend_7d": "-2.3"}
+
