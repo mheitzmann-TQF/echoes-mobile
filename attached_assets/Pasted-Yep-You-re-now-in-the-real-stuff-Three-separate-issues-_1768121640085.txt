@@ -1,0 +1,119 @@
+Yep. You’re now in the real stuff. Three separate issues are mixed together in those logs, and each has a clean fix.
+
+1) ENTITLEMENT 500: DATABASE_URL environment variable is required
+
+This is the big one. Your app is calling /app/api/billing/status+api.ts locally (Metro), and that route imports lib/db.ts, which hard-requires DATABASE_URL. On your Mac, you don’t have it set, so the route throws and entitlement checks return 500.
+
+Fix options (pick the one aligned with your philosophy)
+
+Option A (recommended for now): Dev override must bypass backend entirely
+
+You already wanted this. Right now it logs:
+
+Dev override cleared, falling through to backend
+
+So the dev override exists but isn’t engaged. Make it impossible for the simulator to hit /api/billing/status unless you explicitly choose “backend”.
+
+What to tell Claude / do in code:
+	•	In useEntitlement.ts, if __DEV__ then default to a local state (trial or full) unless an explicit “use backend entitlement” toggle is ON.
+	•	When dev override is active, do not call the backend at all.
+
+This is the fastest way to continue UI testing without setting up DB locally.
+
+Option B: set DATABASE_URL locally
+
+Only if you actually want billing endpoints to work on your Mac dev server.
+
+In .env.local on Mac:
+
+DATABASE_URL=postgresql://...
+
+But: you probably don’t want to drag DB wiring into simulator testing right now.
+
+✅ I’d do Option A and keep the backend check for later.
+
+⸻
+
+2) “Optimal timing” endpoint 404
+
+You have:
+
+❌ Optimal timing error: HTTP 404
+from EchoesAPI#getOptimalTiming
+
+That means your app is calling something like:
+/api/proxy/planetary/optimal-timing (or similar) and the proxy/server doesn’t have that route.
+
+Fix
+	•	Either remove the call from the UI for now, or
+	•	implement the missing proxy route in server/routes.ts (or wherever proxies are defined).
+
+Given you’re trying to stabilize rendering + gating: turn it off until you’re ready.
+
+⸻
+
+3) StoreKit: “No active account” + SKUs not found
+
+Two separate but related simulator realities:
+
+A) ASDErrorDomain Code=509 "No active account"
+
+Simulator has no App Store account signed in.
+
+Fix:
+	•	iOS Simulator → Settings → App Store → Sign In
+(You can also sign in via the App Store app.)
+
+B) Fetched products: 0 and SKU not found
+
+Even if you sign in, you’ll still get SKU-not-found unless:
+	•	the IAP products exist in App Store Connect and
+	•	you’re using a sandbox/tester account and
+	•	the build is associated with the app record
+
+For now, you explicitly want a dev trigger to simulate “trial/full/paused” without StoreKit. So don’t chase this yet.
+
+✅ Correct behavior for simulator testing is:
+	•	dev state toggle drives access
+	•	StoreKit is only used when you’re ready to test real purchases
+
+⸻
+
+What to do next (in order, minimal effort)
+
+Step 1 — Make dev entitlement override actually work
+
+In Settings, add a dev-only control with states:
+	•	trial (3-day all access)
+	•	full (paid)
+	•	paused (expired)
+
+When state != “backend”:
+	•	skip /api/billing/status
+	•	skip /api/billing/verify
+	•	skip StoreKit purchase call (or show a “Not available in dev mode” message)
+
+This instantly removes your 500 spam and lets you test the whole access model.
+
+Step 2 — Disable “optimal timing” fetch until route exists
+
+Either feature flag it or catch 404 and don’t log it as ERROR (it’s noise).
+
+Step 3 — Ignore StoreKit until you’re ready
+
+Later, when you want to test real IAP:
+	•	sign into App Store on the simulator
+	•	confirm products exist + approved for testing
+	•	use sandbox tester
+
+⸻
+
+Message to Claude (copy/paste)
+
+“On iOS sim we’re blocked by billing + StoreKit. Fix by making DEV entitlement override bypass backend entirely: if DEV and devEntitlement != ‘backend’, do not call /api/billing/status (DATABASE_URL missing causes 500). Also don’t attempt requestPurchase when in dev override mode. Separately, getOptimalTiming call is hitting a missing route (404) — disable or guard it until proxy exists. StoreKit errors (No active account + SKU not found) are expected in sim; we’ll test real IAP later.”
+
+⸻
+
+If you want the tightest product flow: in dev mode, pressing “Continue” on the paywall should simply set entitlement to full (locally) and close the paywall. That lets you test everything end-to-end without Apple involved.
+
+Tell me which you prefer for dev: default trial or default paused.
