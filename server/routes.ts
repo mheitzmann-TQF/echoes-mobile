@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import { db } from "../lib/db";
 import { dailyCookies } from "../shared/schema";
 import { eq, and } from "drizzle-orm";
+import { seedMultipleYears } from "../lib/seedJewishHolidays";
 
 const openai = new OpenAI({
   apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
@@ -450,6 +451,44 @@ export async function registerRoutes(
       const validLang = fallbacks[lang] ? lang : "en";
       const fallback = fallbacks[validLang][Math.floor(Math.random() * fallbacks[validLang].length)];
       res.json({ success: true, cookie: fallback });
+    }
+  });
+
+  app.post("/api/seed/jewish-holidays", async (req, res) => {
+    const adminKey = req.headers['x-admin-key'] as string | undefined;
+    const expectedKey = process.env.ADMIN_SEED_KEY;
+    
+    if (!expectedKey) {
+      return res.status(503).json({ error: "Seed endpoint not configured" });
+    }
+    
+    if (!adminKey || adminKey.length !== expectedKey.length) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    
+    let match = true;
+    for (let i = 0; i < adminKey.length; i++) {
+      if (adminKey.charCodeAt(i) !== expectedKey.charCodeAt(i)) {
+        match = false;
+      }
+    }
+    
+    if (!match) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    
+    try {
+      const currentYear = new Date().getFullYear();
+      const years = [currentYear, currentYear + 1];
+      const result = await seedMultipleYears(years);
+      res.json({ 
+        success: true, 
+        message: `Seeded Jewish holidays for ${years.join(', ')}`,
+        ...result 
+      });
+    } catch (error) {
+      console.error("Failed to seed Jewish holidays:", error);
+      res.status(500).json({ error: "Failed to seed Jewish holidays" });
     }
   });
 

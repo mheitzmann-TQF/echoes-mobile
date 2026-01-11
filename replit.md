@@ -74,10 +74,11 @@ Tapping any calendar card on the Today tab opens a detail modal showing:
 - Element - For calendars that track elemental associations (e.g., Chinese)
 
 ### Hebrew Calendar Implementation
-The Hebrew calendar uses the Hebcal API (`https://www.hebcal.com/converter`) for accurate date conversion:
-- `lib/hebrewCalendar.ts` exports `fetchHebrewDate()` for async API calls with caching
-- Successful responses are cached for 24 hours
-- Fallback shows neutral "—" when API is unavailable (no incorrect dates shown)
+Hebrew calendar dates come from the TQF API (`/api/proxy/planetary/traditional-calendars`):
+- No separate Hebcal API call needed - TQF aggregates this data
+- Jewish holidays are pre-seeded in the `cultural_observances` database table
+- Seed script: `lib/seedJewishHolidays.ts` fetches holidays from Hebcal and stores them
+- API endpoint: `POST /api/seed/jewish-holidays` (requires `x-admin-key` header matching `ADMIN_SEED_KEY` env var)
 - All 6 calendars have localized names in all 6 supported languages
 
 ### API Integration

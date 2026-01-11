@@ -28,7 +28,6 @@ import { useTheme } from '../lib/ThemeContext';
 import { getApiLang } from '../lib/lang';
 import { useTranslation } from 'react-i18next';
 import { getCurrentLanguage } from '../lib/i18n';
-import { getHebrewDate, fetchHebrewDate } from '../lib/hebrewCalendar';
 
 const dateLocales: Record<string, Locale> = {
   en: enUS,
@@ -543,7 +542,7 @@ export default function HomeScreen() {
     { id: 'mayan', name: t('learn.mayanTzolkin'), date: '7 Manik', type: t('calendars.sacred') },
     { id: 'chinese', name: t('learn.chinese'), date: 'Month 10 · Dragon', type: t('calendars.lunisolar') },
     { id: 'hindu', name: t('learn.hinduPanchang'), date: 'Pausha - Dwitiya', type: t('calendars.lunisolar') },
-    { id: 'hebrew', name: t('learn.hebrew'), date: getHebrewDate(), type: t('calendars.lunisolar') },
+    { id: 'hebrew', name: t('learn.hebrew'), date: '—', type: t('calendars.lunisolar') },
     { id: 'islamic', name: t('learn.islamic'), date: '16 Jumada I', type: t('calendars.lunar') },
   ];
 
@@ -555,7 +554,7 @@ export default function HomeScreen() {
 
       // Fetch Bundle + Calendars + Photo + Consciousness + Instant + Observances
       const lang = getApiLang();
-      const [bundleData, calendarsData, photoData, consciousnessData, instantData, observancesData, hebrewDateStr] = await Promise.all([
+      const [bundleData, calendarsData, photoData, consciousnessData, instantData, observancesData] = await Promise.all([
         Promise.race([
           api.getDailyBundle(coordinates.lat, coordinates.lng, lang, timezone),
           timeoutPromise,
@@ -565,7 +564,6 @@ export default function HomeScreen() {
         api.getConsciousnessAnalysis().catch(() => null),
         api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone).catch(() => null),
         fetch('/api/proxy/observances').then(res => res.json()).catch(() => null),
-        fetchHebrewDate().catch(() => getHebrewDate()),
       ]);
       
       if (photoData) {
@@ -661,7 +659,7 @@ export default function HomeScreen() {
             formattedCalendars.push({
               id: 'hebrew',
               name: t('learn.hebrew'),
-              date: hebrewDateStr,
+              date: cal.date || '—',
               type: t('calendars.lunisolar')
             });
           }
@@ -671,7 +669,7 @@ export default function HomeScreen() {
           formattedCalendars.push({
             id: 'hebrew',
             name: t('learn.hebrew'),
-            date: hebrewDateStr,
+            date: '—',
             type: t('calendars.lunisolar')
           });
         }
