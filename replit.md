@@ -34,10 +34,14 @@ Subtitle: "Full access across Pulse, Wisdom, and Upcoming."
 - Effective date: February 26, 2026
 
 ### Dev Access Override (Testing)
-For iOS Simulator testing without real IAP:
+For iOS Simulator testing without real IAP or DATABASE_URL:
+- In dev mode (`__DEV__` + simulator), app defaults to `trial` state without calling backend
 - Long-press version label in Settings (5 presses) to reveal dev toggle
 - Cycles through: none → trial → paid → expired → none
 - Visual "DEV: {state}" indicator when active
+- Purchase buttons in Paywall simulate upgrade by setting local state to `paid`
+- Backend calls (`/api/billing/status`, `/api/billing/verify`) are completely bypassed
+- StoreKit is not initialized in dev mode
 - Files: `lib/iap/devAccessOverride.ts`, `lib/iap/useEntitlement.ts`
 
 ## System Architecture
