@@ -144,8 +144,8 @@ function translateOptimalTiming(text: string, t: (key: string, options?: any) =>
   // Handle "Wait X days" pattern - convert to observational language
   const waitMatch = text.match(/wait\s+(\d+)\s+days?/i);
   if (waitMatch) {
-    const days = waitMatch[1];
-    return t('field.timing_next_new_moon', { days, defaultValue: `Next new moon in ~${days} days` });
+    const days = parseInt(waitMatch[1], 10);
+    return t('field.timing_next_new_moon', { count: days, defaultValue: `Next new moon in ~${days} days` });
   }
   
   const key = text.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
