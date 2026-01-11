@@ -79,6 +79,7 @@ Hebrew calendar dates come from the TQF API (`/api/proxy/planetary/traditional-c
 - Jewish holidays are pre-seeded in the `cultural_observances` database table
 - Seed script: `lib/seedJewishHolidays.ts` fetches holidays from Hebcal and stores them
 - API endpoint: `POST /api/seed/jewish-holidays` (requires `x-admin-key` header matching `ADMIN_SEED_KEY` env var)
+- Calendar detection handles all language variants: hebrew (EN), hébr (FR), hebre (ES/PT), ebraico (IT), hebräisch (DE)
 - All 6 calendars have localized names in all 6 supported languages
 
 ### API Integration
