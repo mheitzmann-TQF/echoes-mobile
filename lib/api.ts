@@ -425,12 +425,19 @@ class EchoesAPI {
       if (lat && lng) url += `&lat=${lat}&lng=${lng}`;
       
       const response = await fetch(url, { headers: this.getHeaders() });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      if (!response.ok) {
+        // 404 is expected if route not available, don't log as error
+        if (response.status !== 404) {
+          console.warn('Optimal timing unavailable:', response.status);
+        }
+        return null;
+      }
       
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('❌ Optimal timing error:', error);
+      // Network errors are common during development, log quietly
+      console.log('Optimal timing fetch skipped');
       return null;
     }
   }

@@ -17,6 +17,7 @@ import { SUBSCRIPTION_IDS } from './products';
 import Constants from 'expo-constants';
 import {
   getDevAccessOverride,
+  setDevAccessOverride,
   devStateToEntitlement,
   isDevOverrideAvailable,
   type DevAccessState,
@@ -37,6 +38,7 @@ export interface EntitlementActions {
   purchaseYearly: (offerToken?: string) => Promise<boolean>;
   restorePurchasesAction: () => Promise<boolean>;
   refresh: () => Promise<void>;
+  devSetAccess: (state: DevAccessState) => Promise<void>;
 }
 
 function getApiBase(): string {
@@ -132,18 +134,17 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     if (isDevMode) {
       const override = await getDevAccessOverride();
       setDevOverride(override);
-      if (override) {
-        const mapped = devStateToEntitlement(override);
-        if (mapped) {
-          setIsFullAccess(mapped.isFullAccess);
-          setExpiresAt(mapped.expiresAt);
-          setError(null);
-          setIsLoading(false);
-          console.log('[ENTITLEMENT] Dev override active:', override);
-          return;
-        }
-      } else {
-        console.log('[ENTITLEMENT] Dev override cleared, falling through to backend');
+      
+      // In dev mode, use override or default to trial - never call backend
+      const effectiveState = override ?? 'trial';
+      const mapped = devStateToEntitlement(effectiveState);
+      if (mapped) {
+        setIsFullAccess(mapped.isFullAccess);
+        setExpiresAt(mapped.expiresAt);
+        setError(null);
+        setIsLoading(false);
+        console.log('[ENTITLEMENT] Dev mode active, state:', effectiveState);
+        return;
       }
     }
     
@@ -178,17 +179,17 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         setInstallId(id);
         
         if (isDevMode) {
+          // In dev mode, use override or default to trial - never call backend or init StoreKit
           const override = await getDevAccessOverride();
           setDevOverride(override);
-          if (override) {
-            const mapped = devStateToEntitlement(override);
-            if (mapped) {
-              setIsFullAccess(mapped.isFullAccess);
-              setExpiresAt(mapped.expiresAt);
-              setIsLoading(false);
-              console.log('[ENTITLEMENT] Init with dev override:', override);
-              return;
-            }
+          const effectiveState = override ?? 'trial';
+          const mapped = devStateToEntitlement(effectiveState);
+          if (mapped) {
+            setIsFullAccess(mapped.isFullAccess);
+            setExpiresAt(mapped.expiresAt);
+            setIsLoading(false);
+            console.log('[ENTITLEMENT] Init dev mode, state:', effectiveState);
+            return;
           }
         }
         
@@ -246,7 +247,28 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
   }, [installId, refresh]);
 
+  const devSetAccess = useCallback(async (state: DevAccessState): Promise<void> => {
+    if (!isDevMode) return;
+    
+    await setDevAccessOverride(state);
+    setDevOverride(state);
+    const effectiveState = state ?? 'trial';
+    const mapped = devStateToEntitlement(effectiveState);
+    if (mapped) {
+      setIsFullAccess(mapped.isFullAccess);
+      setExpiresAt(mapped.expiresAt);
+      setError(null);
+    }
+    console.log('[ENTITLEMENT] Dev access set to:', state);
+  }, [isDevMode]);
+
   const purchaseMonthly = useCallback(async (offerToken?: string): Promise<boolean> => {
+    // In dev mode, simulate purchase by setting override to 'paid'
+    if (isDevMode) {
+      await devSetAccess('paid');
+      return true;
+    }
+    
     if (!installId) return false;
     
     setError(null);
@@ -265,9 +287,15 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
     
     return false;
-  }, [installId]);
+  }, [installId, isDevMode, devSetAccess]);
 
   const purchaseYearly = useCallback(async (offerToken?: string): Promise<boolean> => {
+    // In dev mode, simulate purchase by setting override to 'paid'
+    if (isDevMode) {
+      await devSetAccess('paid');
+      return true;
+    }
+    
     if (!installId) return false;
     
     setError(null);
@@ -286,9 +314,15 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
     
     return false;
-  }, [installId]);
+  }, [installId, isDevMode, devSetAccess]);
 
   const restorePurchasesAction = useCallback(async (): Promise<boolean> => {
+    // In dev mode, simulate restore by setting override to 'paid'
+    if (isDevMode) {
+      await devSetAccess('paid');
+      return true;
+    }
+    
     if (!installId) return false;
     
     setError(null);
@@ -320,7 +354,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     } finally {
       setIsLoading(false);
     }
-  }, [installId]);
+  }, [installId, isDevMode, devSetAccess]);
 
   return {
     isFullAccess,
@@ -334,5 +368,6 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     purchaseYearly,
     restorePurchasesAction,
     refresh,
+    devSetAccess,
   };
 }
