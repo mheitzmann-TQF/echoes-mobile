@@ -655,7 +655,7 @@ export default function HomeScreen() {
               date: cal.date,
               type: t('calendars.lunar')
             });
-          } else if (sys.includes('hebrew') || sys.includes('hébr')) {
+          } else if (sys.includes('hebrew') || sys.includes('hébr') || sys.includes('hebre') || sys.includes('ebraico') || sys.includes('hebräisch')) {
             formattedCalendars.push({
               id: 'hebrew',
               name: t('learn.hebrew'),
