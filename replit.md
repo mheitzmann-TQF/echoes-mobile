@@ -80,9 +80,7 @@ Tapping any calendar card on the Today tab opens a detail modal showing:
 ### Hebrew Calendar Implementation
 Hebrew calendar dates come from the TQF API (`/api/proxy/planetary/traditional-calendars`):
 - No separate Hebcal API call needed - TQF aggregates this data
-- Jewish holidays are pre-seeded in the `cultural_observances` database table
-- Seed script: `lib/seedJewishHolidays.ts` fetches holidays from Hebcal and stores them
-- API endpoint: `POST /api/seed/jewish-holidays` (requires `x-admin-key` header matching `ADMIN_SEED_KEY` env var)
+- Jewish holidays are fetched from source.thequietframe.com (no local database)
 - Calendar detection handles all language variants: hebrew (EN), hébr (FR), hebre (ES/PT), ebraico (IT), hebräisch (DE)
 - All 6 calendars have localized names in all 6 supported languages
 
@@ -135,15 +133,14 @@ The app uses a "full access" subscription model (not "Pro" or "Premium"):
 ### Architecture
 - Client-side: `lib/iap/` contains products.ts, installId.ts, iap.ts, useEntitlement.ts, devAccessOverride.ts
 - Backend: All billing endpoints live on `source.thequietframe.com` (not in this mobile repo)
-- Database: `entitlement_records` table on shared Neon database tracks subscription status per device
 
 **Critical Architecture Principle:**
-The mobile app NEVER directly accesses the database. All flows go through source.thequietframe.com:
+The mobile app NEVER directly accesses databases. All flows go through source.thequietframe.com:
 ```
-Echoes (mobile) → HTTPS to source.thequietframe.com → source queries Neon DB → JSON back to app
+Echoes (mobile) → HTTPS to source.thequietframe.com → source queries DB → JSON back to app
 ```
 This ensures:
-- Secrets (DATABASE_URL, Apple/Google IAP keys) stay out of the mobile app
+- Database secrets stay out of the mobile app
 - Single database authority (source.thequietframe.com)
 - Production and simulator behavior are identical
 
@@ -222,10 +219,6 @@ const { t } = useTranslation();
 - `paywall.startAccess` - "Start {{days}}-day access"
 - `paywall.accessNote` - Trial/subscription note
 - `paywall.features.*` - Feature list items
-
-### Database & Backend
-- **PostgreSQL with Drizzle ORM:** Used for persistent storage of cultural observances data (e.g., `cultural_observances` table) and entitlement records. Includes pre-calculated moveable holidays for accurate global event tracking, sourced via the `date-holidays` library for country-specific holidays.
-- **Neon serverless:** Hosts the PostgreSQL database.
 
 ## App Store Submission Checklist
 

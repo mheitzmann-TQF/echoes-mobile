@@ -1,5 +1,34 @@
-import { type User, type InsertUser, type UserSettings, type InsertUserSettings, type Observance, type InsertObservance } from "@shared/schema";
 import { randomUUID } from "crypto";
+
+export interface User {
+  id: string;
+  username: string;
+  password: string;
+}
+
+export interface InsertUser {
+  username: string;
+  password: string;
+}
+
+export interface UserSettings {
+  id: string;
+  userId: string;
+  location?: string | null;
+  latitude?: string | null;
+  longitude?: string | null;
+  language?: string | null;
+  theme?: string | null;
+}
+
+export interface InsertUserSettings {
+  userId: string;
+  location?: string | null;
+  latitude?: string | null;
+  longitude?: string | null;
+  language?: string | null;
+  theme?: string | null;
+}
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -7,25 +36,15 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   getUserSettings(userId: string): Promise<UserSettings | undefined>;
   updateUserSettings(userId: string, settings: Partial<InsertUserSettings>): Promise<UserSettings>;
-  // Observance methods
-  getObservancesByDate(date: string): Promise<Observance[]>;
-  getObservancesByDateRange(startDate: string, endDate: string): Promise<Observance[]>;
-  createObservance(observance: InsertObservance): Promise<Observance>;
-  createObservances(observances: InsertObservance[]): Promise<Observance[]>;
-  clearObservances(): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private settings: Map<string, UserSettings>;
-  private observances: Map<number, Observance>;
-  private nextObservanceId: number;
 
   constructor() {
     this.users = new Map();
     this.settings = new Map();
-    this.observances = new Map();
-    this.nextObservanceId = 1;
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -64,40 +83,6 @@ export class MemStorage implements IStorage {
     };
     this.settings.set(id, updated);
     return updated;
-  }
-
-  async getObservancesByDate(date: string): Promise<Observance[]> {
-    return Array.from(this.observances.values()).filter(o => o.date === date);
-  }
-
-  async getObservancesByDateRange(startDate: string, endDate: string): Promise<Observance[]> {
-    return Array.from(this.observances.values()).filter(o => 
-      o.date >= startDate && o.date <= endDate
-    ).sort((a, b) => a.date.localeCompare(b.date));
-  }
-
-  async createObservance(observance: InsertObservance): Promise<Observance> {
-    const id = this.nextObservanceId++;
-    const newObservance: Observance = { 
-      id, 
-      ...observance,
-      category: observance.category ?? 'cultural'
-    };
-    this.observances.set(id, newObservance);
-    return newObservance;
-  }
-
-  async createObservances(observances: InsertObservance[]): Promise<Observance[]> {
-    const created: Observance[] = [];
-    for (const obs of observances) {
-      created.push(await this.createObservance(obs));
-    }
-    return created;
-  }
-
-  async clearObservances(): Promise<void> {
-    this.observances.clear();
-    this.nextObservanceId = 1;
   }
 }
 
