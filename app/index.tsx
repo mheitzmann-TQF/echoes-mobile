@@ -792,8 +792,10 @@ export default function HomeScreen() {
                 <Sparkles size={18} color={colors.accent} />
                 <Text style={[styles.cookieSectionTitle, { color: colors.text }]}>{t('learn.theCookie')}</Text>
               </View>
+              <Text style={[styles.cookieSubtitle, { color: colors.textSecondary }]}>{t('learn.cookieSubtitle')}</Text>
               <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                 <Text style={[styles.cookieText, { color: colors.text }]}>"{cookie}"</Text>
+                <Text style={[styles.cookieDisclaimer, { color: colors.textSecondary }]}>{t('learn.cookieFictionalDisclaimer')}</Text>
               </View>
             </View>
           )}
@@ -980,5 +982,16 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
     opacity: 0.9,
+  },
+  cookieSubtitle: {
+    fontSize: 13,
+    marginBottom: 12,
+    marginTop: -4,
+  },
+  cookieDisclaimer: {
+    fontSize: 11,
+    marginTop: 16,
+    textAlign: 'center',
+    opacity: 0.7,
   },
 });
