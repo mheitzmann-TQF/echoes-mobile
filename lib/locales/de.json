@@ -193,7 +193,15 @@
     "timing_waning_gibbous_moon_with_quiet_geomagnetic_field": "Abnehmender Dreiviertelmond mit ruhigem geomagnetischem Feld",
     "timing_releasing_energy_supports_clearing_and_gratitude": "Abnehmende Phase traditionell mit Loslassen verbunden",
     "paused": "Pausiert",
-    "pausedMessage": "Puls ist pausiert. Fahren Sie mit vollem Zugang fort, um Rhythmen zu erkunden."
+    "pausedMessage": "Puls ist pausiert. Fahren Sie mit vollem Zugang fort, um Rhythmen zu erkunden.",
+    "inputSignals": "Eingangssignale",
+    "dataFromInputs": "Daten generiert aus Echtzeit-Eingaben von:",
+    "signalMoon": "Mond: Phase & Beleuchtung",
+    "signalSun": "Sonne: Phase & Untergang",
+    "signalCoherence": "Kohärenz: Global & Trend",
+    "signalGeo": "Geomagnetisch: Aktivität & Kp",
+    "signalSeasonal": "Saisonal",
+    "bodyIndicator": "Allgemeine Indikatoren basierend auf zirkadianen Mustern"
   },
   "learn": {
     "title": "Weisheit",

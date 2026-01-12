@@ -193,7 +193,15 @@
     "timing_waning_gibbous_moon_with_quiet_geomagnetic_field": "Luna gibosa menguante con campo geomagnético tranquilo",
     "timing_releasing_energy_supports_clearing_and_gratitude": "Fase menguante tradicionalmente asociada con soltar",
     "paused": "Pausado",
-    "pausedMessage": "Pulso está pausado. Continúa con acceso completo para explorar ritmos."
+    "pausedMessage": "Pulso está pausado. Continúa con acceso completo para explorar ritmos.",
+    "inputSignals": "Señales de Entrada",
+    "dataFromInputs": "Datos generados usando entradas en tiempo real de:",
+    "signalMoon": "Luna: Fase e Iluminación",
+    "signalSun": "Sol: Fase y Puesta",
+    "signalCoherence": "Coherencia: Global y Tendencia",
+    "signalGeo": "Geomagnético: Actividad y Kp",
+    "signalSeasonal": "Estacional",
+    "bodyIndicator": "Indicadores generales basados en patrones circadianos"
   },
   "learn": {
     "title": "Sabiduría",

@@ -491,13 +491,19 @@ export default function FieldScreen() {
       'peak': 'peak',
       'secondary peak': 'secondaryPeak',
       'wind-down': 'windDown',
+      'winding down': 'windDown',
+      'wind down': 'windDown',
       'recovery': 'recovery',
       'deep rest': 'deepRest',
+      'rest': 'deepRest',
       'midday': 'midday',
       'morning': 'morning',
       'afternoon': 'afternoon',
       'evening': 'evening',
-      'night': 'night'
+      'night': 'night',
+      'balanced': 'stable',
+      'active': 'active',
+      'quiet': 'quiet'
     };
     const lower = phase.toLowerCase();
     for (const [key, value] of Object.entries(phaseMap)) {

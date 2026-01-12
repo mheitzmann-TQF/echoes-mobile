@@ -180,6 +180,7 @@
     "signalCoherence": "Cohérence : Globale & Tendance",
     "signalGeo": "Géomagnétique : Activité & Kp",
     "signalSeasonal": "Saisonnier",
+    "bodyIndicator": "Indicateurs généraux basés sur les rythmes circadiens",
     "obsSecondaryPeak1": "Pic d'énergie secondaire en cours",
     "obsSecondaryPeak2": "Fenêtre de vigilance de l'après-midi",
     "obsSecondaryPeak3": "Bon pour les tâches créatives ou physiques",
