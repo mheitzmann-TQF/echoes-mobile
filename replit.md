@@ -78,14 +78,14 @@ Tapping any calendar card on the Today tab opens a detail modal showing:
 - Element - For calendars that track elemental associations (e.g., Chinese)
 
 ### Hebrew Calendar Implementation
-Hebrew calendar dates come from the TQF API (`/api/proxy/planetary/traditional-calendars`):
+Hebrew calendar dates come from the TQF API (`source.thequietframe.com/api/planetary/traditional-calendars`):
 - No separate Hebcal API call needed - TQF aggregates this data
 - Jewish holidays are fetched from source.thequietframe.com (no local database)
 - Calendar detection handles all language variants: hebrew (EN), hébr (FR), hebre (ES/PT), ebraico (IT), hebräisch (DE)
 - All 6 calendars have localized names in all 6 supported languages
 
 ### API Integration
-The app uses a **direct-first fetching strategy** to `source.thequietframe.com` with local proxy fallback:
+The app fetches all content **directly from `source.thequietframe.com`** (no proxy layer):
 
 **Content Endpoints (public, no auth required):**
 - `/api/echoes/daily-bundle` - Daily echo cards and planetary context
@@ -94,17 +94,12 @@ The app uses a **direct-first fetching strategy** to `source.thequietframe.com` 
 - `/api/planetary/events` - Upcoming astronomical events
 - `/api/consciousness/*` - Media climate data
 - `/api/important-dates/upcoming` - Cultural observances
+- `/api/cookie` - Daily wisdom cookie
 
 **Architecture:**
-- `lib/api/contentClient.ts` - Direct-first fetch with proxy fallback
-- Feature flag: `useSourceDirect` in app.json extra (default: true)
-- Falls back to local `/api/proxy/*` routes if direct call fails
+- `lib/api/contentClient.ts` - Direct fetch to source.thequietframe.com
+- All endpoints are public (no API key required)
 - Cache-first strategy with `expires_at` timestamps
-
-**Cleanup TODO (once source is confirmed public):**
-- Remove `/app/api/proxy/*` routes
-- Remove `TQF_API_KEY` from env
-- Remove `lib/env.ts`
 
 ### Theme System
 A **dual theme architecture** supports comprehensive dark and light modes, with dynamic detection of device preferences and manual override options.
