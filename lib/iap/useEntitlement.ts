@@ -13,6 +13,7 @@ import {
   type Purchase,
 } from './iap';
 import { getInstallId } from './installId';
+import { ensureSession, refreshSession } from './sessionManager';
 import { SUBSCRIPTION_IDS } from './products';
 import Constants from 'expo-constants';
 import {
@@ -53,14 +54,35 @@ function getBillingApiBase(): string {
   return 'https://source.thequietframe.com';
 }
 
-async function checkEntitlementStatus(installId: string): Promise<{
+async function checkEntitlementStatus(installId: string, isRetry = false): Promise<{
   entitlement: 'full' | 'free';
   expiresAt: string | null;
 }> {
   try {
-    console.log('[ENTITLEMENT] Checking status for installId:', installId);
+    console.log('[ENTITLEMENT] Checking status for installId:', installId, isRetry ? '(retry)' : '');
+    
+    const sessionToken = await ensureSession();
+    if (!sessionToken) {
+      console.warn('[ENTITLEMENT] No session token available, defaulting to free');
+      return { entitlement: 'free', expiresAt: null };
+    }
+    
     const apiBase = getBillingApiBase();
-    const response = await fetch(`${apiBase}/api/billing/status?installId=${installId}`);
+    const response = await fetch(`${apiBase}/api/billing/status?installId=${installId}`, {
+      headers: {
+        'Authorization': `Bearer ${sessionToken}`,
+      },
+    });
+    
+    if (response.status === 401) {
+      if (!isRetry) {
+        console.warn('[ENTITLEMENT] Session expired, refreshing and retrying...');
+        await refreshSession();
+        return checkEntitlementStatus(installId, true);
+      }
+      console.error('[ENTITLEMENT] Session still invalid after refresh');
+      return { entitlement: 'free', expiresAt: null };
+    }
     
     if (!response.ok) {
       console.error('[ENTITLEMENT] Status check failed:', response.status);
@@ -81,24 +103,44 @@ async function checkEntitlementStatus(installId: string): Promise<{
 
 async function verifyPurchaseWithBackend(
   installId: string,
-  purchase: Purchase
+  purchase: Purchase,
+  isRetry = false
 ): Promise<{
   entitlement: 'full' | 'free';
   expiresAt: string | null;
 }> {
   try {
     const payload = getPurchasePayload(purchase);
-    console.log('[ENTITLEMENT] Verifying purchase with backend:', payload);
+    console.log('[ENTITLEMENT] Verifying purchase with backend:', payload, isRetry ? '(retry)' : '');
+    
+    const sessionToken = await ensureSession();
+    if (!sessionToken) {
+      console.error('[ENTITLEMENT] No session token available for verification');
+      return { entitlement: 'free', expiresAt: null };
+    }
     
     const apiBase = getBillingApiBase();
     const response = await fetch(`${apiBase}/api/billing/verify`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionToken}`,
+      },
       body: JSON.stringify({
         installId,
         ...payload,
       }),
     });
+    
+    if (response.status === 401) {
+      if (!isRetry) {
+        console.warn('[ENTITLEMENT] Session expired during verification, refreshing and retrying...');
+        await refreshSession();
+        return verifyPurchaseWithBackend(installId, purchase, true);
+      }
+      console.error('[ENTITLEMENT] Session still invalid after refresh during verification');
+      return { entitlement: 'free', expiresAt: null };
+    }
     
     if (!response.ok) {
       console.error('[ENTITLEMENT] Verification failed:', response.status);

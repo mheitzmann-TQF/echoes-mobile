@@ -126,9 +126,18 @@ This ensures:
 - Single database authority (source.thequietframe.com)
 - Production and simulator behavior are identical
 
-**Note:** The billing endpoints on source.thequietframe.com should NOT require API key authentication since they only handle:
-- `installId` (device identifier, not sensitive)
-- Entitlement status responses (not sensitive data)
+**Session Token Authentication:**
+Protected endpoints (billing/status, billing/verify) require a session token:
+1. App calls `POST /api/session/start` with `installId`, `platform`, `appVersion`
+2. Source returns `sessionToken` (24h validity) stored in SecureStore
+3. App sends `Authorization: Bearer <token>` on protected requests
+4. Session auto-refreshes when near expiry
+
+Public endpoints (daily-bundle, calendars, observances) remain unauthenticated.
+
+Key files:
+- `lib/iap/sessionManager.ts` - Token lifecycle (ensure, store, refresh)
+- `lib/iap/useEntitlement.ts` - Calls `ensureSession()` before protected API calls
 
 ### Required Secrets (Replit Secrets)
 
@@ -145,12 +154,12 @@ This ensures:
 
 ### Key IAP Files
 - `lib/iap/products.ts` - Product IDs, pricing, legal URLs
-- `lib/iap/appleVerify.ts` - Apple App Store Server API verification with JWT auth
-- `lib/iap/googleVerify.ts` - Google Play Developer API verification with OAuth2
+- `lib/iap/sessionManager.ts` - Session token lifecycle with SecureStore
 - `lib/iap/useEntitlement.ts` - React hook for access state with dev override support
 - `lib/iap/devAccessOverride.ts` - Dev-only subscription state override for testing
-- `app/api/billing/verify+api.ts` - Unified verification endpoint
 - `components/Paywall.tsx` - Subscription paywall UI
+
+Note: Billing verification endpoints (`appleVerify.ts`, `googleVerify.ts`) live on source.thequietframe.com, not in this repo.
 
 ## External Dependencies
 
