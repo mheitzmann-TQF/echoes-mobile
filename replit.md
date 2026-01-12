@@ -113,8 +113,22 @@ The app uses a "full access" subscription model (not "Pro" or "Premium"):
 
 ### Architecture
 - Client-side: `lib/iap/` contains products.ts, installId.ts, iap.ts, useEntitlement.ts, devAccessOverride.ts
-- Backend: `app/api/billing/` contains status, verify, and s2s notification endpoints
-- Database: `entitlement_records` table tracks subscription status per device
+- Backend: All billing endpoints live on `source.thequietframe.com` (not in this mobile repo)
+- Database: `entitlement_records` table on shared Neon database tracks subscription status per device
+
+**Critical Architecture Principle:**
+The mobile app NEVER directly accesses the database. All flows go through source.thequietframe.com:
+```
+Echoes (mobile) → HTTPS to source.thequietframe.com → source queries Neon DB → JSON back to app
+```
+This ensures:
+- Secrets (DATABASE_URL, Apple/Google IAP keys) stay out of the mobile app
+- Single database authority (source.thequietframe.com)
+- Production and simulator behavior are identical
+
+**Note:** The billing endpoints on source.thequietframe.com should NOT require API key authentication since they only handle:
+- `installId` (device identifier, not sensitive)
+- Entitlement status responses (not sensitive data)
 
 ### Required Secrets (Replit Secrets)
 

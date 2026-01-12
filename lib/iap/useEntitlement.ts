@@ -47,16 +47,10 @@ export interface EntitlementActions {
   devSetAccess: (state: DevAccessState) => Promise<void>;
 }
 
-function getApiBase(): string {
-  const expoConfig = Constants.expoConfig || Constants.manifest;
-  const extra = (expoConfig as any)?.extra as { apiUrl?: string } | undefined;
-  if (extra?.apiUrl) {
-    return extra.apiUrl;
-  }
-  if (typeof window !== 'undefined' && window.location?.origin) {
-    return window.location.origin;
-  }
-  return '';
+function getBillingApiBase(): string {
+  // All billing API calls go through source.thequietframe.com
+  // This keeps database access centralized and secrets out of the mobile app
+  return 'https://source.thequietframe.com';
 }
 
 async function checkEntitlementStatus(installId: string): Promise<{
@@ -65,7 +59,7 @@ async function checkEntitlementStatus(installId: string): Promise<{
 }> {
   try {
     console.log('[ENTITLEMENT] Checking status for installId:', installId);
-    const apiBase = getApiBase();
+    const apiBase = getBillingApiBase();
     const response = await fetch(`${apiBase}/api/billing/status?installId=${installId}`);
     
     if (!response.ok) {
@@ -96,7 +90,7 @@ async function verifyPurchaseWithBackend(
     const payload = getPurchasePayload(purchase);
     console.log('[ENTITLEMENT] Verifying purchase with backend:', payload);
     
-    const apiBase = getApiBase();
+    const apiBase = getBillingApiBase();
     const response = await fetch(`${apiBase}/api/billing/verify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
