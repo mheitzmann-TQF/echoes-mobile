@@ -1,0 +1,176 @@
+Yep. Here are two clean “Claude instructions” — one for Source (backend) and one for the Echoes mobile app — aligned with:
+	•	No secrets in the app
+	•	App never talks to DB directly
+	•	Public endpoints can stay public
+	•	Anything that writes/reads user state is protected
+	•	Dev can override entitlement state in simulator
+
+Copy/paste these as-is.
+
+⸻
+
+Message 1 — to Claude working on source.thequietframe.com (backend)
+
+Goal: Make Source the only gateway to DB + subscription state, without relying on hiding the domain. Public content stays public. Billing/user-state endpoints become “app-validated”.
+
+1) Classify endpoints into two buckets
+
+A. Public endpoints (no auth, cached, rate-limited)
+	•	/api/proxy/echoes/* (daily bundle, instant, etc.)
+	•	/api/proxy/planetary/* (lunar/solar/biological rhythms/calendars)
+	•	/api/observances/upcoming (or equivalent)
+Rules:
+	•	allow unauthenticated access
+	•	add rate limiting (IP based is fine)
+	•	heavy caching where possible
+
+B. Protected endpoints (require app validation)
+	•	/api/billing/status
+	•	/api/billing/verify
+	•	/api/billing/s2s
+	•	anything that reads/writes users, entitlement_records, or user settings
+Rules:
+	•	must reject requests without valid app token
+	•	must be rate-limited more strictly
+	•	never expose raw DB errors to clients
+
+2) Implement a minimal “App Session Token” handshake (no API key in app)
+
+Create 2 endpoints:
+
+(1) POST /api/session/start (public but guarded by rate limit)
+Input:
+	•	installId (uuid)
+	•	platform (“ios” | “android”)
+	•	appVersion
+	•	optional: deviceTime (for debugging)
+
+Output:
+	•	sessionToken (random, e.g. 32 bytes base64)
+	•	expiresAt (e.g. now + 24h)
+	•	optional: refreshAfter (e.g. 12h)
+
+Server behavior:
+	•	store token in DB table app_sessions keyed by installId
+	•	store expires_at, created_at, last_seen_at, platform, appVersion
+	•	rotate token if existing token expired, otherwise reissue same token or issue new (either is ok)
+
+(2) Require Authorization: Bearer <sessionToken> for all protected endpoints
+On protected endpoints:
+	•	look up sessionToken in app_sessions
+	•	verify not expired
+	•	verify installId matches (either stored in token record or in request body)
+	•	if invalid: return 401 with calm JSON { error: "unauthorized" }
+
+3) Rate limiting + abuse guardrails
+	•	Rate limit /api/session/start (per IP + per installId)
+	•	Rate limit /api/billing/* tighter
+	•	Add basic “anti-enumeration”:
+	•	require both installId + token on protected endpoints
+	•	do not allow status checks without token
+
+4) Environment / DB sanity (critical)
+	•	Source must use a single DATABASE_URL per environment:
+	•	dev: one Neon branch/project (ok if shared temporarily but not ideal)
+	•	prod: separate branch/project strongly preferred
+	•	Ensure DATABASE_URL uses the direct connection string compatible with your runtime
+	•	Never require .env in client builds. .env only on server.
+
+5) Make “DB connection failures” non-catastrophic
+
+Right now, DB errors can crash routes.
+Change so:
+	•	DB init failures return 500 with generic message
+	•	no throwing at module import time (don’t crash Metro / runtime)
+Example:
+	•	move if (!DATABASE_URL) throw into the specific handler, or return a clean error.
+
+6) Optional later (don’t block shipping)
+
+We can add iOS App Attest / Play Integrity later.
+Do not implement now unless asked.
+
+Deliverables:
+	•	app_sessions table migration
+	•	/api/session/start endpoint
+	•	middleware requireSessionToken() used by protected routes
+	•	rate limits
+	•	verify all protected routes work without any API key embedded in app
+
+⸻
+
+Message 2 — to Claude working on the Echoes mobile app (client)
+
+Goal: App never stores server API keys. App talks only to Source. App uses a short-lived session token to access protected endpoints. Public endpoints remain unchanged.
+
+1) Create SessionManager
+
+Responsibilities:
+	•	ensure installId exists (already in installId.ts)
+	•	call POST /api/session/start on launch
+	•	store sessionToken + expiry in SecureStore
+	•	refresh token when near expiry (e.g. < 12h remaining)
+
+Pseudo:
+	•	getSessionToken(): Promise<string | null>
+	•	ensureSession(): Promise<string> (creates/refreshes as needed)
+
+2) Add token to protected calls only
+
+For any call to:
+	•	/api/billing/status
+	•	/api/billing/verify
+	•	user settings endpoints (if any)
+
+Attach header:
+Authorization: Bearer <sessionToken>
+
+Do not add token to public endpoints.
+
+3) Subscription behavior (your chosen philosophy)
+
+Model:
+	•	3-day free trial = full access
+	•	after 3 days = Today only
+	•	no “Pro”, no “Upgrade”, no “Premium”
+	•	wording: “Full access” / “Paused” / “Continue”
+
+Implement gating:
+
+const isFullAccess = entitlement === 'full' && (expiresAt == null || expiresAt > now)
+if (!isFullAccess) Today is accessible; other tabs show paused-state screen with “Continue”.
+
+4) Dev testing trigger (must-have)
+
+In Settings, implement a hidden dev-only switch to cycle entitlement state:
+	•	DEV: full
+	•	DEV: trial
+	•	DEV: paused
+Stored in AsyncStorage.
+When set, useEntitlement returns mocked state without calling backend.
+
+This is required for Simulator testing without DB / StoreKit.
+
+5) Remove any direct DB assumptions
+	•	The app must never require DATABASE_URL locally.
+	•	Any data that originates from DB (observances, user info, entitlement) must come via Source endpoints.
+
+6) StoreKit limitations on Simulator
+
+Simulator may show:
+	•	“No active account”
+	•	SKUs not found
+
+That’s expected.
+Do not treat that as a blocker.
+Use dev override for entitlement UI testing.
+
+Deliverables:
+	•	SessionManager + SecureStore persistence
+	•	useEntitlement updated: calls ensureSession() then hits /api/billing/status with Bearer token
+	•	dev entitlement override switch
+	•	ensure no .env secrets are required for the client to run
+
+⸻
+
+If you want, I can also give you the exact text for the paused-state screens (Pulse/Wisdom/Upcoming) in your tone (“Fortune Cookie” etc.) with zero quotes/italics.
