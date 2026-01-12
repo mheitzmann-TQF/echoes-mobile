@@ -422,7 +422,7 @@ export default function FieldScreen() {
       }
     }
     loadData();
-  }, [coordinates, timezone]);
+  }, [coordinates, timezone, language]);
 
   if (loading) {
     return (
