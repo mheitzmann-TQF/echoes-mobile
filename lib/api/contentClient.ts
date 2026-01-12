@@ -14,6 +14,23 @@ function getProxyBaseUrl(): string {
   return extra?.apiUrl || '';
 }
 
+const SOURCE_TO_PROXY_PATH_MAP: Record<string, string> = {
+  '/api/consciousness/current': '/api/proxy/consciousness',
+  '/api/consciousness-analysis/raw-analysis': '/api/proxy/consciousness/raw-analysis',
+  '/api/consciousness-analysis/regional-breakdown': '/api/proxy/consciousness/regional-breakdown',
+};
+
+function mapToProxyEndpoint(endpoint: string): string {
+  for (const [sourcePattern, proxyPath] of Object.entries(SOURCE_TO_PROXY_PATH_MAP)) {
+    if (endpoint.startsWith(sourcePattern)) {
+      return endpoint.replace(sourcePattern, proxyPath);
+    }
+  }
+  return endpoint.startsWith('/api/') 
+    ? endpoint.replace('/api/', '/api/proxy/')
+    : `/api/proxy${endpoint}`;
+}
+
 interface FetchOptions {
   timeout?: number;
   headers?: Record<string, string>;
@@ -58,9 +75,7 @@ export async function fetchContent(
     }
     
     const proxyBase = getProxyBaseUrl();
-    const proxyEndpoint = endpoint.startsWith('/api/') 
-      ? endpoint.replace('/api/', '/api/proxy/')
-      : `/api/proxy${endpoint}`;
+    const proxyEndpoint = mapToProxyEndpoint(endpoint);
     const proxyUrl = `${proxyBase}${proxyEndpoint}`;
     
     console.log('[CONTENT] Fetching via proxy:', proxyUrl);
@@ -75,9 +90,7 @@ export async function fetchContent(
       console.log('[CONTENT] Direct fetch failed, trying proxy as fallback');
       
       const proxyBase = getProxyBaseUrl();
-      const proxyEndpoint = endpoint.startsWith('/api/') 
-        ? endpoint.replace('/api/', '/api/proxy/')
-        : `/api/proxy${endpoint}`;
+      const proxyEndpoint = mapToProxyEndpoint(endpoint);
       const proxyUrl = `${proxyBase}${proxyEndpoint}`;
       
       const fallbackController = new AbortController();
@@ -142,11 +155,11 @@ export const ContentEndpoints = {
     return url;
   },
   
-  consciousness: () => `/api/consciousness`,
+  consciousness: () => `/api/consciousness/current`,
   
-  consciousnessRawAnalysis: () => `/api/consciousness/raw-analysis`,
+  consciousnessRawAnalysis: () => `/api/consciousness-analysis/raw-analysis`,
   
-  consciousnessRegionalBreakdown: () => `/api/consciousness/regional-breakdown`,
+  consciousnessRegionalBreakdown: () => `/api/consciousness-analysis/regional-breakdown`,
   
   importantDates: (lang: string, days?: number) => {
     let url = `/api/important-dates/upcoming?lang=${lang}`;
