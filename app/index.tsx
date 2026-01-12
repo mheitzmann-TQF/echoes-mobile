@@ -793,7 +793,7 @@ export default function HomeScreen() {
                 <Text style={[styles.cookieSectionTitle, { color: colors.text }]}>{t('learn.theCookie')}</Text>
               </View>
               <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Text style={[styles.cookieText, { color: colors.text }]}>"{cookie}"</Text>
+                <Text style={[styles.cookieText, { color: colors.text }]}>{cookie}</Text>
               </View>
             </View>
           )}
@@ -974,10 +974,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   cookieText: {
-    fontSize: 16,
-    fontStyle: 'italic',
-    lineHeight: 24,
+    fontSize: 17,
+    fontWeight: '500',
+    lineHeight: 26,
     textAlign: 'left',
-    opacity: 0.9,
   },
 });
