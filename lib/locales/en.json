@@ -46,7 +46,22 @@
     "globalPulseTag": "Global Pulse",
     "culturalEcho": "Cultural Echo",
     "ancestralVoice": "Ancestral Voice",
-    "echo": "Echo"
+    "echo": "Echo",
+    "echoLunar1": "The moon waxes toward fullness, drawing tides and rhythms into alignment.",
+    "echoLunar2": "Lunar illumination grows, bringing the hidden into relief.",
+    "echoLunar3": "Tonight the moon sits at a threshold between shadow and light.",
+    "echoConsciousness1": "Billions of heartbeats pulse in synchrony across the planet.",
+    "echoConsciousness2": "The global field hums with collective activity.",
+    "echoConsciousness3": "Patterns of coherence ripple through the noosphere.",
+    "echoCultural1": "Multiple calendar systems mark this day with different names.",
+    "echoCultural2": "Ancient and modern reckonings of time overlap here.",
+    "echoCultural3": "Traditions across cultures recognize similar thresholds.",
+    "echoSolar1": "The sun traces its arc across the sky, measuring the hours.",
+    "echoSolar2": "Daylight fills the spaces between shadows.",
+    "echoSolar3": "Light angles shift as the sun moves toward the horizon.",
+    "echoAncestral1": "The patterns you notice were noticed by those before you.",
+    "echoAncestral2": "Generations have watched these same cycles unfold.",
+    "echoAncestral3": "The wisdom of observation passes through time."
   },
   "field": {
     "title": "Pulse",

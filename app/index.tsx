@@ -445,45 +445,35 @@ export default function HomeScreen() {
     const dayOfMonth = new Date().getDate();
     const seed = dayOfMonth * 13 + hour;
     
-    // Observational messages (no directive coaching tone)
+    // Translated observational messages
     const lunarMessages = [
-      'The moon waxes toward fullness, drawing tides and rhythms into alignment.',
-      'Lunar illumination grows, bringing the hidden into relief.',
-      'Tonight the moon sits at a threshold between shadow and light.',
-      'The lunar cycle continues its ancient pattern of ebb and flow.',
-      'Moonlight filters through the atmosphere, softer than day.',
+      t('today.echoLunar1'),
+      t('today.echoLunar2'),
+      t('today.echoLunar3'),
     ];
     
     const solarMessages = [
-      'The sun traces its arc across the sky, measuring the hours.',
-      'Daylight fills the spaces between shadows.',
-      'The solar rhythm anchors the day\'s unfolding.',
-      'Light angles shift as the sun moves toward the horizon.',
-      'The sun\'s position marks this moment in the daily cycle.',
+      t('today.echoSolar1'),
+      t('today.echoSolar2'),
+      t('today.echoSolar3'),
     ];
     
     const consciousnessMessages = [
-      'Billions of heartbeats pulse in synchrony across the planet.',
-      'The global field hums with collective activity.',
-      'Patterns of coherence ripple through the noosphere.',
-      'Human attention converges on shared moments worldwide.',
-      'The interconnected web of awareness vibrates gently.',
+      t('today.echoConsciousness1'),
+      t('today.echoConsciousness2'),
+      t('today.echoConsciousness3'),
     ];
     
     const culturalMessages = [
-      'Multiple calendar systems mark this day with different names.',
-      'Ancient and modern reckonings of time overlap here.',
-      'Traditions across cultures recognize similar thresholds.',
-      'The rhythms of the land and sky are noticed by many peoples.',
-      'Calendars from different eras converge on shared observances.',
+      t('today.echoCultural1'),
+      t('today.echoCultural2'),
+      t('today.echoCultural3'),
     ];
     
     const ancestralMessages = [
-      'The patterns you notice were noticed by those before you.',
-      'Generations have watched these same cycles unfold.',
-      'The wisdom of observation passes through time.',
-      'What was true for the ancestors remains true now.',
-      'The continuity of attention spans centuries.',
+      t('today.echoAncestral1'),
+      t('today.echoAncestral2'),
+      t('today.echoAncestral3'),
     ];
 
     const getRandomItem = (arr: string[], index: number) => arr[index % arr.length];
