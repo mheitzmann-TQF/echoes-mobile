@@ -87,7 +87,26 @@ Hebrew calendar dates come from the TQF API (`/api/proxy/planetary/traditional-c
 - All 6 calendars have localized names in all 6 supported languages
 
 ### API Integration
-Communication with The Quiet Frame (TQF) Planetary Awareness API is facilitated through a **backend proxy** for security and caching. A single primary endpoint (`/api/echoes/daily-bundle`) delivers most daily data. The app uses a **cache-first data fetching strategy** with `expires_at` timestamps from API responses and provides fallback mock data for offline scenarios.
+The app uses a **direct-first fetching strategy** to `source.thequietframe.com` with local proxy fallback:
+
+**Content Endpoints (public, no auth required):**
+- `/api/echoes/daily-bundle` - Daily echo cards and planetary context
+- `/api/planetary/traditional-calendars` - Multi-calendar dates
+- `/api/planetary/biological-rhythms` - Circadian data
+- `/api/planetary/events` - Upcoming astronomical events
+- `/api/consciousness/*` - Media climate data
+- `/api/important-dates/upcoming` - Cultural observances
+
+**Architecture:**
+- `lib/api/contentClient.ts` - Direct-first fetch with proxy fallback
+- Feature flag: `useSourceDirect` in app.json extra (default: true)
+- Falls back to local `/api/proxy/*` routes if direct call fails
+- Cache-first strategy with `expires_at` timestamps
+
+**Cleanup TODO (once source is confirmed public):**
+- Remove `/app/api/proxy/*` routes
+- Remove `TQF_API_KEY` from env
+- Remove `lib/env.ts`
 
 ### Theme System
 A **dual theme architecture** supports comprehensive dark and light modes, with dynamic detection of device preferences and manual override options.

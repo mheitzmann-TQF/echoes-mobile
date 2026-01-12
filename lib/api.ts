@@ -1,22 +1,9 @@
-// Use backend proxy - API key stays server-side for security
-// Express server handles /api/* routes and proxies other requests to Expo Metro
-const getApiBaseUrl = () => {
-  // Check for explicit API URL override (for development with separate servers)
-  if (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_API_URL) {
-    return process.env.EXPO_PUBLIC_API_URL;
-  }
-  // Default to relative URLs (works when served from same origin)
-  return '';
-};
+import { fetchContent, fetchContentJson, ContentEndpoints } from './api/contentClient';
 
-const API_BASE_URL = getApiBaseUrl();
-
-// Log config after module loads
 if (typeof console !== 'undefined' && console.log) {
   setTimeout(() => {
     console.log('🔑 API Config:', {
-      mode: 'backend-proxy',
-      baseUrl: API_BASE_URL || 'http://localhost:5000',
+      mode: 'direct-first-with-proxy-fallback',
     });
   }, 0);
 }
@@ -127,33 +114,12 @@ export interface RegionalBreakdownResponse {
 }
 
 class EchoesAPI {
-  private baseUrl: string;
-
-  constructor(baseUrl: string = API_BASE_URL) {
-    this.baseUrl = baseUrl;
-  }
-
-  private getHeaders() {
-    return {
-      'Content-Type': 'application/json',
-    };
-  }
-
   async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
     try {
-      const url = `/api/proxy/echoes/instant?lat=${lat}&lng=${lng}&tz=${tz}`;
-      console.log('📡 Fetching planetary data from:', url);
+      const endpoint = ContentEndpoints.instant(lat, lng, tz);
+      console.log('📡 Fetching planetary data...');
       
-      const response = await fetch(url, {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`HTTP ${response.status}: ${text}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchContentJson(endpoint);
       console.log('✅ Planetary data received:', data);
       
       if (!data.success) throw new Error('Failed to fetch planetary data');
@@ -169,10 +135,9 @@ class EchoesAPI {
 
   async getConsciousnessAnalysis(): Promise<any> {
     try {
-      // Fetch both current and raw-analysis endpoints in parallel
       const [currentResponse, rawResponse] = await Promise.all([
-        fetch('/api/proxy/consciousness', { headers: this.getHeaders() }),
-        fetch('/api/proxy/consciousness/raw-analysis', { headers: this.getHeaders() }),
+        fetchContent(ContentEndpoints.consciousness()),
+        fetchContent(ContentEndpoints.consciousnessRawAnalysis()),
       ]);
       
       if (!currentResponse.ok) {
@@ -247,18 +212,10 @@ class EchoesAPI {
     tz: string = 'UTC'
   ): Promise<DailyBundleResponse> {
     try {
-      const url = `/api/proxy/echoes/daily-bundle?lat=${lat}&lng=${lng}&lang=${lang}&tz=${tz}`;
-      console.log('📡 Fetching daily bundle from:', url);
+      const endpoint = ContentEndpoints.dailyBundle(lat, lng, lang, tz);
+      console.log('📡 Fetching daily bundle...');
       
-      const response = await fetch(url, {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchContentJson(endpoint);
       console.log('✅ Daily bundle received:', data);
       if (!data.success) throw new Error('Failed to fetch daily bundle');
       return data;
@@ -270,21 +227,10 @@ class EchoesAPI {
 
   async getTraditionalCalendars(lat?: number, lng?: number, tz: string = 'UTC', lang: string = 'en'): Promise<any> {
     try {
-      let url = `/api/proxy/planetary/traditional-calendars?tz=${tz}&lang=${lang}`;
-      if (lat && lng) {
-        url += `&lat=${lat}&lng=${lng}`;
-      }
-      console.log('📡 Fetching calendars from:', url);
+      const endpoint = ContentEndpoints.traditionalCalendars(tz, lang, lat, lng);
+      console.log('📡 Fetching calendars...');
       
-      const response = await fetch(url, {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchContentJson(endpoint);
       return data;
     } catch (error) {
       console.error('❌ Calendars error:', error);
@@ -294,18 +240,10 @@ class EchoesAPI {
 
   async getPlanetaryEvents(limit: number = 10, lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `/api/proxy/planetary/events?limit=${limit}&lang=${lang}`;
-      console.log('📡 Fetching planetary events from:', url);
+      const endpoint = ContentEndpoints.planetaryEvents(limit, lang);
+      console.log('📡 Fetching planetary events...');
       
-      const response = await fetch(url, {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchContentJson(endpoint);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('❌ Events error:', error);
@@ -315,21 +253,10 @@ class EchoesAPI {
 
   async getBiologicalRhythms(lat?: number, lng?: number, tz: string = 'UTC'): Promise<any> {
     try {
-      let url = `/api/proxy/planetary/biological-rhythms?tz=${tz}`;
-      if (lat && lng) {
-        url += `&lat=${lat}&lng=${lng}`;
-      }
-      console.log('📡 Fetching biological rhythms from:', url);
+      const endpoint = ContentEndpoints.biologicalRhythms(tz, lat, lng);
+      console.log('📡 Fetching biological rhythms...');
       
-      const response = await fetch(url, {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchContentJson(endpoint);
       console.log('✅ Biological rhythms received:', data);
       return data;
     } catch (error) {
@@ -339,23 +266,13 @@ class EchoesAPI {
   }
 
   async getCulturalContent(limit: number = 5, lang: string = 'en'): Promise<any[]> {
-    // Import at top of file causes circular dependency issues, so we use inline definition
-    // that mirrors the centralized culturalFilter.ts module
     const { filterCulturalContent, getCuratedArtifact } = require('./culturalFilter');
     
     try {
-      const url = `/api/proxy/cultural/content/high-alignment?limit=${limit}&lang=${lang}`;
-      console.log('📡 Fetching cultural content from:', url);
+      const endpoint = ContentEndpoints.culturalContent(limit, lang);
+      console.log('📡 Fetching cultural content...');
       
-      const response = await fetch(url, {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchContentJson(endpoint);
       return filterCulturalContent(data);
     } catch (error) {
       console.error('❌ Cultural content error:', error);
@@ -365,22 +282,13 @@ class EchoesAPI {
 
   async getLivingCalendars(lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `/api/proxy/sacred-geography/living-calendars?lang=${lang}`;
-      console.log('📡 Fetching living calendars from:', url);
+      const endpoint = ContentEndpoints.livingCalendars(lang);
+      console.log('📡 Fetching living calendars...');
       
-      const response = await fetch(url, {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchContentJson(endpoint);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('❌ Living calendars error:', error);
-      // Return mock data since this endpoint might be new/hypothetical
       return [
         {
           id: 'seasonal',
@@ -400,18 +308,10 @@ class EchoesAPI {
 
   async getImportantDates(lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `/api/proxy/important-dates/upcoming?lang=${lang}`;
-      console.log('📡 Fetching important dates from:', url);
+      const endpoint = ContentEndpoints.importantDates(lang);
+      console.log('📡 Fetching important dates...');
       
-      const response = await fetch(url, {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchContentJson(endpoint);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('❌ Important dates error:', error);
@@ -421,22 +321,10 @@ class EchoesAPI {
 
   async getOptimalTiming(lat?: number, lng?: number, tz: string = 'UTC', lang: string = 'en'): Promise<any> {
     try {
-      let url = `/api/proxy/planetary/optimal-timing?tz=${tz}&lang=${lang}`;
-      if (lat && lng) url += `&lat=${lat}&lng=${lng}`;
-      
-      const response = await fetch(url, { headers: this.getHeaders() });
-      if (!response.ok) {
-        // 404 is expected if route not available, don't log as error
-        if (response.status !== 404) {
-          console.warn('Optimal timing unavailable:', response.status);
-        }
-        return null;
-      }
-      
-      const data = await response.json();
+      const endpoint = ContentEndpoints.optimalTiming(tz, lang, lat, lng);
+      const data = await fetchContentJson(endpoint);
       return data;
     } catch (error) {
-      // Network errors are common during development, log quietly
       console.log('Optimal timing fetch skipped');
       return null;
     }
@@ -444,12 +332,8 @@ class EchoesAPI {
 
   async getSacredSites(lang: string = 'en', limit: number = 20): Promise<any[]> {
     try {
-      const url = `/api/proxy/sacred-geography/sites?lang=${lang}&limit=${limit}`;
-      
-      const response = await fetch(url, { headers: this.getHeaders() });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      
-      const data = await response.json();
+      const endpoint = ContentEndpoints.sacredSites(lang, limit);
+      const data = await fetchContentJson(endpoint);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('❌ Sacred sites error:', error);
@@ -459,12 +343,8 @@ class EchoesAPI {
 
   async getCeremonialTimings(lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `/api/proxy/sacred-geography/ceremonial-timings?lang=${lang}`;
-      
-      const response = await fetch(url, { headers: this.getHeaders() });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      
-      const data = await response.json();
+      const endpoint = ContentEndpoints.ceremonialTimings(lang);
+      const data = await fetchContentJson(endpoint);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('❌ Ceremonial timings error:', error);
@@ -474,13 +354,8 @@ class EchoesAPI {
 
   async getOralTraditions(lang: string = 'en', category?: string): Promise<any[]> {
     try {
-      let url = `/api/proxy/sacred-geography/oral-traditions?lang=${lang}`;
-      if (category) url += `&category=${category}`;
-      
-      const response = await fetch(url, { headers: this.getHeaders() });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      
-      const data = await response.json();
+      const endpoint = ContentEndpoints.oralTraditions(lang, category);
+      const data = await fetchContentJson(endpoint);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('❌ Oral traditions error:', error);
@@ -490,12 +365,8 @@ class EchoesAPI {
 
   async getWeatherProphecies(lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `/api/proxy/sacred-geography/weather-prophecies?lang=${lang}`;
-      
-      const response = await fetch(url, { headers: this.getHeaders() });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      
-      const data = await response.json();
+      const endpoint = ContentEndpoints.weatherProphecies(lang);
+      const data = await fetchContentJson(endpoint);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('❌ Weather prophecies error:', error);
@@ -505,12 +376,8 @@ class EchoesAPI {
 
   async getPlantMedicineTiming(lang: string = 'en'): Promise<any[]> {
     try {
-      const url = `/api/proxy/sacred-geography/plant-medicine-timing?lang=${lang}`;
-      
-      const response = await fetch(url, { headers: this.getHeaders() });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      
-      const data = await response.json();
+      const endpoint = ContentEndpoints.plantMedicineTiming(lang);
+      const data = await fetchContentJson(endpoint);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error('❌ Plant medicine timing error:', error);
@@ -520,15 +387,8 @@ class EchoesAPI {
 
   async getRegionalBreakdown(): Promise<RegionalBreakdownResponse | null> {
     try {
-      const response = await fetch('/api/proxy/consciousness/regional-breakdown', {
-        headers: this.getHeaders(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const endpoint = ContentEndpoints.consciousnessRegionalBreakdown();
+      const data = await fetchContentJson(endpoint);
       console.log('✅ Regional breakdown received:', data);
       return data;
     } catch (error) {

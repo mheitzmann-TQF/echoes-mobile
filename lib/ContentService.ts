@@ -5,9 +5,11 @@
  * - 30-minute caching (or respects expires_at)
  * - Graceful fallbacks (no blank pages)
  * - Consistent error handling
+ * - Direct-first fetching to source.thequietframe.com with proxy fallback
  */
 
 import { labelize, cleanTone, formatOrigin, DisplayItem } from './labelize';
+import { fetchContent, fetchContentJson, ContentEndpoints } from './api/contentClient';
 
 // Cache configuration
 const DEFAULT_CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
@@ -220,20 +222,10 @@ function setCache(key: string, data: any, expiresAt?: string | number): void {
 
 /**
  * Fetch with timeout and error handling
+ * Now uses direct-first pattern with proxy fallback
  */
-async function fetchWithTimeout(url: string, timeoutMs: number = 10000): Promise<Response> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-  
-  try {
-    const response = await fetch(url, {
-      signal: controller.signal,
-      headers: { 'Content-Type': 'application/json' },
-    });
-    return response;
-  } finally {
-    clearTimeout(timeout);
-  }
+async function fetchWithTimeout(endpoint: string, timeoutMs: number = 10000): Promise<Response> {
+  return fetchContent(endpoint, { timeout: timeoutMs });
 }
 
 class ContentService {
@@ -251,15 +243,14 @@ class ContentService {
     if (cached) return cached;
     
     try {
-      const url = `/api/proxy/echoes/daily-bundle?lat=${lat}&lng=${lng}&tz=${tz}&lang=${lang}`;
-      const response = await fetchWithTimeout(url);
+      const endpoint = ContentEndpoints.dailyBundle(lat, lng, lang, tz);
+      const response = await fetchWithTimeout(endpoint);
       
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       
       const data = await response.json();
       
       if (data.success && data.data) {
-        // Clean tone from echo cards
         if (data.data.echo_cards) {
           data.data.echo_cards = data.data.echo_cards.map((card: any) => ({
             ...card,
@@ -291,9 +282,8 @@ class ContentService {
     if (cached) return cached;
     
     try {
-      // Try the important-dates endpoint which includes cultural events
-      const url = `/api/proxy/important-dates/upcoming?lang=${lang}&days=${days}`;
-      const response = await fetchWithTimeout(url);
+      const endpoint = ContentEndpoints.importantDates(lang, days);
+      const response = await fetchWithTimeout(endpoint);
       
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       
@@ -334,8 +324,8 @@ class ContentService {
     if (cached) return cached;
     
     try {
-      const url = `/api/proxy/sacred-geography/living-calendars?lang=${lang}`;
-      const response = await fetchWithTimeout(url);
+      const endpoint = ContentEndpoints.livingCalendars(lang);
+      const response = await fetchWithTimeout(endpoint);
       
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       
@@ -368,12 +358,8 @@ class ContentService {
     if (cached) return cached;
     
     try {
-      let url = `/api/proxy/planetary/traditional-calendars?tz=${tz}&lang=${lang}`;
-      if (lat && lng) {
-        url += `&lat=${lat}&lng=${lng}`;
-      }
-      
-      const response = await fetchWithTimeout(url);
+      const endpoint = ContentEndpoints.traditionalCalendars(tz, lang, lat, lng);
+      const response = await fetchWithTimeout(endpoint);
       
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       
@@ -432,8 +418,8 @@ class ContentService {
     if (cached) return cached;
     
     try {
-      const url = `/api/proxy/cultural/content/high-alignment?limit=${limit}&lang=${lang}`;
-      const response = await fetchWithTimeout(url);
+      const endpoint = ContentEndpoints.culturalContent(limit, lang);
+      const response = await fetchWithTimeout(endpoint);
       
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       
@@ -481,8 +467,8 @@ class ContentService {
     if (cached) return cached;
     
     try {
-      const url = `/api/proxy/planetary/events?limit=${limit}&lang=${lang}`;
-      const response = await fetchWithTimeout(url);
+      const endpoint = ContentEndpoints.planetaryEvents(limit, lang);
+      const response = await fetchWithTimeout(endpoint);
       
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       

@@ -55,6 +55,7 @@
     "extra": {
       "router": {},
       "devEnableEntitlementBackend": true,
+      "useSourceDirect": true,
       "eas": {
         "projectId": "cf40c560-9adb-4a48-b75b-5660794ddd3f"
       }
