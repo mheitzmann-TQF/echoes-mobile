@@ -23,6 +23,12 @@ import {
   type DevAccessState,
 } from './devAccessOverride';
 
+function isDevBackendEnabled(): boolean {
+  const expoConfig = Constants.expoConfig || Constants.manifest;
+  const extra = (expoConfig as any)?.extra;
+  return extra?.devEnableEntitlementBackend === true;
+}
+
 export interface EntitlementState {
   isFullAccess: boolean;
   isLoading: boolean;
@@ -135,16 +141,34 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       const override = await getDevAccessOverride();
       setDevOverride(override);
       
-      // In dev mode, use override or default to trial - never call backend
-      const effectiveState = override ?? 'trial';
-      const mapped = devStateToEntitlement(effectiveState);
-      if (mapped) {
-        setIsFullAccess(mapped.isFullAccess);
-        setExpiresAt(mapped.expiresAt);
-        setError(null);
-        setIsLoading(false);
-        console.log('[ENTITLEMENT] Dev mode active, state:', effectiveState);
-        return;
+      // If dev override is set, use it
+      if (override) {
+        const mapped = devStateToEntitlement(override);
+        if (mapped) {
+          setIsFullAccess(mapped.isFullAccess);
+          setExpiresAt(mapped.expiresAt);
+          setError(null);
+          setIsLoading(false);
+          console.log('[ENTITLEMENT] Dev mode using override:', override);
+          return;
+        }
+      }
+      
+      // If backend testing is enabled, call the backend
+      if (isDevBackendEnabled()) {
+        console.log('[ENTITLEMENT] Dev mode with backend enabled, calling API...');
+        // Fall through to backend call below
+      } else {
+        // Default to trial when backend is disabled
+        const mapped = devStateToEntitlement('trial');
+        if (mapped) {
+          setIsFullAccess(mapped.isFullAccess);
+          setExpiresAt(mapped.expiresAt);
+          setError(null);
+          setIsLoading(false);
+          console.log('[ENTITLEMENT] Dev mode defaulting to trial');
+          return;
+        }
       }
     }
     
@@ -179,17 +203,41 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         setInstallId(id);
         
         if (isDevMode) {
-          // In dev mode, use override or default to trial - never call backend or init StoreKit
           const override = await getDevAccessOverride();
           setDevOverride(override);
-          const effectiveState = override ?? 'trial';
-          const mapped = devStateToEntitlement(effectiveState);
-          if (mapped) {
-            setIsFullAccess(mapped.isFullAccess);
-            setExpiresAt(mapped.expiresAt);
+          
+          // If dev override is set, use it and skip everything
+          if (override) {
+            const mapped = devStateToEntitlement(override);
+            if (mapped) {
+              setIsFullAccess(mapped.isFullAccess);
+              setExpiresAt(mapped.expiresAt);
+              setIsLoading(false);
+              console.log('[ENTITLEMENT] Init dev mode with override:', override);
+              return;
+            }
+          }
+          
+          // Check if backend testing is enabled
+          if (isDevBackendEnabled()) {
+            console.log('[ENTITLEMENT] Init dev mode with backend enabled, calling API...');
+            const status = await checkEntitlementStatus(id);
+            setIsFullAccess(status.entitlement === 'full');
+            setExpiresAt(status.expiresAt);
             setIsLoading(false);
-            console.log('[ENTITLEMENT] Init dev mode, state:', effectiveState);
+            console.log('[ENTITLEMENT] Backend returned:', status);
+            // Skip StoreKit init in dev mode
             return;
+          } else {
+            // Default to trial when backend is disabled
+            const mapped = devStateToEntitlement('trial');
+            if (mapped) {
+              setIsFullAccess(mapped.isFullAccess);
+              setExpiresAt(mapped.expiresAt);
+              setIsLoading(false);
+              console.log('[ENTITLEMENT] Init dev mode defaulting to trial');
+              return;
+            }
           }
         }
         
