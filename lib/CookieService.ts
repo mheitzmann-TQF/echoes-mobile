@@ -1,5 +1,6 @@
 import { getApiLang } from './lang';
 import { SUPPORTED_LANGUAGES } from './i18n';
+import { fetchContentJson, ContentEndpoints } from './api/contentClient';
 
 const CACHE_KEY_PREFIX = 'echoes_cookie_cache_';
 
@@ -87,13 +88,8 @@ class CookieService {
     console.log('[Cookie] Fetching from API for language:', lang);
 
     try {
-      const response = await fetch(`/api/proxy/cookie?lang=${lang}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-      
-      const data = await response.json();
+      const endpoint = ContentEndpoints.cookie(lang);
+      const data = await fetchContentJson<{ success: boolean; cookie: string }>(endpoint);
       
       if (data.success && data.cookie) {
         const midnight = new Date();

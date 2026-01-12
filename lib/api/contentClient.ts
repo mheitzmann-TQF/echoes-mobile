@@ -172,6 +172,8 @@ export const ContentEndpoints = {
   culturalContent: (limit: number, lang: string) =>
     `/api/cultural/content/high-alignment?limit=${limit}&lang=${lang}`,
   
+  cookie: (lang: string) => `/api/cookie?lang=${lang}`,
+  
   sacredSites: (lang: string, limit: number) =>
     `/api/sacred-geography/sites?lang=${lang}&limit=${limit}`,
   
