@@ -192,9 +192,10 @@ function EventCard({ event }: { event: any }) {
         return dateThisYear;
       }
     }
-    // Try parsing regular date field
-    if (event.date) {
-      const parsed = new Date(event.date);
+    // Try parsing regular date field (check multiple possible field names)
+    const raw = event.date || event.startDate || event.peakDate;
+    if (raw) {
+      const parsed = new Date(raw);
       if (!isNaN(parsed.getTime())) return parsed;
     }
     return new Date();
@@ -337,8 +338,8 @@ export default function UpcomingScreen() {
       }
     }
     
-    // Check multiple possible date field names
-    const raw = e.date || e.start_date || e.event_date || e.observance_date || e.timestamp;
+    // Check multiple possible date field names (both camelCase and snake_case)
+    const raw = e.date || e.startDate || e.peakDate || e.start_date || e.event_date || e.observance_date || e.timestamp;
     if (!raw) {
       console.log('⚠️ No date field found for:', e.name, 'Available keys:', Object.keys(e).join(', '));
       return new Date(NaN);
