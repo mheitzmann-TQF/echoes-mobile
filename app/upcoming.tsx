@@ -96,21 +96,21 @@ const CORE_DATES = [
   { id: 'new-year', name: 'New Year', date: getNextOccurrence(0, 1), category: 'cultural', origin: 'Global', description: 'A fresh cycle begins, inviting reflection and intention.' },
 ];
 
-const FALLBACK_SOON = [
-  { id: 'soon-1', name: 'Twilight Window', time: '18:00', description: 'Day-night threshold', category: 'astronomical', daysUntil: 0 },
-  { id: 'soon-2', name: 'Midnight Point', time: '00:00', description: 'Deep night anchor', category: 'astronomical', daysUntil: 0.5 },
+const getFallbackSoon = (t: any) => [
+  { id: 'soon-1', name: t('upcoming.fallbackTwilightWindow'), time: '18:00', description: t('upcoming.fallbackTwilightWindowDesc'), category: 'astronomical', daysUntil: 0 },
+  { id: 'soon-2', name: t('upcoming.fallbackMidnightPoint'), time: '00:00', description: t('upcoming.fallbackMidnightPointDesc'), category: 'astronomical', daysUntil: 0.5 },
 ];
 
-const FALLBACK_CYCLE = [
-  { id: 'cycle-1', name: 'First Quarter Moon', date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), description: 'Building lunar energy', significance: 'Major', category: 'astronomical' },
-  { id: 'cycle-2', name: 'Mercury Direct', date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), description: 'Communication clears', significance: 'Moderate', category: 'astronomical' },
-  { id: 'cycle-3', name: 'Venus Alignment', date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), description: 'Relational harmony', significance: 'Minor', category: 'astronomical' },
+const getFallbackCycle = (t: any) => [
+  { id: 'cycle-1', name: t('upcoming.fallbackFirstQuarterMoon'), date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), description: t('upcoming.fallbackFirstQuarterMoonDesc'), significance: 'Major', category: 'astronomical' },
+  { id: 'cycle-2', name: t('upcoming.fallbackMercuryDirect'), date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), description: t('upcoming.fallbackMercuryDirectDesc'), significance: 'Moderate', category: 'astronomical' },
+  { id: 'cycle-3', name: t('upcoming.fallbackVenusAlignment'), date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), description: t('upcoming.fallbackVenusAlignmentDesc'), significance: 'Minor', category: 'astronomical' },
 ];
 
-const FALLBACK_SEASON = [
-  { id: 'season-1', name: 'Winter Solstice Approach', date: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000), description: 'Shortest day approaches—time to nest and reflect.', category: 'astronomical', daysUntil: 20 },
-  { id: 'season-2', name: 'New Moon Cycle', date: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000), description: 'New beginnings emerge from darkness.', category: 'astronomical', daysUntil: 45 },
-  { id: 'season-3', name: 'Turning Point Window', date: new Date(Date.now() + 75 * 24 * 60 * 60 * 1000), description: 'Energy shifts into new terrain.', category: 'astronomical', daysUntil: 75 },
+const getFallbackSeason = (t: any) => [
+  { id: 'season-1', name: t('upcoming.fallbackWinterSolsticeApproach'), date: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000), description: t('upcoming.fallbackWinterSolsticeApproachDesc'), category: 'astronomical', daysUntil: 20 },
+  { id: 'season-2', name: t('upcoming.fallbackNewMoonCycle'), date: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000), description: t('upcoming.fallbackNewMoonCycleDesc'), category: 'astronomical', daysUntil: 45 },
+  { id: 'season-3', name: t('upcoming.fallbackTurningPointWindow'), date: new Date(Date.now() + 75 * 24 * 60 * 60 * 1000), description: t('upcoming.fallbackTurningPointWindowDesc'), category: 'astronomical', daysUntil: 75 },
 ];
 
 // --- Components ---
@@ -406,13 +406,13 @@ export default function UpcomingScreen() {
     });
 
     if (band === 'soon') {
-      return filtered.length > 0 ? filtered : FALLBACK_SOON.filter(e => category === 'all' || e.category === category);
+      return filtered.length > 0 ? filtered : getFallbackSoon(t).filter(e => category === 'all' || e.category === category);
     } else if (band === 'cycle') {
-      return filtered.length > 0 ? filtered : FALLBACK_CYCLE.filter(e => category === 'all' || e.category === category);
+      return filtered.length > 0 ? filtered : getFallbackCycle(t).filter(e => category === 'all' || e.category === category);
     } else {
-      return filtered.length > 0 ? filtered : FALLBACK_SEASON.filter(e => category === 'all' || e.category === category);
+      return filtered.length > 0 ? filtered : getFallbackSeason(t).filter(e => category === 'all' || e.category === category);
     }
-  }, [events, band, category]);
+  }, [events, band, category, t]);
 
   if (loading) {
     return (
