@@ -174,9 +174,38 @@ function EventCard({ event }: { event: any }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   
-  // Handle date formatting
-  const eventDate = event.date ? new Date(event.date) : new Date();
-  const daysUntil = Math.ceil((eventDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+  // Handle date formatting - parse fixedDate (MM-DD) or regular date
+  const parseEventDate = (): Date => {
+    // First check for fixedDate in "MM-DD" format (from API observances)
+    if (event.fixedDate && typeof event.fixedDate === 'string') {
+      const match = event.fixedDate.match(/^(\d{2})-(\d{2})$/);
+      if (match) {
+        const month = parseInt(match[1], 10) - 1; // 0-indexed month
+        const day = parseInt(match[2], 10);
+        const now = new Date();
+        const thisYear = now.getFullYear();
+        const dateThisYear = new Date(thisYear, month, day);
+        // If the date has passed this year, use next year
+        if (dateThisYear < now) {
+          return new Date(thisYear + 1, month, day);
+        }
+        return dateThisYear;
+      }
+    }
+    // Try parsing regular date field
+    if (event.date) {
+      const parsed = new Date(event.date);
+      if (!isNaN(parsed.getTime())) return parsed;
+    }
+    return new Date();
+  };
+  
+  const eventDate = parseEventDate();
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const eventDay = new Date(eventDate);
+  eventDay.setHours(0, 0, 0, 0);
+  const daysUntil = Math.ceil((eventDay.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
   
   // Get category color
   const getCategoryColor = (cat: string) => {
@@ -192,6 +221,7 @@ function EventCard({ event }: { event: any }) {
   // Get translated time label
   const getTimeLabel = () => {
     if (daysUntil <= 0) return t('upcoming.today');
+    if (daysUntil === 1) return t('upcoming.tomorrow');
     return t('upcoming.daysShort', { count: daysUntil });
   };
   

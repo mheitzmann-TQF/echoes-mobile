@@ -460,6 +460,7 @@
     "astronomicalFilter": "Astronomical",
     "culturalFilter": "Cultural",
     "today": "Today",
+    "tomorrow": "Tomorrow",
     "now": "Now",
     "hoursShort": "{{count}}h",
     "daysShort": "{{count}}d",

@@ -341,6 +341,7 @@
     "astronomicalFilter": "Astronomisch",
     "culturalFilter": "Kulturell",
     "today": "Heute",
+    "tomorrow": "Morgen",
     "now": "Jetzt",
     "hoursShort": "{{count}}h",
     "daysShort": "{{count}}T",
