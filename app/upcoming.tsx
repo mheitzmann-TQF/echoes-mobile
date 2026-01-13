@@ -9,6 +9,7 @@ import { cleanTone, getCategoryLabel, formatOrigin } from '../lib/labelize';
 import { Clock, Moon, Leaf, Sparkles, Globe, Star } from 'lucide-react-native';
 import { useEntitlement } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
+import { getApiLang } from '../lib/lang';
 
 const { width } = Dimensions.get('window');
 
@@ -221,9 +222,9 @@ function EventCard({ event }: { event: any }) {
 // --- Main Screen ---
 
 export default function UpcomingScreen() {
-  const { coordinates, timezone, language } = useLocation();
+  const { coordinates, timezone } = useLocation();
   const { colors } = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isFullAccess } = useEntitlement();
   const [band, setBand] = useState<Band>('soon');
   const [category, setCategory] = useState<Category>('all');
@@ -247,6 +248,8 @@ export default function UpcomingScreen() {
           return cat === 'astronomical' ? 'astronomical' : 'cultural';
         };
         
+        // Get current language inside effect to ensure fresh value on re-render
+        const language = getApiLang();
         const apiEvents = await contentService.getMergedUpcomingEvents(90, language);
         
         if (apiEvents && apiEvents.length > 0) {
@@ -283,7 +286,7 @@ export default function UpcomingScreen() {
       }
     }
     loadEvents();
-  }, [language]);
+  }, [i18n.language]);
 
   // Helper to parse date and normalize to local midnight for consistent comparison
   const parseEventDate = (e: any): Date => {

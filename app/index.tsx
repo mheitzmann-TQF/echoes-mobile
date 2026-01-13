@@ -542,9 +542,9 @@ export default function HomeScreen() {
         setTimeout(() => reject(new Error('API timeout')), 15000)
       );
 
-      // Fetch Bundle + Calendars + Photo + Consciousness + Instant + Observances
+      // Fetch Bundle + Calendars + Photo + Consciousness + Instant
       const lang = getApiLang();
-      const [bundleData, calendarsData, photoData, consciousnessData, instantData, observancesData] = await Promise.all([
+      const [bundleData, calendarsData, photoData, consciousnessData, instantData] = await Promise.all([
         Promise.race([
           api.getDailyBundle(coordinates.lat, coordinates.lng, lang, timezone),
           timeoutPromise,
@@ -553,15 +553,10 @@ export default function HomeScreen() {
         getDailyPhoto().catch(() => null),
         api.getConsciousnessAnalysis().catch(() => null),
         api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone).catch(() => null),
-        fetch('/api/proxy/observances').then(res => res.json()).catch(() => null),
       ]);
       
       if (photoData) {
         setDailyPhoto(photoData);
-      }
-      
-      if (observancesData?.success && observancesData.observances) {
-        setObservances(observancesData.observances);
       }
 
       // Process Bundle

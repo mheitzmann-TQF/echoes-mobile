@@ -290,14 +290,26 @@ class ContentService {
       const data = await response.json();
       
       if (Array.isArray(data) && data.length > 0) {
-        // Labelize each event
-        const labeled = data.map((item: any) => ({
-          ...item,
-          name: item.name || item.title,
-          description: cleanTone(item.description || item.summary || ''),
-          origin: formatOrigin(item.origin, item.tradition, item.region),
-          category: item.category || item.type || 'cultural',
-        }));
+        // Map language code to field suffix (e.g., 'es' -> 'Es', 'fr' -> 'Fr')
+        const langSuffix = lang.charAt(0).toUpperCase() + lang.slice(1).toLowerCase();
+        
+        // Labelize each event with translated name/description
+        const labeled = data.map((item: any) => {
+          // Get translated name (fallback to English 'name')
+          const translatedName = item[`name${langSuffix}`] || item.name || item.title;
+          // Get translated description (fallback to English 'description')
+          const translatedDesc = item[`description${langSuffix}`] || item.description || item.summary || '';
+          // Get translated cultural origin (fallback to English)
+          const translatedOrigin = item[`culturalOrigin${langSuffix}`] || item.culturalOrigin || item.origin;
+          
+          return {
+            ...item,
+            name: translatedName,
+            description: cleanTone(translatedDesc),
+            origin: formatOrigin(translatedOrigin, item.tradition, item.region),
+            category: item.category || item.type || 'cultural',
+          };
+        });
         
         setCache(cacheKey, labeled);
         return labeled;
