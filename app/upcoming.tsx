@@ -240,15 +240,6 @@ export default function UpcomingScreen() {
   useEffect(() => {
     async function loadEvents() {
       try {
-        const now = new Date();
-        const startDate = now.toISOString().split('T')[0];
-        const endDate = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-        
-        const [apiEvents, observancesRes] = await Promise.all([
-          contentService.getMergedUpcomingEvents(90, language),
-          fetch(`/api/proxy/observances?start=${startDate}&end=${endDate}`).then(r => r.json()).catch(() => null)
-        ]);
-        
         const normalizeCategory = (cat: string) => {
           if (['pagan', 'religious', 'natural', 'indigenous', 'seasonal'].includes(cat)) {
             return 'cultural';
@@ -256,42 +247,34 @@ export default function UpcomingScreen() {
           return cat === 'astronomical' ? 'astronomical' : 'cultural';
         };
         
-        const dbObservances = observancesRes?.success && observancesRes.observances 
-          ? observancesRes.observances.map((obs: any) => ({
-              id: `db-${obs.id}`,
-              name: obs.name,
-              date: new Date(obs.date),
-              origin: obs.tradition,
-              description: obs.description,
-              displayCategory: obs.category,
-              category: normalizeCategory(obs.category)
-            }))
-          : CORE_DATES.map(e => ({ 
-              ...e, 
-              displayCategory: e.category,
-              category: normalizeCategory(e.category)
-            }));
+        const apiEvents = await contentService.getMergedUpcomingEvents(90, language);
         
-        const allEvents = [
-          ...dbObservances,
-          ...apiEvents.map(e => ({ 
+        if (apiEvents && apiEvents.length > 0) {
+          const allEvents = apiEvents.map(e => ({ 
             ...e, 
             displayCategory: e.category,
             category: normalizeCategory(e.category || 'cultural'),
             description: cleanTone(e.description || e.summary || '')
-          }))
-        ];
-        
-        const seen = new Set<string>();
-        const deduped = allEvents.filter(e => {
-          const key = e.name?.toLowerCase();
-          if (seen.has(key)) return false;
-          seen.add(key);
-          return true;
-        });
-        
-        console.log('📊 Merged events:', deduped.length);
-        setEvents(deduped);
+          }));
+          
+          const seen = new Set<string>();
+          const deduped = allEvents.filter(e => {
+            const key = e.name?.toLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+          
+          console.log('📊 Merged events from source:', deduped.length);
+          setEvents(deduped);
+        } else {
+          console.log('📊 Using fallback CORE_DATES');
+          setEvents(CORE_DATES.map(e => ({ 
+            ...e, 
+            displayCategory: e.category,
+            category: normalizeCategory(e.category)
+          })));
+        }
       } catch (e) {
         console.error('Error loading events:', e);
         setEvents(CORE_DATES.map(e => ({ ...e, category: 'cultural' })));
