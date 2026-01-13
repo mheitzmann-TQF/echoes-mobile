@@ -285,14 +285,89 @@ export default function UpcomingScreen() {
     loadEvents();
   }, [language]);
 
+  // Helper to parse date and normalize to local midnight for consistent comparison
+  const parseEventDate = (e: any): Date => {
+    // First check for fixedDate in "MM-DD" format (from API observances)
+    if (e.fixedDate && typeof e.fixedDate === 'string') {
+      const match = e.fixedDate.match(/^(\d{2})-(\d{2})$/);
+      if (match) {
+        const month = parseInt(match[1], 10) - 1; // 0-indexed month
+        const day = parseInt(match[2], 10);
+        const now = new Date();
+        const thisYear = now.getFullYear();
+        const dateThisYear = new Date(thisYear, month, day);
+        // If the date has passed this year, use next year
+        if (dateThisYear < now) {
+          return new Date(thisYear + 1, month, day);
+        }
+        return dateThisYear;
+      }
+    }
+    
+    // Check multiple possible date field names
+    const raw = e.date || e.start_date || e.event_date || e.observance_date || e.timestamp;
+    if (!raw) {
+      console.log('⚠️ No date field found for:', e.name, 'Available keys:', Object.keys(e).join(', '));
+      return new Date(NaN);
+    }
+    
+    let parsed: Date;
+    
+    // If already a Date object
+    if (raw instanceof Date) {
+      parsed = raw;
+    } else if (typeof raw === 'string') {
+      // For date-only strings (YYYY-MM-DD), parse as local time directly
+      if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+        const [year, month, day] = raw.split('-').map(Number);
+        return new Date(year, month - 1, day); // Already local midnight
+      }
+      // For ISO strings, parse and then normalize to local date
+      parsed = new Date(raw);
+    } else if (typeof raw === 'number') {
+      parsed = new Date(raw);
+    } else {
+      return new Date(NaN);
+    }
+    
+    // Normalize to local midnight for consistent date-only comparison
+    if (!isNaN(parsed.getTime())) {
+      return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+    }
+    
+    return new Date(NaN);
+  };
+
   // Bucket events by date range and filter by category
   const bucketedEvents = useMemo(() => {
     const { start, end } = getDateRange(band);
 
+    // Debug logging
+    if (events.length > 0) {
+      console.log('🔍 Filtering', events.length, 'events for band:', band);
+      console.log('🔍 Date range:', start.toDateString(), 'to', end.toDateString());
+      const samples = events.slice(0, 3).map(e => {
+        const parsed = parseEventDate(e);
+        return { 
+          name: e.name, 
+          rawDate: e.date, 
+          parsed: isNaN(parsed.getTime()) ? 'INVALID' : parsed.toDateString()
+        };
+      });
+      console.log('🔍 Sample events:', JSON.stringify(samples));
+    }
+
     let filtered = events.filter(e => {
-      const eventDate = new Date(e.date || e.timestamp);
+      const eventDate = parseEventDate(e);
+      if (isNaN(eventDate.getTime())) {
+        console.log('⚠️ Invalid date for event:', e.name, 'raw:', e.date);
+        return false;
+      }
       const inRange = eventDate >= start && eventDate <= end;
       const matchesCategory = category === 'all' || e.category === category;
+      if (!inRange && events.length < 20) {
+        console.log('⏭️ Out of range:', e.name, eventDate.toDateString());
+      }
       return inRange && matchesCategory;
     });
 
