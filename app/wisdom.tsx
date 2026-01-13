@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, Dimensions, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect } from 'expo-router';
 import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getApiLang } from '../lib/lang';
@@ -479,7 +480,14 @@ function CalendarDetailModal({ calendar, visible, onClose }: { calendar: any; vi
 export default function WisdomScreen() {
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
-  const { isFullAccess } = useEntitlement();
+  const { isFullAccess, refresh } = useEntitlement();
+  
+  // Refresh entitlement when screen gains focus
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
   
   const [consciousness, setConsciousness] = useState<any>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
@@ -785,7 +793,7 @@ export default function WisdomScreen() {
         visible={!!selectedCalendar} 
         onClose={() => setSelectedCalendar(null)} 
       />
-      {!isFullAccess && <PausedOverlay section="learn" />}
+      {!isFullAccess && <PausedOverlay section="learn" onRefreshEntitlement={refresh} />}
     </SafeAreaView>
   );
 }

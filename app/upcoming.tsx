@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect } from 'expo-router';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
@@ -256,7 +257,15 @@ export default function UpcomingScreen() {
   const { coordinates, timezone } = useLocation();
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
-  const { isFullAccess } = useEntitlement();
+  const { isFullAccess, refresh } = useEntitlement();
+  
+  // Refresh entitlement when screen gains focus
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
+  
   const [band, setBand] = useState<Band>('soon');
   const [category, setCategory] = useState<Category>('all');
   const [events, setEvents] = useState<any[]>([]);
@@ -479,7 +488,7 @@ export default function UpcomingScreen() {
           </View>
         )}
       </ScrollView>
-      {!isFullAccess && <PausedOverlay section="upcoming" />}
+      {!isFullAccess && <PausedOverlay section="upcoming" onRefreshEntitlement={refresh} />}
     </SafeAreaView>
   );
 }

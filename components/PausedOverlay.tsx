@@ -7,6 +7,7 @@ import Paywall from './Paywall';
 
 interface PausedOverlayProps {
   section: 'pulse' | 'learn' | 'upcoming';
+  onRefreshEntitlement?: () => Promise<void>;
 }
 
 const sectionToNamespace: Record<string, string> = {
@@ -15,7 +16,7 @@ const sectionToNamespace: Record<string, string> = {
   upcoming: 'upcoming'
 };
 
-export default function PausedOverlay({ section }: PausedOverlayProps) {
+export default function PausedOverlay({ section, onRefreshEntitlement }: PausedOverlayProps) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const [paywallVisible, setPaywallVisible] = useState(false);
@@ -24,6 +25,17 @@ export default function PausedOverlay({ section }: PausedOverlayProps) {
   const pausedTitle = t(`${namespace}.paused`);
   const pausedMessage = t(`${namespace}.pausedMessage`);
   const continueText = t('common.continue');
+
+  const handleSubscribed = async () => {
+    setPaywallVisible(false);
+    if (onRefreshEntitlement) {
+      try {
+        await onRefreshEntitlement();
+      } catch (error) {
+        console.error('[PausedOverlay] Error refreshing entitlement:', error);
+      }
+    }
+  };
 
   return (
     <>
@@ -52,7 +64,7 @@ export default function PausedOverlay({ section }: PausedOverlayProps) {
       >
         <Paywall
           onClose={() => setPaywallVisible(false)}
-          onSubscribed={() => setPaywallVisible(false)}
+          onSubscribed={handleSubscribed}
         />
       </Modal>
     </>

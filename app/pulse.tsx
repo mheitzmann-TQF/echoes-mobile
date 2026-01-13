@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect } from 'expo-router';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme, ThemeColors } from '../lib/ThemeContext';
 import api, { DailyBundleResponse, PlanetaryData } from '../lib/api';
@@ -325,7 +326,15 @@ export default function FieldScreen() {
   const language = i18n.language;
   const { coordinates, timezone } = useLocation();
   const { colors, theme } = useTheme();
-  const { isFullAccess } = useEntitlement();
+  const { isFullAccess, refresh } = useEntitlement();
+  
+  // Refresh entitlement when screen gains focus
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
+  
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
   const [bioRhythms, setBioRhythms] = useState<any>(null);
@@ -921,7 +930,7 @@ export default function FieldScreen() {
 
         </ScrollView>
       </SafeAreaView>
-      {!isFullAccess && <PausedOverlay section="pulse" />}
+      {!isFullAccess && <PausedOverlay section="pulse" onRefreshEntitlement={refresh} />}
     </View>
   );
 }
