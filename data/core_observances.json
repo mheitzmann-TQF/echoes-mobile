@@ -1,0 +1,313 @@
+{
+  "observances": [
+    {
+      "id": "epiphany",
+      "name": "Epiphany",
+      "month": 1,
+      "day": 6,
+      "category": "religious",
+      "origin": "Christian",
+      "description": "Celebration of revelation and light."
+    },
+    {
+      "id": "makar-sankranti",
+      "name": "Makar Sankranti",
+      "month": 1,
+      "day": 14,
+      "category": "religious",
+      "origin": "Hindu",
+      "description": "Harvest festival marking the sun's journey northward."
+    },
+    {
+      "id": "lunar-new-year",
+      "name": "Lunar New Year",
+      "month": 1,
+      "day": 29,
+      "category": "cultural",
+      "origin": "East Asian",
+      "description": "Celebrated across East Asia, marking a new lunar cycle.",
+      "note": "Date varies - based on lunar calendar"
+    },
+    {
+      "id": "imbolc",
+      "name": "Imbolc",
+      "month": 2,
+      "day": 1,
+      "category": "pagan",
+      "origin": "Celtic",
+      "description": "Festival marking the first stirrings of spring and the goddess Brigid."
+    },
+    {
+      "id": "candlemas",
+      "name": "Candlemas",
+      "month": 2,
+      "day": 2,
+      "category": "religious",
+      "origin": "Christian",
+      "description": "Feast of light and purification."
+    },
+    {
+      "id": "valentines",
+      "name": "Valentine's Day",
+      "month": 2,
+      "day": 14,
+      "category": "cultural",
+      "origin": "Global",
+      "description": "Day of love, affection, and connection."
+    },
+    {
+      "id": "mardi-gras",
+      "name": "Mardi Gras",
+      "month": 3,
+      "day": 4,
+      "category": "cultural",
+      "origin": "Global",
+      "description": "Carnival celebration before the Lenten season.",
+      "note": "Date varies - 47 days before Easter"
+    },
+    {
+      "id": "holi",
+      "name": "Holi",
+      "month": 3,
+      "day": 14,
+      "category": "religious",
+      "origin": "Hindu",
+      "description": "Festival of colors celebrating spring and love.",
+      "note": "Date varies - based on lunar calendar"
+    },
+    {
+      "id": "spring-equinox",
+      "name": "Spring Equinox",
+      "month": 3,
+      "day": 20,
+      "category": "natural",
+      "origin": "Global",
+      "description": "Day and night in balance, a threshold into the light half of the year."
+    },
+    {
+      "id": "ostara",
+      "name": "Ostara",
+      "month": 3,
+      "day": 20,
+      "category": "pagan",
+      "origin": "Germanic",
+      "description": "Spring festival of renewal, fertility, and new beginnings."
+    },
+    {
+      "id": "nowruz",
+      "name": "Nowruz",
+      "month": 3,
+      "day": 20,
+      "category": "cultural",
+      "origin": "Persian · Central Asian",
+      "description": "Persian New Year celebrating the arrival of spring."
+    },
+    {
+      "id": "passover",
+      "name": "Passover",
+      "month": 4,
+      "day": 12,
+      "category": "religious",
+      "origin": "Jewish",
+      "description": "Festival of freedom commemorating the Exodus.",
+      "note": "Date varies - based on Hebrew calendar"
+    },
+    {
+      "id": "easter",
+      "name": "Easter",
+      "month": 4,
+      "day": 20,
+      "category": "religious",
+      "origin": "Christian",
+      "description": "Celebration of resurrection and new life.",
+      "note": "Date varies - first Sunday after first full moon after spring equinox"
+    },
+    {
+      "id": "earth-day",
+      "name": "Earth Day",
+      "month": 4,
+      "day": 22,
+      "category": "cultural",
+      "origin": "Global",
+      "description": "Celebration of environmental awareness and protection."
+    },
+    {
+      "id": "beltane",
+      "name": "Beltane",
+      "month": 5,
+      "day": 1,
+      "category": "pagan",
+      "origin": "Celtic",
+      "description": "Fire festival celebrating the height of spring and fertility."
+    },
+    {
+      "id": "vesak",
+      "name": "Vesak",
+      "month": 5,
+      "day": 12,
+      "category": "religious",
+      "origin": "Buddhist",
+      "description": "Celebration of Buddha's birth, enlightenment, and passing.",
+      "note": "Date varies - based on lunar calendar"
+    },
+    {
+      "id": "summer-solstice",
+      "name": "Summer Solstice",
+      "month": 6,
+      "day": 21,
+      "category": "natural",
+      "origin": "Global",
+      "description": "The longest day, peak of solar energy."
+    },
+    {
+      "id": "litha",
+      "name": "Litha",
+      "month": 6,
+      "day": 21,
+      "category": "pagan",
+      "origin": "Celtic",
+      "description": "Midsummer celebration of light and abundance."
+    },
+    {
+      "id": "lammas",
+      "name": "Lammas",
+      "month": 8,
+      "day": 1,
+      "category": "pagan",
+      "origin": "Celtic",
+      "description": "First harvest festival, giving thanks for grain."
+    },
+    {
+      "id": "rosh-hashanah",
+      "name": "Rosh Hashanah",
+      "month": 9,
+      "day": 15,
+      "category": "religious",
+      "origin": "Jewish",
+      "description": "Jewish New Year, a time of reflection and renewal.",
+      "note": "Date varies - based on Hebrew calendar"
+    },
+    {
+      "id": "autumn-equinox",
+      "name": "Autumn Equinox",
+      "month": 9,
+      "day": 22,
+      "category": "natural",
+      "origin": "Global",
+      "description": "Balance point before descending into the dark half of the year."
+    },
+    {
+      "id": "mabon",
+      "name": "Mabon",
+      "month": 9,
+      "day": 22,
+      "category": "pagan",
+      "origin": "Celtic",
+      "description": "Second harvest, thanksgiving for abundance."
+    },
+    {
+      "id": "diwali",
+      "name": "Diwali",
+      "month": 10,
+      "day": 20,
+      "category": "religious",
+      "origin": "Hindu · Jain · Sikh",
+      "description": "Festival of lights celebrating the triumph of light over darkness.",
+      "note": "Date varies - based on Hindu lunar calendar"
+    },
+    {
+      "id": "samhain",
+      "name": "Samhain",
+      "month": 10,
+      "day": 31,
+      "category": "pagan",
+      "origin": "Celtic",
+      "description": "The veil between worlds thins; honoring ancestors."
+    },
+    {
+      "id": "day-of-dead",
+      "name": "Día de los Muertos",
+      "month": 11,
+      "day": 1,
+      "category": "cultural",
+      "origin": "Mexican",
+      "description": "Honoring deceased loved ones with offerings and celebration."
+    },
+    {
+      "id": "thanksgiving",
+      "name": "Thanksgiving",
+      "month": 11,
+      "day": 28,
+      "category": "cultural",
+      "origin": "North American",
+      "description": "Day of gratitude and gathering.",
+      "note": "Date varies - fourth Thursday of November (US)"
+    },
+    {
+      "id": "winter-solstice",
+      "name": "Winter Solstice",
+      "month": 12,
+      "day": 21,
+      "category": "natural",
+      "origin": "Global",
+      "description": "The shortest day, a threshold between darkness and returning light."
+    },
+    {
+      "id": "yule",
+      "name": "Yule",
+      "month": 12,
+      "day": 21,
+      "category": "pagan",
+      "origin": "Nordic · Celtic",
+      "description": "Ancient festival of light and renewal at the darkest point of the year."
+    },
+    {
+      "id": "hanukkah",
+      "name": "Hanukkah",
+      "month": 12,
+      "day": 25,
+      "category": "religious",
+      "origin": "Jewish",
+      "description": "Festival of Lights celebrating dedication and miracles.",
+      "note": "Date varies - based on Hebrew calendar"
+    },
+    {
+      "id": "christmas",
+      "name": "Christmas",
+      "month": 12,
+      "day": 25,
+      "category": "religious",
+      "origin": "Christian",
+      "description": "Celebration of light, generosity, and gathering."
+    },
+    {
+      "id": "kwanzaa",
+      "name": "Kwanzaa",
+      "month": 12,
+      "day": 26,
+      "category": "cultural",
+      "origin": "African American",
+      "description": "Seven-day celebration of African heritage and unity."
+    },
+    {
+      "id": "new-year",
+      "name": "New Year",
+      "month": 1,
+      "day": 1,
+      "category": "cultural",
+      "origin": "Global",
+      "description": "A fresh cycle begins, inviting reflection and intention."
+    }
+  ],
+  "categories": [
+    "religious",
+    "cultural",
+    "pagan",
+    "natural"
+  ],
+  "notes": {
+    "month": "1-12 (January = 1)",
+    "variable_dates": "Some dates vary each year based on lunar/religious calendars - marked with note field",
+    "translations_needed": "name, description, origin fields need translation for: es, fr, de, pt, it"
+  }
+}
