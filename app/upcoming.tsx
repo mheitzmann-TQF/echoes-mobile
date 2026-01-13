@@ -380,38 +380,51 @@ export default function UpcomingScreen() {
     if (events.length > 0) {
       console.log('🔍 Filtering', events.length, 'events for band:', band);
       console.log('🔍 Date range:', start.toDateString(), 'to', end.toDateString());
-      const samples = events.slice(0, 3).map(e => {
-        const parsed = parseEventDate(e);
-        return { 
-          name: e.name, 
-          rawDate: e.date, 
-          parsed: isNaN(parsed.getTime()) ? 'INVALID' : parsed.toDateString()
-        };
-      });
-      console.log('🔍 Sample events:', JSON.stringify(samples));
     }
 
-    let filtered = events.filter(e => {
+    // Filter events by date range only first (not category)
+    const inRangeEvents = events.filter(e => {
       const eventDate = parseEventDate(e);
       if (isNaN(eventDate.getTime())) {
-        console.log('⚠️ Invalid date for event:', e.name, 'raw:', e.date);
         return false;
       }
-      const inRange = eventDate >= start && eventDate <= end;
-      const matchesCategory = category === 'all' || e.category === category;
-      if (!inRange && events.length < 20) {
-        console.log('⏭️ Out of range:', e.name, eventDate.toDateString());
-      }
-      return inRange && matchesCategory;
+      return eventDate >= start && eventDate <= end;
     });
 
-    if (band === 'soon') {
-      return filtered.length > 0 ? filtered : getFallbackSoon(t).filter(e => category === 'all' || e.category === category);
-    } else if (band === 'cycle') {
-      return filtered.length > 0 ? filtered : getFallbackCycle(t).filter(e => category === 'all' || e.category === category);
-    } else {
-      return filtered.length > 0 ? filtered : getFallbackSeason(t).filter(e => category === 'all' || e.category === category);
+    // Check if we have any astronomical events from API
+    const hasAstronomicalEvents = inRangeEvents.some(e => e.category === 'astronomical');
+    
+    // Get the appropriate fallback based on band
+    const getFallback = () => {
+      if (band === 'soon') return getFallbackSoon(t);
+      if (band === 'cycle') return getFallbackCycle(t);
+      return getFallbackSeason(t);
+    };
+
+    // Merge fallback astronomical events if none exist from API
+    let eventsWithFallbacks = inRangeEvents;
+    if (!hasAstronomicalEvents) {
+      console.log('🌟 No astronomical events from API, adding fallbacks for band:', band);
+      const fallbackAstro = getFallback().filter(e => e.category === 'astronomical');
+      // Add unique ids to avoid collisions
+      const fallbacksWithDates = fallbackAstro.map(e => ({
+        ...e,
+        date: (e as any).date || new Date(Date.now() + ((e as any).daysUntil || 0) * 24 * 60 * 60 * 1000)
+      }));
+      eventsWithFallbacks = [...inRangeEvents, ...fallbacksWithDates];
     }
+
+    // Now filter by category
+    const filtered = eventsWithFallbacks.filter(e => 
+      category === 'all' || e.category === category
+    );
+
+    // If still empty after all filtering, use full fallback
+    if (filtered.length === 0) {
+      return getFallback().filter(e => category === 'all' || e.category === category);
+    }
+
+    return filtered;
   }, [events, band, category, t]);
 
   if (loading) {
