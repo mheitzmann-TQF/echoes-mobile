@@ -842,7 +842,7 @@ export default function FieldScreen() {
           <ExpandableCard
             icon={<Zap size={20} color={colors.text} />}
             title={t('field.geomagnetic')}
-            message={geoState.message}
+            message={geoState.label}
             collapsedDetail={geoState.label}
             isExpanded={expandedCards['geo']}
             onToggle={() => toggleCard('geo')}
