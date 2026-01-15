@@ -93,7 +93,14 @@ function ExpandableCard({
         
         <View style={styles.rightContainer}>
            {!isExpanded && collapsedDetail && (
-             <Text style={[styles.collapsedDetail, { color: colors.textSecondary }]}>{collapsedDetail}</Text>
+             <Text 
+               style={[styles.collapsedDetail, { color: colors.textSecondary }]}
+               numberOfLines={1}
+               adjustsFontSizeToFit
+               minimumFontScale={0.8}
+             >
+               {collapsedDetail}
+             </Text>
            )}
           <View style={styles.chevronContainer}>
             {isExpanded ? 
@@ -460,9 +467,9 @@ export default function FieldScreen() {
   };
   const regionalAverage = getRegionalAverage();
   
-  // Normalize geomagnetic state
+  // Normalize geomagnetic state (Kp 0-3 = quiet, Kp 4-5 = active, Kp 6+ = stormy)
   const getGeoState = (kp: number): { label: string; message: string } => {
-    if (kp <= 2) return { label: t('field.quiet'), message: t('field.quietField') };
+    if (kp <= 3) return { label: t('field.quiet'), message: t('field.quietField') };
     if (kp <= 5) return { label: t('field.active'), message: t('field.elevatedFieldActivity') };
     return { label: t('field.stormy'), message: t('field.stormyField') };
   };
@@ -1054,14 +1061,19 @@ const styles = StyleSheet.create({
   detailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
   },
   detailLabel: {
     fontSize: 14,
+    flex: 1,
+    marginRight: 8,
   },
   detailValue: {
     fontSize: 14,
     fontWeight: '600',
+    flexShrink: 1,
+    textAlign: 'right',
   },
   explanationText: {
     fontSize: 13,

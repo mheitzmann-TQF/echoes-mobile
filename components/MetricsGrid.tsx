@@ -56,7 +56,12 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
               {metric.icon}
             </View>
             <Text style={[styles.number, { color: colors.text }]}>{metric.number}</Text>
-            <Text style={[styles.label, { color: colors.textSecondary }]}>
+            <Text 
+              style={[styles.label, { color: colors.textSecondary }]}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.7}
+            >
               {metric.numberLabel}
             </Text>
           </View>
