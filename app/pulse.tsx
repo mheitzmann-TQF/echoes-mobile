@@ -665,57 +665,43 @@ export default function FieldScreen() {
     const phaseMap: { [key: string]: string } = {
       'night': 'night',
       'dawn': 'morning',
+      'sunrise': 'morning',
       'morning': 'morning',
       'midday': 'midday',
+      'noon': 'midday',
       'afternoon': 'afternoon',
+      'sunset': 'evening',
       'dusk': 'evening',
-      'evening': 'evening'
+      'evening': 'evening',
+      'twilight': 'evening'
     };
-    const key = phaseMap[phase.toLowerCase()] || 'midday';
+    const key = phaseMap[phase.toLowerCase()] || 'afternoon';
     return t(`field.${key}`);
   };
 
-  // Calculate actual solar phase based on current time vs sunrise/sunset
+  // Get solar phase from API response (snake_case or camelCase)
   const getSolarPhase = (): string => {
-    // Prefer API-provided phase if available and meaningful
-    const apiPhase = ctx?.solar?.phase || instant?.solar?.currentPhase;
+    // API returns current_phase (snake_case), mock uses currentPhase (camelCase)
+    const instantSolar = instant?.solar as any;
+    const apiPhase = ctx?.solar?.phase || 
+                     instantSolar?.current_phase || 
+                     instantSolar?.currentPhase;
+    
     if (apiPhase && apiPhase.length > 0 && apiPhase !== 'Day') {
+      console.log('[Pulse] Using API solar phase:', apiPhase);
       return translateSolarPhase(apiPhase);
     }
     
-    const now = new Date();
-    const currentTime = now.getHours() * 60 + now.getMinutes();
-    
-    // Parse sunrise/sunset from bundle data (instant doesn't have sunrise/sunset)
-    const sunriseStr = (ctx?.solar as any)?.sunrise || '07:00';
-    const sunsetStr = (ctx?.solar as any)?.sunset || '19:00';
-    
-    const sunriseTime = parseTimeToMinutes(sunriseStr, 7 * 60); // Default 7:00 AM
-    const sunsetTime = parseTimeToMinutes(sunsetStr, 19 * 60); // Default 7:00 PM
-    
-    // Dawn: 90 minutes before sunrise to sunrise (civil + nautical twilight)
-    const dawnStart = sunriseTime - 90;
-    // Dusk: sunset to 90 minutes after sunset
-    const duskEnd = sunsetTime + 90;
-    // Midday: 11:00 to 13:00
-    const middayStart = 11 * 60;
-    const middayEnd = 13 * 60;
-    
-    if (currentTime < dawnStart) {
-      return t('field.night');
-    } else if (currentTime < sunriseTime) {
-      return t('field.morning');
-    } else if (currentTime < middayStart) {
-      return t('field.morning');
-    } else if (currentTime < middayEnd) {
-      return t('field.midday');
-    } else if (currentTime < sunsetTime) {
-      return t('field.afternoon');
-    } else if (currentTime < duskEnd) {
-      return t('field.evening');
-    } else {
-      return t('field.night');
+    // Fallback to biological rhythms timeOfDay if available
+    const timeOfDay = bioRhythms?.circadian?.timeOfDay;
+    if (timeOfDay) {
+      console.log('[Pulse] Using bioRhythms timeOfDay:', timeOfDay);
+      return translateSolarPhase(timeOfDay);
     }
+    
+    // Last resort: return generic based on best available info
+    console.log('[Pulse] No API phase available, using default');
+    return t('field.afternoon');
   };
   
   const solarPhase = getSolarPhase();

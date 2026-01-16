@@ -63,7 +63,7 @@ const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
   }
 };
 
-const geocodeLocation = async (locationName: string): Promise<{ coords: Coordinates; name: string } | null> => {
+const geocodeLocation = async (locationName: string): Promise<{ coords: Coordinates; name: string; timezone: string } | null> => {
   const encodedQuery = encodeURIComponent(locationName);
   
   // Try direct first, then proxy fallback (same pattern as other endpoints)
@@ -82,8 +82,9 @@ const geocodeLocation = async (locationName: string): Promise<{ coords: Coordina
       }
       const data = await response.json();
       if (data.lat && data.lng) {
-        console.log('[Geocode] Success:', locationName, '→', data.name, { lat: data.lat, lng: data.lng });
-        return { coords: { lat: data.lat, lng: data.lng }, name: data.name };
+        const tz = data.timezone || 'UTC';
+        console.log('[Geocode] Success:', locationName, '→', data.name, { lat: data.lat, lng: data.lng, timezone: tz });
+        return { coords: { lat: data.lat, lng: data.lng }, name: data.name, timezone: tz };
       }
       if (data.error) {
         console.error('[Geocode] Not found:', locationName);
@@ -104,7 +105,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
-  const [timezone, setTimezone] = useState('UTC');
+  const [timezone, setTimezone] = useState('America/New_York'); // Default to NYC timezone
   const [language, setLanguage] = useState(detectDeviceLanguage());
 
   useEffect(() => {
@@ -118,6 +119,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
       geocodeLocation(locationName).then((result) => {
         if (result) {
           setCoordinates(result.coords);
+          setTimezone(result.timezone);
           // Update location name with disambiguated name from API (e.g., "Paris, France")
           if (result.name && result.name !== locationName) {
             setLocationName(result.name);
@@ -146,7 +148,11 @@ export function LocationProvider({ children }: { children: ReactNode }) {
       const name = await reverseGeocode(latitude, longitude);
       setLocationName(name);
       setCoordinates({ lat: latitude, lng: longitude });
-      console.log('[Location] Updated to:', name, { lat: latitude, lng: longitude });
+      
+      // Use device timezone for GPS location
+      const deviceTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+      setTimezone(deviceTimezone);
+      console.log('[Location] Updated to:', name, { lat: latitude, lng: longitude, timezone: deviceTimezone });
     } catch (error) {
       setLocationError('Failed to get location');
       console.error('[Location] Error:', error);
