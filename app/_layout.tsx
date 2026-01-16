@@ -10,20 +10,11 @@ import { logEnvOnce } from "@/lib/env";
 import { initI18n } from '../lib/i18n';
 import { useTranslation } from 'react-i18next';
 import Constants from 'expo-constants';
+import { SwipeTabs, type SwipeTab } from '../components/SwipeTabs';
 
 const isWeb = Platform.OS === 'web';
 const isExpoGo = (): boolean => Constants.appOwnership === 'expo';
-const useSwipeTabs = !isWeb && !isExpoGo();
-
-type SwipeTabType = {
-  key: string;
-  render: () => React.ReactNode;
-};
-
-let SwipeTabs: any = null;
-if (useSwipeTabs) {
-  SwipeTabs = require('../components/SwipeTabs').SwipeTabs;
-}
+const shouldUseSwipeTabs = !isWeb && !isExpoGo();
 
 import TodayScreen from './index';
 import PulseScreen from './pulse';
@@ -180,7 +171,7 @@ function BottomTabBar({
 function SwipeTabsNavigator() {
   const { theme, colors } = useTheme();
   
-  const tabs: SwipeTabType[] = useMemo(() => [
+  const tabs: SwipeTab[] = useMemo(() => [
     { key: 'today', render: () => <TodayScreen /> },
     { key: 'pulse', render: () => <PulseScreen /> },
     { key: 'wisdom', render: () => <WisdomScreen /> },
@@ -300,7 +291,7 @@ function ThemedApp() {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
   
-  if (useSwipeTabs && SwipeTabs) {
+  if (shouldUseSwipeTabs) {
     return <SwipeTabsNavigator />;
   }
   
