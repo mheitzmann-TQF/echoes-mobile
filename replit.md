@@ -54,7 +54,16 @@ For iOS Simulator testing without real IAP or DATABASE_URL:
 5. **Settings** - Location, theme, language, subscription management
 
 ### Mobile Application Framework
-Built using **React Native with Expo SDK**, leveraging **Expo Router** for navigation and **TypeScript** for type safety. UI animations are handled with **React Native Reanimated** and **Gesture Handler**.
+Built using **React Native with Expo SDK** and **TypeScript** for type safety. UI animations are handled with **React Native Reanimated** and **Gesture Handler**.
+
+### Swipeable Tab Navigation
+Tab navigation uses `react-native-pager-view` with a custom `SwipeTabs` component (`components/SwipeTabs.tsx`) that enables:
+- Swipe gestures between tabs (left/right)
+- Haptic feedback on tab changes (with deduplication to prevent double triggers)
+- Custom bottom tab bar synced with pager position
+- Platform-specific safe area handling (56dp minimum on Android for 3-button navigation)
+
+Note: This replaces Expo Router's Tabs for swipe functionality; deep linking is not supported.
 
 ### State Management
 Global state is managed using **React Contexts**: `LocationContext` for handling user location, timezone, and language, and `ThemeContext` for dark/light theme management. Data is stored locally on the device, with no user accounts, ensuring a **local-first data storage** approach.
