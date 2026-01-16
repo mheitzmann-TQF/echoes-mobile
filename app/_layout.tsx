@@ -1,14 +1,20 @@
-import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet, Image, Animated, ActivityIndicator, Platform } from 'react-native';
+import { View, StyleSheet, Animated, ActivityIndicator, Platform, TouchableOpacity, Text } from 'react-native';
 import { Svg, Path, Circle, Rect, Line } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LocationProvider } from '../lib/LocationContext';
 import { ThemeProvider, useTheme } from '../lib/ThemeContext';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { logEnvOnce } from "@/lib/env";
 import { initI18n } from '../lib/i18n';
 import { useTranslation } from 'react-i18next';
+import { SwipeTabs, type SwipeTab } from '../components/SwipeTabs';
+
+import TodayScreen from './index';
+import PulseScreen from './pulse';
+import WisdomScreen from './wisdom';
+import UpcomingScreen from './upcoming';
+import SettingsScreen from './settings';
 
 function TodayIcon({ color }: { color: string }) {
   return (
@@ -62,13 +68,11 @@ function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Fade in
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 600,
       useNativeDriver: true,
     }).start(() => {
-      // Hold for 1.5 seconds, then fade out
       setTimeout(() => {
         Animated.timing(fadeAnim, {
           toValue: 0,
@@ -96,79 +100,88 @@ function SplashScreen({ onFinish }: { onFinish: () => void }) {
   );
 }
 
-function TabsNavigator() {
-  const { theme, colors } = useTheme();
+type TabConfig = {
+  key: string;
+  labelKey: string;
+  icon: React.ComponentType<{ color: string }>;
+};
+
+const TAB_CONFIG: TabConfig[] = [
+  { key: 'today', labelKey: 'tabs.today', icon: TodayIcon },
+  { key: 'pulse', labelKey: 'tabs.pulse', icon: PulseIcon },
+  { key: 'wisdom', labelKey: 'tabs.wisdom', icon: WisdomIcon },
+  { key: 'upcoming', labelKey: 'tabs.upcoming', icon: UpcomingIcon },
+  { key: 'settings', labelKey: 'tabs.settings', icon: SettingsIcon },
+];
+
+function BottomTabBar({ 
+  activeIndex, 
+  onTabPress 
+}: { 
+  activeIndex: number; 
+  onTabPress: (index: number) => void;
+}) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   
   const bottomInset = Platform.OS === 'android'
-    ? Math.max(insets.bottom, 56)
+    ? Math.max(insets.bottom, 16)
     : insets.bottom;
+
+  return (
+    <View style={[
+      styles.tabBar,
+      { 
+        backgroundColor: colors.background,
+        borderTopColor: colors.border,
+        paddingBottom: 8 + bottomInset,
+      }
+    ]}>
+      {TAB_CONFIG.map((tab, index) => {
+        const isActive = index === activeIndex;
+        const color = isActive ? colors.text : colors.textTertiary;
+        const IconComponent = tab.icon;
+        
+        return (
+          <TouchableOpacity
+            key={tab.key}
+            style={styles.tabButton}
+            onPress={() => onTabPress(index)}
+            activeOpacity={0.7}
+          >
+            <IconComponent color={color} />
+            <Text style={[styles.tabLabel, { color }]}>
+              {t(tab.labelKey)}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
+function SwipeTabsNavigator() {
+  const { theme, colors } = useTheme();
   
+  const tabs: SwipeTab[] = useMemo(() => [
+    { key: 'today', render: () => <TodayScreen /> },
+    { key: 'pulse', render: () => <PulseScreen /> },
+    { key: 'wisdom', render: () => <WisdomScreen /> },
+    { key: 'upcoming', render: () => <UpcomingScreen /> },
+    { key: 'settings', render: () => <SettingsScreen /> },
+  ], []);
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
-      <Tabs
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: colors.background,
-            borderTopColor: colors.border,
-            borderTopWidth: 1,
-            height: 56 + bottomInset,
-            paddingBottom: 8 + bottomInset,
-            paddingTop: 8,
-          },
-          tabBarActiveTintColor: colors.text,
-          tabBarInactiveTintColor: colors.textTertiary,
-          tabBarLabelStyle: {
-            fontSize: 11,
-            fontWeight: '500',
-            marginTop: 4,
-          },
-        }}
-      >
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: t('tabs.today'),
-            tabBarIcon: ({ color }) => <TodayIcon color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="pulse"
-          options={{
-            title: t('tabs.pulse'),
-            tabBarIcon: ({ color }) => <PulseIcon color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="wisdom"
-          options={{
-            title: t('tabs.wisdom'),
-            tabBarIcon: ({ color }) => <WisdomIcon color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="upcoming"
-          options={{
-            title: t('tabs.upcoming'),
-            tabBarIcon: ({ color }) => <UpcomingIcon color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="settings"
-          options={{
-            title: t('tabs.settings'),
-            tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
-          }}
-        />
-        
-        {/* Hidden routes */}
-        <Tabs.Screen name="global" options={{ href: null }} />
-        <Tabs.Screen name="journey" options={{ href: null }} />
-        <Tabs.Screen name="you" options={{ href: null }} />
-      </Tabs>
+      <SwipeTabs
+        tabs={tabs}
+        initialIndex={0}
+        renderTabBar={({ index, setIndex }) => (
+          <BottomTabBar activeIndex={index} onTabPress={setIndex} />
+        )}
+      />
     </View>
   );
 }
@@ -194,7 +207,7 @@ function ThemedApp() {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
   
-  return <TabsNavigator />;
+  return <SwipeTabsNavigator />;
 }
 
 export default function RootLayout() {
@@ -221,5 +234,21 @@ const styles = StyleSheet.create({
   splashLogo: {
     width: 120,
     height: 120,
+  },
+  tabBar: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    paddingTop: 8,
+  },
+  tabButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 4,
+  },
+  tabLabel: {
+    fontSize: 11,
+    fontWeight: '500',
+    marginTop: 4,
   },
 });
