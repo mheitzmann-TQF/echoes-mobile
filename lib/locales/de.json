@@ -71,6 +71,7 @@
     "solar": "SOLAR",
     "coherence": "KOHÄRENZ",
     "geomagnetic": "GEOMAGNETISCH",
+    "geomagneticShort": "PLANET",
     "light": "Licht",
     "moon": "Mond",
     "lunarPhase": "Mondphase",

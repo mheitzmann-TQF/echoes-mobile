@@ -29,7 +29,7 @@ export default function MetricsGrid({ planetary }: MetricsGridProps) {
     {
       id: 'geomagnetism',
       number: `${geoKpIndex}`,
-      numberLabel: t('field.geomagnetic'),
+      numberLabel: t('field.geomagneticShort'),
       icon: <Zap size={22} color={colors.text} />,
       cardTitle: planetary.geomagnetic.activity,
       cardDesc: t('field.geomagneticField'),

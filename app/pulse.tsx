@@ -321,7 +321,7 @@ function PulseSnapshot({ coherence, circadianPhase, geoActivity, geoKpIndex, col
       
       <View style={[styles.snapshotChip, { backgroundColor: colors.surfaceHighlight }]}>
         <View style={[styles.snapshotDot, { backgroundColor: getGeoColor() }]} />
-        <Text style={[styles.snapshotLabel, { color: colors.textSecondary }]}>{t('field.geomagnetic')}</Text>
+        <Text style={[styles.snapshotLabel, { color: colors.textSecondary }]}>{t('field.geomagneticShort')}</Text>
         <Text style={[styles.snapshotValue, { color: colors.text }]}>{geoActivity}</Text>
       </View>
     </View>
@@ -841,7 +841,7 @@ export default function FieldScreen() {
           
           <ExpandableCard
             icon={<Zap size={20} color={colors.text} />}
-            title={t('field.geomagnetic')}
+            title={t('field.geomagneticShort')}
             message={geoState.label}
             collapsedDetail={geoState.label}
             isExpanded={expandedCards['geo']}
