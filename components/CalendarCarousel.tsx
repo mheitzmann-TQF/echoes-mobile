@@ -15,25 +15,43 @@ interface CalendarCarouselProps {
   onSelect?: (calendar: CalendarData) => void;
 }
 
+function getCalendarColor(calendarId: string): string {
+  switch (calendarId) {
+    case 'mayan': return '#9b59b6';
+    case 'chinese': return '#e74c3c';
+    case 'hindu': return '#f39c12';
+    case 'islamic': return '#2ecc71';
+    case 'hebrew': return '#3498db';
+    case 'gregorian': return '#95a5a6';
+    default: return '#9b59b6';
+  }
+}
+
 export default function CalendarCarousel({ calendars, onSelect }: CalendarCarouselProps) {
   const { colors } = useTheme();
   return (
     <View style={styles.container}>
       <View style={styles.grid}>
-        {calendars.map((cal) => (
-          <TouchableOpacity 
-            key={cal.id} 
-            style={[styles.card, { backgroundColor: colors.surfaceHighlight, borderColor: colors.border }]}
-            onPress={() => onSelect?.(cal)}
-            activeOpacity={0.8}
-          >
-            <Text style={[styles.cardName, { color: colors.textTertiary }]}>{cal.name}</Text>
-            <Text style={[styles.cardDate, { color: colors.text }]}>{cal.date}</Text>
-            <View style={styles.typeContainer}>
-              <Text style={[styles.cardType, { backgroundColor: colors.surface, color: colors.textSecondary }]}>{cal.type}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        {calendars.map((cal) => {
+          const accentColor = getCalendarColor(cal.id);
+          return (
+            <TouchableOpacity 
+              key={cal.id} 
+              style={[styles.card, { backgroundColor: colors.surfaceHighlight, borderColor: colors.border }]}
+              onPress={() => onSelect?.(cal)}
+              activeOpacity={0.8}
+            >
+              <View style={[styles.colorAccent, { backgroundColor: accentColor }]} />
+              <View style={styles.cardContent}>
+                <Text style={[styles.cardName, { color: colors.textTertiary }]}>{cal.name}</Text>
+                <Text style={[styles.cardDate, { color: colors.text }]}>{cal.date}</Text>
+                <View style={styles.typeContainer}>
+                  <Text style={[styles.cardType, { backgroundColor: colors.surface, color: colors.textSecondary }]}>{cal.type}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </View>
   );
@@ -54,12 +72,21 @@ const styles = StyleSheet.create({
     width: '31%',
     backgroundColor: 'rgba(255,255,255,0.08)',
     borderRadius: 12,
-    padding: 10,
-    justifyContent: 'space-between',
+    overflow: 'hidden',
+    flexDirection: 'row',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.05)',
     minHeight: 85,
     marginBottom: 8,
+  },
+  colorAccent: {
+    width: 4,
+    height: '100%',
+  },
+  cardContent: {
+    flex: 1,
+    padding: 10,
+    justifyContent: 'space-between',
   },
   cardName: {
     fontSize: 13,
