@@ -1,6 +1,7 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import * as Location from 'expo-location';
 import { getLocales } from 'expo-localization';
+import { getCurrentLanguage } from './i18n';
 
 interface Coordinates {
   lat: number;
@@ -63,13 +64,14 @@ const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
   }
 };
 
-const geocodeLocation = async (locationName: string): Promise<{ coords: Coordinates; name: string; timezone: string } | null> => {
+const geocodeLocation = async (locationName: string, lang: string = 'en'): Promise<{ coords: Coordinates; name: string; timezone: string } | null> => {
   const encodedQuery = encodeURIComponent(locationName);
   
   // Try direct first, then proxy fallback (same pattern as other endpoints)
+  // Include language parameter for localized place names
   const urls = [
-    `https://source.thequietframe.com/api/geocode?q=${encodedQuery}`,
-    `/api/proxy/geocode?q=${encodedQuery}`
+    `https://source.thequietframe.com/api/geocode?q=${encodedQuery}&lang=${lang}`,
+    `/api/proxy/geocode?q=${encodedQuery}&lang=${lang}`
   ];
   
   for (const url of urls) {
@@ -116,7 +118,8 @@ export function LocationProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!useCurrentLocation && locationName && locationName !== 'New York') {
-      geocodeLocation(locationName).then((result) => {
+      const currentLang = getCurrentLanguage();
+      geocodeLocation(locationName, currentLang).then((result) => {
         if (result) {
           setCoordinates(result.coords);
           setTimezone(result.timezone);
