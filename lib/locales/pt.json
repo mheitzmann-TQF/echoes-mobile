@@ -194,6 +194,7 @@
     "timing_new_beginnings": "Novos começos",
     "timing_early_evening": "Início da noite",
     "timing_morning_to_midday": "Manhã até o meio-dia",
+    "timing_pre_dawn_hours": "Horas antes do amanhecer",
     "timing_wait_for_quarter_moon": "Quarto de lua se aproximando",
     "timing_wait_20_days": "Próximo ciclo em ~20 dias",
     "timing_next_new_moon_one": "Lua nova em ~{{count}} dia",

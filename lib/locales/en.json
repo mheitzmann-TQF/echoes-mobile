@@ -237,6 +237,7 @@
     "timing_new_beginnings": "New Beginnings",
     "timing_early_evening": "Early evening",
     "timing_morning_to_midday": "Morning to Midday",
+    "timing_pre_dawn_hours": "Pre-dawn hours",
     "timing_wait_for_quarter_moon": "Quarter moon approaching",
     "timing_wait_20_days": "Next cycle in ~20 days",
     "timing_next_new_moon_one": "New moon in ~{{count}} day",

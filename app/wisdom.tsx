@@ -816,7 +816,7 @@ const styles = StyleSheet.create({
   gaugeColumn: { alignItems: 'center', flex: 1 },
   gaugeTitle: { fontSize: 11, fontWeight: '600', letterSpacing: 1, marginBottom: 8, textTransform: 'uppercase' },
   tqfLabel: { fontSize: 12, fontWeight: '600', letterSpacing: 1, marginBottom: 8 },
-  gaugeContainer: { alignItems: 'center' },
+  gaugeContainer: { alignItems: 'center', paddingBottom: 16 },
   gaugeValue: { position: 'absolute', alignItems: 'center', width: '100%' },
   gaugeValueInner: { position: 'absolute', alignItems: 'center', width: '100%' },
   gaugeScore: { fontSize: 36, fontWeight: '700' },

@@ -194,6 +194,7 @@
     "timing_new_beginnings": "Neuanfänge",
     "timing_early_evening": "Früher Abend",
     "timing_morning_to_midday": "Morgen bis Mittag",
+    "timing_pre_dawn_hours": "Stunden vor Morgengrauen",
     "timing_wait_for_quarter_moon": "Viertelmond nähert sich",
     "timing_wait_20_days": "Nächster Zyklus in ~20 Tagen",
     "timing_next_new_moon_one": "Neumond in ~{{count}} Tag",
