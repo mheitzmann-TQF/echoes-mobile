@@ -20,22 +20,36 @@ type Props = {
 export function SwipeTabs({ tabs, initialIndex = 0, renderTabBar }: Props) {
   const pagerRef = useRef<PagerView>(null);
   const [index, setIndexState] = useState(initialIndex);
+  const lastHapticTime = useRef(0);
+  const isTabPress = useRef(false);
+
+  const triggerHaptic = useCallback(() => {
+    const now = Date.now();
+    if (now - lastHapticTime.current > 100) {
+      lastHapticTime.current = now;
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
+  }, []);
 
   const setIndex = useCallback((i: number) => {
     if (i !== index) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      isTabPress.current = true;
+      triggerHaptic();
+      setIndexState(i);
+      pagerRef.current?.setPage(i);
     }
-    setIndexState(i);
-    pagerRef.current?.setPage(i);
-  }, [index]);
+  }, [index, triggerHaptic]);
 
   const onPageSelected = useCallback((e: any) => {
     const newIndex = e.nativeEvent.position;
     if (newIndex !== index) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      if (!isTabPress.current) {
+        triggerHaptic();
+      }
+      isTabPress.current = false;
       setIndexState(newIndex);
     }
-  }, [index]);
+  }, [index, triggerHaptic]);
 
   return (
     <View style={styles.container}>

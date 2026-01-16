@@ -126,7 +126,7 @@ function BottomTabBar({
   const insets = useSafeAreaInsets();
   
   const bottomInset = Platform.OS === 'android'
-    ? Math.max(insets.bottom, 16)
+    ? Math.max(insets.bottom, 56)
     : insets.bottom;
 
   return (
