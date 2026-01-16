@@ -12,6 +12,24 @@ Echoes is a cross-platform mobile application (iOS/Android) built with React Nat
 
 ## Recent Changes (January 2026)
 
+### Timezone & Location Improvements (Jan 16)
+- Geocode API now returns timezone field (e.g., "Europe/Paris")
+- LocationContext extracts and stores timezone from geocode response
+- All API calls pass correct user timezone instead of hardcoded UTC
+- GPS location uses device timezone via `Intl.DateTimeFormat()` when "Use current location" is enabled
+- Default timezone is America/New_York (not UTC)
+
+### Solar Phase Fix (Jan 16)
+- Pulse tab now reads `current_phase` directly from API (handles both snake_case and camelCase)
+- No longer recalculates solar phase from device time
+- Sunset time parsing handles ISO timestamps (e.g., "2026-01-16T21:55:56.000Z") and formats in user's timezone
+- `translateSolarPhase()` maps: sunrise→morning, midday→midday, sunset→evening, night→night
+
+### Settings UX Improvements (Jan 16)
+- Added X clear button to manual location input field
+- Button appears only when text is present, clears field on tap
+- Makes it easier to enter a new location without manually deleting existing text
+
 ### Vocabulary Overhaul
 - Removed all forbidden SaaS terms from 6 locale files
 - Subscription uses "Continue with full access" not "Upgrade"
