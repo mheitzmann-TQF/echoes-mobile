@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet, Image, Animated, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Image, Animated, ActivityIndicator, Platform } from 'react-native';
 import { Svg, Path, Circle, Rect, Line } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LocationProvider } from '../lib/LocationContext';
@@ -101,6 +101,10 @@ function TabsNavigator() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   
+  const bottomInset = Platform.OS === 'android'
+    ? Math.max(insets.bottom, 48)
+    : insets.bottom;
+  
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
@@ -111,8 +115,8 @@ function TabsNavigator() {
             backgroundColor: colors.background,
             borderTopColor: colors.border,
             borderTopWidth: 1,
-            height: 56 + insets.bottom,
-            paddingBottom: 8 + insets.bottom,
+            height: 56 + bottomInset,
+            paddingBottom: 8 + bottomInset,
             paddingTop: 8,
           },
           tabBarActiveTintColor: colors.text,
