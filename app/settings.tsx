@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState, useCallback } from 'react';
-import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe } from 'lucide-react-native';
+import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X } from 'lucide-react-native';
 import { useTheme } from '../lib/ThemeContext';
 import { useEntitlement } from '@/lib/iap/useEntitlement';
 import Paywall from '@/components/Paywall';
@@ -116,18 +116,30 @@ export default function SettingsScreen() {
           {/* Manual Location Input - only show when NOT using current location */}
           {!useCurrentLocation && showManualInput && (
             <View style={[styles.manualInputContainer, { borderTopColor: colors.border }]}>
-              <TextInput
-                style={[styles.textInput, { 
-                  backgroundColor: colors.surfaceHighlight, 
-                  borderColor: colors.border,
-                  color: colors.text 
-                }]}
-                placeholder={t('settings.enterLocation')}
-                placeholderTextColor={colors.textTertiary}
-                value={manualInput}
-                onChangeText={setManualInput}
-                onSubmitEditing={handleSetLocation}
-              />
+              <View style={styles.inputWrapper}>
+                <TextInput
+                  style={[styles.textInput, { 
+                    backgroundColor: colors.surfaceHighlight, 
+                    borderColor: colors.border,
+                    color: colors.text,
+                    paddingRight: 40
+                  }]}
+                  placeholder={t('settings.enterLocation')}
+                  placeholderTextColor={colors.textTertiary}
+                  value={manualInput}
+                  onChangeText={setManualInput}
+                  onSubmitEditing={handleSetLocation}
+                />
+                {manualInput.length > 0 && (
+                  <TouchableOpacity 
+                    style={styles.clearButton}
+                    onPress={() => setManualInput('')}
+                    data-testid="button-clear-location"
+                  >
+                    <X size={18} color={colors.textTertiary} />
+                  </TouchableOpacity>
+                )}
+              </View>
               <View style={styles.buttonRow}>
                 <TouchableOpacity 
                   style={[styles.button, styles.buttonCancel, { borderColor: colors.border, backgroundColor: colors.surface }]}
@@ -457,12 +469,24 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     borderTopWidth: 1,
   },
+  inputWrapper: {
+    position: 'relative',
+  },
   textInput: {
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 14,
+  },
+  clearButton: {
+    position: 'absolute',
+    right: 12,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 4,
   },
   buttonRow: {
     flexDirection: 'row',
