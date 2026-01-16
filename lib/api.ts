@@ -396,6 +396,40 @@ class EchoesAPI {
       return null;
     }
   }
+
+  async getWisdomCycle(lang: string = 'en', date?: string): Promise<AncientWisdomResponse | null> {
+    try {
+      const endpoint = ContentEndpoints.wisdomCycle(lang, date);
+      const data = await fetchContentJson<AncientWisdomResponse>(endpoint);
+      console.log('✅ Ancient wisdom received:', data);
+      return data;
+    } catch (error) {
+      console.error('❌ Ancient wisdom error:', error);
+      return null;
+    }
+  }
+}
+
+export interface AncientWisdomCulture {
+  name: string;
+  culture: 'mayan' | 'yoruba' | 'chinese' | 'ethiopian' | 'celtic' | 'hindu' | 'egyptian';
+  icon: string;
+  message: string;
+  daySign?: string;
+  tone?: number;
+  toneName?: string;
+  dayName?: string;
+  deity?: string;
+  element?: string;
+  tree?: string;
+  month?: string;
+  decan?: string;
+  tithi?: string;
+}
+
+export interface AncientWisdomResponse {
+  date: string;
+  cultures: AncientWisdomCulture[];
 }
 
 export const api = new EchoesAPI();

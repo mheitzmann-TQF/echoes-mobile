@@ -5,12 +5,13 @@ import { useFocusEffect } from 'expo-router';
 import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getApiLang } from '../lib/lang';
-import api, { RegionalBreakdown } from '../lib/api';
-import { Brain, Calendar, TrendingUp, TrendingDown, Minus, ChevronRight, Info, X, FileText, Globe } from 'lucide-react-native';
+import api, { RegionalBreakdown, AncientWisdomCulture } from '../lib/api';
+import { Brain, Sparkles, TrendingUp, TrendingDown, Minus, Info, X, FileText, Globe } from 'lucide-react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import i18next from 'i18next';
 import { useEntitlement } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
+import AncientWisdomCard from '../components/AncientWisdomCard';
 
 const { width } = Dimensions.get('window');
 
@@ -240,136 +241,6 @@ function TrendIndicator({ trend }: { trend: string | number }) {
   );
 }
 
-// Calendar system name translations
-const CALENDAR_TRANSLATIONS: Record<string, Record<string, string>> = {
-  en: {
-    maya: 'Mayan Tzolkin',
-    chinese: 'Chinese Agricultural',
-    hindu: 'Hindu Panchang',
-    islamic: 'Islamic Hijri',
-    hebrew: 'Hebrew Calendar',
-  },
-  fr: {
-    maya: 'Tzolkin Maya',
-    chinese: 'Calendrier Agricole Chinois',
-    hindu: 'Panchang Hindou',
-    islamic: 'Calendrier Hijri Islamique',
-    hebrew: 'Calendrier Hébraïque',
-  },
-  es: {
-    maya: 'Tzolkin Maya',
-    chinese: 'Calendario Agrícola Chino',
-    hindu: 'Panchang Hindú',
-    islamic: 'Calendario Hijri Islámico',
-    hebrew: 'Calendario Hebreo',
-  },
-  de: {
-    maya: 'Maya Tzolkin',
-    chinese: 'Chinesischer Landwirtschaftskalender',
-    hindu: 'Hindu Panchang',
-    islamic: 'Islamischer Hijri Kalender',
-    hebrew: 'Hebräischer Kalender',
-  },
-  pt: {
-    maya: 'Tzolkin Maia',
-    chinese: 'Calendário Agrícola Chinês',
-    hindu: 'Panchang Hindu',
-    islamic: 'Calendário Hijri Islâmico',
-    hebrew: 'Calendário Hebraico',
-  },
-  it: {
-    maya: 'Tzolkin Maya',
-    chinese: 'Calendario Agricolo Cinese',
-    hindu: 'Panchang Indù',
-    islamic: 'Calendario Hijri Islamico',
-    hebrew: 'Calendario Ebraico',
-  },
-};
-
-function getCalendarKey(systemName: string): string | null {
-  // Normalize: lowercase and strip diacritics (é→e, ã→a, etc.)
-  const name = systemName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  
-  // Maya/Mayan Tzolkin calendar (matches EN, FR, DE, ES, PT, IT)
-  if (name.includes('maya') || name.includes('maia') || name.includes('tzolkin')) return 'maya';
-  // Chinese Agricultural calendar (matches various translations including accented forms)
-  if (name.includes('chinese') || name.includes('chin') || name.includes('agricol') || 
-      name.includes('chines') || name.includes('landwirtschaft')) return 'chinese';
-  // Hindu Panchang calendar
-  if (name.includes('hindu') || name.includes('hindou') || name.includes('panchang') || 
-      name.includes('indu')) return 'hindu';
-  // Islamic Hijri calendar (accents stripped: islâmico→islamico, hébraïque→hebraique)
-  if (name.includes('islam') || name.includes('hijri') || name.includes('muharram')) return 'islamic';
-  // Hebrew calendar (accents stripped)
-  if (name.includes('hebrew') || name.includes('hebr') || name.includes('hebreo') ||
-      name.includes('tevet') || name.includes('jewish') || name.includes('ebraico')) return 'hebrew';
-  return null;
-}
-
-function translateCalendarName(systemName: string, lang: string): string {
-  const key = getCalendarKey(systemName);
-  if (!key) return systemName;
-  
-  const translations = CALENDAR_TRANSLATIONS[lang] || CALENDAR_TRANSLATIONS.en;
-  return translations[key] || systemName;
-}
-
-function getCalendarColor(calendar: any): string {
-  // First try type-based color (for backward compatibility)
-  if (calendar.type) {
-    switch (calendar.type?.toLowerCase()) {
-      case 'sacred': return '#9b59b6';
-      case 'lunisolar': return '#3498db';
-      case 'lunar': return '#f1c40f';
-      case 'civil': return '#2ecc71';
-    }
-  }
-  // Fallback to system name-based color
-  const key = getCalendarKey(calendar.system || calendar.name || '');
-  switch (key) {
-    case 'maya': return '#9b59b6';
-    case 'chinese': return '#e74c3c';
-    case 'hindu': return '#f39c12';
-    case 'islamic': return '#2ecc71';
-    case 'hebrew': return '#3498db';
-    default: return '#9b59b6';
-  }
-}
-
-function normalizeCalendar(calendar: any, lang: string = 'en'): { name: string; date: string; phase?: string } {
-  const systemName = calendar.system || calendar.name || 'Unknown Calendar';
-  return {
-    name: translateCalendarName(systemName, lang),
-    date: calendar.date || calendar.currentDate || '',
-    phase: calendar.phase || undefined,
-  };
-}
-
-function CalendarCard({ calendar, onPress, lang }: { calendar: any; onPress: () => void; lang: string }) {
-  const { colors } = useTheme();
-  
-  const color = getCalendarColor(calendar);
-  const { name, date, phase } = normalizeCalendar(calendar, lang);
-  
-  return (
-    <TouchableOpacity
-      style={[styles.calendarCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
-      onPress={onPress}
-      activeOpacity={0.8}
-    >
-      <View style={[styles.calendarColorBar, { backgroundColor: color }]} />
-      <View style={styles.calendarContent}>
-        <Text style={[styles.calendarName, { color: colors.text }]}>{name}</Text>
-        <Text style={[styles.calendarDate, { color: colors.textSecondary }]}>{date}</Text>
-        {phase && (
-          <Text style={[styles.calendarPhase, { color: colors.textTertiary }]}>{phase}</Text>
-        )}
-      </View>
-      <ChevronRight size={20} color={colors.textTertiary} />
-    </TouchableOpacity>
-  );
-}
-
 function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t: any }) {
   const { colors } = useTheme();
   
@@ -410,73 +281,6 @@ function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t
   );
 }
 
-function CalendarDetailModal({ calendar, visible, onClose }: { calendar: any; visible: boolean; onClose: () => void }) {
-  const { colors } = useTheme();
-  const { t, i18n } = useTranslation();
-  const lang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
-  
-  if (!calendar) return null;
-  
-  const color = getCalendarColor(calendar);
-  const { name: calendarName, date: calendarDate } = normalizeCalendar(calendar, lang);
-  
-  return (
-    <Modal visible={visible} animationType="slide" transparent>
-      <View style={styles.modalOverlay}>
-        <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
-          <View style={styles.modalHeader}>
-            <View style={[styles.modalColorBar, { backgroundColor: color }]} />
-            <View style={styles.modalHeaderText}>
-              <Text style={[styles.modalTitle, { color: colors.text }]}>{calendarName}</Text>
-              <Text style={[styles.modalSubtitle, { color: colors.textSecondary }]}>{calendarDate}</Text>
-            </View>
-            <TouchableOpacity onPress={onClose} style={styles.modalClose}>
-              <X size={24} color={colors.textSecondary} />
-            </TouchableOpacity>
-          </View>
-          
-          <ScrollView style={styles.modalBody} showsVerticalScrollIndicator={false}>
-            {calendar.type && (
-              <View style={styles.modalSection}>
-                <Text style={[styles.modalLabel, { color: colors.textSecondary }]}>{t('learn.calendarType') || 'Type'}</Text>
-                <Text style={[styles.modalValue, { color: colors.text }]}>{calendar.type}</Text>
-              </View>
-            )}
-            
-            {calendar.significance && (
-              <View style={styles.modalSection}>
-                <Text style={[styles.modalLabel, { color: colors.textSecondary }]}>{t('learn.significance') || 'Significance'}</Text>
-                <Text style={[styles.modalValue, { color: colors.text }]}>{calendar.significance}</Text>
-              </View>
-            )}
-            
-            {calendar.energy && (
-              <View style={styles.modalSection}>
-                <Text style={[styles.modalLabel, { color: colors.textSecondary }]}>{t('learn.energy') || 'Energy'}</Text>
-                <Text style={[styles.modalValue, { color: colors.text }]}>{calendar.energy}</Text>
-              </View>
-            )}
-            
-            {calendar.phase && (
-              <View style={styles.modalSection}>
-                <Text style={[styles.modalLabel, { color: colors.textSecondary }]}>{t('learn.phase') || 'Phase'}</Text>
-                <Text style={[styles.modalValue, { color: colors.text }]}>{calendar.phase}</Text>
-              </View>
-            )}
-            
-            {calendar.element && (
-              <View style={styles.modalSection}>
-                <Text style={[styles.modalLabel, { color: colors.textSecondary }]}>{t('learn.element')}</Text>
-                <Text style={[styles.modalValue, { color: colors.text }]}>{calendar.element}</Text>
-              </View>
-            )}
-          </ScrollView>
-        </View>
-      </View>
-    </Modal>
-  );
-}
-
 export default function WisdomScreen() {
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
@@ -490,19 +294,17 @@ export default function WisdomScreen() {
   );
   
   const [consciousness, setConsciousness] = useState<any>(null);
-  const [calendars, setCalendars] = useState<any[]>([]);
+  const [ancientWisdom, setAncientWisdom] = useState<AncientWisdomCulture[]>([]);
   const [regionalData, setRegionalData] = useState<RegionalBreakdown[]>([]);
   const [loading, setLoading] = useState(true);
   const [methodologyVisible, setMethodologyVisible] = useState(false);
-  const [selectedCalendar, setSelectedCalendar] = useState<any>(null);
   
   // Track current language for proper re-fetching
   const currentLang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
 
   useEffect(() => {
-    // Reset state when language changes to trigger fresh fetch
     setLoading(true);
-    setCalendars([]);
+    setAncientWisdom([]);
     setConsciousness(null);
     setRegionalData([]);
     
@@ -510,14 +312,16 @@ export default function WisdomScreen() {
       try {
         console.log('[WisdomScreen] Loading data with lang:', currentLang);
         
-        const [consciousnessData, calendarsData, regionalResponse] = await Promise.all([
+        const [consciousnessData, wisdomData, regionalResponse] = await Promise.all([
           api.getConsciousnessAnalysis().catch(() => null),
-          api.getTraditionalCalendars(40.7128, -74.006, 'UTC', currentLang).catch(() => []),
+          api.getWisdomCycle(currentLang).catch(() => null),
           api.getRegionalBreakdown().catch(() => null),
         ]);
         
         setConsciousness(consciousnessData);
-        setCalendars(calendarsData || []);
+        if (wisdomData?.cultures) {
+          setAncientWisdom(wisdomData.cultures);
+        }
         if (regionalResponse?.success && regionalResponse?.data?.regions) {
           setRegionalData(regionalResponse.data.regions);
         }
@@ -683,28 +487,26 @@ export default function WisdomScreen() {
           </View>
         </View>
 
-        {/* Calendar Wisdom Section */}
+        {/* Ancient Wisdom Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Calendar size={20} color="#e67e22" />
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('learn.calendarWisdom')}</Text>
+            <Sparkles size={20} color="#9b59b6" />
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('learn.ancientWisdom') || 'Ancient Wisdom'}</Text>
           </View>
-          <Text style={[styles.sectionSubtitle, { color: colors.textSecondary }]}>{t('learn.calendarWisdomDesc')}</Text>
+          <Text style={[styles.sectionSubtitle, { color: colors.textSecondary }]}>{t('learn.ancientWisdomDesc') || 'Daily guidance from ancient calendar traditions'}</Text>
           
-          {calendars.length > 0 ? (
-            <View style={styles.calendarList}>
-              {calendars.map((cal, idx) => (
-                <CalendarCard 
-                  key={`${idx}-${currentLang}`} 
-                  calendar={cal} 
-                  lang={currentLang}
-                  onPress={() => setSelectedCalendar(cal)} 
+          {ancientWisdom.length > 0 ? (
+            <View style={styles.wisdomList}>
+              {ancientWisdom.map((culture, idx) => (
+                <AncientWisdomCard 
+                  key={`${culture.culture}-${idx}`} 
+                  culture={culture}
                 />
               ))}
             </View>
           ) : (
             <View style={[styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Text style={[styles.emptyText, { color: colors.textSecondary }]}>{t('learn.noDataAvailable') || 'No calendar data available'}</Text>
+              <Text style={[styles.emptyText, { color: colors.textSecondary }]}>{t('learn.noDataAvailable') || 'No wisdom data available'}</Text>
             </View>
           )}
         </View>
@@ -787,12 +589,6 @@ export default function WisdomScreen() {
         </TouchableOpacity>
       </Modal>
       
-      {/* Calendar Detail Modal */}
-      <CalendarDetailModal 
-        calendar={selectedCalendar} 
-        visible={!!selectedCalendar} 
-        onClose={() => setSelectedCalendar(null)} 
-      />
       {!isFullAccess && <PausedOverlay section="learn" onRefreshEntitlement={refresh} />}
     </SafeAreaView>
   );
@@ -867,13 +663,7 @@ const styles = StyleSheet.create({
   methodologyBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 12, borderTopWidth: 1, marginTop: 4 },
   methodologyText: { fontSize: 13 },
   
-  calendarList: { gap: 12 },
-  calendarCard: { flexDirection: 'row', alignItems: 'center', borderRadius: 12, borderWidth: 1, overflow: 'hidden' },
-  calendarColorBar: { width: 4, height: '100%' },
-  calendarContent: { flex: 1, padding: 16 },
-  calendarName: { fontSize: 16, fontWeight: '600', marginBottom: 4 },
-  calendarDate: { fontSize: 14, marginBottom: 2 },
-  calendarPhase: { fontSize: 12 },
+  wisdomList: { gap: 12 },
   
   emptyCard: { borderRadius: 16, padding: 40, borderWidth: 1, alignItems: 'center' },
   emptyText: { fontSize: 14 },

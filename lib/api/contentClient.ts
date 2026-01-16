@@ -188,4 +188,12 @@ export const ContentEndpoints = {
   weatherProphecies: (lang: string) => `/api/sacred-geography/weather-prophecies?lang=${lang}`,
   
   plantMedicineTiming: (lang: string) => `/api/sacred-geography/plant-medicine-timing?lang=${lang}`,
+  
+  wisdomCycle: (lang: string, date?: string) => {
+    let url = `/api/wisdom/cycle?lang=${lang}`;
+    if (date) url += `&date=${date}`;
+    return url;
+  },
+  
+  wisdomAll: (lang: string) => `/api/wisdom/all?lang=${lang}`,
 };
