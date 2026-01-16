@@ -102,7 +102,7 @@ function TabsNavigator() {
   const insets = useSafeAreaInsets();
   
   const bottomInset = Platform.OS === 'android'
-    ? Math.max(insets.bottom, 48)
+    ? Math.max(insets.bottom, 56)
     : insets.bottom;
   
   return (
