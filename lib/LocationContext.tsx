@@ -137,20 +137,26 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const handleLanguageChange = (newLang: string) => {
       console.log('[Location] Language changed to:', newLang, '- re-geocoding for localized name');
+      console.log('[Location] Current state:', { useCurrentLocation, locationName });
       // Only re-geocode if we have a manual location (not GPS)
       if (!useCurrentLocation && locationName && locationName !== 'New York') {
         // Use full location name to preserve disambiguation (e.g., "Paris, France" stays "Paris, France")
         geocodeLocation(locationName, newLang).then((result) => {
+          console.log('[Location] Geocode result for language change:', result);
           if (result) {
             // Only update location name, not coordinates (same place, different language)
             if (result.name && result.name !== locationName) {
+              console.log('[Location] Updating location name:', locationName, '→', result.name);
               setLocationName(result.name);
+            } else {
+              console.log('[Location] Location name unchanged:', locationName);
             }
           }
         });
       }
     };
 
+    console.log('[Location] Setting up language change listener for:', locationName);
     i18n.on('languageChanged', handleLanguageChange);
     return () => {
       i18n.off('languageChanged', handleLanguageChange);
