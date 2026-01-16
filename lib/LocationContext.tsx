@@ -1,8 +1,7 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import * as Location from 'expo-location';
 import { getLocales } from 'expo-localization';
-import { getCurrentLanguage } from './i18n';
-import i18n from 'i18next';
+import i18n, { getCurrentLanguage } from './i18n';
 
 interface Coordinates {
   lat: number;
