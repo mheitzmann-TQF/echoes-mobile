@@ -13,7 +13,7 @@ sleep 1
 
 # Start Expo web on port 8081 (Metro bundler)
 echo "Starting Expo Metro on port 8081..."
-npx expo start --web --port 8081 --non-interactive &
+CI=1 npx expo start --web --port 8081 &
 EXPO_PID=$!
 
 # Wait for Metro to be ready

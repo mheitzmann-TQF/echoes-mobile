@@ -9,8 +9,21 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { logEnvOnce } from "@/lib/env";
 import { initI18n } from '../lib/i18n';
 import { useTranslation } from 'react-i18next';
-import { SwipeTabs, type SwipeTab } from '../components/SwipeTabs';
 import Constants from 'expo-constants';
+
+const isWeb = Platform.OS === 'web';
+const isExpoGo = (): boolean => Constants.appOwnership === 'expo';
+const useSwipeTabs = !isWeb && !isExpoGo();
+
+type SwipeTabType = {
+  key: string;
+  render: () => React.ReactNode;
+};
+
+let SwipeTabs: any = null;
+if (useSwipeTabs) {
+  SwipeTabs = require('../components/SwipeTabs').SwipeTabs;
+}
 
 import TodayScreen from './index';
 import PulseScreen from './pulse';
@@ -18,9 +31,6 @@ import WisdomScreen from './wisdom';
 import UpcomingScreen from './upcoming';
 import SettingsScreen from './settings';
 
-function isExpoGo(): boolean {
-  return Constants.appOwnership === 'expo';
-}
 
 function TodayIcon({ color }: { color: string }) {
   return (
@@ -170,7 +180,7 @@ function BottomTabBar({
 function SwipeTabsNavigator() {
   const { theme, colors } = useTheme();
   
-  const tabs: SwipeTab[] = useMemo(() => [
+  const tabs: SwipeTabType[] = useMemo(() => [
     { key: 'today', render: () => <TodayScreen /> },
     { key: 'pulse', render: () => <PulseScreen /> },
     { key: 'wisdom', render: () => <WisdomScreen /> },
@@ -184,7 +194,7 @@ function SwipeTabsNavigator() {
       <SwipeTabs
         tabs={tabs}
         initialIndex={0}
-        renderTabBar={({ index, setIndex }) => (
+        renderTabBar={({ index, setIndex }: { index: number; setIndex: (i: number) => void }) => (
           <BottomTabBar activeIndex={index} onTabPress={setIndex} />
         )}
       />
@@ -290,11 +300,11 @@ function ThemedApp() {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
   
-  if (isExpoGo()) {
-    return <ExpoRouterTabsNavigator />;
+  if (useSwipeTabs && SwipeTabs) {
+    return <SwipeTabsNavigator />;
   }
   
-  return <SwipeTabsNavigator />;
+  return <ExpoRouterTabsNavigator />;
 }
 
 export default function RootLayout() {
