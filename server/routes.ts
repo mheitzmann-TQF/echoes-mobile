@@ -29,6 +29,17 @@ export async function registerRoutes(
     }
   });
 
+  // Proxy route for geocoding (forwards to source.thequietframe.com)
+  app.get("/api/proxy/geocode", async (req, res) => {
+    try {
+      const data = await proxyToSource("/api/geocode", req.query as Record<string, string>);
+      res.json(data);
+    } catch (error: any) {
+      console.error("Geocode proxy error:", error?.message);
+      res.status(500).json({ error: "Location not found" });
+    }
+  });
+
   // User Settings Routes (in-memory storage for development)
   app.get("/api/user/:userId/settings", async (req, res) => {
     try {

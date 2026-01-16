@@ -64,23 +64,37 @@ const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
 };
 
 const geocodeLocation = async (locationName: string): Promise<{ coords: Coordinates; name: string } | null> => {
-  try {
-    const response = await fetch(`https://source.thequietframe.com/api/geocode?q=${encodeURIComponent(locationName)}`);
-    if (!response.ok) {
-      console.error('[Geocode] API error:', response.status);
-      return null;
+  const encodedQuery = encodeURIComponent(locationName);
+  
+  // Try direct first, then proxy fallback (same pattern as other endpoints)
+  const urls = [
+    `https://source.thequietframe.com/api/geocode?q=${encodedQuery}`,
+    `/api/proxy/geocode?q=${encodedQuery}`
+  ];
+  
+  for (const url of urls) {
+    try {
+      console.log('[Geocode] Trying:', url);
+      const response = await fetch(url);
+      if (!response.ok) {
+        console.log('[Geocode] Response not OK:', response.status);
+        continue;
+      }
+      const data = await response.json();
+      if (data.lat && data.lng) {
+        console.log('[Geocode] Success:', locationName, '→', data.name, { lat: data.lat, lng: data.lng });
+        return { coords: { lat: data.lat, lng: data.lng }, name: data.name };
+      }
+      if (data.error) {
+        console.error('[Geocode] Not found:', locationName);
+        return null;
+      }
+    } catch (e) {
+      console.log('[Geocode] Fetch failed, trying next:', e);
     }
-    const data = await response.json();
-    if (data.lat && data.lng) {
-      console.log('[Geocode] Success:', locationName, '→', data.name, { lat: data.lat, lng: data.lng });
-      return { coords: { lat: data.lat, lng: data.lng }, name: data.name };
-    }
-    if (data.error) {
-      console.error('[Geocode] Not found:', locationName);
-    }
-  } catch (e) {
-    console.error('[Geocode] Error:', e);
   }
+  
+  console.error('[Geocode] All attempts failed for:', locationName);
   return null;
 };
 
