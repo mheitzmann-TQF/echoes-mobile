@@ -254,7 +254,7 @@ function EventCard({ event }: { event: any }) {
 // --- Main Screen ---
 
 export default function UpcomingScreen() {
-  const { coordinates, timezone } = useLocation();
+  const { coordinates, timezone, coordinateKey } = useLocation();
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
   const { isFullAccess, refresh } = useEntitlement();

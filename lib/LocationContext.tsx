@@ -19,6 +19,7 @@ interface LocationContextType {
   timezone: string;
   setTimezone: (tz: string) => void;
   language: string;
+  coordinateKey: string;
 }
 
 export const LocationContext = createContext<LocationContextType | undefined>(undefined);
@@ -103,8 +104,10 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   const requestUserLocation = async () => {
     setLocationLoading(true);
     setLocationError(null);
+    console.log('[Location] Requesting user location...');
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
+      console.log('[Location] Permission status:', status);
       if (status !== 'granted') {
         setLocationError('Location permission denied');
         setLocationLoading(false);
@@ -113,16 +116,20 @@ export function LocationProvider({ children }: { children: ReactNode }) {
 
       const currentLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
       const { latitude, longitude } = currentLocation.coords;
+      console.log('[Location] Got coordinates:', { latitude, longitude });
       const name = await reverseGeocode(latitude, longitude);
       setLocationName(name);
       setCoordinates({ lat: latitude, lng: longitude });
+      console.log('[Location] Updated to:', name, { lat: latitude, lng: longitude });
     } catch (error) {
       setLocationError('Failed to get location');
-      console.error('Location error:', error);
+      console.error('[Location] Error:', error);
     } finally {
       setLocationLoading(false);
     }
   };
+
+  const coordinateKey = `${coordinates.lat.toFixed(4)},${coordinates.lng.toFixed(4)}`;
 
   return (
     <LocationContext.Provider
@@ -138,6 +145,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         timezone,
         setTimezone,
         language,
+        coordinateKey,
       }}
     >
       {children}

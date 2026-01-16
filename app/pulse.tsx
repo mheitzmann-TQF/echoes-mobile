@@ -331,7 +331,7 @@ function PulseSnapshot({ coherence, circadianPhase, geoActivity, geoKpIndex, col
 export default function FieldScreen() {
   const { t, i18n } = useTranslation();
   const language = i18n.language;
-  const { coordinates, timezone } = useLocation();
+  const { coordinates, timezone, coordinateKey } = useLocation();
   const { colors, theme } = useTheme();
   const { isFullAccess, refresh } = useEntitlement();
   
@@ -438,7 +438,7 @@ export default function FieldScreen() {
       }
     }
     loadData();
-  }, [coordinates, timezone, language]);
+  }, [coordinateKey, coordinates, timezone, language]);
 
   if (loading) {
     return (

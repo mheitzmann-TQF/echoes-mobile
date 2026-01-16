@@ -350,7 +350,7 @@ const observanceStyles = StyleSheet.create({
 export default function HomeScreen() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
-  const { locationName, coordinates, timezone } = useLocation();
+  const { locationName, coordinates, timezone, coordinateKey } = useLocation();
   const { colors, theme } = useTheme();
   const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
@@ -685,7 +685,7 @@ export default function HomeScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [coordinates, timezone, i18n.language, t]);
+  }, [coordinateKey, coordinates, timezone, i18n.language, t]);
 
   useEffect(() => {
     fetchData();
