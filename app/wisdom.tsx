@@ -86,7 +86,7 @@ function TQFGauge({ score, size = 160, label, subtitle, forceColor }: { score: n
   return (
     <View style={styles.gaugeContainer}>
       {label && <Text style={[styles.gaugeTitle, { color: colors.textSecondary }]}>{label}</Text>}
-      <View style={{ width: size, height: svgHeight, overflow: 'hidden' }}>
+      <View style={{ width: size, height: svgHeight, overflow: Platform.OS === 'android' ? 'visible' : 'hidden' }}>
         <Svg width={size} height={svgHeight}>
           <Path
             d={bgArcPath}
