@@ -141,14 +141,10 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     
     // Skip on first render, only trigger when language actually changes
     if (prevLangRef.current !== currentLang && prevLangRef.current !== '') {
-      console.log('[Location] Language changed:', prevLangRef.current, '→', currentLang);
-      
       // Only re-geocode if we have a manual location (not GPS)
       if (!useCurrentLocation && locationName && locationName !== 'New York') {
-        console.log('[Location] Re-geocoding for new language:', locationName);
         geocodeLocation(locationName, currentLang).then((result) => {
           if (result && result.name && result.name !== locationName) {
-            console.log('[Location] Updating location name:', locationName, '→', result.name);
             setLocationName(result.name);
           }
         });
