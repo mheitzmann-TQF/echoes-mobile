@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, Dimensions, Modal } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, Dimensions, Modal, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from 'expo-router';
 import { useTheme } from '../lib/ThemeContext';
@@ -816,7 +816,7 @@ const styles = StyleSheet.create({
   gaugeColumn: { alignItems: 'center', flex: 1 },
   gaugeTitle: { fontSize: 11, fontWeight: '600', letterSpacing: 1, marginBottom: 8, textTransform: 'uppercase' },
   tqfLabel: { fontSize: 12, fontWeight: '600', letterSpacing: 1, marginBottom: 8 },
-  gaugeContainer: { alignItems: 'center', paddingBottom: 16 },
+  gaugeContainer: { alignItems: 'center', paddingBottom: Platform.OS === 'android' ? 32 : 16 },
   gaugeValue: { position: 'absolute', alignItems: 'center', width: '100%' },
   gaugeValueInner: { position: 'absolute', alignItems: 'center', width: '100%' },
   gaugeScore: { fontSize: 36, fontWeight: '700' },
