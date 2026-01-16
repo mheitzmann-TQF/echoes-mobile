@@ -714,19 +714,33 @@ export default function FieldScreen() {
       return { display: t('field.sunsetIn') + ' --:--', label: solarPhase };
     }
     
-    const now = new Date();
-    const sunsetMinutes = parseTimeToMinutes(sunsetStr);
-    const sunsetHour = Math.floor(sunsetMinutes / 60);
-    const sunsetMin = sunsetMinutes % 60;
-    const sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), sunsetHour, sunsetMin);
+    // Parse sunset - handle both ISO timestamps and simple time strings
+    let sunsetDate: Date;
+    if (sunsetStr.includes('T') || sunsetStr.includes('Z')) {
+      // ISO timestamp format: "2026-01-16T21:55:56.000Z"
+      sunsetDate = new Date(sunsetStr);
+    } else {
+      // Simple time format: "19:00"
+      const now = new Date();
+      const sunsetMinutes = parseTimeToMinutes(sunsetStr);
+      const sunsetHour = Math.floor(sunsetMinutes / 60);
+      const sunsetMin = sunsetMinutes % 60;
+      sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), sunsetHour, sunsetMin);
+    }
     
-    // Format time based on locale
+    // Format time based on locale and timezone
     const formatTime = (date: Date) => {
-      return date.toLocaleTimeString(language === 'en' ? 'en-US' : language, { hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleTimeString(language === 'en' ? 'en-US' : language, { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        timeZone: timezone 
+      });
     };
     
+    const now = new Date();
+    
     if (sunsetDate < now) {
-      // Sunset already passed, show tomorrow's sunset
+      // Sunset already passed, show tomorrow's sunset (approximate same time)
       const tomorrow = new Date(sunsetDate);
       tomorrow.setDate(tomorrow.getDate() + 1);
       return { 
