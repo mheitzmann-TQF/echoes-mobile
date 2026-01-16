@@ -159,6 +159,8 @@
     "nextTransition": "Next Transition",
     "sunsetIn": "Sunset in",
     "sunsetAt": "Sunset at",
+    "sunriseIn": "Sunrise in",
+    "sunriseAt": "Sunrise at",
     "timeOfDay": "Time of Day",
     "cortisol": "Cortisol",
     "melatonin": "Melatonin",

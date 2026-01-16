@@ -157,6 +157,8 @@
     "nextTransition": "Nächster Übergang",
     "sunsetIn": "Sonnenuntergang in",
     "sunsetAt": "Sonnenuntergang um",
+    "sunriseIn": "Sonnenaufgang in",
+    "sunriseAt": "Sonnenaufgang um",
     "timeOfDay": "Tageszeit",
     "cortisol": "Cortisol",
     "melatonin": "Melatonin",

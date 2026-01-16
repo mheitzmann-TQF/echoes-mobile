@@ -706,27 +706,27 @@ export default function FieldScreen() {
   
   const solarPhase = getSolarPhase();
   
-  // Compute sunset time correctly
-  const getSunsetInfo = (): { display: string; label: string } => {
-    // Get sunset from bundle or instant data
+  // Compute next solar transition (sunrise or sunset based on current phase)
+  const getNextTransition = (): { display: string; label: string } => {
+    const sunriseStr = (ctx?.solar as any)?.sunrise || (instant?.solar as any)?.sunrise;
     const sunsetStr = (ctx?.solar as any)?.sunset || (instant?.solar as any)?.sunset;
-    if (!sunsetStr) {
-      return { display: t('field.sunsetIn') + ' --:--', label: solarPhase };
+    
+    if (!sunriseStr && !sunsetStr) {
+      return { display: '--:--', label: solarPhase };
     }
     
-    // Parse sunset - handle both ISO timestamps and simple time strings
-    let sunsetDate: Date;
-    if (sunsetStr.includes('T') || sunsetStr.includes('Z')) {
-      // ISO timestamp format: "2026-01-16T21:55:56.000Z"
-      sunsetDate = new Date(sunsetStr);
-    } else {
-      // Simple time format: "19:00"
-      const now = new Date();
-      const sunsetMinutes = parseTimeToMinutes(sunsetStr);
-      const sunsetHour = Math.floor(sunsetMinutes / 60);
-      const sunsetMin = sunsetMinutes % 60;
-      sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), sunsetHour, sunsetMin);
-    }
+    // Parse time string (ISO or simple format)
+    const parseTime = (timeStr: string): Date => {
+      if (timeStr.includes('T') || timeStr.includes('Z')) {
+        return new Date(timeStr);
+      } else {
+        const now = new Date();
+        const minutes = parseTimeToMinutes(timeStr);
+        const hour = Math.floor(minutes / 60);
+        const min = minutes % 60;
+        return new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, min);
+      }
+    };
     
     // Format time based on locale and timezone
     const formatTime = (date: Date) => {
@@ -738,35 +738,75 @@ export default function FieldScreen() {
     };
     
     const now = new Date();
+    const sunriseDate = sunriseStr ? parseTime(sunriseStr) : null;
+    const sunsetDate = sunsetStr ? parseTime(sunsetStr) : null;
     
-    if (sunsetDate < now) {
-      // Sunset already passed, show tomorrow's sunset (approximate same time)
-      const tomorrow = new Date(sunsetDate);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      return { 
-        display: `${t('field.sunsetAt')} ${formatTime(tomorrow)}`,
-        label: solarPhase 
-      };
+    // Determine which transition is next based on current phase
+    // night/evening → sunrise is next
+    // morning/midday/afternoon → sunset is next
+    const nightPhases = ['night', 'evening', 'noite', 'nuit', 'noche', 'nacht', 'sera'];
+    const isNightOrEvening = nightPhases.some(p => solarPhase.toLowerCase().includes(p));
+    
+    let targetDate: Date | null;
+    let transitionType: 'sunrise' | 'sunset';
+    
+    if (isNightOrEvening) {
+      // Next transition is sunrise
+      transitionType = 'sunrise';
+      if (sunriseDate) {
+        // If sunrise already passed today, use tomorrow's sunrise
+        if (sunriseDate < now) {
+          const tomorrow = new Date(sunriseDate);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          targetDate = tomorrow;
+        } else {
+          targetDate = sunriseDate;
+        }
+      } else {
+        targetDate = null;
+      }
+    } else {
+      // Next transition is sunset
+      transitionType = 'sunset';
+      if (sunsetDate) {
+        // If sunset already passed today, use tomorrow's sunset
+        if (sunsetDate < now) {
+          const tomorrow = new Date(sunsetDate);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          targetDate = tomorrow;
+        } else {
+          targetDate = sunsetDate;
+        }
+      } else {
+        targetDate = null;
+      }
     }
     
-    const diff = sunsetDate.getTime() - now.getTime();
+    if (!targetDate) {
+      return { display: '--:--', label: solarPhase };
+    }
+    
+    const diff = targetDate.getTime() - now.getTime();
     const hours = Math.floor(diff / 3600000);
     const minutes = Math.floor((diff % 3600000) / 60000);
     
-    if (hours < 24) {
+    const transitionLabel = transitionType === 'sunrise' ? t('field.sunriseIn') : t('field.sunsetIn');
+    const transitionAtLabel = transitionType === 'sunrise' ? t('field.sunriseAt') : t('field.sunsetAt');
+    
+    if (hours < 24 && hours >= 0) {
       return { 
-        display: `${t('field.sunsetIn')} ${hours}h ${minutes}m`,
+        display: `${transitionLabel} ${hours}h ${minutes}m`,
         label: `${hours}h ${minutes}m`
       };
     } else {
       return { 
-        display: `${t('field.sunsetAt')} ${formatTime(sunsetDate)}`,
+        display: `${transitionAtLabel} ${formatTime(targetDate)}`,
         label: solarPhase 
       };
     }
   };
   
-  const sunsetInfo = getSunsetInfo();
+  const nextTransition = getNextTransition();
 
   // Helper to shorten messages
   const shorten = (msg?: string) => msg ? msg.split('.')[0] + '.' : '';
@@ -829,7 +869,7 @@ export default function FieldScreen() {
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.nextTransition')}</Text>
-                <Text style={[styles.expandedSub, { color: colors.text }]}>{sunsetInfo.display}</Text>
+                <Text style={[styles.expandedSub, { color: colors.text }]}>{nextTransition.display}</Text>
               </View>
             }
           />
