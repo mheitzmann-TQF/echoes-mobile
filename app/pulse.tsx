@@ -744,7 +744,20 @@ export default function FieldScreen() {
     // Determine which transition is next based on current phase
     // night/evening → sunrise is next
     // morning/midday/afternoon → sunset is next
-    const nightPhases = ['night', 'evening', 'noite', 'nuit', 'noche', 'nacht', 'sera'];
+    const nightPhases = [
+      // English
+      'night', 'evening',
+      // Portuguese
+      'noite', 'entardecer', 'anoitecer',
+      // Spanish
+      'noche', 'atardecer',
+      // French
+      'nuit', 'soir', 'soirée',
+      // German
+      'nacht', 'abend',
+      // Italian
+      'notte', 'sera', 'serata'
+    ];
     const isNightOrEvening = nightPhases.some(p => solarPhase.toLowerCase().includes(p));
     
     let targetDate: Date | null;
