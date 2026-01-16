@@ -18,6 +18,7 @@ const SOURCE_TO_PROXY_PATH_MAP: Record<string, string> = {
   '/api/consciousness/current': '/api/proxy/consciousness',
   '/api/consciousness-analysis/raw-analysis': '/api/proxy/consciousness/raw-analysis',
   '/api/consciousness-analysis/regional-breakdown': '/api/proxy/consciousness/regional-breakdown',
+  '/api/wisdom/cycle': '/api/proxy/wisdom/cycle',
 };
 
 function mapToProxyEndpoint(endpoint: string): string {
