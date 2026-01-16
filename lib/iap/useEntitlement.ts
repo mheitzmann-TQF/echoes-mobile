@@ -23,6 +23,12 @@ import {
   isDevOverrideAvailable,
   type DevAccessState,
 } from './devAccessOverride';
+import {
+  getAccessCache,
+  setAccessCache,
+  checkGraceEligibility,
+  type GraceResult,
+} from './accessCache';
 
 function isDevBackendEnabled(): boolean {
   const expoConfig = Constants.expoConfig || Constants.manifest;
@@ -38,6 +44,8 @@ export interface EntitlementState {
   error: string | null;
   devOverride: DevAccessState;
   isDevMode: boolean;
+  isGrace: boolean;
+  graceReason: 'fresh_install' | 'prior_access' | 'none';
 }
 
 export interface EntitlementActions {
@@ -54,51 +62,60 @@ function getBillingApiBase(): string {
   return 'https://source.thequietframe.com';
 }
 
+class BackendUnavailableError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'BackendUnavailableError';
+  }
+}
+
 async function checkEntitlementStatus(installId: string, isRetry = false): Promise<{
   entitlement: 'full' | 'free';
   expiresAt: string | null;
 }> {
+  console.log('[ENTITLEMENT] Checking status for installId:', installId, isRetry ? '(retry)' : '');
+  
+  const sessionToken = await ensureSession();
+  if (!sessionToken) {
+    console.warn('[ENTITLEMENT] No session token available');
+    throw new BackendUnavailableError('No session token available');
+  }
+  
+  const apiBase = getBillingApiBase();
+  let response: Response;
+  
   try {
-    console.log('[ENTITLEMENT] Checking status for installId:', installId, isRetry ? '(retry)' : '');
-    
-    const sessionToken = await ensureSession();
-    if (!sessionToken) {
-      console.warn('[ENTITLEMENT] No session token available, defaulting to free');
-      return { entitlement: 'free', expiresAt: null };
-    }
-    
-    const apiBase = getBillingApiBase();
-    const response = await fetch(`${apiBase}/api/billing/status?installId=${installId}`, {
+    response = await fetch(`${apiBase}/api/billing/status?installId=${installId}`, {
       headers: {
         'Authorization': `Bearer ${sessionToken}`,
       },
     });
-    
-    if (response.status === 401) {
-      if (!isRetry) {
-        console.warn('[ENTITLEMENT] Session expired, refreshing and retrying...');
-        await refreshSession();
-        return checkEntitlementStatus(installId, true);
-      }
-      console.error('[ENTITLEMENT] Session still invalid after refresh');
-      return { entitlement: 'free', expiresAt: null };
-    }
-    
-    if (!response.ok) {
-      console.error('[ENTITLEMENT] Status check failed:', response.status);
-      return { entitlement: 'free', expiresAt: null };
-    }
-    
-    const data = await response.json();
-    console.log('[ENTITLEMENT] Status response:', data);
-    return {
-      entitlement: data.entitlement || 'free',
-      expiresAt: data.expiresAt || null,
-    };
-  } catch (error) {
-    console.error('[ENTITLEMENT] Error checking status:', error);
-    return { entitlement: 'free', expiresAt: null };
+  } catch (networkError) {
+    console.error('[ENTITLEMENT] Network error:', networkError);
+    throw new BackendUnavailableError('Network request failed');
   }
+  
+  if (response.status === 401) {
+    if (!isRetry) {
+      console.warn('[ENTITLEMENT] Session expired, refreshing and retrying...');
+      await refreshSession();
+      return checkEntitlementStatus(installId, true);
+    }
+    console.error('[ENTITLEMENT] Session still invalid after refresh');
+    throw new BackendUnavailableError('Session invalid after refresh');
+  }
+  
+  if (!response.ok) {
+    console.error('[ENTITLEMENT] Status check failed:', response.status);
+    throw new BackendUnavailableError(`API returned ${response.status}`);
+  }
+  
+  const data = await response.json();
+  console.log('[ENTITLEMENT] Status response:', data);
+  return {
+    entitlement: data.entitlement || 'free',
+    expiresAt: data.expiresAt || null,
+  };
 }
 
 async function verifyPurchaseWithBackend(
@@ -171,6 +188,8 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   const [installId, setInstallId] = useState<string | null>(null);
   const [devOverride, setDevOverride] = useState<DevAccessState>(null);
   const [isDevMode] = useState(isDevOverrideAvailable());
+  const [isGrace, setIsGrace] = useState(false);
+  const [graceReason, setGraceReason] = useState<'fresh_install' | 'prior_access' | 'none'>('none');
 
   const refresh = useCallback(async () => {
     if (isDevMode) {
@@ -216,13 +235,26 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     setIsLoading(true);
     try {
       const status = await checkEntitlementStatus(installId);
-      setIsFullAccess(status.entitlement === 'full');
+      const hasAccess = status.entitlement === 'full';
+      setIsFullAccess(hasAccess);
       setExpiresAt(status.expiresAt);
       setError(null);
+      setIsGrace(false);
+      setGraceReason('none');
+      await setAccessCache(status.entitlement, status.expiresAt);
       console.log('[ENTITLEMENT] Refreshed from backend:', status);
     } catch (err) {
       console.error('[ENTITLEMENT] Error refreshing:', err);
-      setError('Failed to check subscription status');
+      const graceCheck = await checkGraceEligibility();
+      if (graceCheck.shouldGrantGrace) {
+        setIsFullAccess(true);
+        setIsGrace(true);
+        setGraceReason(graceCheck.reason);
+        setError(null);
+        console.log('[ENTITLEMENT] Granting grace access:', graceCheck.reason, graceCheck.hoursRemaining, 'hours remaining');
+      } else {
+        setError('Failed to check subscription status');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -277,31 +309,71 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
           }
         }
         
-        const status = await checkEntitlementStatus(id);
-        setIsFullAccess(status.entitlement === 'full');
-        setExpiresAt(status.expiresAt);
+        let hasAccess = false;
+        let backendSucceeded = false;
+        
+        try {
+          const status = await checkEntitlementStatus(id);
+          hasAccess = status.entitlement === 'full';
+          setIsFullAccess(hasAccess);
+          setExpiresAt(status.expiresAt);
+          setIsGrace(false);
+          setGraceReason('none');
+          await setAccessCache(status.entitlement, status.expiresAt);
+          backendSucceeded = true;
+          console.log('[ENTITLEMENT] Init backend returned:', status);
+        } catch (backendErr) {
+          console.error('[ENTITLEMENT] Backend check failed during init:', backendErr);
+          const graceCheck = await checkGraceEligibility();
+          if (graceCheck.shouldGrantGrace) {
+            setIsFullAccess(true);
+            setIsGrace(true);
+            setGraceReason(graceCheck.reason);
+            hasAccess = true;
+            console.log('[ENTITLEMENT] Init granting grace access:', graceCheck.reason, graceCheck.hoursRemaining, 'hours remaining');
+          } else {
+            setIsFullAccess(false);
+            console.log('[ENTITLEMENT] Init no grace available, blocking');
+          }
+        }
 
         if (Platform.OS !== 'web') {
-          cleanup = await initIAP();
-          
-          const fetchedProducts = await getProducts();
-          setProducts(fetchedProducts);
-          
-          purchaseUpdateSub = purchaseUpdatedListener(async (purchase) => {
-            console.log('[ENTITLEMENT] Purchase updated:', purchase.productId);
-            const result = await verifyPurchaseWithBackend(id, purchase);
-            setIsFullAccess(result.entitlement === 'full');
-            setExpiresAt(result.expiresAt);
-          });
-          
-          purchaseErrorSub = purchaseErrorListener((err) => {
-            console.error('[ENTITLEMENT] Purchase error:', err);
-            setError(err.message || 'Purchase failed');
-          });
+          try {
+            cleanup = await initIAP();
+            const fetchedProducts = await getProducts();
+            setProducts(fetchedProducts);
+            
+            purchaseUpdateSub = purchaseUpdatedListener(async (purchase) => {
+              console.log('[ENTITLEMENT] Purchase updated:', purchase.productId);
+              const result = await verifyPurchaseWithBackend(id, purchase);
+              setIsFullAccess(result.entitlement === 'full');
+              setExpiresAt(result.expiresAt);
+              setIsGrace(false);
+              setGraceReason('none');
+              if (result.entitlement === 'full') {
+                await setAccessCache('full', result.expiresAt);
+              }
+            });
+            
+            purchaseErrorSub = purchaseErrorListener((err) => {
+              console.error('[ENTITLEMENT] Purchase error:', err);
+              setError(err.message || 'Purchase failed');
+            });
+          } catch (storeErr) {
+            console.error('[ENTITLEMENT] Store init error (non-blocking):', storeErr);
+          }
         }
       } catch (err) {
         console.error('[ENTITLEMENT] Initialization error:', err);
-        setError('Failed to initialize');
+        const graceCheck = await checkGraceEligibility();
+        if (graceCheck.shouldGrantGrace) {
+          setIsFullAccess(true);
+          setIsGrace(true);
+          setGraceReason(graceCheck.reason);
+          console.log('[ENTITLEMENT] Init error, granting grace:', graceCheck.reason);
+        } else {
+          setError('Failed to initialize');
+        }
       } finally {
         setIsLoading(false);
       }
@@ -448,6 +520,8 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     error,
     devOverride,
     isDevMode,
+    isGrace,
+    graceReason,
     purchaseMonthly,
     purchaseYearly,
     restorePurchasesAction,
