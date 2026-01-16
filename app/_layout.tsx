@@ -1,3 +1,4 @@
+import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet, Animated, ActivityIndicator, Platform, TouchableOpacity, Text } from 'react-native';
 import { Svg, Path, Circle, Rect, Line } from 'react-native-svg';
@@ -9,12 +10,17 @@ import { logEnvOnce } from "@/lib/env";
 import { initI18n } from '../lib/i18n';
 import { useTranslation } from 'react-i18next';
 import { SwipeTabs, type SwipeTab } from '../components/SwipeTabs';
+import Constants from 'expo-constants';
 
 import TodayScreen from './index';
 import PulseScreen from './pulse';
 import WisdomScreen from './wisdom';
 import UpcomingScreen from './upcoming';
 import SettingsScreen from './settings';
+
+function isExpoGo(): boolean {
+  return Constants.appOwnership === 'expo';
+}
 
 function TodayIcon({ color }: { color: string }) {
   return (
@@ -186,6 +192,83 @@ function SwipeTabsNavigator() {
   );
 }
 
+function ExpoRouterTabsNavigator() {
+  const { theme, colors } = useTheme();
+  const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
+  
+  const bottomInset = Platform.OS === 'android'
+    ? Math.max(insets.bottom, 56)
+    : insets.bottom;
+  
+  return (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: colors.background,
+            borderTopColor: colors.border,
+            borderTopWidth: 1,
+            height: 56 + bottomInset,
+            paddingBottom: 8 + bottomInset,
+            paddingTop: 8,
+          },
+          tabBarActiveTintColor: colors.text,
+          tabBarInactiveTintColor: colors.textTertiary,
+          tabBarLabelStyle: {
+            fontSize: 11,
+            fontWeight: '500',
+            marginTop: 4,
+          },
+        }}
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: t('tabs.today'),
+            tabBarIcon: ({ color }) => <TodayIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="pulse"
+          options={{
+            title: t('tabs.pulse'),
+            tabBarIcon: ({ color }) => <PulseIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="wisdom"
+          options={{
+            title: t('tabs.wisdom'),
+            tabBarIcon: ({ color }) => <WisdomIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="upcoming"
+          options={{
+            title: t('tabs.upcoming'),
+            tabBarIcon: ({ color }) => <UpcomingIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: t('tabs.settings'),
+            tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
+          }}
+        />
+        
+        {/* Hidden routes */}
+        <Tabs.Screen name="global" options={{ href: null }} />
+        <Tabs.Screen name="journey" options={{ href: null }} />
+        <Tabs.Screen name="you" options={{ href: null }} />
+      </Tabs>
+    </View>
+  );
+}
+
 function ThemedApp() {
   const { colors } = useTheme();
   const [showSplash, setShowSplash] = useState(true);
@@ -205,6 +288,10 @@ function ThemedApp() {
 
   if (showSplash) {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
+  
+  if (isExpoGo()) {
+    return <ExpoRouterTabsNavigator />;
   }
   
   return <SwipeTabsNavigator />;
