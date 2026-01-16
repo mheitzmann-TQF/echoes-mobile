@@ -1,0 +1,120 @@
+Go with Option 2 (PagerView). It keeps your bottom tabs exactly as-is and adds the swipe gesture in a way that feels native on both iOS and Android.
+
+Option 1 is “simplest,” but it’s a structural change: you’d be pretending bottom tabs are top tabs and hiding the header, which tends to get brittle (and it can mess with safe area + your custom tab bar).
+
+Option 2: PagerView + sync with your bottom tabs
+
+1) Install
+
+npm i react-native-pager-view
+
+2) Create a “SwipeTabs” wrapper
+
+You’ll render your tab screens inside a pager, and keep your current bottom bar as the controller.
+
+Key ideas
+	•	Pager is the real “tab container”
+	•	Your bottom bar just calls pagerRef.setPage(index)
+	•	Swipes update the active tab state
+
+Here’s a clean drop-in component:
+
+import React, { useMemo, useRef, useState } from "react";
+import { View } from "react-native";
+import PagerView from "react-native-pager-view";
+
+type SwipeTab = {
+  key: string;
+  render: () => React.ReactNode;
+};
+
+type Props = {
+  tabs: SwipeTab[];
+  initialIndex?: number;
+  renderTabBar: (args: {
+    index: number;
+    setIndex: (i: number) => void;
+  }) => React.ReactNode;
+};
+
+export function SwipeTabs({ tabs, initialIndex = 0, renderTabBar }: Props) {
+  const pagerRef = useRef<PagerView>(null);
+  const [index, setIndexState] = useState(initialIndex);
+
+  const setIndex = (i: number) => {
+    setIndexState(i);
+    pagerRef.current?.setPage(i);
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <PagerView
+        ref={pagerRef}
+        style={{ flex: 1 }}
+        initialPage={initialIndex}
+        onPageSelected={(e) => setIndexState(e.nativeEvent.position)}
+      >
+        {tabs.map((t) => (
+          <View key={t.key} style={{ flex: 1 }}>
+            {t.render()}
+          </View>
+        ))}
+      </PagerView>
+
+      {renderTabBar({ index, setIndex })}
+    </View>
+  );
+}
+
+3) Use it in your “Tabs” screen
+
+Where you currently have bottom tabs via React Navigation, replace the “container” with:
+
+export default function Main() {
+  const tabs = useMemo(
+    () => [
+      { key: "today", render: () => <TodayScreen /> },
+      { key: "field", render: () => <FieldScreen /> },
+      { key: "learn", render: () => <LearnScreen /> },
+      { key: "upcoming", render: () => <UpcomingScreen /> },
+      { key: "settings", render: () => <SettingsScreen /> },
+    ],
+    []
+  );
+
+  return (
+    <SwipeTabs
+      tabs={tabs}
+      initialIndex={0}
+      renderTabBar={({ index, setIndex }) => (
+        <YourBottomTabBar
+          activeIndex={index}
+          onPressTab={setIndex}
+        />
+      )}
+    />
+  );
+}
+
+4) Keep deep linking + navigation
+
+If you rely on React Navigation route names, you have two patterns:
+	•	Simple app: let this be your main navigation (works great)
+	•	You need real navigation state per tab: keep a stack navigator inside each tab screen, but the pager remains the tab switcher.
+
+If you tell me whether each tab has its own stack (e.g., Learn → Detail pages), I’ll show the “nested stacks inside pager” layout.
+
+⸻
+
+Practical UX details (so it feels premium)
+	•	Add haptic on tab press (optional)
+	•	Prevent swipe on certain screens (e.g., full-screen modals) by toggling scrollEnabled
+	•	Don’t re-mount tabs on swipe: the pager keeps them alive (good for “anti-repeat”)
+
+⸻
+
+One important caveat
+
+If you currently use createBottomTabNavigator, you’ll be replacing it with a pager-driven solution. It’s worth it, but it’s a deliberate shift.
+
+If you paste the file that defines your bottom tabs (the current Tab.Navigator block), I’ll rewrite it to PagerView format without changing your visual tab bar, and I’ll keep your safe-area fixes intact.
