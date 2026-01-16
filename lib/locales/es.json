@@ -378,6 +378,7 @@
     "setLocation": "Establecer ubicación",
     "enterLocation": "Ingresa ciudad o ubicación...",
     "tapToChange": "Toca para cambiar ubicación",
+    "usingGPS": "Usando tu ubicación actual",
     "timezone": "Zona horaria",
     "autoDetected": "Detectada automáticamente",
     "display": "Pantalla",

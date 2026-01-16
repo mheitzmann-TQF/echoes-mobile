@@ -89,21 +89,32 @@ export default function SettingsScreen() {
 
           {/* Location Display */}
           <TouchableOpacity 
-            style={[styles.locationCard, { backgroundColor: colors.surfaceHighlight, borderColor: colors.border }]}
-            onPress={() => setShowManualInput(!showManualInput)}
+            style={[styles.locationCard, { 
+              backgroundColor: colors.surfaceHighlight, 
+              borderColor: colors.border,
+              opacity: useCurrentLocation ? 0.7 : 1
+            }]}
+            onPress={() => !useCurrentLocation && setShowManualInput(!showManualInput)}
+            disabled={useCurrentLocation}
           >
             <View style={styles.locationCardHeader}>
-              <MapPin size={18} color={colors.accent} />
-              <Text style={[styles.locationCardTitle, { color: colors.accent }]}>{locationName || t('settings.setLocation')}</Text>
+              <MapPin size={18} color={useCurrentLocation ? colors.textSecondary : colors.accent} />
+              <Text style={[styles.locationCardTitle, { color: useCurrentLocation ? colors.textSecondary : colors.accent }]}>
+                {locationName || t('settings.setLocation')}
+              </Text>
             </View>
             <Text style={[styles.coordinates, { color: colors.textSecondary }]}>
               {coordinates.lat.toFixed(4)}°, {coordinates.lng.toFixed(4)}°
             </Text>
-            <Text style={[styles.hint, { color: colors.textTertiary }]}>{t('settings.tapToChange')}</Text>
+            {useCurrentLocation ? (
+              <Text style={[styles.hint, { color: colors.textTertiary }]}>{t('settings.usingGPS')}</Text>
+            ) : (
+              <Text style={[styles.hint, { color: colors.textTertiary }]}>{t('settings.tapToChange')}</Text>
+            )}
           </TouchableOpacity>
 
-          {/* Manual Location Input */}
-          {showManualInput && (
+          {/* Manual Location Input - only show when NOT using current location */}
+          {!useCurrentLocation && showManualInput && (
             <View style={[styles.manualInputContainer, { borderTopColor: colors.border }]}>
               <TextInput
                 style={[styles.textInput, { 

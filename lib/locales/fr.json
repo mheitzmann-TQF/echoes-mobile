@@ -496,6 +496,7 @@
     "setLocation": "Définir la localisation",
     "enterLocation": "Entrez une ville ou un lieu...",
     "tapToChange": "Appuyez pour changer",
+    "usingGPS": "Utilisation de votre position actuelle",
     "timezone": "Fuseau horaire",
     "autoDetected": "Détecté automatiquement",
     "display": "Affichage",

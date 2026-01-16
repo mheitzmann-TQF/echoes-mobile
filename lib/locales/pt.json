@@ -378,6 +378,7 @@
     "setLocation": "Definir localização",
     "enterLocation": "Digite cidade ou localização...",
     "tapToChange": "Toque para mudar",
+    "usingGPS": "Usando sua localização atual",
     "timezone": "Fuso horário",
     "autoDetected": "Detectado automaticamente",
     "display": "Exibição",

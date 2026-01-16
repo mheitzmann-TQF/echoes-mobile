@@ -475,6 +475,7 @@
     "setLocation": "Imposta posizione",
     "enterLocation": "Inserisci città o luogo...",
     "tapToChange": "Tocca per cambiare",
+    "usingGPS": "Usando la tua posizione attuale",
     "timezone": "Fuso orario",
     "autoDetected": "Rilevato automaticamente",
     "display": "Visualizzazione",
