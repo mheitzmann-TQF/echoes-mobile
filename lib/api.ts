@@ -400,11 +400,12 @@ class EchoesAPI {
   async getWisdomCycle(lang: string = 'en', date?: string): Promise<AncientWisdomResponse | null> {
     try {
       const endpoint = ContentEndpoints.wisdomCycle(lang, date);
+      console.log('[WisdomCycle] Fetching:', endpoint);
       const data = await fetchContentJson<AncientWisdomResponse>(endpoint);
       console.log('✅ Ancient wisdom received:', data);
       return data;
-    } catch (error) {
-      console.error('❌ Ancient wisdom error:', error);
+    } catch (error: any) {
+      console.error('❌ Ancient wisdom error:', error?.message || error?.toString?.() || 'Unknown error');
       return null;
     }
   }
