@@ -18,6 +18,8 @@ Echoes is a cross-platform mobile application (iOS/Android) built with React Nat
 - All API calls pass correct user timezone instead of hardcoded UTC
 - GPS location uses device timezone via `Intl.DateTimeFormat()` when "Use current location" is enabled
 - Default timezone is America/New_York (not UTC)
+- Language change triggers re-geocode to update country name in new language (e.g., "Svizzera" → "Suisse")
+- Supports language learning use case: users can switch language to see terms in different languages
 
 ### Solar Phase Fix (Jan 16)
 - Pulse tab now reads `current_phase` directly from API (handles both snake_case and camelCase)
