@@ -2,6 +2,7 @@ import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import * as Location from 'expo-location';
 import { getLocales } from 'expo-localization';
 import { getCurrentLanguage } from './i18n';
+import i18n from 'i18next';
 
 interface Coordinates {
   lat: number;
@@ -130,6 +131,30 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         }
       });
     }
+  }, [locationName, useCurrentLocation]);
+
+  // Re-geocode when user changes app language (for localized country names)
+  useEffect(() => {
+    const handleLanguageChange = (newLang: string) => {
+      console.log('[Location] Language changed to:', newLang, '- re-geocoding for localized name');
+      // Only re-geocode if we have a manual location (not GPS)
+      if (!useCurrentLocation && locationName && locationName !== 'New York') {
+        // Use full location name to preserve disambiguation (e.g., "Paris, France" stays "Paris, France")
+        geocodeLocation(locationName, newLang).then((result) => {
+          if (result) {
+            // Only update location name, not coordinates (same place, different language)
+            if (result.name && result.name !== locationName) {
+              setLocationName(result.name);
+            }
+          }
+        });
+      }
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange);
+    };
   }, [locationName, useCurrentLocation]);
 
   const requestUserLocation = async () => {
