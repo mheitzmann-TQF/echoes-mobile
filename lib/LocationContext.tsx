@@ -1,7 +1,8 @@
-import React, { createContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, ReactNode, useEffect, useRef } from 'react';
 import * as Location from 'expo-location';
 import { getLocales } from 'expo-localization';
-import i18n, { getCurrentLanguage } from './i18n';
+import { useTranslation } from 'react-i18next';
+import { getCurrentLanguage } from './i18n';
 
 interface Coordinates {
   lat: number;
@@ -102,6 +103,7 @@ const geocodeLocation = async (locationName: string, lang: string = 'en'): Promi
 };
 
 export function LocationProvider({ children }: { children: ReactNode }) {
+  const { i18n } = useTranslation();
   const [locationName, setLocationName] = useState('New York');
   const [coordinates, setCoordinates] = useState<Coordinates>({ lat: 40.7128, lng: -74.006 });
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
@@ -109,6 +111,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [timezone, setTimezone] = useState('America/New_York'); // Default to NYC timezone
   const [language, setLanguage] = useState(detectDeviceLanguage());
+  const prevLangRef = useRef(i18n.language);
 
   useEffect(() => {
     if (useCurrentLocation) {
@@ -134,33 +137,26 @@ export function LocationProvider({ children }: { children: ReactNode }) {
 
   // Re-geocode when user changes app language (for localized country names)
   useEffect(() => {
-    const handleLanguageChange = (newLang: string) => {
-      console.log('[Location] Language changed to:', newLang, '- re-geocoding for localized name');
-      console.log('[Location] Current state:', { useCurrentLocation, locationName });
+    const currentLang = i18n.language;
+    
+    // Skip on first render, only trigger when language actually changes
+    if (prevLangRef.current !== currentLang && prevLangRef.current !== '') {
+      console.log('[Location] Language changed:', prevLangRef.current, '→', currentLang);
+      
       // Only re-geocode if we have a manual location (not GPS)
       if (!useCurrentLocation && locationName && locationName !== 'New York') {
-        // Use full location name to preserve disambiguation (e.g., "Paris, France" stays "Paris, France")
-        geocodeLocation(locationName, newLang).then((result) => {
-          console.log('[Location] Geocode result for language change:', result);
-          if (result) {
-            // Only update location name, not coordinates (same place, different language)
-            if (result.name && result.name !== locationName) {
-              console.log('[Location] Updating location name:', locationName, '→', result.name);
-              setLocationName(result.name);
-            } else {
-              console.log('[Location] Location name unchanged:', locationName);
-            }
+        console.log('[Location] Re-geocoding for new language:', locationName);
+        geocodeLocation(locationName, currentLang).then((result) => {
+          if (result && result.name && result.name !== locationName) {
+            console.log('[Location] Updating location name:', locationName, '→', result.name);
+            setLocationName(result.name);
           }
         });
       }
-    };
-
-    console.log('[Location] Setting up language change listener for:', locationName);
-    i18n.on('languageChanged', handleLanguageChange);
-    return () => {
-      i18n.off('languageChanged', handleLanguageChange);
-    };
-  }, [locationName, useCurrentLocation]);
+    }
+    
+    prevLangRef.current = currentLang;
+  }, [i18n.language, locationName, useCurrentLocation]);
 
   const requestUserLocation = async () => {
     setLocationLoading(true);
