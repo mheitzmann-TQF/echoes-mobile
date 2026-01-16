@@ -2,6 +2,7 @@ import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet, Image, Animated, ActivityIndicator } from 'react-native';
 import { Svg, Path, Circle, Rect, Line } from 'react-native-svg';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LocationProvider } from '../lib/LocationContext';
 import { ThemeProvider, useTheme } from '../lib/ThemeContext';
 import { useState, useEffect, useRef } from 'react';
@@ -98,6 +99,7 @@ function SplashScreen({ onFinish }: { onFinish: () => void }) {
 function TabsNavigator() {
   const { theme, colors } = useTheme();
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -109,8 +111,8 @@ function TabsNavigator() {
             backgroundColor: colors.background,
             borderTopColor: colors.border,
             borderTopWidth: 1,
-            height: 80,
-            paddingBottom: 16,
+            height: 56 + insets.bottom,
+            paddingBottom: 8 + insets.bottom,
             paddingTop: 8,
           },
           tabBarActiveTintColor: colors.text,
