@@ -495,7 +495,7 @@
     "location": "Location",
     "useCurrentLocation": "Use Current Location",
     "setLocation": "Set Location",
-    "enterLocation": "Enter city or location...",
+    "enterLocation": "City, Country or City, State...",
     "tapToChange": "Tap to change location",
     "usingGPS": "Using your current location",
     "timezone": "Timezone",

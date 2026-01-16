@@ -376,7 +376,7 @@
     "location": "Ubicación",
     "useCurrentLocation": "Usar ubicación actual",
     "setLocation": "Establecer ubicación",
-    "enterLocation": "Ingresa ciudad o ubicación...",
+    "enterLocation": "Ciudad, País o Ciudad, Estado...",
     "tapToChange": "Toca para cambiar ubicación",
     "usingGPS": "Usando tu ubicación actual",
     "timezone": "Zona horaria",

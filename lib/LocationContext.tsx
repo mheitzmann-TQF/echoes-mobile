@@ -63,15 +63,23 @@ const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
   }
 };
 
-const geocodeLocation = async (locationName: string): Promise<Coordinates | null> => {
+const geocodeLocation = async (locationName: string): Promise<{ coords: Coordinates; name: string } | null> => {
   try {
-    const results = await Location.geocodeAsync(locationName);
-    if (results.length > 0) {
-      const { latitude, longitude } = results[0];
-      return { lat: latitude, lng: longitude };
+    const response = await fetch(`https://source.thequietframe.com/api/geocode?q=${encodeURIComponent(locationName)}`);
+    if (!response.ok) {
+      console.error('[Geocode] API error:', response.status);
+      return null;
+    }
+    const data = await response.json();
+    if (data.lat && data.lng) {
+      console.log('[Geocode] Success:', locationName, '→', data.name, { lat: data.lat, lng: data.lng });
+      return { coords: { lat: data.lat, lng: data.lng }, name: data.name };
+    }
+    if (data.error) {
+      console.error('[Geocode] Not found:', locationName);
     }
   } catch (e) {
-    console.error('Geocoding error:', e);
+    console.error('[Geocode] Error:', e);
   }
   return null;
 };
@@ -93,9 +101,13 @@ export function LocationProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!useCurrentLocation && locationName && locationName !== 'New York') {
-      geocodeLocation(locationName).then((coords) => {
-        if (coords) {
-          setCoordinates(coords);
+      geocodeLocation(locationName).then((result) => {
+        if (result) {
+          setCoordinates(result.coords);
+          // Update location name with disambiguated name from API (e.g., "Paris, France")
+          if (result.name && result.name !== locationName) {
+            setLocationName(result.name);
+          }
         }
       });
     }

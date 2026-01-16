@@ -494,7 +494,7 @@
     "location": "Localisation",
     "useCurrentLocation": "Utiliser la position actuelle",
     "setLocation": "Définir la localisation",
-    "enterLocation": "Entrez une ville ou un lieu...",
+    "enterLocation": "Ville, Pays ou Ville, État...",
     "tapToChange": "Appuyez pour changer",
     "usingGPS": "Utilisation de votre position actuelle",
     "timezone": "Fuseau horaire",
