@@ -11,7 +11,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useSharedValue } from 'react-native-reanimated';
 import { Svg, Path, Circle } from 'react-native-svg';
 import { useTheme } from '../lib/ThemeContext';
-import { X, Moon, Sun, Globe, Drama, Leaf, Sparkles } from 'lucide-react-native';
+import { X, Moon, Sun, Globe, Drama, Leaf, Sparkles, ChevronDown } from 'lucide-react-native';
 import { DEBUG_GESTURES } from '../lib/debug';
 import { useTranslation } from 'react-i18next';
 
@@ -297,6 +297,16 @@ export default function EchoCard({
               <Text style={[styles.actionText, { color: colors.textTertiary }]}>{t('today.share')}</Text>
             </TouchableOpacity>
 
+            {/* Swipe indicator */}
+            {totalCards > 1 && (
+              <View style={styles.swipeIndicator}>
+                <ChevronDown size={16} color={colors.textTertiary} />
+                <Text style={[styles.swipeIndicatorText, { color: colors.textTertiary }]}>
+                  {index + 1}/{totalCards}
+                </Text>
+              </View>
+            )}
+
             <TouchableOpacity style={styles.actionButton} onPress={() => setShowWhyModal(true)}>
               <InfoIcon color={colors.textTertiary} />
               <Text style={[styles.actionText, { color: colors.textTertiary }]}>{t('today.why')}</Text>
@@ -425,6 +435,16 @@ const styles = StyleSheet.create({
   actionText: {
     color: 'rgba(255,255,255,0.6)',
     fontSize: 13,
+    fontWeight: '500',
+  },
+  swipeIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    opacity: 0.7,
+  },
+  swipeIndicatorText: {
+    fontSize: 12,
     fontWeight: '500',
   },
   // Modal styles

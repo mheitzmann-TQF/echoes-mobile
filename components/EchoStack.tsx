@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
-import { ChevronDown } from 'lucide-react-native';
 import EchoCard from './EchoCard';
 import { Echo } from '../lib/api';
 import { useTheme } from '../lib/ThemeContext';
@@ -19,7 +18,6 @@ export default function EchoStack({ echoes, currentIndex, onSwipeDown, onSwipeUp
   const { t } = useTranslation();
   // Always show all echoes - no filtering
   const visibleEchoes = echoes.slice(currentIndex, currentIndex + 3);
-  const hasMoreCards = currentIndex < echoes.length - 1;
 
   return (
     <View style={styles.container}>
@@ -31,8 +29,8 @@ export default function EchoStack({ echoes, currentIndex, onSwipeDown, onSwipeUp
             <EchoCard
               key={echo.id}
               echo={echo}
-              index={index}
-              totalCards={visibleEchoes.length}
+              index={currentIndex + index}
+              totalCards={echoes.length}
               onSwipeDown={onSwipeDown}
               onSwipeUp={onSwipeUp}
             />
@@ -43,15 +41,6 @@ export default function EchoStack({ echoes, currentIndex, onSwipeDown, onSwipeUp
           </View>
         )}
       </View>
-      
-      {echoes.length > 0 && (
-        <View style={[styles.swipeHint, { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12, paddingHorizontal: 16 }]}>
-          <ChevronDown size={18} color={colors.text} />
-          <Text style={[styles.swipeHintText, { color: colors.text }]}>
-            {hasMoreCards ? `${t('today.swipeDown')} · ` : ''}{currentIndex + 1}/{echoes.length}
-          </Text>
-        </View>
-      )}
     </View>
   );
 }
@@ -72,18 +61,6 @@ const styles = StyleSheet.create({
   stackContainer: {
     height: 360,
     alignItems: 'center',
-  },
-  swipeHint: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 20,
-    paddingBottom: 8,
-    gap: 6,
-  },
-  swipeHintText: {
-    fontSize: 13,
-    fontWeight: '500',
   },
   emptyState: {
     height: 420,
