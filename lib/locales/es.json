@@ -223,6 +223,10 @@
     "signalCoherence": "Coherencia: Global y Tendencia",
     "signalGeo": "Geomagnético: Actividad y Kp",
     "signalSeasonal": "Estacional",
+    "seasonWinter": "Invierno",
+    "seasonSpring": "Primavera",
+    "seasonSummer": "Verano",
+    "seasonAutumn": "Otoño",
     "bodyIndicator": "Indicadores generales basados en patrones circadianos"
   },
   "learn": {

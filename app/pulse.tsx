@@ -1022,7 +1022,11 @@ export default function FieldScreen() {
               <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalSun')}</Text>
               <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalCoherence')}</Text>
               <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalGeo')}</Text>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalSeasonal')}: {instant?.seasonal?.season || t('field.active')}</Text>
+              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalSeasonal')}: {(() => {
+                const seasonMap: Record<string, string> = { winter: 'seasonWinter', spring: 'seasonSpring', summer: 'seasonSummer', autumn: 'seasonAutumn', fall: 'seasonAutumn' };
+                const season = instant?.seasonal?.season?.toLowerCase();
+                return season && seasonMap[season] ? t(`field.${seasonMap[season]}`) : t('field.active');
+              })()}</Text>
             </View>
           </View>
         </View>
