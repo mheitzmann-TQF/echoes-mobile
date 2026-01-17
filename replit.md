@@ -8,6 +8,12 @@ Echoes is a cross-platform mobile application (iOS/Android) built with React Nat
 - No SaaS vocabulary in user-facing text (no "upgrade", "unlock", "premium", "pro")
 - Subscription model uses "full access" and "continue" terminology
 
+## Content Philosophy
+- **Core principle:** "Anchors may interpret, contextualize, relativize — but must NEVER prescribe."
+- **User positioning:** Users are conscious witnesses inside larger systems, not reactors who need to optimize.
+- **The test:** After any tab, ask "Do I need to do something now?" If "no" and feeling is "I see" — the app succeeds.
+- **Language style:** All UI text uses observational framing (e.g., "Energy often present" not "Good for tasks").
+
 ## System Architecture
 
 ### Mobile Application Framework
