@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Image, StyleSheet, Animated } from 'react-native';
 import { useTheme } from '../lib/ThemeContext';
 import { useLocation } from '../lib/LocationContext';
+import { useTranslation } from 'react-i18next';
 import { fetchInterruption } from '../lib/api';
 import { getInterruptionState, cacheInterruption } from '../lib/interruptionStore';
 
@@ -22,7 +23,8 @@ interface Props {
 
 export function InterruptionLayer({ onComplete }: Props) {
   const { colors } = useTheme();
-  const { language, timezone } = useLocation();
+  const { timezone } = useLocation();
+  const { i18n } = useTranslation();
   
   const [message, setMessage] = useState<string | null>(null);
   const [showBaobab, setShowBaobab] = useState(true);
@@ -40,7 +42,7 @@ export function InterruptionLayer({ onComplete }: Props) {
     
     try {
       const tz = timezone || 'America/New_York';
-      const lang = language || 'en';
+      const lang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
       
       const data = await fetchInterruption(lang, tz);
       
