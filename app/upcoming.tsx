@@ -212,10 +212,12 @@ function EventCard({ event }: { event: any }) {
   // Get category color
   const getCategoryColor = (cat: string) => {
     switch (cat) {
+      case 'astronomical': return '#818CF8';
       case 'pagan': return '#9b59b6';
       case 'religious': return '#3498db';
       case 'natural': return '#27ae60';
       case 'indigenous': return '#e67e22';
+      case 'cultural': return '#F59E0B';
       default: return colors.accent;
     }
   };
@@ -227,8 +229,10 @@ function EventCard({ event }: { event: any }) {
     return t('upcoming.daysShort', { count: daysUntil });
   };
   
+  const accentColor = getCategoryColor(event.displayCategory);
+  
   return (
-    <View style={styles.eventRow}>
+    <View style={[styles.eventRow, { borderLeftWidth: 3, borderLeftColor: accentColor }]}>
       <View style={[styles.eventDate, { backgroundColor: colors.surfaceHighlight }]}>
         <Text style={[styles.eventDateDay, { color: colors.text }]}>{eventDate.getDate()}</Text>
         <Text style={[styles.eventDateMonth, { color: colors.textSecondary }]}>{eventDate.toLocaleDateString(undefined, { month: 'short' })}</Text>
