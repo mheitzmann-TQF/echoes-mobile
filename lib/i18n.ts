@@ -22,7 +22,8 @@ export const LANGUAGE_NAMES: Record<SupportedLanguage, string> = {
   it: 'Italiano',
 };
 
-const LANGUAGE_STORAGE_KEY = '@echoes_language';
+const LANGUAGE_STORAGE_KEY = '@tqf_language';
+const LANGUAGE_EXPLICIT_KEY = '@tqf_language_explicit';
 
 const resources = {
   en: { translation: en },
@@ -50,6 +51,11 @@ function getDeviceLanguage(): SupportedLanguage {
 
 export async function getSavedLanguage(): Promise<SupportedLanguage | null> {
   try {
+    // Only return saved language if user explicitly chose it
+    const explicit = await AsyncStorage.getItem(LANGUAGE_EXPLICIT_KEY);
+    if (explicit !== 'true') {
+      return null;
+    }
     const saved = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
     if (saved && SUPPORTED_LANGUAGES.includes(saved as SupportedLanguage)) {
       return saved as SupportedLanguage;
@@ -63,6 +69,7 @@ export async function getSavedLanguage(): Promise<SupportedLanguage | null> {
 export async function saveLanguage(lang: SupportedLanguage): Promise<void> {
   try {
     await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+    await AsyncStorage.setItem(LANGUAGE_EXPLICIT_KEY, 'true');
   } catch (error) {
     console.log('[i18n] Error saving language:', error);
   }
@@ -71,6 +78,7 @@ export async function saveLanguage(lang: SupportedLanguage): Promise<void> {
 export async function clearSavedLanguage(): Promise<void> {
   try {
     await AsyncStorage.removeItem(LANGUAGE_STORAGE_KEY);
+    await AsyncStorage.removeItem(LANGUAGE_EXPLICIT_KEY);
   } catch (error) {
     console.log('[i18n] Error clearing saved language:', error);
   }
@@ -81,8 +89,13 @@ export async function initI18n(): Promise<void> {
     return;
   }
   
+  const deviceLanguage = getDeviceLanguage();
   const savedLanguage = await getSavedLanguage();
-  const initialLanguage = savedLanguage || getDeviceLanguage();
+  const initialLanguage = savedLanguage || deviceLanguage;
+  
+  console.log('[i18n] Device language:', deviceLanguage);
+  console.log('[i18n] Saved language (explicit):', savedLanguage);
+  console.log('[i18n] Using language:', initialLanguage);
 
   await i18n
     .use(initReactI18next)
