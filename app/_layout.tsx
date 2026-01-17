@@ -11,6 +11,7 @@ import { initI18n } from '../lib/i18n';
 import { useTranslation } from 'react-i18next';
 import Constants from 'expo-constants';
 import { SwipeTabs, type SwipeTab } from '../components/SwipeTabs';
+import { InterruptionLayer } from '../components/InterruptionLayer';
 
 const isWeb = Platform.OS === 'web';
 const isExpoGo = (): boolean => Constants.appOwnership === 'expo';
@@ -272,7 +273,7 @@ function ExpoRouterTabsNavigator() {
 
 function ThemedApp() {
   const { colors } = useTheme();
-  const [showSplash, setShowSplash] = useState(true);
+  const [showInterruption, setShowInterruption] = useState(true);
   const [i18nReady, setI18nReady] = useState(false);
 
   useEffect(() => {
@@ -287,8 +288,8 @@ function ThemedApp() {
     );
   }
 
-  if (showSplash) {
-    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  if (showInterruption) {
+    return <InterruptionLayer onComplete={() => setShowInterruption(false)} />;
   }
   
   if (shouldUseSwipeTabs) {

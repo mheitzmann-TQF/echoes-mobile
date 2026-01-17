@@ -197,4 +197,7 @@ export const ContentEndpoints = {
   },
   
   wisdomAll: (lang: string) => `/api/wisdom/all?lang=${lang}`,
+  
+  interruption: (lang: string, timezone: string) =>
+    `/api/interruption?lang=${lang}&timezone=${encodeURIComponent(timezone)}`,
 };

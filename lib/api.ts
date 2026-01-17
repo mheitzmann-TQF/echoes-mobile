@@ -433,5 +433,25 @@ export interface AncientWisdomResponse {
   cultures: AncientWisdomCulture[];
 }
 
+export interface InterruptionResponse {
+  message: string;
+  interruption_type: string;
+  cached: boolean;
+  signature: string;
+}
+
 export const api = new EchoesAPI();
 export default api;
+
+export async function fetchInterruption(lang: string, timezone: string): Promise<InterruptionResponse | null> {
+  try {
+    const endpoint = ContentEndpoints.interruption(lang, timezone);
+    console.log('[Interruption] Fetching:', endpoint);
+    const data = await fetchContentJson<InterruptionResponse>(endpoint);
+    console.log('[Interruption] Received:', data);
+    return data;
+  } catch (error) {
+    console.error('[Interruption] Fetch failed:', error);
+    return null;
+  }
+}
