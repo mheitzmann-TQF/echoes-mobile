@@ -9,14 +9,16 @@ interface AncientWisdomCardProps {
 
 function getCultureColor(culture: string): string {
   switch (culture) {
-    case 'mayan': return '#9b59b6';
-    case 'yoruba': return '#e74c3c';
-    case 'chinese': return '#e74c3c';
-    case 'ethiopian': return '#f39c12';
-    case 'celtic': return '#27ae60';
-    case 'hindu': return '#f39c12';
-    case 'egyptian': return '#3498db';
-    default: return '#9b59b6';
+    case 'ethiopian': return '#22C55E'; // Green (Ethiopian flag)
+    case 'hindu': return '#F97316'; // Saffron orange (Hindu tradition)
+    case 'hebrew': return '#3B82F6'; // Blue (Jewish tradition)
+    case 'islamic': return '#10B981'; // Emerald green (Islamic tradition)
+    case 'chinese': return '#EF4444'; // Red (Chinese tradition)
+    case 'mayan': return '#A855F7'; // Purple (Mesoamerican)
+    case 'yoruba': return '#DC2626'; // Deep red (Yoruba/African)
+    case 'celtic': return '#16A34A'; // Forest green (Celtic/Irish)
+    case 'egyptian': return '#F59E0B'; // Amber gold (Egyptian)
+    default: return '#8B5CF6'; // Violet fallback
   }
 }
 
