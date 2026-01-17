@@ -938,9 +938,11 @@ export default function FieldScreen() {
                     {lunarContent.message}
                   </Text>
                 )}
-                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {lunarContent.explanation || t('field.lunarExplanation')}
-                </Text>
+                {!lunarContent.message && (
+                  <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                    {t('field.lunarExplanation')}
+                  </Text>
+                )}
               </View>
             }
           />
@@ -963,9 +965,11 @@ export default function FieldScreen() {
                     {solarContent.message}
                   </Text>
                 )}
-                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {solarContent.explanation || t('field.solarExplanation')}
-                </Text>
+                {!solarContent.message && (
+                  <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                    {t('field.solarExplanation')}
+                  </Text>
+                )}
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.nextTransition')}</Text>
                 <Text style={[styles.expandedSub, { color: colors.text }]}>{nextTransition.display}</Text>
@@ -1003,9 +1007,11 @@ export default function FieldScreen() {
                     {geoContent.message}
                   </Text>
                 )}
-                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {geoContent.explanation || t('field.geoExplanation')}
-                </Text>
+                {!geoContent.message && (
+                  <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                    {t('field.geoExplanation')}
+                  </Text>
+                )}
               </View>
             }
           />
