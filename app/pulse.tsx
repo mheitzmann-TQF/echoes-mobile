@@ -470,18 +470,22 @@ export default function FieldScreen() {
   };
   const regionalAverage = getRegionalAverage();
   
-  // Get dynamic explanation from echo cards by type
+  // Get dynamic content from echo cards by type
   // Maps: lunar_guidance → Lunar card, solar_rhythm → Solar card, global_consciousness → Geomagnetic card
-  const getEchoExplanation = (echoType: string): string | null => {
+  // Returns both message (short action) and explanation (detailed context)
+  const getEchoContent = (echoType: string): { message: string | null; explanation: string | null } => {
     const echoCards = (bundle as any)?.echo_cards;
-    if (!echoCards || !Array.isArray(echoCards)) return null;
+    if (!echoCards || !Array.isArray(echoCards)) return { message: null, explanation: null };
     const card = echoCards.find((c: any) => c.type === echoType);
-    return card?.message || null;
+    return { 
+      message: card?.message || null, 
+      explanation: card?.explanation || null 
+    };
   };
   
-  const lunarExplanation = getEchoExplanation('lunar_guidance');
-  const solarExplanation = getEchoExplanation('solar_rhythm');
-  const geoExplanation = getEchoExplanation('global_consciousness');
+  const lunarContent = getEchoContent('lunar_guidance');
+  const solarContent = getEchoContent('solar_rhythm');
+  const geoContent = getEchoContent('global_consciousness');
   
   // Normalize geomagnetic state (Kp 0-3 = quiet, Kp 4-5 = active, Kp 6+ = stormy)
   const getGeoState = (kp: number): { label: string; message: string } => {
@@ -875,8 +879,13 @@ export default function FieldScreen() {
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{t(`field.${getMoonPhaseKey(lunarPhase)}`)}</Text>
                 <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% {t('field.illuminated')}</Text>
+                {lunarContent.message && (
+                  <Text style={[styles.echoMessage, { color: colors.text }]}>
+                    {lunarContent.message}
+                  </Text>
+                )}
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {lunarExplanation || t('field.lunarExplanation')}
+                  {lunarContent.explanation || t('field.lunarExplanation')}
                 </Text>
               </View>
             }
@@ -895,8 +904,13 @@ export default function FieldScreen() {
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{solarPhase}</Text>
+                {solarContent.message && (
+                  <Text style={[styles.echoMessage, { color: colors.text }]}>
+                    {solarContent.message}
+                  </Text>
+                )}
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {solarExplanation || t('field.solarExplanation')}
+                  {solarContent.explanation || t('field.solarExplanation')}
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.nextTransition')}</Text>
@@ -930,8 +944,13 @@ export default function FieldScreen() {
                   <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.stateLabel')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{geoState.label}</Text>
                 </View>
+                {geoContent.message && (
+                  <Text style={[styles.echoMessage, { color: colors.text }]}>
+                    {geoContent.message}
+                  </Text>
+                )}
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {geoExplanation || t('field.geoExplanation')}
+                  {geoContent.explanation || t('field.geoExplanation')}
                 </Text>
               </View>
             }
@@ -1147,6 +1166,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     flexShrink: 1,
     textAlign: 'right',
+  },
+  echoMessage: {
+    fontSize: 15,
+    fontWeight: '500',
+    marginTop: 12,
+    marginBottom: 4,
+    lineHeight: 22,
+    fontStyle: 'italic',
   },
   explanationText: {
     fontSize: 14,
