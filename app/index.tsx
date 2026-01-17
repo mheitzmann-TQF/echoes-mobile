@@ -712,6 +712,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scrollContent: {
+    padding: 20,
     paddingBottom: 80,
   },
   modalOverlay: {

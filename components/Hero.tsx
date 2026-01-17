@@ -19,9 +19,9 @@ export default function Hero({ title, subtitle }: HeroProps) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 0,
     marginTop: 0,
-    marginBottom: 24,
+    marginBottom: 16,
   },
   title: {
     fontSize: 34,
