@@ -151,6 +151,7 @@ function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: 
     switch (cat) {
       case 'astronomical': return '#818CF8';
       case 'cultural': return '#F59E0B';
+      case 'all': return '#10B981'; // Emerald green for "All"
       default: return colors.text;
     }
   };
@@ -165,15 +166,15 @@ function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: 
             key={cat}
             style={[
               styles.categoryChip, 
-              { backgroundColor: colors.surface, borderColor: colors.border },
-              isSelected && { backgroundColor: accent + '20', borderColor: accent }
+              { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 },
+              isSelected && { backgroundColor: accent + '25', borderColor: accent, borderWidth: 2 }
             ]}
             onPress={() => onChange(cat)}
           >
             <Text style={[
               styles.categoryChipText, 
               { color: colors.textSecondary },
-              isSelected && { color: accent, fontWeight: '600' }
+              isSelected && { color: accent, fontWeight: '700' }
             ]}>
               {cat === 'all' ? t('upcoming.all') : cat === 'astronomical' ? t('upcoming.astronomicalFilter') : t('upcoming.culturalFilter')}
             </Text>
