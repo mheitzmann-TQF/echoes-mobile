@@ -470,6 +470,19 @@ export default function FieldScreen() {
   };
   const regionalAverage = getRegionalAverage();
   
+  // Get dynamic explanation from echo cards by type
+  // Maps: lunar_guidance → Lunar card, solar_rhythm → Solar card, global_consciousness → Geomagnetic card
+  const getEchoExplanation = (echoType: string): string | null => {
+    const echoCards = (bundle as any)?.echo_cards;
+    if (!echoCards || !Array.isArray(echoCards)) return null;
+    const card = echoCards.find((c: any) => c.type === echoType);
+    return card?.message || null;
+  };
+  
+  const lunarExplanation = getEchoExplanation('lunar_guidance');
+  const solarExplanation = getEchoExplanation('solar_rhythm');
+  const geoExplanation = getEchoExplanation('global_consciousness');
+  
   // Normalize geomagnetic state (Kp 0-3 = quiet, Kp 4-5 = active, Kp 6+ = stormy)
   const getGeoState = (kp: number): { label: string; message: string } => {
     if (kp <= 3) return { label: t('field.quiet'), message: t('field.quietField') };
@@ -863,7 +876,7 @@ export default function FieldScreen() {
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{t(`field.${getMoonPhaseKey(lunarPhase)}`)}</Text>
                 <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% {t('field.illuminated')}</Text>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {t('field.lunarExplanation')}
+                  {lunarExplanation || t('field.lunarExplanation')}
                 </Text>
               </View>
             }
@@ -883,7 +896,7 @@ export default function FieldScreen() {
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{solarPhase}</Text>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {t('field.solarExplanation')}
+                  {solarExplanation || t('field.solarExplanation')}
                 </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.nextTransition')}</Text>
@@ -918,7 +931,7 @@ export default function FieldScreen() {
                   <Text style={[styles.detailValue, { color: colors.text }]}>{geoState.label}</Text>
                 </View>
                 <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {t('field.geoExplanation')}
+                  {geoExplanation || t('field.geoExplanation')}
                 </Text>
               </View>
             }
