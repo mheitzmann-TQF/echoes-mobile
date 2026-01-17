@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 16,
+    paddingTop: 20,
+    paddingBottom: 8,
     gap: 6,
   },
   swipeHintText: {
