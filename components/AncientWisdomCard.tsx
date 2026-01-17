@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   message: {
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 16,
+    lineHeight: 22,
   },
 });
