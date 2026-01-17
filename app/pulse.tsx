@@ -1136,10 +1136,9 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   explanationText: {
-    fontSize: 13,
-    fontStyle: 'italic',
+    fontSize: 14,
     marginTop: 8,
-    lineHeight: 18,
+    lineHeight: 20,
   },
   howToReadContainer: {
     marginTop: 16,
