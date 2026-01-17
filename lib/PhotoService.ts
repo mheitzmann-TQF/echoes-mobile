@@ -33,6 +33,23 @@ function getDailyPhotoIndex(photos: TQFPhoto[]): number {
   return seed % photos.length;
 }
 
+function generateTQFPhotos(): TQFPhoto[] {
+  const photos: TQFPhoto[] = [];
+  for (let i = 1; i <= 50; i++) {
+    photos.push({
+      url: `${TQF_FRAME_BASE}${i}.webp`,
+      photographer: 'The Quiet Frame',
+    });
+  }
+  return photos;
+}
+
+function shouldShowTQF(): boolean {
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+  return (seed % 100) < 20;
+}
+
 export async function fetchPhotos(): Promise<TQFPhoto[]> {
   const now = Date.now();
   if (cache.photos.length > 0 && now - cache.fetchedAt < CACHE_DURATION) {
@@ -49,20 +66,13 @@ export async function fetchPhotos(): Promise<TQFPhoto[]> {
     cache.fetchedAt = now;
     return photos;
   } catch (error) {
-    console.error('Failed to fetch TQF photos:', error);
-    return generateFallbackPhotos();
+    console.error('Failed to fetch Unsplash photos:', error);
+    return [];
   }
 }
 
 function generateFallbackPhotos(): TQFPhoto[] {
-  const photos: TQFPhoto[] = [];
-  for (let i = 1; i <= 40; i++) {
-    photos.push({
-      url: `${TQF_FRAME_BASE}${i}.webp`,
-      photographer: 'The Quiet Frame',
-    });
-  }
-  return photos;
+  return generateTQFPhotos();
 }
 
 export async function getDailyPhoto(): Promise<TQFPhoto> {
@@ -72,18 +82,25 @@ export async function getDailyPhoto(): Promise<TQFPhoto> {
     return cache.dailyPhoto;
   }
 
-  const photos = await fetchPhotos();
+  let dailyPhoto: TQFPhoto;
   
-  if (photos.length === 0) {
-    const fallbackIndex = Math.floor(Math.random() * 40) + 1;
-    return {
-      url: `${TQF_FRAME_BASE}${fallbackIndex}.webp`,
-      photographer: 'The Quiet Frame',
-    };
+  if (shouldShowTQF()) {
+    const tqfPhotos = generateTQFPhotos();
+    const index = getDailyPhotoIndex(tqfPhotos);
+    dailyPhoto = tqfPhotos[index];
+    console.log('[Photo] Selected TQF photo (20% chance)');
+  } else {
+    const unsplashPhotos = await fetchPhotos();
+    if (unsplashPhotos.length === 0) {
+      const tqfPhotos = generateTQFPhotos();
+      const index = getDailyPhotoIndex(tqfPhotos);
+      dailyPhoto = tqfPhotos[index];
+    } else {
+      const index = getDailyPhotoIndex(unsplashPhotos);
+      dailyPhoto = unsplashPhotos[index];
+      console.log('[Photo] Selected Unsplash photo (80% chance)');
+    }
   }
-
-  const index = getDailyPhotoIndex(photos);
-  const dailyPhoto = photos[index];
   
   cache.dailyPhoto = dailyPhoto;
   cache.dailyPhotoDate = today;
@@ -92,17 +109,18 @@ export async function getDailyPhoto(): Promise<TQFPhoto> {
 }
 
 export async function getRandomPhoto(): Promise<TQFPhoto> {
-  const photos = await fetchPhotos();
+  if (Math.random() < 0.2) {
+    const tqfPhotos = generateTQFPhotos();
+    return tqfPhotos[Math.floor(Math.random() * tqfPhotos.length)];
+  }
   
-  if (photos.length === 0) {
-    const fallbackIndex = Math.floor(Math.random() * 40) + 1;
-    return {
-      url: `${TQF_FRAME_BASE}${fallbackIndex}.webp`,
-      photographer: 'The Quiet Frame',
-    };
+  const unsplashPhotos = await fetchPhotos();
+  if (unsplashPhotos.length === 0) {
+    const tqfPhotos = generateTQFPhotos();
+    return tqfPhotos[Math.floor(Math.random() * tqfPhotos.length)];
   }
 
-  return photos[Math.floor(Math.random() * photos.length)];
+  return unsplashPhotos[Math.floor(Math.random() * unsplashPhotos.length)];
 }
 
 export default {
