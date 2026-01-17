@@ -57,7 +57,6 @@ interface Observance {
 // Components
 import Hero from '../components/Hero';
 import CalendarCarousel from '../components/CalendarCarousel';
-import MetricsGrid from '../components/MetricsGrid';
 
 interface DailyPhotoData {
   url: string;
@@ -627,10 +626,6 @@ export default function HomeScreen() {
           )}
 
           <CalendarCarousel calendars={calendars} onSelect={handleCalendarSelect} />
-
-          {planetary && (
-            <MetricsGrid planetary={planetary} />
-          )}
 
           <TodayObservances observances={observances} />
 
