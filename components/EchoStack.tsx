@@ -44,20 +44,12 @@ export default function EchoStack({ echoes, currentIndex, onSwipeDown, onSwipeUp
         )}
       </View>
       
-      {visibleEchoes.length > 0 && (
-        <View style={styles.swipeHint}>
-          {hasMoreCards ? (
-            <>
-              <ChevronDown size={18} color={colors.textTertiary} />
-              <Text style={[styles.swipeHintText, { color: colors.textTertiary }]}>
-                {t('today.swipeDown')} · {currentIndex + 1}/{echoes.length}
-              </Text>
-            </>
-          ) : (
-            <Text style={[styles.swipeHintText, { color: colors.textTertiary }]}>
-              {currentIndex + 1}/{echoes.length}
-            </Text>
-          )}
+      {echoes.length > 0 && (
+        <View style={[styles.swipeHint, { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12, paddingHorizontal: 16 }]}>
+          <ChevronDown size={18} color={colors.text} />
+          <Text style={[styles.swipeHintText, { color: colors.text }]}>
+            {hasMoreCards ? `${t('today.swipeDown')} · ` : ''}{currentIndex + 1}/{echoes.length}
+          </Text>
         </View>
       )}
     </View>
