@@ -43,6 +43,7 @@ interface ExpandableCardProps {
   onToggle?: () => void;
   chips?: string[];
   howToRead?: string[];
+  accentColor?: string;
 }
 
 function ExpandableCard({ 
@@ -55,7 +56,8 @@ function ExpandableCard({
   isExpanded, 
   onToggle,
   chips,
-  howToRead
+  howToRead,
+  accentColor
 }: ExpandableCardProps) {
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -65,7 +67,8 @@ function ExpandableCard({
       style={[
         styles.card, 
         { backgroundColor: colors.surface, borderColor: colors.border },
-        isExpanded && { backgroundColor: colors.surfaceHighlight, borderColor: colors.border }
+        isExpanded && { backgroundColor: colors.surfaceHighlight, borderColor: colors.border },
+        accentColor && { borderLeftWidth: 3, borderLeftColor: accentColor }
       ]} 
       onPress={onToggle}
       activeOpacity={0.9}
@@ -846,9 +849,10 @@ export default function FieldScreen() {
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.cosmos')}</Text>
           
           <ExpandableCard
-            icon={<Moon size={20} color={colors.text} />}
+            icon={<Moon size={20} color="#A78BFA" />}
             title={t('field.lunar')}
             message={t(`field.${getMoonPhaseKey(lunarPhase)}`)}
+            accentColor="#A78BFA"
             collapsedDetail={`${Math.round(ctx?.lunar?.illumination || 0)}%`}
             isExpanded={expandedCards['lunar']}
             onToggle={() => toggleCard('lunar')}
@@ -866,9 +870,10 @@ export default function FieldScreen() {
           />
 
           <ExpandableCard
-            icon={<Sun size={20} color={colors.text} />}
+            icon={<Sun size={20} color="#F59E0B" />}
             title={t('field.solar')}
             message={nextTransition.display}
+            accentColor="#F59E0B"
             collapsedDetail={solarPhase}
             isExpanded={expandedCards['solar']}
             onToggle={() => toggleCard('solar')}
@@ -893,9 +898,10 @@ export default function FieldScreen() {
           <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.earth')}</Text>
           
           <ExpandableCard
-            icon={<Zap size={20} color={colors.text} />}
+            icon={<Zap size={20} color="#14B8A6" />}
             title={t('field.geomagneticShort')}
             message={geoState.label}
+            accentColor="#14B8A6"
             collapsedDetail={geoState.label}
             isExpanded={expandedCards['geo']}
             onToggle={() => toggleCard('geo')}
@@ -925,9 +931,10 @@ export default function FieldScreen() {
           <Text style={[styles.sectionHint, { color: colors.textTertiary }]}>{t('field.bodyIndicator')}</Text>
           
           <ExpandableCard
-            icon={<Dna size={20} color={colors.text} />}
+            icon={<Dna size={20} color="#34D399" />}
             title={t('field.body')}
             message={circadianPhase}
+            accentColor="#34D399"
             collapsedDetail={bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : t('field.active')}
             isExpanded={expandedCards['body']}
             onToggle={() => toggleCard('body')}
