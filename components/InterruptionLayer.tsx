@@ -18,6 +18,14 @@ interface TierConfig {
   fontSize: number;
 }
 
+function generateSignature(data: InterruptionResponse): string {
+  const climate = data.media_climate;
+  if (climate) {
+    return `${climate.dominant_mode}|${climate.intensity}|${climate.transformational_percent}|${climate.misaligned_percent}`;
+  }
+  return `${data.interruption_type}|${data.message.substring(0, 20)}`;
+}
+
 const TIER_CONFIGS: Record<InterruptionTier, TierConfig> = {
   0: {
     fadeInDuration: 250,
@@ -78,15 +86,16 @@ export function InterruptionLayer({ onComplete }: Props) {
       
       interruptionData = await fetchInterruption(lang, tz);
       
-      if (interruptionData && interruptionData.message && interruptionData.signature) {
+      if (interruptionData && interruptionData.success && interruptionData.message) {
+        const signature = interruptionData.signature || generateSignature(interruptionData);
         const result = await processInterruption(
-          interruptionData.signature,
+          signature,
           interruptionData.message,
           interruptionData.interruption_type
         );
         finalTier = result.tier;
         finalMessage = interruptionData.message;
-        console.log('[Interruption] Tier:', finalTier, 'Signature:', interruptionData.signature);
+        console.log('[Interruption] Tier:', finalTier, 'Signature:', signature);
       } else {
         const cachedState = await getInterruptionState();
         if (cachedState.cached_message) {

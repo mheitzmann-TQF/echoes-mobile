@@ -434,10 +434,17 @@ export interface AncientWisdomResponse {
 }
 
 export interface InterruptionResponse {
+  success: boolean;
   message: string;
   interruption_type: string;
   cached: boolean;
-  signature: string;
+  signature?: string;
+  media_climate?: {
+    dominant_mode: string;
+    intensity: string;
+    transformational_percent: number;
+    misaligned_percent: number;
+  };
 }
 
 export const api = new EchoesAPI();
