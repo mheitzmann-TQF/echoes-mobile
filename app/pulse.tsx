@@ -159,6 +159,34 @@ function translateOptimalTiming(text: string, t: (key: string, options?: any) =>
     return t('field.timing_next_new_moon', { count: days, defaultValue: `Next new moon in ~${days} days` });
   }
   
+  // Map of lunar phase snake_case keys to camelCase translation keys
+  const lunarPhaseMap: Record<string, string> = {
+    'new_moon': 'newMoon',
+    'waxing_crescent': 'waxingCrescent',
+    'first_quarter': 'firstQuarter',
+    'waxing_gibbous': 'waxingGibbous',
+    'full_moon': 'fullMoon',
+    'waning_gibbous': 'waningGibbous',
+    'last_quarter': 'lastQuarter',
+    'waning_crescent': 'waningCrescent'
+  };
+  
+  // Replace lunar phase keys with translated values in the text
+  let translatedText = text;
+  for (const [snakeCase, camelCase] of Object.entries(lunarPhaseMap)) {
+    if (translatedText.includes(snakeCase)) {
+      const translated = t(`field.${camelCase}`, { defaultValue: '' });
+      if (translated) {
+        translatedText = translatedText.replace(snakeCase, translated);
+      }
+    }
+  }
+  
+  // If we made lunar phase replacements, return the result
+  if (translatedText !== text) {
+    return translatedText;
+  }
+  
   const key = text.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
   const translated = t(`field.timing_${key}`, { defaultValue: '' });
   return translated || text;
