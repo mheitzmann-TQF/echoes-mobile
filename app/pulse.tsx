@@ -171,6 +171,14 @@ function translateOptimalTiming(text: string, t: (key: string, options?: any) =>
     'waning_crescent': 'waningCrescent'
   };
   
+  // Map of geomagnetic field descriptors
+  const geoFieldMap: Record<string, string> = {
+    'unsettled geomagnetic field': 'unsettledGeomagneticField',
+    'quiet geomagnetic field': 'quietGeomagneticField',
+    'stormy geomagnetic field': 'stormyGeomagneticField',
+    'active geomagnetic field': 'activeGeomagneticField'
+  };
+  
   // Replace lunar phase keys with translated values in the text
   let translatedText = text;
   for (const [snakeCase, camelCase] of Object.entries(lunarPhaseMap)) {
@@ -182,7 +190,25 @@ function translateOptimalTiming(text: string, t: (key: string, options?: any) =>
     }
   }
   
-  // If we made lunar phase replacements, return the result
+  // Replace "moon with" connector phrase
+  if (translatedText.includes('moon with')) {
+    const moonWith = t('field.moonWith', { defaultValue: '' });
+    if (moonWith) {
+      translatedText = translatedText.replace('moon with', moonWith);
+    }
+  }
+  
+  // Replace geomagnetic field descriptors
+  for (const [phrase, key] of Object.entries(geoFieldMap)) {
+    if (translatedText.toLowerCase().includes(phrase)) {
+      const translated = t(`field.${key}`, { defaultValue: '' });
+      if (translated) {
+        translatedText = translatedText.replace(new RegExp(phrase, 'i'), translated);
+      }
+    }
+  }
+  
+  // If we made any replacements, return the result
   if (translatedText !== text) {
     return translatedText;
   }
