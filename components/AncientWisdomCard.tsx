@@ -61,7 +61,7 @@ export default function AncientWisdomCard({ culture }: AncientWisdomCardProps) {
           <Text style={[styles.detail, { color: colors.textTertiary }]}>{detail}</Text>
         )}
         <Text style={[styles.message, { color: colors.textSecondary }]}>
-          "{culture.message}"
+          {culture.message}
         </Text>
       </View>
     </View>
@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 14,
-    fontStyle: 'italic',
     lineHeight: 20,
   },
 });

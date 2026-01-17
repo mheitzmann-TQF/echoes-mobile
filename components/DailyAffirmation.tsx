@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.6)',
     textAlign: 'center',
     lineHeight: 24,
-    fontStyle: 'italic',
     letterSpacing: 0.3,
   },
 });
