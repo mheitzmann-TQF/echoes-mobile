@@ -741,5 +741,5 @@ const styles = StyleSheet.create({
   
   cookieCard: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, padding: 20, borderWidth: 1, alignItems: 'center' },
   cookieLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 12 },
-  cookieText: { fontSize: 16, fontStyle: 'italic', textAlign: 'center', lineHeight: 24 },
+  cookieText: { fontSize: 16, textAlign: 'center', lineHeight: 24 },
 });
