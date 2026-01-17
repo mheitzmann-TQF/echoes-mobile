@@ -40,6 +40,17 @@ export async function registerRoutes(
     }
   });
 
+  // Proxy route for interruption layer (forwards to source.thequietframe.com)
+  app.get("/api/proxy/interruption", async (req, res) => {
+    try {
+      const data = await proxyToSource("/api/interruption", req.query as Record<string, string>);
+      res.json(data);
+    } catch (error: any) {
+      console.error("Interruption proxy error:", error?.message);
+      res.status(500).json({ success: false, error: "Failed to fetch interruption" });
+    }
+  });
+
   // User Settings Routes (in-memory storage for development)
   app.get("/api/user/:userId/settings", async (req, res) => {
     try {
