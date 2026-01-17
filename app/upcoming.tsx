@@ -146,27 +146,40 @@ function BandControl({ value, onChange }: { value: Band; onChange: (band: Band) 
 function CategoryFilter({ value, onChange }: { value: Category; onChange: (cat: Category) => void }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
+  
+  const getCategoryAccent = (cat: Category) => {
+    switch (cat) {
+      case 'astronomical': return '#818CF8';
+      case 'cultural': return '#F59E0B';
+      default: return colors.text;
+    }
+  };
+  
   return (
     <View style={styles.categoryFilter}>
-      {(['all', 'astronomical', 'cultural'] as Category[]).map((cat) => (
-        <TouchableOpacity
-          key={cat}
-          style={[
-            styles.categoryChip, 
-            { backgroundColor: colors.surface, borderColor: colors.border },
-            value === cat && { backgroundColor: colors.surfaceHighlight, borderColor: colors.textTertiary }
-          ]}
-          onPress={() => onChange(cat)}
-        >
-          <Text style={[
-            styles.categoryChipText, 
-            { color: colors.textSecondary },
-            value === cat && { color: colors.text }
-          ]}>
-            {cat === 'all' ? t('upcoming.all') : cat === 'astronomical' ? t('upcoming.astronomicalFilter') : t('upcoming.culturalFilter')}
-          </Text>
-        </TouchableOpacity>
-      ))}
+      {(['all', 'astronomical', 'cultural'] as Category[]).map((cat) => {
+        const accent = getCategoryAccent(cat);
+        const isSelected = value === cat;
+        return (
+          <TouchableOpacity
+            key={cat}
+            style={[
+              styles.categoryChip, 
+              { backgroundColor: colors.surface, borderColor: colors.border },
+              isSelected && { backgroundColor: accent + '20', borderColor: accent }
+            ]}
+            onPress={() => onChange(cat)}
+          >
+            <Text style={[
+              styles.categoryChipText, 
+              { color: colors.textSecondary },
+              isSelected && { color: accent, fontWeight: '600' }
+            ]}>
+              {cat === 'all' ? t('upcoming.all') : cat === 'astronomical' ? t('upcoming.astronomicalFilter') : t('upcoming.culturalFilter')}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }
