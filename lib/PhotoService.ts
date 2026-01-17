@@ -12,7 +12,7 @@ interface PhotoCache {
 }
 
 const PHOTOS_JSON_URL = 'https://raw.githubusercontent.com/mheitzmann-TQF/-Photos/main/cdn/tqf-photos.json';
-const TQF_FRAME_BASE = 'https://raw.githubusercontent.com/mheitzmann-TQF/-Photos/main/cdn/photos/TQF_Frame-';
+const TQF_FRAME_BASE = 'https://raw.githubusercontent.com/mheitzmann-TQF/-Photos/main/photos/TQF_Frame-';
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
 
 let cache: PhotoCache = {
