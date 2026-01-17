@@ -12,6 +12,7 @@ import i18next from 'i18next';
 import { useEntitlement } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
 import AncientWisdomCard from '../components/AncientWisdomCard';
+import { cookieService } from '../lib/CookieService';
 
 const { width } = Dimensions.get('window');
 
@@ -298,6 +299,8 @@ export default function WisdomScreen() {
   const [regionalData, setRegionalData] = useState<RegionalBreakdown[]>([]);
   const [loading, setLoading] = useState(true);
   const [methodologyVisible, setMethodologyVisible] = useState(false);
+  const [cookie, setCookie] = useState<string | null>(null);
+  const [cookieLoading, setCookieLoading] = useState(true);
   
   // Track current language for proper re-fetching
   const currentLang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
@@ -331,6 +334,22 @@ export default function WisdomScreen() {
     }
     loadData();
   }, [currentLang]);
+
+  useEffect(() => {
+    async function loadCookie() {
+      if (!i18n.language) return;
+      setCookieLoading(true);
+      try {
+        const text = await cookieService.getCookie(i18n.language);
+        setCookie(text);
+      } catch {
+        setCookie(null);
+      } finally {
+        setCookieLoading(false);
+      }
+    }
+    loadCookie();
+  }, [i18n.language]);
 
   if (loading) {
     return (
@@ -369,6 +388,38 @@ export default function WisdomScreen() {
         <View style={styles.pageHeader}>
           <Text style={[styles.pageTitle, { color: colors.text }]}>{t('learn.title')}</Text>
           <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>{t('learn.subtitle')}</Text>
+        </View>
+
+        {/* The Cookie - Daily reflection prompt */}
+        {!cookieLoading && cookie && (
+          <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Text style={[styles.cookieLabel, { color: colors.textTertiary }]}>{t('today.cookie')}</Text>
+            <Text style={[styles.cookieText, { color: colors.text }]}>{cookie}</Text>
+          </View>
+        )}
+
+        {/* Ancient Wisdom Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Sparkles size={20} color="#9b59b6" />
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('learn.ancientWisdom') || 'Ancient Wisdom'}</Text>
+          </View>
+          <Text style={[styles.sectionSubtitle, { color: colors.textSecondary }]}>{t('learn.ancientWisdomDesc') || 'Daily guidance from ancient calendar traditions'}</Text>
+          
+          {ancientWisdom.length > 0 ? (
+            <View style={styles.wisdomList}>
+              {ancientWisdom.map((culture, idx) => (
+                <AncientWisdomCard 
+                  key={`${culture.culture}-${idx}`} 
+                  culture={culture}
+                />
+              ))}
+            </View>
+          ) : (
+            <View style={[styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Text style={[styles.emptyText, { color: colors.textSecondary }]}>{t('learn.noDataAvailable') || 'No wisdom data available'}</Text>
+            </View>
+          )}
         </View>
 
         {/* Global Consciousness Section */}
@@ -485,30 +536,6 @@ export default function WisdomScreen() {
               <Text style={[styles.methodologyText, { color: colors.textSecondary }]}>{t('learn.methodology')}</Text>
             </TouchableOpacity>
           </View>
-        </View>
-
-        {/* Ancient Wisdom Section */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Sparkles size={20} color="#9b59b6" />
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('learn.ancientWisdom') || 'Ancient Wisdom'}</Text>
-          </View>
-          <Text style={[styles.sectionSubtitle, { color: colors.textSecondary }]}>{t('learn.ancientWisdomDesc') || 'Daily guidance from ancient calendar traditions'}</Text>
-          
-          {ancientWisdom.length > 0 ? (
-            <View style={styles.wisdomList}>
-              {ancientWisdom.map((culture, idx) => (
-                <AncientWisdomCard 
-                  key={`${culture.culture}-${idx}`} 
-                  culture={culture}
-                />
-              ))}
-            </View>
-          ) : (
-            <View style={[styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Text style={[styles.emptyText, { color: colors.textSecondary }]}>{t('learn.noDataAvailable') || 'No wisdom data available'}</Text>
-            </View>
-          )}
         </View>
 
       </ScrollView>
@@ -711,4 +738,8 @@ const styles = StyleSheet.create({
   faqItem: { marginBottom: 16 },
   faqQuestion: { fontSize: 13, fontWeight: '600', marginBottom: 4 },
   faqAnswer: { fontSize: 13, lineHeight: 19 },
+  
+  cookieCard: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, padding: 20, borderWidth: 1, alignItems: 'center' },
+  cookieLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 12 },
+  cookieText: { fontSize: 16, fontStyle: 'italic', textAlign: 'center', lineHeight: 24 },
 });

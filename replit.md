@@ -26,11 +26,19 @@ The app features five primary tabs: Today, Pulse, Wisdom, Upcoming, and Settings
 Global state is managed using React Contexts (e.g., `LocationContext`, `ThemeContext`). The application adopts a local-first data storage approach, storing data locally on the device without user accounts.
 
 ### Content and Features
-- **Echo Cards:** Delivered daily, categorized into Lunar, Solar, Global Consciousness, Cultural Rhythms, and Ancestral Echo.
 - **Calendar Integration:** Displays multi-calendar dates (e.g., Hebrew calendar) with detailed modals showing significance, energy, phase, and element. All calendar data is aggregated from the TQF API.
-- **Media Climate:** Presents raw and filtered signal analysis.
-- **"The Cookie":** A daily fictional reflection prompt.
+- **Media Climate:** Presents raw and filtered signal analysis of global media patterns.
+- **"The Cookie":** A daily AI-generated fictional reflection prompt, displayed on the Wisdom tab.
+- **Ancient Wisdom:** Daily guidance from ancient calendar traditions (Hebrew, Mayan, Chinese, Hindu, Islamic).
 - **In-App Purchase & Subscription:** Uses a "full access" subscription model (monthly/yearly) with `none`, `trial`, `paid`, and `expired` states. A dev access override is available for testing without real IAP.
+
+### Tab Content Structure
+Each tab has a distinct purpose aligned with the content philosophy:
+- **Today (index.tsx):** Presence anchoring only — Daily Photo + Multi-Calendar View + Metrics Grid. No interpretive content.
+- **Pulse (pulse.tsx):** Location-based impact patterns and observational context.
+- **Wisdom (wisdom.tsx):** Perspective & meaning — Cookie (reflection prompt) → Ancient Wisdom → Media Climate analysis. Order reflects journey from personal reflection to cultural wisdom to media awareness.
+- **Upcoming (upcoming.tsx):** Future patterns and observances.
+- **Settings (settings.tsx):** User preferences, language, theme, subscription management.
 
 ### API Integration
 All content and billing information is fetched directly from `source.thequietframe.com` via HTTPS. The mobile app acts as a client, never directly accessing databases. Public endpoints are unauthenticated, while protected billing endpoints require session token authentication for security. A cache-first strategy with `expires_at` timestamps is employed.

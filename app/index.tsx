@@ -18,11 +18,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
 import { format, Locale } from 'date-fns';
 import { enUS, es, fr, pt, de, it } from 'date-fns/locale';
-import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
+import api, { PlanetaryData, DailyBundleResponse } from '../lib/api';
 import { getDailyPhoto } from '../lib/PhotoService';
 import { cleanTone } from '../lib/labelize';
-import { cookieService } from '../lib/CookieService';
-import { Sparkles, X } from 'lucide-react-native';
+import { X } from 'lucide-react-native';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import { getApiLang } from '../lib/lang';
@@ -59,7 +58,6 @@ interface Observance {
 import Hero from '../components/Hero';
 import CalendarCarousel from '../components/CalendarCarousel';
 import MetricsGrid from '../components/MetricsGrid';
-import EchoStack from '../components/EchoStack';
 
 interface DailyPhotoData {
   url: string;
@@ -352,7 +350,6 @@ export default function HomeScreen() {
   const { t, i18n } = useTranslation();
   const { locationName, coordinates, timezone, coordinateKey } = useLocation();
   const { colors, theme } = useTheme();
-  const [echoes, setEchoes] = useState<Echo[]>([]);
   const [planetary, setPlanetary] = useState<PlanetaryData | null>(null);
   const [calendars, setCalendars] = useState<any[]>([]);
   const [rawCalendars, setRawCalendars] = useState<any[]>([]);
@@ -360,11 +357,8 @@ export default function HomeScreen() {
   const [observances, setObservances] = useState<Observance[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCalendar, setSelectedCalendar] = useState<any | null>(null);
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
-  const [cookie, setCookie] = useState<string | null>(null);
-  const [cookieLoading, setCookieLoading] = useState(true);
 
   const translateCalendarContent = useCallback((content: string | undefined | null): string | null => {
     if (!content) return null;
@@ -440,93 +434,6 @@ export default function HomeScreen() {
     consciousness: { global_coherence: 68, regional_resonance: 65, trend: 'stable' }
   });
 
-  const getMockEchoes = (): Echo[] => {
-    const hour = new Date().getHours();
-    const dayOfMonth = new Date().getDate();
-    const seed = dayOfMonth * 13 + hour;
-    
-    // Translated observational messages
-    const lunarMessages = [
-      t('today.echoLunar1'),
-      t('today.echoLunar2'),
-      t('today.echoLunar3'),
-    ];
-    
-    const solarMessages = [
-      t('today.echoSolar1'),
-      t('today.echoSolar2'),
-      t('today.echoSolar3'),
-    ];
-    
-    const consciousnessMessages = [
-      t('today.echoConsciousness1'),
-      t('today.echoConsciousness2'),
-      t('today.echoConsciousness3'),
-    ];
-    
-    const culturalMessages = [
-      t('today.echoCultural1'),
-      t('today.echoCultural2'),
-      t('today.echoCultural3'),
-    ];
-    
-    const ancestralMessages = [
-      t('today.echoAncestral1'),
-      t('today.echoAncestral2'),
-      t('today.echoAncestral3'),
-    ];
-
-    const getRandomItem = (arr: string[], index: number) => arr[index % arr.length];
-    
-    return [
-      {
-        id: '1',
-        type: 'lunar_guidance',
-        title: t('today.lunarNote'),
-        message: getRandomItem(lunarMessages, seed),
-        background_theme: 'lunar',
-        relevance_score: 0.9,
-        source_metrics: ['Lunar'],
-      },
-      {
-        id: '2',
-        type: 'global_consciousness',
-        title: t('today.globalPulse'),
-        message: getRandomItem(consciousnessMessages, seed + 1),
-        background_theme: 'consciousness',
-        relevance_score: 0.85,
-        source_metrics: ['Coherence', 'Geomagnetism'],
-      },
-      {
-        id: '3',
-        type: 'cultural_rhythms',
-        title: t('today.calendarConfluence'),
-        message: getRandomItem(culturalMessages, seed + 2),
-        background_theme: 'culture',
-        relevance_score: 0.88,
-        source_metrics: ['Lunar', 'Coherence'],
-      },
-      {
-        id: '4',
-        type: 'solar_rhythm',
-        title: hour >= 12 ? t('today.afternoonLight') : t('today.morningLight'),
-        message: getRandomItem(solarMessages, seed + 3),
-        background_theme: 'solar',
-        relevance_score: 0.84,
-        source_metrics: ['Solar'],
-      },
-      {
-        id: '5',
-        type: 'ancestral_echo',
-        title: t('today.ancestralThread'),
-        message: getRandomItem(ancestralMessages, seed + 4),
-        background_theme: 'ancestral',
-        relevance_score: 0.86,
-        source_metrics: ['Lunar', 'Cultural'],
-      },
-    ];
-  };
-
   const getMockCalendars = () => [
     { id: 'gregorian', name: t('learn.gregorian'), date: format(new Date(), 'd MMM yy', { locale: getDateLocale() }), type: t('calendars.civil') },
     { id: 'mayan', name: t('learn.mayanTzolkin'), date: '7 Manik', type: t('calendars.sacred') },
@@ -588,19 +495,8 @@ export default function HomeScreen() {
           } : ctx.consciousness_index
         });
         
-        if (bundleData.data.echo_cards && bundleData.data.echo_cards.length > 0) {
-          // Clean tone on API echo cards
-          const cleanedEchoes = bundleData.data.echo_cards.map((e: Echo) => ({
-            ...e,
-            message: cleanTone(e.message)
-          }));
-          setEchoes(cleanedEchoes);
-        } else {
-          setEchoes(getMockEchoes());
-        }
       } else {
         setPlanetary(getMockPlanetaryData());
-        setEchoes(getMockEchoes());
       }
 
       // Process Calendars
@@ -668,7 +564,6 @@ export default function HomeScreen() {
     } catch (error) {
       console.error('Failed to fetch data:', error);
       setPlanetary(getMockPlanetaryData());
-      setEchoes(getMockEchoes());
       setRawCalendars([]);
       setCalendars(getMockCalendars());
       
@@ -691,42 +586,11 @@ export default function HomeScreen() {
     fetchData();
   }, [fetchData]);
 
-  useEffect(() => {
-    async function loadCookie() {
-      // Skip if i18n hasn't initialized yet
-      if (!i18n.language) return;
-      
-      setCookieLoading(true);
-      try {
-        // Pass language explicitly to ensure correct language is used
-        const text = await cookieService.getCookie(i18n.language);
-        setCookie(text);
-      } catch {
-        setCookie(null);
-      } finally {
-        setCookieLoading(false);
-      }
-    }
-    loadCookie();
-  }, [i18n.language]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setCurrentIndex(0);
     fetchData();
   }, [fetchData]);
-
-  const handleSwipeDown = () => {
-    if (currentIndex < echoes.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-    }
-  };
-
-  const handleSwipeUp = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-    }
-  };
 
   if (loading) {
     return (
@@ -769,26 +633,6 @@ export default function HomeScreen() {
           )}
 
           <TodayObservances observances={observances} />
-
-          {/* The Fortune Cookie */}
-          {!cookieLoading && cookie && (
-            <View style={styles.cookieSection}>
-              <View style={styles.cookieHeader}>
-                <Sparkles size={18} color={colors.accent} />
-                <Text style={[styles.cookieSectionTitle, { color: colors.text }]}>{t('learn.theCookie')}</Text>
-              </View>
-              <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Text style={[styles.cookieText, { color: colors.text }]}>{cookie}</Text>
-              </View>
-            </View>
-          )}
-
-          <EchoStack 
-            echoes={echoes}
-            currentIndex={currentIndex}
-            onSwipeDown={handleSwipeDown}
-            onSwipeUp={handleSwipeUp}
-          />
 
         </ScrollView>
 

@@ -1,0 +1,123 @@
+Good. Now we do this cleanly, mechanically, and in the right order.
+
+First: FROM → TO (app structure)
+Then (next step): language rules for Source.
+
+No philosophy. Just placement.
+
+⸻
+
+FROM → TO — APP REALIGNMENT (FINAL)
+
+TAB: Today
+
+FROM
+	•	Photo
+	•	Calendars
+	•	Fortune Cookie
+	•	Any interpretive or narrative element
+
+TO
+	•	✅ Photo
+	•	✅ Calendars (cross-cultural time anchoring)
+	•	❌ Fortune Cookie
+	•	❌ Any interpretation or suggestion
+
+Why
+	•	Today anchors presence only.
+	•	Awareness of where/when, not what it means.
+
+⸻
+
+TAB: Pulse / Rhythm
+
+FROM
+	•	External signals (cosmos / earth / body)
+	•	Interpretive notes
+	•	“Often associated with…”
+	•	Any alignment language
+
+TO
+	•	✅ External conditions (cosmos / earth / body)
+	•	✅ Explicit framing: “these externalities affect you”
+	•	❌ Recommendations
+	•	❌ “Good time to / supports / align with”
+
+Why
+	•	Pulse anchors impact awareness.
+	•	“This affects you” ≠ “do something about it”.
+
+⸻
+
+TAB: Wisdom
+
+FROM
+	•	Mixed content (fortune cookie, ancestral wisdom, media patterns)
+	•	Sometimes read as “meaning of the day”
+
+TO
+	•	✅ Fortune Cookie / reflection
+	•	✅ Ancestral wisdom (cross-cultural continuity)
+	•	✅ Media climate (aggregate patterns, noise vs integration)
+	•	❌ Any prescriptive framing
+
+Why
+	•	Wisdom anchors perspective:
+	•	noise loses authority (media)
+	•	urgency loses novelty (ancestors)
+	•	Interpretation is allowed.
+	•	Prescription is not.
+
+⸻
+
+TAB: Upcoming
+
+FROM
+	•	Neutral listings of future cycles
+
+TO
+	•	✅ Exactly the same
+
+Why
+	•	Already correct.
+	•	Anchors temporal awareness without demand.
+
+⸻
+
+TAB: Settings
+
+FROM
+	•	Preferences
+
+TO
+	•	✅ Exactly the same
+
+Why
+	•	Container only.
+
+⸻
+
+ONE-SCREEN SUMMARY (APP)
+
+Tab	Anchors awareness of	Contains	Explicitly does NOT
+Today	Presence	Photo + calendars	Meaning
+Pulse	Impact	External conditions	Guidance
+Wisdom	Perspective	Media + ancestors + reflection	Prescription
+Upcoming	Time	Cycles	Urgency
+Settings	Container	Toggles	Optimization
+
+
+⸻
+
+Non-negotiable app rule (carry forward)
+
+No tab tells the user what to do.
+Some tabs tell the user what is happening.
+Some tell them how it affects them.
+Some tell them this has happened before.
+
+That’s the spine.
+
+⸻
+
+If this looks right, next we move to Source language rules, tab by tab, very tight and very enforceable.
