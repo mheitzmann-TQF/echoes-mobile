@@ -321,8 +321,16 @@ export default function EchoCard({
         animationType="fade"
         onRequestClose={() => setShowWhyModal(false)}
       >
-        <View style={[styles.modalOverlay, { backgroundColor: 'rgba(0,0,0,0.7)' }]}>
-          <View style={[styles.modalContent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <TouchableOpacity 
+          style={[styles.modalOverlay, { backgroundColor: 'rgba(0,0,0,0.85)' }]}
+          activeOpacity={1}
+          onPress={() => setShowWhyModal(false)}
+        >
+          <TouchableOpacity 
+            activeOpacity={1}
+            style={[styles.modalContent, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            onPress={(e) => e.stopPropagation()}
+          >
             <View style={styles.modalHeader}>
               <Text style={[styles.modalTitle, { color: colors.text }]}>{t('today.whyThisEcho')}</Text>
               <TouchableOpacity onPress={() => setShowWhyModal(false)}>
@@ -337,8 +345,8 @@ export default function EchoCard({
                 </Text>
               </View>
             </View>
-          </View>
-        </View>
+          </TouchableOpacity>
+        </TouchableOpacity>
       </Modal>
     </>
   );

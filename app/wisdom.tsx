@@ -514,14 +514,23 @@ export default function WisdomScreen() {
       </ScrollView>
       
       {/* Methodology Modal */}
-      <Modal visible={methodologyVisible} animationType="fade" transparent>
+      <Modal visible={methodologyVisible} animationType="fade" transparent onRequestClose={() => setMethodologyVisible(false)}>
         <TouchableOpacity 
           style={styles.methodologyOverlay} 
           activeOpacity={1} 
           onPress={() => setMethodologyVisible(false)}
         >
-          <View style={[styles.methodologyContent, { backgroundColor: colors.surface }]}>
-            <Text style={[styles.methodologyTitle, { color: colors.text }]}>{t('learn.methodology')}</Text>
+          <TouchableOpacity 
+            activeOpacity={1}
+            style={[styles.methodologyContent, { backgroundColor: colors.surface }]}
+            onPress={(e) => e.stopPropagation()}
+          >
+            <View style={styles.methodologyHeaderRow}>
+              <Text style={[styles.methodologyTitle, { color: colors.text }]}>{t('learn.methodology')}</Text>
+              <TouchableOpacity onPress={() => setMethodologyVisible(false)}>
+                <X size={24} color={colors.text} />
+              </TouchableOpacity>
+            </View>
             <ScrollView showsVerticalScrollIndicator={false} style={{ maxHeight: 400 }}>
               <Text style={[styles.methodologyDesc, { color: colors.textSecondary }]}>{t('learn.methodologyDesc')}</Text>
               
@@ -578,14 +587,7 @@ export default function WisdomScreen() {
                 <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq5Answer')}</Text>
               </View>
             </ScrollView>
-            
-            <TouchableOpacity 
-              style={[styles.methodologyCloseBtn, { backgroundColor: colors.surfaceHighlight }]}
-              onPress={() => setMethodologyVisible(false)}
-            >
-              <Text style={[styles.methodologyCloseText, { color: colors.text }]}>{t('common.close')}</Text>
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         </TouchableOpacity>
       </Modal>
       
@@ -686,7 +688,8 @@ const styles = StyleSheet.create({
   
   methodologyOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 20 },
   methodologyContent: { borderRadius: 16, padding: 24, width: '100%', maxWidth: 380, maxHeight: '80%' },
-  methodologyTitle: { fontSize: 18, fontWeight: '600', marginBottom: 16 },
+  methodologyHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+  methodologyTitle: { fontSize: 18, fontWeight: '600' },
   methodologyDesc: { fontSize: 14, lineHeight: 22, marginBottom: 20 },
   methodologySection: { marginBottom: 16 },
   methodologySectionTitle: { fontSize: 14, fontWeight: '600', marginBottom: 4 },

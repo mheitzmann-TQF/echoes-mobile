@@ -210,10 +210,23 @@ export default function SettingsScreen() {
         </View>
 
         {/* Theme Modal */}
-        <Modal visible={showThemeModal} transparent animationType="fade">
-          <View style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
-            <View style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#111' : '#FFF' }]}>
-              <Text style={[styles.modalTitle, { color: colors.text }]}>{t('settings.theme')}</Text>
+        <Modal visible={showThemeModal} transparent animationType="fade" onRequestClose={() => setShowThemeModal(false)}>
+          <TouchableOpacity 
+            style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}
+            activeOpacity={1}
+            onPress={() => setShowThemeModal(false)}
+          >
+            <TouchableOpacity 
+              activeOpacity={1}
+              style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#111' : '#FFF' }]}
+              onPress={(e) => e.stopPropagation()}
+            >
+              <View style={styles.modalHeaderRow}>
+                <Text style={[styles.modalTitle, { color: colors.text }]}>{t('settings.theme')}</Text>
+                <TouchableOpacity onPress={() => setShowThemeModal(false)}>
+                  <X size={24} color={colors.text} />
+                </TouchableOpacity>
+              </View>
               {THEMES.map((themeOption) => (
                 <TouchableOpacity
                   key={themeOption}
@@ -233,21 +246,28 @@ export default function SettingsScreen() {
                   {theme === themeOption.toLowerCase() && <Check size={18} color={colors.accent} />}
                 </TouchableOpacity>
               ))}
-              <TouchableOpacity 
-                style={[styles.modalCloseButton, { backgroundColor: colors.surfaceHighlight }]}
-                onPress={() => setShowThemeModal(false)}
-              >
-                <Text style={[styles.modalCloseText, { color: colors.textSecondary }]}>{t('common.close')}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+            </TouchableOpacity>
+          </TouchableOpacity>
         </Modal>
 
         {/* Language Modal */}
-        <Modal visible={showLanguageModal} transparent animationType="fade">
-          <View style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
-            <View style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#111' : '#FFF' }]}>
-              <Text style={[styles.modalTitle, { color: colors.text }]}>{t('settings.selectLanguage')}</Text>
+        <Modal visible={showLanguageModal} transparent animationType="fade" onRequestClose={() => setShowLanguageModal(false)}>
+          <TouchableOpacity 
+            style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}
+            activeOpacity={1}
+            onPress={() => setShowLanguageModal(false)}
+          >
+            <TouchableOpacity 
+              activeOpacity={1}
+              style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#111' : '#FFF' }]}
+              onPress={(e) => e.stopPropagation()}
+            >
+              <View style={styles.modalHeaderRow}>
+                <Text style={[styles.modalTitle, { color: colors.text }]}>{t('settings.selectLanguage')}</Text>
+                <TouchableOpacity onPress={() => setShowLanguageModal(false)}>
+                  <X size={24} color={colors.text} />
+                </TouchableOpacity>
+              </View>
               {SUPPORTED_LANGUAGES.map((lang) => (
                 <TouchableOpacity
                   key={lang}
@@ -265,14 +285,8 @@ export default function SettingsScreen() {
                   {currentLanguage === lang && <Check size={18} color={colors.accent} />}
                 </TouchableOpacity>
               ))}
-              <TouchableOpacity 
-                style={[styles.modalCloseButton, { backgroundColor: colors.surfaceHighlight }]}
-                onPress={() => setShowLanguageModal(false)}
-              >
-                <Text style={[styles.modalCloseText, { color: colors.textSecondary }]}>{t('common.close')}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+            </TouchableOpacity>
+          </TouchableOpacity>
         </Modal>
 
         {/* Subscription Section */}
@@ -541,10 +555,15 @@ const styles = StyleSheet.create({
     width: '80%',
     maxHeight: '70%',
   },
+  modalHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   modalTitle: {
     fontSize: 18,
     fontWeight: '700',
-    marginBottom: 16,
   },
   modalOption: {
     flexDirection: 'row',

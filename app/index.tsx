@@ -22,7 +22,7 @@ import api, { Echo, PlanetaryData, DailyBundleResponse } from '../lib/api';
 import { getDailyPhoto } from '../lib/PhotoService';
 import { cleanTone } from '../lib/labelize';
 import { cookieService } from '../lib/CookieService';
-import { Sparkles } from 'lucide-react-native';
+import { Sparkles, X } from 'lucide-react-native';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme } from '../lib/ThemeContext';
 import { getApiLang } from '../lib/lang';
@@ -811,6 +811,12 @@ export default function HomeScreen() {
             >
               {selectedCalendar && (
                 <>
+                  <TouchableOpacity 
+                    style={styles.modalXButton}
+                    onPress={() => setCalendarModalVisible(false)}
+                  >
+                    <X size={24} color={colors.text} />
+                  </TouchableOpacity>
                   <View style={styles.modalHeader}>
                     <Text style={[styles.modalTitle, { color: colors.text }]}>{selectedCalendar.name}</Text>
                     <Text style={[styles.modalDate, { color: colors.accent }]}>{selectedCalendar.date}</Text>
@@ -846,13 +852,6 @@ export default function HomeScreen() {
                       <Text style={[styles.modalValue, { color: colors.text }]}>{selectedCalendar.element}</Text>
                     </View>
                   )}
-                  
-                  <TouchableOpacity 
-                    style={[styles.modalCloseButton, { backgroundColor: colors.surfaceHighlight }]}
-                    onPress={() => setCalendarModalVisible(false)}
-                  >
-                    <Text style={[styles.modalCloseText, { color: colors.text }]}>{t('common.close')}</Text>
-                  </TouchableOpacity>
                 </>
               )}
             </TouchableOpacity>
@@ -887,6 +886,12 @@ const styles = StyleSheet.create({
     maxWidth: 340,
     borderRadius: 20,
     padding: 24,
+  },
+  modalXButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    zIndex: 10,
   },
   modalHeader: {
     alignItems: 'center',

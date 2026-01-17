@@ -30,7 +30,7 @@ export const darkColors: ThemeColors = {
   accentSubtle: 'rgba(77, 184, 255, 0.15)',
   error: '#FF453A',
   success: '#32D74B',
-  overlay: 'rgba(0,0,0,0.7)',
+  overlay: 'rgba(0,0,0,0.85)',
 };
 
 export const lightColors: ThemeColors = {
@@ -45,7 +45,7 @@ export const lightColors: ThemeColors = {
   accentSubtle: 'rgba(0, 122, 255, 0.1)',
   error: '#FF3B30',
   success: '#34C759',
-  overlay: 'rgba(0,0,0,0.3)',
+  overlay: 'rgba(0,0,0,0.85)',
 };
 
 interface ThemeContextType {
