@@ -85,7 +85,6 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 
   return (
     <View style={photoStyles.container}>
-      <Text style={[photoStyles.sectionLabel, { color: colors.textTertiary }]}>{t('today.moment')}</Text>
       <TouchableOpacity 
         activeOpacity={0.9} 
         onPress={() => setFullscreen(true)}
