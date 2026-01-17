@@ -61,7 +61,11 @@
     "echoSolar3": "Les angles de lumière changent tandis que le soleil avance vers l'horizon.",
     "echoAncestral1": "Les motifs que vous remarquez ont été remarqués par ceux qui vous ont précédé.",
     "echoAncestral2": "Des générations ont observé ces mêmes cycles se dérouler.",
-    "echoAncestral3": "La sagesse de l'observation traverse le temps."
+    "echoAncestral3": "La sagesse de l'observation traverse le temps.",
+    "share": "Partager",
+    "why": "Pourquoi?",
+    "whyThisEcho": "Pourquoi cet écho?",
+    "shareEcho": "Partager l'écho"
   },
   "field": {
     "title": "Pouls",

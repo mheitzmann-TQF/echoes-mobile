@@ -59,7 +59,11 @@
     "echoSolar3": "Los ángulos de luz cambian mientras el sol avanza hacia el horizonte.",
     "echoAncestral1": "Los patrones que notas fueron notados por quienes te precedieron.",
     "echoAncestral2": "Generaciones han observado estos mismos ciclos desarrollarse.",
-    "echoAncestral3": "La sabiduría de la observación atraviesa el tiempo."
+    "echoAncestral3": "La sabiduría de la observación atraviesa el tiempo.",
+    "share": "Compartir",
+    "why": "¿Por qué?",
+    "whyThisEcho": "¿Por qué este eco?",
+    "shareEcho": "Compartir eco"
   },
   "field": {
     "title": "Pulso",

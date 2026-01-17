@@ -107,6 +107,24 @@ const getTypeLabelKey = (type: string): string => {
   }
 };
 
+const getTypeAccentColor = (type: string): string => {
+  switch (type) {
+    case 'lunar_guidance':
+      return '#9b87f5'; // purple for lunar
+    case 'solar_rhythm':
+      return '#f5a623'; // golden for solar
+    case 'global_consciousness':
+      return '#4ecdc4'; // teal for consciousness
+    case 'cultural_rhythms':
+      return '#e74c3c'; // red for cultural
+    case 'ancestral_wisdom':
+    case 'ancestral_echo':
+      return '#27ae60'; // green for ancestral
+    default:
+      return '#6366f1'; // indigo default
+  }
+};
+
 const getMetricDescription = (metric: string): string => {
   const descriptions: Record<string, string> = {
     'Lunar': 'Based on the current lunar phase and its energetic influence',
@@ -136,13 +154,15 @@ export default function EchoCard({
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `✨ ${echo.title}\n\n${echo.message}\n\n— From Echoes App`,
-        title: 'Share Echo',
+        message: `${echo.title}\n\n${echo.message}\n\n— Echoes by The Quiet Frame\nthequietframe.com`,
+        title: t('today.shareEcho'),
       });
     } catch (error) {
       console.error('Share error:', error);
     }
   };
+
+  const accentColor = getTypeAccentColor(echo.type);
 
   const panGesture = Gesture.Pan()
     .enabled(isActive)
@@ -252,12 +272,11 @@ export default function EchoCard({
   });
 
   const cardBackgroundColor = theme === 'dark' ? '#000000' : '#FFFFFF';
-  const cardBorderColor = colors.border;
 
   return (
     <>
       <GestureDetector gesture={panGesture}>
-        <Animated.View style={[styles.card, animatedStyle, { backgroundColor: cardBackgroundColor, borderColor: cardBorderColor }]}>
+        <Animated.View style={[styles.card, animatedStyle, { backgroundColor: cardBackgroundColor, borderColor: accentColor, borderLeftWidth: 4 }]}>
           <View style={styles.content}>
             <View style={[styles.typeBadge, { backgroundColor: colors.surfaceHighlight }]}>
               <View style={styles.typeIcon}>{getTypeIcon(echo.type, colors.text)}</View>
@@ -283,12 +302,12 @@ export default function EchoCard({
           <View style={[styles.actions, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
             <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
               <ShareIcon color={colors.textTertiary} />
-              <Text style={[styles.actionText, { color: colors.textTertiary }]}>Share</Text>
+              <Text style={[styles.actionText, { color: colors.textTertiary }]}>{t('today.share')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.actionButton} onPress={() => setShowWhyModal(true)}>
               <InfoIcon color={colors.textTertiary} />
-              <Text style={[styles.actionText, { color: colors.textTertiary }]}>Why?</Text>
+              <Text style={[styles.actionText, { color: colors.textTertiary }]}>{t('today.why')}</Text>
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -304,7 +323,7 @@ export default function EchoCard({
         <View style={[styles.modalOverlay, { backgroundColor: 'rgba(0,0,0,0.7)' }]}>
           <View style={[styles.modalContent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.modalHeader}>
-              <Text style={[styles.modalTitle, { color: colors.text }]}>Why This Echo?</Text>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>{t('today.whyThisEcho')}</Text>
               <TouchableOpacity onPress={() => setShowWhyModal(false)}>
                 <X size={24} color={colors.text} />
               </TouchableOpacity>

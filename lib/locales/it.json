@@ -59,7 +59,11 @@
     "echoSolar3": "Gli angoli di luce cambiano mentre il sole avanza verso l'orizzonte.",
     "echoAncestral1": "I modelli che noti sono stati notati da chi ti ha preceduto.",
     "echoAncestral2": "Generazioni hanno osservato questi stessi cicli svolgersi.",
-    "echoAncestral3": "La saggezza dell'osservazione attraversa il tempo."
+    "echoAncestral3": "La saggezza dell'osservazione attraversa il tempo.",
+    "share": "Condividi",
+    "why": "Perché?",
+    "whyThisEcho": "Perché questo eco?",
+    "shareEcho": "Condividi eco"
   },
   "field": {
     "title": "Polso",

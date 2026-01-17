@@ -61,7 +61,11 @@
     "echoSolar3": "Light angles shift as the sun moves toward the horizon.",
     "echoAncestral1": "The patterns you notice were noticed by those before you.",
     "echoAncestral2": "Generations have watched these same cycles unfold.",
-    "echoAncestral3": "The wisdom of observation passes through time."
+    "echoAncestral3": "The wisdom of observation passes through time.",
+    "share": "Share",
+    "why": "Why?",
+    "whyThisEcho": "Why This Echo?",
+    "shareEcho": "Share Echo"
   },
   "field": {
     "title": "Pulse",

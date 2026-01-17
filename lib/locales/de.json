@@ -59,7 +59,11 @@
     "echoSolar3": "Lichtwinkel verschieben sich, während die Sonne zum Horizont wandert.",
     "echoAncestral1": "Die Muster, die Sie bemerken, wurden von denen vor Ihnen bemerkt.",
     "echoAncestral2": "Generationen haben dieselben Zyklen beobachtet.",
-    "echoAncestral3": "Die Weisheit der Beobachtung durchquert die Zeit."
+    "echoAncestral3": "Die Weisheit der Beobachtung durchquert die Zeit.",
+    "share": "Teilen",
+    "why": "Warum?",
+    "whyThisEcho": "Warum dieses Echo?",
+    "shareEcho": "Echo teilen"
   },
   "field": {
     "title": "Puls",
