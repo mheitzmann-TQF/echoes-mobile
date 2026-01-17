@@ -43,6 +43,7 @@ interface EchoCardProps {
     title: string;
     message: string;
     background_theme: string;
+    explanation?: string;
     source_metrics?: string[];
   };
   index: number;
@@ -330,22 +331,11 @@ export default function EchoCard({
             </View>
 
             <View style={styles.metricsContainer}>
-              {echo.source_metrics && echo.source_metrics.length > 0 ? (
-                echo.source_metrics.map((metric, idx) => (
-                  <View key={`${echo.id}-${metric}-${idx}`} style={[styles.metricItem, { borderBottomColor: colors.border }]}>
-                    <Text style={[styles.metricLabel, { color: colors.text }]}>{metric}</Text>
-                    <Text style={[styles.metricDescription, { color: colors.textSecondary }]}>
-                      {getMetricDescription(metric)}
-                    </Text>
-                  </View>
-                ))
-              ) : (
-                <View style={styles.metricItem}>
-                  <Text style={[styles.metricDescription, { color: colors.textTertiary }]}>
-                    This echo was generated based on the current cosmic and terrestrial conditions at your location.
-                  </Text>
-                </View>
-              )}
+              <View style={styles.metricItem}>
+                <Text style={[styles.metricDescription, { color: colors.textSecondary }]}>
+                  {echo.explanation || t('today.echoExplanation')}
+                </Text>
+              </View>
             </View>
           </View>
         </View>

@@ -63,6 +63,7 @@
     "share": "Compartilhar",
     "why": "Por quê?",
     "whyThisEcho": "Por que este eco?",
+    "echoExplanation": "Este eco foi gerado com base nas condições cósmicas e terrestres atuais da sua localização.",
     "shareEcho": "Compartilhar eco"
   },
   "field": {

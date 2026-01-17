@@ -65,6 +65,7 @@
     "share": "Share",
     "why": "Why?",
     "whyThisEcho": "Why This Echo?",
+    "echoExplanation": "This echo was generated based on the current cosmic and terrestrial conditions at your location.",
     "shareEcho": "Share Echo"
   },
   "field": {
