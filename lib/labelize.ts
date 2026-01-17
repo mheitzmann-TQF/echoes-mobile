@@ -117,6 +117,7 @@ const DIRECTIVE_REPLACEMENTS: [RegExp, string][] = [
 
 /**
  * Convert snake_case or kebab-case to Title Case
+ * Preserves already-formatted natural language strings (e.g., "Origine chrétienne")
  */
 export function toTitleCase(str: string): string {
   if (!str) return '';
@@ -125,6 +126,12 @@ export function toTitleCase(str: string): string {
   const lower = str.toLowerCase();
   if (SYSTEM_LABELS[lower]) {
     return SYSTEM_LABELS[lower];
+  }
+  
+  // If string contains spaces and starts with uppercase, it's already formatted
+  // (e.g., "Origine chrétienne" from API) - preserve as-is
+  if (str.includes(' ') && /^[A-ZÀ-ÖØ-Þ]/.test(str)) {
+    return str;
   }
   
   // Convert snake_case/kebab-case to spaces, then title case
