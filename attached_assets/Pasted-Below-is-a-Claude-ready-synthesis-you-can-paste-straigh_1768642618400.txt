@@ -1,0 +1,214 @@
+Below is a Claude-ready synthesis you can paste straight into your “app implementation” task. It’s detailed, deterministic, and preserves your existing architecture (Source-driven config + 6h cached interruption).
+
+⸻
+
+Claude brief: Implement “Interruption Layer” on app open (Echoes)
+
+Objective
+
+Add a new Interruption Layer that appears every time the app opens, before the user sees the normal tabs. It displays one single disruptive sentence (“spell-breaker”) fetched from /api/interruption, cached server-side for 6 hours, and presented with adaptive intensity on repeat opens to avoid irritation.
+
+This must not feel like content, advice, or a quote. It is a short interruption that reduces manufactured urgency (“rat race”) before the rest of Echoes becomes visible.
+
+⸻
+
+User experience flow (must match)
+	1.	App opens
+	2.	Show TQF Baobab (brand anchor)
+	3.	Fetch interruption message (or use locally cached result if still valid)
+	4.	Display interruption sentence briefly
+	5.	Fade out interruption layer
+	6.	Reveal normal tabs
+
+Key principle: Baobab anchors identity; interruption breaks urgency; fade restores agency; tabs return choice.
+
+⸻
+
+Backend/API contract
+
+Request
+
+GET /api/interruption?lang=<lang>&timezone=<tz>
+
+Example:
+GET /api/interruption?lang=en&timezone=America/New_York
+
+Response JSON
+
+{
+  "message": "Urgency is louder today, but nothing essential depends on speed.",
+  "interruption_type": "urgency_disruption",
+  "cached": true,
+  "signature": "en|reactive|high|rising|misaligned_high"
+}
+
+	•	message: always one sentence
+	•	signature: stable cache key (changes when climate changes)
+	•	The server already caches for 6h. The app still tracks “seen count” per signature locally.
+
+⸻
+
+App-side state and persistence (required)
+
+Persist locally (AsyncStorage / SecureStore / local storage equivalent)
+
+Store a single object keyed by interruption_signature:
+	•	last_signature: string
+	•	seen_count: number
+	•	first_seen_at: ISO string or epoch ms
+	•	last_open_at: epoch ms
+	•	optionally store last fetched message and signature for offline fallback
+
+Logic
+	•	On app open, call /api/interruption
+	•	If request fails, use last stored message (if available). If none, skip interruption gracefully.
+	•	After receiving response:
+	•	If signature !== last_signature:
+	•	set last_signature = signature
+	•	set seen_count = 0
+	•	set first_seen_at = now
+	•	Else:
+	•	increment seen_count += 1
+	•	Set last_open_at = now
+	•	Determine presentation tier based on:
+	•	seen_count
+	•	and a “fast path” check: if (now - last_open_at) < 120 seconds, force a lower tier to prevent annoyance in rapid reopen scenarios.
+
+⸻
+
+Presentation tiers (same message, different intensity)
+
+Timing guidance
+
+Total interruption window should be ~0.6s to ~3.0s depending on tier.
+No user action required (no dismiss button).
+
+Tier definitions
+
+Tier 0: “Full interruption” (first open in TTL window)
+Trigger:
+	•	seen_count == 0 AND not fast path
+
+Behavior:
+	•	Show Baobab immediately
+	•	Fade in the interruption sentence after ~250–350ms
+	•	Hold readable duration
+	•	Fade out
+	•	Then show tabs
+
+Recommended parameters:
+	•	Text opacity in: 0 → 1 over 250ms
+	•	Hold: 1400–1900ms (enough to read 9–12 words)
+	•	Fade out: 600–900ms
+	•	Tabs appear only AFTER interruption fade completes
+	•	Total: ~2.3–3.0s
+
+Tier 1: “Micro interruption” (second and third opens)
+Trigger:
+	•	seen_count in {1,2} AND not fast path
+
+Behavior:
+	•	Same sentence
+	•	Smaller presence, shorter hold
+	•	Still appears before tabs, but almost instantly yields
+
+Recommended:
+	•	Fade in: 180ms
+	•	Hold: 500–800ms
+	•	Fade out: 350–500ms
+	•	Total: ~1.0–1.5s
+
+Tier 2: “Ghost interruption” (fourth+ opens within same TTL)
+Trigger:
+	•	seen_count >= 3 OR fast path
+
+Behavior:
+	•	Same sentence appears as a “ghost” (very short, low friction)
+	•	The point is reinforcement without irritation
+
+Recommended:
+	•	Fade in: 120ms
+	•	Hold: 150–250ms
+	•	Fade out: 220–350ms
+	•	Total: ~0.5–0.8s
+	•	Option: slightly reduced opacity (e.g., 0.75 max) and smaller font size
+
+Fast path rule (must implement)
+
+If app is reopened within 2 minutes (120s), force Tier 2 regardless of seen_count.
+
+Reason: prevents “hammering” during rapid switching.
+
+⸻
+
+UI layout requirements
+
+Interruption Layer component
+	•	Covers the screen area above tabs while active
+	•	Baobab visible as the brand anchor (can be centered or top centered)
+	•	Interruption text centered beneath baobab with generous whitespace
+	•	No icons, no buttons, no links
+	•	No swipe or interaction required
+
+Important
+	•	Do NOT render tabs underneath the interruption (even if hidden). Wait until the interruption layer completes, then mount/show tabs. This prevents “I should click something” urgency.
+	•	Do NOT allow dismissal (no tap-to-skip). Skipping becomes “work”.
+
+⸻
+
+Content constraints (the app enforces lightly, but trusts server)
+
+The message is designed to comply with:
+	•	One sentence
+	•	7–14 words
+	•	No question mark/exclamation
+	•	No quotes
+	•	No emojis
+If the server returns a bad message (rare), the app should still show it but shorten Tier 0 hold. Do not block app launch.
+
+⸻
+
+Animation and feel (tone)
+
+The interruption should feel:
+	•	calm
+	•	grounded
+	•	slightly disruptive
+	•	not theatrical
+
+Avoid dramatic transitions. The goal is a gentle wedge.
+
+⸻
+
+Error handling & offline behavior
+	•	If API call fails:
+	•	If last stored message exists, show it using Tier 2 (ghost) and proceed.
+	•	Otherwise skip interruption and go straight to tabs.
+	•	Never block tab rendering longer than 3 seconds total.
+
+⸻
+
+Instrumentation (optional but recommended)
+
+Log these events (locally or analytics):
+	•	interruption_fetch_success/failure
+	•	interruption_tier_shown with tier + signature
+	•	interruption_duration_ms
+	•	interruption_cached boolean from server response
+
+This helps tune friction.
+
+⸻
+
+Acceptance criteria checklist
+	•	Every app open shows baobab + interruption before tabs (unless offline w/ no cached message)
+	•	Interruption message fetched from /api/interruption and displayed exactly as provided
+	•	Tier 0 only on first open per signature (unless fast path)
+	•	Tier 2 forced for opens within 120s
+	•	No dismiss button; no interactions required
+	•	Tabs appear only after interruption layer completes
+	•	Total delay never exceeds ~3 seconds
+
+⸻
+
+If you want, tell Claude to implement this in the exact navigation framework you use (Expo Router / React Navigation / custom tabs). The key is: interruption layer controls when tabs mount/show so it truly precedes navigation.
