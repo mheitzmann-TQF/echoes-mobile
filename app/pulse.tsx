@@ -1173,7 +1173,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 4,
     lineHeight: 22,
-    fontStyle: 'italic',
   },
   explanationText: {
     fontSize: 14,
