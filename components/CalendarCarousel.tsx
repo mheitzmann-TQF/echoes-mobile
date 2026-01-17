@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
   cardType: {
     fontSize: 11,
     color: 'rgba(255,255,255,0.8)',
-    textTransform: 'capitalize',
     backgroundColor: 'rgba(255,255,255,0.1)',
     paddingHorizontal: 6,
     paddingVertical: 3,
