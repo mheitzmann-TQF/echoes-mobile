@@ -2,52 +2,17 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, Image, Animated } from 'react-native';
 import { useTheme } from '../lib/ThemeContext';
 import { useLocation } from '../lib/LocationContext';
-import { fetchInterruption, InterruptionResponse } from '../lib/api';
-import { 
-  getInterruptionState, 
-  processInterruption, 
-  InterruptionTier,
-  InterruptionState 
-} from '../lib/interruptionStore';
+import { fetchInterruption } from '../lib/api';
+import { getInterruptionState, cacheInterruption } from '../lib/interruptionStore';
 
-interface TierConfig {
-  fadeInDuration: number;
-  holdDuration: number;
-  fadeOutDuration: number;
-  maxOpacity: number;
-  fontSize: number;
-}
-
-function generateSignature(data: InterruptionResponse): string {
-  const climate = data.media_climate;
-  if (climate) {
-    return `${climate.dominant_mode}|${climate.intensity}|${climate.transformational_percent}|${climate.misaligned_percent}`;
-  }
-  return `${data.interruption_type}|${data.message.substring(0, 20)}`;
-}
-
-const TIER_CONFIGS: Record<InterruptionTier, TierConfig> = {
-  0: {
-    fadeInDuration: 250,
-    holdDuration: 1650,
-    fadeOutDuration: 750,
-    maxOpacity: 1,
-    fontSize: 18,
-  },
-  1: {
-    fadeInDuration: 180,
-    holdDuration: 650,
-    fadeOutDuration: 425,
-    maxOpacity: 1,
-    fontSize: 17,
-  },
-  2: {
-    fadeInDuration: 120,
-    holdDuration: 200,
-    fadeOutDuration: 285,
-    maxOpacity: 0.75,
-    fontSize: 16,
-  },
+const TIMING = {
+  baobabFadeIn: 700,
+  stillnessPause: 500,
+  sentenceFadeIn: 350,
+  sentenceHold: 1800,
+  holdPause: 700,
+  sentenceFadeOut: 600,
+  tabsTransition: 350,
 };
 
 interface Props {
@@ -59,106 +24,83 @@ export function InterruptionLayer({ onComplete }: Props) {
   const { language, timezone } = useLocation();
   
   const [message, setMessage] = useState<string | null>(null);
-  const [tier, setTier] = useState<InterruptionTier>(0);
   const [showText, setShowText] = useState(false);
   
   const baobabOpacity = useRef(new Animated.Value(0)).current;
   const textOpacity = useRef(new Animated.Value(0)).current;
   
   useEffect(() => {
-    loadInterruption();
+    runChoreography();
   }, []);
   
-  async function loadInterruption() {
-    Animated.timing(baobabOpacity, {
-      toValue: 1,
-      duration: 400,
-      useNativeDriver: true,
-    }).start();
-    
-    let interruptionData: InterruptionResponse | null = null;
-    let finalTier: InterruptionTier = 2;
-    let finalMessage: string | null = null;
+  async function runChoreography() {
+    let interruptionMessage: string | null = null;
     
     try {
       const tz = timezone || 'America/New_York';
       const lang = language || 'en';
       
-      interruptionData = await fetchInterruption(lang, tz);
+      const data = await fetchInterruption(lang, tz);
       
-      if (interruptionData && interruptionData.success && interruptionData.message) {
-        const signature = interruptionData.signature || generateSignature(interruptionData);
-        const result = await processInterruption(
-          signature,
-          interruptionData.message,
-          interruptionData.interruption_type
-        );
-        finalTier = result.tier;
-        finalMessage = interruptionData.message;
-        console.log('[Interruption] Tier:', finalTier, 'Signature:', signature);
+      if (data && data.success && data.message) {
+        interruptionMessage = data.message;
+        await cacheInterruption(data.message, data.interruption_type);
       } else {
         const cachedState = await getInterruptionState();
         if (cachedState.cached_message) {
-          finalMessage = cachedState.cached_message;
-          finalTier = 2;
-          console.log('[Interruption] Using cached message (offline fallback)');
+          interruptionMessage = cachedState.cached_message;
         }
       }
     } catch (error) {
-      console.log('[Interruption] Error, checking cache:', error);
+      console.log('[Interruption] Fetch error, checking cache');
       const cachedState = await getInterruptionState();
       if (cachedState.cached_message) {
-        finalMessage = cachedState.cached_message;
-        finalTier = 2;
+        interruptionMessage = cachedState.cached_message;
       }
     }
     
-    if (!finalMessage) {
-      console.log('[Interruption] No message available, skipping');
-      setTimeout(() => {
-        Animated.timing(baobabOpacity, {
-          toValue: 0,
-          duration: 400,
-          useNativeDriver: true,
-        }).start(() => onComplete());
-      }, 800);
+    if (!interruptionMessage) {
+      console.log('[Interruption] No message available, completing immediately');
+      onComplete();
       return;
     }
     
-    setMessage(finalMessage);
-    setTier(finalTier);
+    setMessage(interruptionMessage);
     
-    const config = TIER_CONFIGS[finalTier];
-    
-    setTimeout(() => {
-      setShowText(true);
-      
-      Animated.timing(textOpacity, {
-        toValue: config.maxOpacity,
-        duration: config.fadeInDuration,
-        useNativeDriver: true,
-      }).start(() => {
-        setTimeout(() => {
-          Animated.parallel([
-            Animated.timing(textOpacity, {
-              toValue: 0,
-              duration: config.fadeOutDuration,
-              useNativeDriver: true,
-            }),
-            Animated.timing(baobabOpacity, {
-              toValue: 0,
-              duration: config.fadeOutDuration,
-              useNativeDriver: true,
-            }),
-          ]).start(() => {
-            onComplete();
-          });
-        }, config.holdDuration);
-      });
-    }, 300);
+    Animated.timing(baobabOpacity, {
+      toValue: 1,
+      duration: TIMING.baobabFadeIn,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        setShowText(true);
+        
+        Animated.timing(textOpacity, {
+          toValue: 1,
+          duration: TIMING.sentenceFadeIn,
+          useNativeDriver: true,
+        }).start(() => {
+          setTimeout(() => {
+            setTimeout(() => {
+              Animated.timing(textOpacity, {
+                toValue: 0,
+                duration: TIMING.sentenceFadeOut,
+                useNativeDriver: true,
+              }).start(() => {
+                Animated.timing(baobabOpacity, {
+                  toValue: 0,
+                  duration: TIMING.tabsTransition,
+                  useNativeDriver: true,
+                }).start(() => {
+                  onComplete();
+                });
+              });
+            }, TIMING.holdPause);
+          }, TIMING.sentenceHold);
+        });
+      }, TIMING.stillnessPause);
+    });
   }
-  
-  const config = TIER_CONFIGS[tier];
   
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -176,7 +118,6 @@ export function InterruptionLayer({ onComplete }: Props) {
               {
                 color: colors.text,
                 opacity: textOpacity,
-                fontSize: config.fontSize,
               },
             ]}
           >
@@ -204,6 +145,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   message: {
+    fontSize: 18,
     textAlign: 'center',
     lineHeight: 28,
     letterSpacing: 0.3,

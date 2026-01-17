@@ -3,21 +3,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const INTERRUPTION_STORE_KEY = 'echoes_interruption_state';
 
 export interface InterruptionState {
-  last_signature: string;
-  seen_count: number;
-  first_seen_at: number;
-  last_open_at: number;
   cached_message: string | null;
   cached_type: string | null;
+  last_fetch_at: number;
 }
 
 const DEFAULT_STATE: InterruptionState = {
-  last_signature: '',
-  seen_count: 0,
-  first_seen_at: 0,
-  last_open_at: 0,
   cached_message: null,
   cached_type: null,
+  last_fetch_at: 0,
 };
 
 export async function getInterruptionState(): Promise<InterruptionState> {
@@ -40,65 +34,11 @@ export async function saveInterruptionState(state: InterruptionState): Promise<v
   }
 }
 
-export type InterruptionTier = 0 | 1 | 2;
-
-export function calculateTier(state: InterruptionState, signature: string): InterruptionTier {
-  const now = Date.now();
-  const isFastPath = state.last_open_at > 0 && (now - state.last_open_at) < 120000;
-  
-  if (isFastPath) {
-    return 2;
-  }
-  
-  if (signature !== state.last_signature) {
-    return 0;
-  }
-  
-  const effectiveCount = state.seen_count + 1;
-  
-  if (effectiveCount >= 4) {
-    return 2;
-  }
-  
-  if (effectiveCount >= 2 && effectiveCount <= 3) {
-    return 1;
-  }
-  
-  return 0;
-}
-
-export async function processInterruption(
-  signature: string,
-  message: string,
-  type: string
-): Promise<{ tier: InterruptionTier; state: InterruptionState }> {
-  const oldState = await getInterruptionState();
-  const now = Date.now();
-  
-  const tier = calculateTier(oldState, signature);
-  
-  let newState: InterruptionState;
-  
-  if (signature !== oldState.last_signature) {
-    newState = {
-      last_signature: signature,
-      seen_count: 0,
-      first_seen_at: now,
-      last_open_at: now,
-      cached_message: message,
-      cached_type: type,
-    };
-  } else {
-    newState = {
-      ...oldState,
-      seen_count: oldState.seen_count + 1,
-      last_open_at: now,
-      cached_message: message,
-      cached_type: type,
-    };
-  }
-  
-  await saveInterruptionState(newState);
-  
-  return { tier, state: newState };
+export async function cacheInterruption(message: string, type: string): Promise<void> {
+  const state: InterruptionState = {
+    cached_message: message,
+    cached_type: type,
+    last_fetch_at: Date.now(),
+  };
+  await saveInterruptionState(state);
 }
