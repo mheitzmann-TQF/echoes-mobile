@@ -401,11 +401,12 @@ export default function HomeScreen() {
   const handleCalendarSelect = useCallback((calendar: any) => {
     const rawCal = rawCalendars.find((c: any) => {
       const sys = (c.system || '').toLowerCase();
-      if (calendar.id === 'mayan' && (sys.includes('maya') || sys.includes('tzolkin'))) return true;
-      if (calendar.id === 'chinese' && (sys.includes('chin') || sys.includes('agricol'))) return true;
-      if (calendar.id === 'hindu' && (sys.includes('hindu') || sys.includes('panchang'))) return true;
-      if (calendar.id === 'islamic' && (sys.includes('islam') || sys.includes('hijri'))) return true;
-      if (calendar.id === 'hebrew' && (sys.includes('hebrew') || sys.includes('hébr'))) return true;
+      // Support multilingual calendar system names (EN, ES, FR, DE, PT, IT)
+      if (calendar.id === 'mayan' && (sys.includes('maya') || sys.includes('tzolkin') || sys.includes('maia'))) return true;
+      if (calendar.id === 'chinese' && (sys.includes('chin') || sys.includes('agricol') || sys.includes('chino') || sys.includes('cinese') || sys.includes('chinês'))) return true;
+      if (calendar.id === 'hindu' && (sys.includes('hindu') || sys.includes('hindú') || sys.includes('hindou') || sys.includes('panchang') || sys.includes('induísta'))) return true;
+      if (calendar.id === 'islamic' && (sys.includes('islam') || sys.includes('hijri') || sys.includes('islám') || sys.includes('islamique') || sys.includes('islamisch') || sys.includes('islâmico'))) return true;
+      if (calendar.id === 'hebrew' && (sys.includes('hebrew') || sys.includes('hébr') || sys.includes('hebreo') || sys.includes('ebraico') || sys.includes('hebräisch') || sys.includes('hebraico'))) return true;
       return false;
     });
     
@@ -507,35 +508,36 @@ export default function HomeScreen() {
         
         calendarsData.forEach((cal: any) => {
           const sys = (cal.system || '').toLowerCase();
-          if (sys.includes('maya') || sys.includes('tzolkin')) {
+          // Support multilingual calendar system names (EN, ES, FR, DE, PT, IT)
+          if (sys.includes('maya') || sys.includes('tzolkin') || sys.includes('maia')) {
             formattedCalendars.push({
               id: 'mayan',
               name: t('learn.mayanTzolkin'),
               date: cal.date,
               type: t('calendars.sacred')
             });
-          } else if (sys.includes('chin') || sys.includes('agricol')) {
+          } else if (sys.includes('chin') || sys.includes('agricol') || sys.includes('chino') || sys.includes('cinese') || sys.includes('chinês')) {
             formattedCalendars.push({
               id: 'chinese',
               name: t('learn.chinese'),
               date: cal.date,
               type: t('calendars.lunisolar')
             });
-          } else if (sys.includes('hindu') || sys.includes('panchang')) {
+          } else if (sys.includes('hindu') || sys.includes('hindú') || sys.includes('hindou') || sys.includes('panchang') || sys.includes('induísta')) {
             formattedCalendars.push({
               id: 'hindu',
               name: t('learn.hinduPanchang'),
               date: cal.date,
               type: t('calendars.lunisolar')
             });
-          } else if (sys.includes('islam') || sys.includes('hijri')) {
+          } else if (sys.includes('islam') || sys.includes('hijri') || sys.includes('islám') || sys.includes('islamique') || sys.includes('islamisch') || sys.includes('islâmico')) {
             formattedCalendars.push({
               id: 'islamic',
               name: t('learn.islamic'),
               date: cal.date,
               type: t('calendars.lunar')
             });
-          } else if (sys.includes('hebrew') || sys.includes('hébr') || sys.includes('hebre') || sys.includes('ebraico') || sys.includes('hebräisch')) {
+          } else if (sys.includes('hebrew') || sys.includes('hébr') || sys.includes('hebreo') || sys.includes('ebraico') || sys.includes('hebräisch') || sys.includes('hebraico')) {
             formattedCalendars.push({
               id: 'hebrew',
               name: t('learn.hebrew'),
