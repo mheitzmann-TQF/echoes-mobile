@@ -23,8 +23,8 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH - 40;
 const CARD_HEIGHT = 280;
 
-const MAX_TRANSLATE_X = 300;
-const MAX_ROTATION = 15;
+const MAX_TRANSLATE_Y = 200;
+const SWIPE_THRESHOLD = 80;
 
 const clamp = (value: number, min: number, max: number): number => {
   'worklet';
@@ -48,8 +48,8 @@ interface EchoCardProps {
   };
   index: number;
   totalCards: number;
-  onSwipeLeft?: () => void;
-  onSwipeRight?: () => void;
+  onSwipeDown?: () => void;
+  onSwipeUp?: () => void;
 }
 
 // Icons
@@ -142,12 +142,12 @@ export default function EchoCard({
   echo,
   index,
   totalCards,
-  onSwipeLeft,
-  onSwipeRight,
+  onSwipeDown,
+  onSwipeUp,
 }: EchoCardProps) {
   const { colors, theme } = useTheme();
   const { t } = useTranslation();
-  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
   const updateCount = useSharedValue(0);
   const isActive = index === 0;
   const [showWhyModal, setShowWhyModal] = useState(false);
@@ -167,6 +167,8 @@ export default function EchoCard({
 
   const panGesture = Gesture.Pan()
     .enabled(isActive)
+    .activeOffsetY([-15, 15])
+    .failOffsetX([-20, 20])
     .onBegin(() => {
       updateCount.value = 0;
       if (DEBUG_GESTURES) {
@@ -174,45 +176,44 @@ export default function EchoCard({
       }
     })
     .onUpdate((event) => {
-      const safeTranslationX = safeNumber(event.translationX, 0);
-      const clampedX = clamp(safeTranslationX, -MAX_TRANSLATE_X, MAX_TRANSLATE_X);
+      const safeTranslationY = safeNumber(event.translationY, 0);
+      const clampedY = clamp(safeTranslationY, -MAX_TRANSLATE_Y, MAX_TRANSLATE_Y);
       
       updateCount.value = updateCount.value + 1;
       
       if (DEBUG_GESTURES && updateCount.value % 10 === 0) {
         runOnJS(gestureDebug)('UPDATE', {
           count: updateCount.value,
-          clampedX,
-          translationY: event.translationY,
+          clampedY,
         });
       }
-      translateX.value = clampedX;
+      translateY.value = clampedY;
     })
     .onEnd((event) => {
-      const safeTranslationX = safeNumber(event.translationX, 0);
-      const clampedX = clamp(safeTranslationX, -MAX_TRANSLATE_X, MAX_TRANSLATE_X);
-      const absX = Math.abs(clampedX);
-      const shouldSwipe = absX > 100;
-      const direction = clampedX > 0 ? 'right' : 'left';
+      const safeTranslationY = safeNumber(event.translationY, 0);
+      const clampedY = clamp(safeTranslationY, -MAX_TRANSLATE_Y, MAX_TRANSLATE_Y);
+      const absY = Math.abs(clampedY);
+      const shouldSwipe = absY > SWIPE_THRESHOLD;
+      const direction = clampedY > 0 ? 'down' : 'up';
       
       if (DEBUG_GESTURES) {
         runOnJS(gestureDebug)('END', {
-          rawTranslationX: event.translationX,
-          clampedX,
-          threshold: 100,
+          rawTranslationY: event.translationY,
+          clampedY,
+          threshold: SWIPE_THRESHOLD,
           willSwipe: shouldSwipe,
           direction,
         });
       }
       
       if (shouldSwipe) {
-        if (direction === 'right' && onSwipeRight) {
-          runOnJS(onSwipeRight)();
-        } else if (direction === 'left' && onSwipeLeft) {
-          runOnJS(onSwipeLeft)();
+        if (direction === 'down' && onSwipeDown) {
+          runOnJS(onSwipeDown)();
+        } else if (direction === 'up' && onSwipeUp) {
+          runOnJS(onSwipeUp)();
         }
       }
-      translateX.value = withSpring(0);
+      translateY.value = withSpring(0);
     })
     .onFinalize(() => {
       if (DEBUG_GESTURES) {
@@ -230,10 +231,10 @@ export default function EchoCard({
       Extrapolation.CLAMP
     );
 
-    const translateY = interpolate(
+    const stackOffsetY = interpolate(
       safeIndex,
       [0, 1, 2],
-      [0, 20, 40],
+      [0, 10, 20],
       Extrapolation.CLAMP
     );
 
@@ -244,28 +245,18 @@ export default function EchoCard({
       Extrapolation.CLAMP
     );
 
-    const safeTranslateX = safeNumber(translateX.value, 0);
-    const clampedTranslateX = clamp(safeTranslateX, -MAX_TRANSLATE_X, MAX_TRANSLATE_X);
-    
-    const rotate = interpolate(
-      clampedTranslateX,
-      [-MAX_TRANSLATE_X, 0, MAX_TRANSLATE_X],
-      [-MAX_ROTATION, 0, MAX_ROTATION],
-      Extrapolation.CLAMP
-    );
+    const safeTranslateY = safeNumber(translateY.value, 0);
+    const clampedTranslateY = clamp(safeTranslateY, -MAX_TRANSLATE_Y, MAX_TRANSLATE_Y);
 
     const safeScale = safeNumber(scale, 1);
-    const safeTranslateY = safeNumber(translateY, 0);
+    const safeStackOffsetY = safeNumber(stackOffsetY, 0);
     const safeOpacity = safeNumber(opacity, 1);
-    const safeRotate = safeNumber(rotate, 0);
-    const finalTranslateX = isActive ? clampedTranslateX : 0;
+    const finalTranslateY = isActive ? clampedTranslateY + safeStackOffsetY : safeStackOffsetY;
 
     return {
       transform: [
-        { translateX: safeNumber(finalTranslateX, 0) },
-        { translateY: safeTranslateY },
+        { translateY: safeNumber(finalTranslateY, 0) },
         { scale: safeScale },
-        { rotate: `${safeRotate}deg` },
       ],
       opacity: safeOpacity,
       zIndex: totalCards - safeIndex,

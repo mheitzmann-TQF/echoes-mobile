@@ -716,13 +716,13 @@ export default function HomeScreen() {
     fetchData();
   }, [fetchData]);
 
-  const handleSwipeLeft = () => {
+  const handleSwipeDown = () => {
     if (currentIndex < echoes.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     }
   };
 
-  const handleSwipeRight = () => {
+  const handleSwipeUp = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
     }
@@ -786,8 +786,8 @@ export default function HomeScreen() {
           <EchoStack 
             echoes={echoes}
             currentIndex={currentIndex}
-            onSwipeLeft={handleSwipeLeft}
-            onSwipeRight={handleSwipeRight}
+            onSwipeDown={handleSwipeDown}
+            onSwipeUp={handleSwipeUp}
           />
 
         </ScrollView>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { ChevronDown } from 'lucide-react-native';
 import EchoCard from './EchoCard';
 import { Echo } from '../lib/api';
 import { useTheme } from '../lib/ThemeContext';
@@ -8,16 +9,17 @@ import { useTranslation } from 'react-i18next';
 interface EchoStackProps {
   echoes: Echo[];
   currentIndex: number;
-  onSwipeLeft: () => void;
-  onSwipeRight: () => void;
+  onSwipeDown: () => void;
+  onSwipeUp: () => void;
   selectedMetric?: string;
 }
 
-export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRight, selectedMetric }: EchoStackProps) {
+export default function EchoStack({ echoes, currentIndex, onSwipeDown, onSwipeUp, selectedMetric }: EchoStackProps) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   // Always show all echoes - no filtering
   const visibleEchoes = echoes.slice(currentIndex, currentIndex + 3);
+  const hasMoreCards = currentIndex < echoes.length - 1;
 
   return (
     <View style={styles.container}>
@@ -31,8 +33,8 @@ export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRi
               echo={echo}
               index={index}
               totalCards={visibleEchoes.length}
-              onSwipeLeft={onSwipeLeft}
-              onSwipeRight={onSwipeRight}
+              onSwipeDown={onSwipeDown}
+              onSwipeUp={onSwipeUp}
             />
           ))
         ) : (
@@ -41,6 +43,23 @@ export default function EchoStack({ echoes, currentIndex, onSwipeLeft, onSwipeRi
           </View>
         )}
       </View>
+      
+      {visibleEchoes.length > 0 && (
+        <View style={styles.swipeHint}>
+          {hasMoreCards ? (
+            <>
+              <ChevronDown size={18} color={colors.textTertiary} />
+              <Text style={[styles.swipeHintText, { color: colors.textTertiary }]}>
+                {t('today.swipeDown')} · {currentIndex + 1}/{echoes.length}
+              </Text>
+            </>
+          ) : (
+            <Text style={[styles.swipeHintText, { color: colors.textTertiary }]}>
+              {currentIndex + 1}/{echoes.length}
+            </Text>
+          )}
+        </View>
+      )}
     </View>
   );
 }
@@ -61,6 +80,17 @@ const styles = StyleSheet.create({
   stackContainer: {
     height: 360,
     alignItems: 'center',
+  },
+  swipeHint: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+    gap: 6,
+  },
+  swipeHintText: {
+    fontSize: 13,
+    fontWeight: '500',
   },
   emptyState: {
     height: 420,
