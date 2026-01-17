@@ -524,6 +524,9 @@
     "manageSubscription": "Manage Subscription",
     "privacy": "Privacy",
     "privacyNote": "No accounts. Preferences stored on-device.",
+    "support": "SUPPORT",
+    "supportNote": "Questions, feedback, or need help? We'd love to hear from you.",
+    "contactUs": "Contact us",
     "about": "About",
     "partOf": "Part of",
     "version": "Echoes v1.0"

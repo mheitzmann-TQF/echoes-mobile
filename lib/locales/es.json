@@ -405,6 +405,9 @@
     "manageSubscription": "Gestionar suscripción",
     "privacy": "Privacidad",
     "privacyNote": "Sin cuentas. Preferencias guardadas en el dispositivo.",
+    "support": "SOPORTE",
+    "supportNote": "¿Preguntas, comentarios o necesitas ayuda? Nos encantaría escucharte.",
+    "contactUs": "Contáctanos",
     "about": "Acerca de",
     "partOf": "Parte de",
     "version": "Echoes v1.0"

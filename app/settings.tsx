@@ -338,6 +338,19 @@ export default function SettingsScreen() {
           <Text style={[styles.infoText, { color: colors.textSecondary }]}>{t('settings.privacyNote')}</Text>
         </View>
 
+        {/* Support Section */}
+        <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={[styles.sectionLabel, { color: colors.text }]}>{t('settings.support')}</Text>
+          <Text style={[styles.infoText, { color: colors.textSecondary }]}>{t('settings.supportNote')}</Text>
+          <TouchableOpacity
+            style={[styles.supportButton, { backgroundColor: colors.surfaceHighlight }]}
+            onPress={() => Linking.openURL('mailto:hey@thequietframe.com')}
+            data-testid="button-contact-support"
+          >
+            <Text style={[styles.supportButtonText, { color: colors.accent }]}>{t('settings.contactUs')}</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* About Section */}
         <View style={[styles.aboutSection, { borderColor: colors.border }]}>
           <Image
@@ -624,6 +637,17 @@ const styles = StyleSheet.create({
   upgradeButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
+    fontWeight: '600',
+  },
+  supportButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  supportButtonText: {
+    fontSize: 15,
     fontWeight: '600',
   },
 });
