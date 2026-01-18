@@ -6,7 +6,7 @@ import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getApiLang } from '../lib/lang';
 import api, { RegionalBreakdown, AncientWisdomCulture } from '../lib/api';
-import { Brain, Sparkles, TrendingUp, TrendingDown, Minus, Info, X, FileText, Globe } from 'lucide-react-native';
+import { Brain, Sparkles, Info, X, FileText, Globe } from 'lucide-react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import i18next from 'i18next';
 import { useEntitlement } from '../lib/iap/useEntitlement';
@@ -195,53 +195,6 @@ function HopeMeter({ level }: { level: string | number }) {
   );
 }
 
-function TrendIndicator({ trend }: { trend: string | number }) {
-  const { colors } = useTheme();
-  const { t } = useTranslation();
-  
-  let Icon = Minus;
-  let color = colors.textSecondary;
-  let label = '0';
-  
-  // Handle numeric trend values (e.g., +14.4 or -5.2)
-  if (typeof trend === 'number' || !isNaN(parseFloat(trend))) {
-    const numValue = typeof trend === 'number' ? trend : parseFloat(trend);
-    if (numValue > 0) {
-      Icon = TrendingUp;
-      color = '#10b981';
-      label = `+${numValue.toFixed(1)}`;
-    } else if (numValue < 0) {
-      Icon = TrendingDown;
-      color = '#c9787a';
-      label = numValue.toFixed(1);
-    } else {
-      label = '0';
-    }
-  } else {
-    // Handle string trend values (e.g., "rising", "falling", "stable")
-    const normalizedTrend = trend?.toLowerCase() || 'stable';
-    label = trend?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'Stable';
-    
-    if (normalizedTrend.includes('up') || normalizedTrend.includes('rising') || normalizedTrend.includes('increasing')) {
-      Icon = TrendingUp;
-      color = '#10b981';
-    } else if (normalizedTrend.includes('down') || normalizedTrend.includes('falling') || normalizedTrend.includes('decreasing')) {
-      Icon = TrendingDown;
-      color = '#c9787a';
-    }
-  }
-  
-  return (
-    <View style={styles.trendContainer}>
-      <Text style={[styles.metricLabel, { color: colors.textSecondary }]}>{t('learn.trend7d')}</Text>
-      <View style={styles.trendRow}>
-        <Icon size={20} color={color} />
-        <Text style={[styles.trendValue, { color }]}>{label}</Text>
-      </View>
-    </View>
-  );
-}
-
 function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t: any }) {
   const { colors } = useTheme();
   
@@ -374,7 +327,6 @@ export default function WisdomScreen() {
   const destructivePercent = consciousness?.destructive_percent ?? 0;
   const neutralPercent = 100 - transformationalPercent - destructivePercent;
   const hopeLevel = consciousness?.hope_level ?? 0;
-  const trend7d = consciousness?.trend_7d ?? 'stable';
   const articlesAnalyzed = consciousness?.articles_analyzed ?? 0;
   const contentSources: string[] = consciousness?.content_sources ?? [];
   
@@ -482,21 +434,16 @@ export default function WisdomScreen() {
                   />
                 </View>
 
-                {/* SIGNAL WITHIN - Filtered gauge (green) with trend - moved before article count */}
+                {/* SIGNAL WITHIN - Filtered gauge (green) - moved before article count */}
                 {hasFilteredData && (
                   <View style={styles.narrativeSectionSpaced}>
-                    <View style={styles.signalWithTrendRow}>
-                      <TQFGauge 
-                        score={filteredScore} 
-                        size={140} 
-                        label={t('learn.filteredScore')} 
-                        subtitle={t('learn.signalWithinDesc').replace('{{count}}', formatNumberByLocale(Math.round(articlesAnalyzed * transformationalPercent / 100)))}
-                        forceColor="#10b981"
-                      />
-                      <View style={styles.trendSideBadge}>
-                        <TrendIndicator trend={trend7d} />
-                      </View>
-                    </View>
+                    <TQFGauge 
+                      score={filteredScore} 
+                      size={140} 
+                      label={t('learn.filteredScore')} 
+                      subtitle={t('learn.signalWithinDesc').replace('{{count}}', formatNumberByLocale(Math.round(articlesAnalyzed * transformationalPercent / 100)))}
+                      forceColor="#10b981"
+                    />
                   </View>
                 )}
                 
@@ -586,11 +533,6 @@ export default function WisdomScreen() {
                 <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.destructiveExplainedDesc')}</Text>
               </View>
               
-              <View style={styles.methodologySection}>
-                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.trendExplained')}</Text>
-                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.trendExplainedDesc')}</Text>
-              </View>
-              
               <View style={[styles.faqDivider, { backgroundColor: colors.border }]} />
               <Text style={[styles.faqSectionTitle, { color: colors.text }]}>{t('learn.aboutThisData')}</Text>
               
@@ -656,8 +598,6 @@ const styles = StyleSheet.create({
   gaugeSubtitleBelow: { fontSize: 11, marginTop: 8, textAlign: 'center', paddingHorizontal: 20, lineHeight: 16, maxWidth: 160 },
   narrativeSection: { alignItems: 'center', marginBottom: 32 },
   narrativeSectionSpaced: { alignItems: 'center', marginTop: 16, marginBottom: 40 },
-  signalWithTrendRow: { flexDirection: 'row', alignItems: Platform.OS === 'android' ? 'flex-start' : 'center', justifyContent: 'center', gap: 16 },
-  trendSideBadge: { marginLeft: 8 },
   signalNoiseHint: { alignItems: 'center', marginBottom: 20, paddingHorizontal: 16 },
   signalNoiseText: { fontSize: 12, textAlign: 'center', fontStyle: 'italic', lineHeight: 18 },
   
@@ -687,10 +627,6 @@ const styles = StyleSheet.create({
   hopeMeterBar: { flexDirection: 'row', gap: 4, marginBottom: 8 },
   hopeMeterSegment: { flex: 1, height: 8, borderRadius: 4 },
   hopeMeterValue: { fontSize: 14, fontWeight: '500' },
-  
-  trendContainer: { flex: 1 },
-  trendRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  trendValue: { fontSize: 14, fontWeight: '600' },
   
   articlesRow: { alignItems: 'center', marginBottom: 20 },
   articlesText: { fontSize: 13 },
