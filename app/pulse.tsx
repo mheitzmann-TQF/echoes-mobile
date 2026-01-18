@@ -1123,14 +1123,12 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 32,
-    paddingHorizontal: 20,
   },
   sectionLabel: {
     fontSize: 11,
     fontWeight: '600',
     color: 'rgba(255,255,255,0.35)',
     marginBottom: 4,
-    paddingHorizontal: 20,
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
@@ -1138,7 +1136,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontStyle: 'italic',
     marginBottom: 12,
-    paddingHorizontal: 20,
     opacity: 0.6,
   },
   card: {
