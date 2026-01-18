@@ -51,6 +51,20 @@ export async function registerRoutes(
     }
   });
 
+  // Catch-all proxy route - forwards any /api/proxy/* request to source.thequietframe.com
+  app.get("/api/proxy/*", async (req, res) => {
+    try {
+      // Extract the path after /api/proxy and reconstruct with /api prefix
+      const sourcePath = req.path.replace("/api/proxy", "/api");
+      console.log(`[PROXY] Forwarding ${req.path} -> ${sourcePath} with query:`, req.query);
+      const data = await proxyToSource(sourcePath, req.query as Record<string, string>);
+      res.json(data);
+    } catch (error: any) {
+      console.error(`Proxy error for ${req.path}:`, error?.message);
+      res.status(500).json({ success: false, error: "Proxy request failed" });
+    }
+  });
+
   // User Settings Routes (in-memory storage for development)
   app.get("/api/user/:userId/settings", async (req, res) => {
     try {

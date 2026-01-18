@@ -2,34 +2,10 @@ import Constants from 'expo-constants';
 
 const SOURCE_BASE_URL = 'https://source.thequietframe.com';
 
-function useDirectSource(): boolean {
-  const expoConfig = Constants.expoConfig || Constants.manifest;
-  const extra = (expoConfig as any)?.extra;
-  return extra?.useSourceDirect !== false;
-}
-
 function getProxyBaseUrl(): string {
   const expoConfig = Constants.expoConfig || Constants.manifest;
   const extra = (expoConfig as any)?.extra;
   return extra?.apiUrl || '';
-}
-
-const SOURCE_TO_PROXY_PATH_MAP: Record<string, string> = {
-  '/api/consciousness/current': '/api/proxy/consciousness',
-  '/api/consciousness-analysis/raw-analysis': '/api/proxy/consciousness/raw-analysis',
-  '/api/consciousness-analysis/regional-breakdown': '/api/proxy/consciousness/regional-breakdown',
-  '/api/wisdom/cycle': '/api/proxy/wisdom/cycle',
-};
-
-function mapToProxyEndpoint(endpoint: string): string {
-  for (const [sourcePattern, proxyPath] of Object.entries(SOURCE_TO_PROXY_PATH_MAP)) {
-    if (endpoint.startsWith(sourcePattern)) {
-      return endpoint.replace(sourcePattern, proxyPath);
-    }
-  }
-  return endpoint.startsWith('/api/') 
-    ? endpoint.replace('/api/', '/api/proxy/')
-    : `/api/proxy${endpoint}`;
 }
 
 interface FetchOptions {
@@ -42,7 +18,6 @@ export async function fetchContent(
   options: FetchOptions = {}
 ): Promise<Response> {
   const { timeout = 10000, headers = {} } = options;
-  const directEnabled = useDirectSource();
   
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -56,61 +31,44 @@ export async function fetchContent(
   };
   
   try {
-    if (directEnabled) {
-      const directUrl = `${SOURCE_BASE_URL}${endpoint}`;
-      console.log('[CONTENT] Fetching direct:', directUrl);
-      
-      const response = await fetch(directUrl, fetchOptions);
-      
-      if (response.ok) {
-        clearTimeout(timeoutId);
-        return response;
-      }
-      
-      if (response.status === 401 || response.status === 403 || response.status === 404) {
-        console.log('[CONTENT] Direct failed, falling back to proxy:', response.status);
-      } else {
-        clearTimeout(timeoutId);
-        return response;
-      }
+    const directUrl = `${SOURCE_BASE_URL}${endpoint}`;
+    console.log('[CONTENT] Fetching direct:', directUrl);
+    
+    const response = await fetch(directUrl, fetchOptions);
+    
+    if (response.ok) {
+      clearTimeout(timeoutId);
+      return response;
     }
     
-    const proxyBase = getProxyBaseUrl();
-    const proxyEndpoint = mapToProxyEndpoint(endpoint);
-    const proxyUrl = `${proxyBase}${proxyEndpoint}`;
-    
-    console.log('[CONTENT] Fetching via proxy:', proxyUrl);
-    const response = await fetch(proxyUrl, fetchOptions);
+    // Fall through to proxy on failure
+    console.log('[CONTENT] Direct failed, trying proxy');
+  } catch (error) {
+    console.log('[CONTENT] Direct fetch failed, trying proxy as fallback');
+  }
+  
+  // Fallback to proxy - preserve full endpoint including query params
+  // Endpoint already starts with /api/, so replace /api/ with /api/proxy/
+  const proxyBase = getProxyBaseUrl();
+  const proxyUrl = `${proxyBase}${endpoint.replace('/api/', '/api/proxy/')}`;
+  
+  console.log('[CONTENT] Fetching via proxy:', proxyUrl);
+  
+  const fallbackController = new AbortController();
+  const fallbackTimeout = setTimeout(() => fallbackController.abort(), timeout);
+  
+  try {
+    const response = await fetch(proxyUrl, {
+      ...fetchOptions,
+      signal: fallbackController.signal,
+    });
+    clearTimeout(fallbackTimeout);
     clearTimeout(timeoutId);
     return response;
-    
-  } catch (error) {
+  } catch (fallbackError) {
+    clearTimeout(fallbackTimeout);
     clearTimeout(timeoutId);
-    
-    if (directEnabled) {
-      console.log('[CONTENT] Direct fetch failed, trying proxy as fallback');
-      
-      const proxyBase = getProxyBaseUrl();
-      const proxyEndpoint = mapToProxyEndpoint(endpoint);
-      const proxyUrl = `${proxyBase}${proxyEndpoint}`;
-      
-      const fallbackController = new AbortController();
-      const fallbackTimeout = setTimeout(() => fallbackController.abort(), timeout);
-      
-      try {
-        const response = await fetch(proxyUrl, {
-          ...fetchOptions,
-          signal: fallbackController.signal,
-        });
-        clearTimeout(fallbackTimeout);
-        return response;
-      } catch (fallbackError) {
-        clearTimeout(fallbackTimeout);
-        throw fallbackError;
-      }
-    }
-    
-    throw error;
+    throw fallbackError;
   }
 }
 
