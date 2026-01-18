@@ -509,17 +509,12 @@ export default function WisdomScreen() {
                     </Text>
                   </View>
                   {contentSources.length > 0 && (
-                    <View style={styles.contentSourcesRow}>
-                      <Text style={[styles.contentSourcesLabel, { color: colors.textSecondary }]}>
-                        {t('learn.contentSources')}:
-                      </Text>
-                      <View style={styles.sourceTagsContainer}>
-                        {contentSources.map((source, idx) => (
-                          <View key={idx} style={[styles.sourceTag, { backgroundColor: colors.border }]}>
-                            <Text style={[styles.sourceTagText, { color: colors.textSecondary }]}>{source}</Text>
-                          </View>
-                        ))}
-                      </View>
+                    <View style={styles.sourceTagsContainer}>
+                      {contentSources.map((source, idx) => (
+                        <View key={idx} style={[styles.sourceTag, { backgroundColor: colors.surfaceHighlight }]}>
+                          <Text style={[styles.sourceTagText, { color: colors.text }]}>{source}</Text>
+                        </View>
+                      ))}
                     </View>
                   )}
                 </View>
@@ -672,9 +667,9 @@ const styles = StyleSheet.create({
   articleCountText: { fontSize: 14, fontWeight: '600' },
   contentSourcesRow: { gap: 8 },
   contentSourcesLabel: { fontSize: 12 },
-  sourceTagsContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  sourceTag: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 },
-  sourceTagText: { fontSize: 11 },
+  sourceTagsContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  sourceTag: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 16 },
+  sourceTagText: { fontSize: 12, fontWeight: '500' },
   percentageRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   percentageLabel: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, width: 160 },
   percentageLabelText: { flexDirection: 'column' },
