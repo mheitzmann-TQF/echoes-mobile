@@ -452,6 +452,8 @@
     "thankYou": "Gracias por apoyar Echoes. Disfruta del acceso completo a todas las funciones.",
     "noPurchasesFound": "No se encontraron compras para restaurar",
     "noActiveSubscription": "No se encontraron suscripciones activas",
-    "purchaseFailed": "La compra falló"
+    "purchaseFailed": "La compra falló",
+    "restoreFailed": "Error al restaurar compras",
+    "checkFailed": "Error al verificar el estado de la suscripción"
   }
 }

@@ -571,6 +571,8 @@
     "thankYou": "Thank you for supporting Echoes. Enjoy full access to all features.",
     "noPurchasesFound": "No purchases found to restore",
     "noActiveSubscription": "No active subscriptions found",
-    "purchaseFailed": "Purchase failed"
+    "purchaseFailed": "Purchase failed",
+    "restoreFailed": "Failed to restore purchases",
+    "checkFailed": "Failed to check subscription status"
   }
 }

@@ -132,7 +132,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
 
         {error && (
           <View style={styles.errorBanner}>
-            <Text style={styles.errorText}>{error}</Text>
+            <Text style={styles.errorText}>{error.startsWith('paywall.') ? t(error) : error}</Text>
           </View>
         )}
 

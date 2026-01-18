@@ -253,7 +253,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         setError(null);
         console.log('[ENTITLEMENT] Granting grace access:', graceCheck.reason, graceCheck.hoursRemaining, 'hours remaining');
       } else {
-        setError('Failed to check subscription status');
+        setError('paywall.checkFailed');
       }
     } finally {
       setIsLoading(false);
@@ -488,7 +488,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       const purchases = await restorePurchases();
       
       if (purchases.length === 0) {
-        setError('No purchases found to restore');
+        setError('paywall.noPurchasesFound');
         return false;
       }
       
@@ -501,11 +501,11 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         }
       }
       
-      setError('No active subscriptions found');
+      setError('paywall.noActiveSubscription');
       return false;
     } catch (err) {
       console.error('[ENTITLEMENT] Restore error:', err);
-      setError('Failed to restore purchases');
+      setError('paywall.restoreFailed');
       return false;
     } finally {
       setIsLoading(false);

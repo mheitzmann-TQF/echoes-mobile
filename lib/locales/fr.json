@@ -570,6 +570,8 @@
     "thankYou": "Merci de soutenir Echoes. Profitez de l'accès complet à toutes les fonctionnalités.",
     "noPurchasesFound": "Aucun achat trouvé à restaurer",
     "noActiveSubscription": "Aucun abonnement actif trouvé",
-    "purchaseFailed": "L'achat a échoué"
+    "purchaseFailed": "L'achat a échoué",
+    "restoreFailed": "Échec de la restauration des achats",
+    "checkFailed": "Échec de la vérification du statut d'abonnement"
   }
 }

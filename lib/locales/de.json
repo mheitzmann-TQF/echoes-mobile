@@ -452,6 +452,8 @@
     "thankYou": "Danke für deine Unterstützung von Echoes. Genieße vollen Zugang zu allen Funktionen.",
     "noPurchasesFound": "Keine Käufe zum Wiederherstellen gefunden",
     "noActiveSubscription": "Kein aktives Abonnement gefunden",
-    "purchaseFailed": "Kauf fehlgeschlagen"
+    "purchaseFailed": "Kauf fehlgeschlagen",
+    "restoreFailed": "Wiederherstellung der Käufe fehlgeschlagen",
+    "checkFailed": "Überprüfung des Abonnementstatus fehlgeschlagen"
   }
 }
