@@ -744,7 +744,7 @@ const styles = StyleSheet.create({
   
   cookieCard: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, borderWidth: 1, flexDirection: 'row', overflow: 'hidden' },
   cookieAccent: { width: 4 },
-  cookieContent: { flex: 1, padding: 16, alignItems: 'flex-start' },
-  cookieLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 8, textAlign: 'left' },
-  cookieText: { fontSize: 16, lineHeight: 24, textAlign: 'left' },
+  cookieContent: { flex: 1, padding: 16 },
+  cookieLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 8, width: '100%', textAlign: 'left' },
+  cookieText: { fontSize: 16, lineHeight: 24, width: '100%', textAlign: 'left' },
 });
