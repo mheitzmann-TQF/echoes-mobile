@@ -393,7 +393,7 @@ export default function WisdomScreen() {
         {/* The Cookie - Daily reflection prompt */}
         {!cookieLoading && cookie && (
           <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <View style={[styles.cookieAccent, { backgroundColor: colors.accent }]} />
+            <View style={[styles.cookieAccent, { backgroundColor: '#F59E0B' }]} />
             <View style={styles.cookieContent}>
               <Text style={[styles.cookieLabel, { color: colors.textTertiary }]}>{t('today.cookie')}</Text>
               <Text style={[styles.cookieText, { color: colors.text }]}>{cookie}</Text>
