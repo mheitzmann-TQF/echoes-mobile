@@ -393,8 +393,11 @@ export default function WisdomScreen() {
         {/* The Cookie - Daily reflection prompt */}
         {!cookieLoading && cookie && (
           <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <Text style={[styles.cookieLabel, { color: colors.textTertiary }]}>{t('today.cookie')}</Text>
-            <Text style={[styles.cookieText, { color: colors.text }]}>{cookie}</Text>
+            <View style={[styles.cookieAccent, { backgroundColor: colors.accent }]} />
+            <View style={styles.cookieContent}>
+              <Text style={[styles.cookieLabel, { color: colors.textTertiary }]}>{t('today.cookie')}</Text>
+              <Text style={[styles.cookieText, { color: colors.text }]}>{cookie}</Text>
+            </View>
           </View>
         )}
 
@@ -739,7 +742,9 @@ const styles = StyleSheet.create({
   faqQuestion: { fontSize: 13, fontWeight: '600', marginBottom: 4 },
   faqAnswer: { fontSize: 13, lineHeight: 19 },
   
-  cookieCard: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, padding: 20, borderWidth: 1, alignItems: 'center' },
-  cookieLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 12 },
-  cookieText: { fontSize: 16, textAlign: 'center', lineHeight: 24 },
+  cookieCard: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, borderWidth: 1, flexDirection: 'row', overflow: 'hidden' },
+  cookieAccent: { width: 4 },
+  cookieContent: { flex: 1, padding: 16 },
+  cookieLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 8 },
+  cookieText: { fontSize: 16, lineHeight: 24 },
 });
