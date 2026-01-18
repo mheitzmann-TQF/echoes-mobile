@@ -133,11 +133,11 @@ class EchoesAPI {
     }
   }
 
-  async getConsciousnessAnalysis(): Promise<any> {
+  async getConsciousnessAnalysis(lang?: string): Promise<any> {
     try {
       const [currentResponse, rawResponse] = await Promise.all([
         fetchContent(ContentEndpoints.consciousness()),
-        fetchContent(ContentEndpoints.consciousnessRawAnalysis()),
+        fetchContent(ContentEndpoints.consciousnessRawAnalysis(lang)),
       ]);
       
       if (!currentResponse.ok) {

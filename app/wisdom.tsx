@@ -316,7 +316,7 @@ export default function WisdomScreen() {
         console.log('[WisdomScreen] Loading data with lang:', currentLang);
         
         const [consciousnessData, wisdomData, regionalResponse] = await Promise.all([
-          api.getConsciousnessAnalysis().catch(() => null),
+          api.getConsciousnessAnalysis(currentLang).catch(() => null),
           api.getWisdomCycle(currentLang).catch(() => null),
           api.getRegionalBreakdown().catch(() => null),
         ]);

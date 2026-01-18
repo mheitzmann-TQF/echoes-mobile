@@ -31,7 +31,8 @@ export default function ConsciousnessSummaryCard({ compact = false }: Consciousn
   useEffect(() => {
     async function fetchData() {
       try {
-        const result = await api.getConsciousnessAnalysis();
+        const lang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
+        const result = await api.getConsciousnessAnalysis(lang);
         setData(result);
       } catch (error) {
         console.log('Consciousness fetch error:', error);

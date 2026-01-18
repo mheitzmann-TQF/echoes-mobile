@@ -158,7 +158,11 @@ export const ContentEndpoints = {
   
   consciousness: () => `/api/consciousness/current`,
   
-  consciousnessRawAnalysis: () => `/api/consciousness-analysis/raw-analysis`,
+  consciousnessRawAnalysis: (lang?: string) => {
+    let url = `/api/consciousness-analysis/raw-analysis?_t=${Date.now()}`;
+    if (lang) url += `&lang=${lang}`;
+    return url;
+  },
   
   consciousnessRegionalBreakdown: () => `/api/consciousness-analysis/regional-breakdown`,
   

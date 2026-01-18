@@ -457,7 +457,7 @@ export default function HomeScreen() {
         ]) as Promise<DailyBundleResponse>,
         api.getTraditionalCalendars(coordinates.lat, coordinates.lng, timezone, lang).catch(() => null),
         getDailyPhoto().catch(() => null),
-        api.getConsciousnessAnalysis().catch(() => null),
+        api.getConsciousnessAnalysis(lang).catch(() => null),
         api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone).catch(() => null),
       ]);
       

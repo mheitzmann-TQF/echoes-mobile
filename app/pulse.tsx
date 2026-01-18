@@ -431,7 +431,7 @@ export default function FieldScreen() {
             .catch(() => null),
           api.getBiologicalRhythms(coordinates.lat, coordinates.lng, timezone)
             .catch(() => null),
-          api.getConsciousnessAnalysis()
+          api.getConsciousnessAnalysis(lang)
             .catch(() => null),
           api.getOptimalTiming(coordinates.lat, coordinates.lng, timezone, lang)
             .catch(() => null)
