@@ -662,7 +662,7 @@ const styles = StyleSheet.create({
   signalNoiseText: { fontSize: 12, textAlign: 'center', fontStyle: 'italic', lineHeight: 18 },
   
   breakdownSection: { marginBottom: 32, gap: 20 },
-  analysisSummary: { marginTop: 24, paddingTop: 20, marginBottom: 32, paddingHorizontal: 8, gap: 12, borderTopWidth: 1 },
+  analysisSummary: { marginTop: 24, paddingTop: 20, marginBottom: 32, gap: 12, borderTopWidth: 1 },
   articleCountRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   articleCountText: { fontSize: 14, fontWeight: '600' },
   contentSourcesRow: { gap: 8 },
