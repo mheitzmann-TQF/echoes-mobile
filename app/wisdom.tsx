@@ -392,11 +392,18 @@ export default function WisdomScreen() {
 
         {/* The Cookie - Daily reflection prompt */}
         {!cookieLoading && cookie && (
-          <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <View style={[styles.cookieAccent, { backgroundColor: '#F59E0B' }]} />
-            <View style={styles.cookieContent}>
-              <Text style={[styles.cookieLabel, { color: colors.textTertiary }]}>{t('today.cookie')}</Text>
-              <Text style={[styles.cookieText, { color: colors.text }]}>{cookie}</Text>
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionIcon}>🥠</Text>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('learn.theCookie')}</Text>
+            </View>
+            <Text style={[styles.sectionSubtitle, { color: colors.textSecondary }]}>{t('learn.theCookieDesc')}</Text>
+            
+            <View style={[styles.cookieCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={[styles.cookieAccent, { backgroundColor: '#F59E0B' }]} />
+              <View style={styles.cookieContent}>
+                <Text style={[styles.cookieText, { color: colors.text }]}>{cookie}</Text>
+              </View>
             </View>
           </View>
         )}
@@ -634,6 +641,7 @@ const styles = StyleSheet.create({
   pageSubtitle: { fontSize: 16, lineHeight: 24 },
   section: { marginBottom: 32, paddingHorizontal: 20 },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6 },
+  sectionIcon: { fontSize: 20 },
   sectionTitle: { fontSize: 20, fontWeight: '600' },
   sectionSubtitle: { fontSize: 14, marginBottom: 16, lineHeight: 20 },
   skeleton: { borderRadius: 8 },
