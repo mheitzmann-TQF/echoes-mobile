@@ -640,10 +640,10 @@ const styles = StyleSheet.create({
   pageTitle: { fontSize: 34, fontWeight: '700', marginBottom: 8, letterSpacing: -0.5 },
   pageSubtitle: { fontSize: 16, lineHeight: 24 },
   section: { marginBottom: 32, paddingHorizontal: 20 },
-  sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6 },
+  sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6, alignSelf: 'flex-start' },
   sectionIcon: { fontSize: 20 },
-  sectionTitle: { fontSize: 20, fontWeight: '600' },
-  sectionSubtitle: { fontSize: 14, marginBottom: 16, lineHeight: 20 },
+  sectionTitle: { fontSize: 20, fontWeight: '600', textAlign: 'left' },
+  sectionSubtitle: { fontSize: 14, marginBottom: 16, lineHeight: 20, textAlign: 'left' },
   skeleton: { borderRadius: 8 },
   
   consciousnessCard: { borderRadius: 16, padding: 24, borderWidth: 1 },
