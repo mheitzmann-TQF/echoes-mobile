@@ -12,7 +12,7 @@ const TIMING = {
   baobabFadeOut: 500,
   pauseBeforeSentence: 300,
   sentenceFadeIn: 500,
-  sentenceHold: 2200,
+  sentenceHold: 4200,
   holdPause: 600,
   sentenceFadeOut: 600,
 };
