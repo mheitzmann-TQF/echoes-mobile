@@ -522,8 +522,10 @@ export default function FieldScreen() {
   };
   const regionalAverage = getRegionalAverage();
   
-  // Get geomagnetic message from companion context API (translated by backend)
+  // Get messages from companion context API (translated by backend)
   const geoMessage = companionContext?.planetary?.geomagnetic?.message || null;
+  const lunarMessage = companionContext?.planetary?.lunar?.phaseMessage || null;
+  const solarMessage = companionContext?.planetary?.solar?.solarMessage || null;
   
   // Normalize geomagnetic state (Kp 0-2 = quiet, Kp 3-4 = unsettled, Kp 5+ = storm)
   const getGeoState = (kp: number): { label: string } => {
@@ -916,9 +918,16 @@ export default function FieldScreen() {
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{t(`field.${getMoonPhaseKey(lunarPhase)}`)}</Text>
                 <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% {t('field.illuminated')}</Text>
-                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {t('field.lunarExplanation')}
-                </Text>
+                {lunarMessage && (
+                  <Text style={[styles.echoMessage, { color: colors.text }]}>
+                    {lunarMessage}
+                  </Text>
+                )}
+                {!lunarMessage && (
+                  <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                    {t('field.lunarExplanation')}
+                  </Text>
+                )}
               </View>
             }
           />
@@ -935,9 +944,16 @@ export default function FieldScreen() {
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{solarPhase}</Text>
-                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                  {t('field.solarExplanation')}
-                </Text>
+                {solarMessage && (
+                  <Text style={[styles.echoMessage, { color: colors.text }]}>
+                    {solarMessage}
+                  </Text>
+                )}
+                {!solarMessage && (
+                  <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                    {t('field.solarExplanation')}
+                  </Text>
+                )}
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.nextTransition')}</Text>
                 <Text style={[styles.expandedSub, { color: colors.text }]}>{nextTransition.display}</Text>
