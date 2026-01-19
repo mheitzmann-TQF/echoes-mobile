@@ -3,11 +3,18 @@ import type { Server } from "http";
 import { storage } from "./storage";
 
 const SOURCE_API = "https://source.thequietframe.com";
+const TQF_API_KEY = process.env.EXPO_PUBLIC_TQF_API_KEY || process.env.TQF_API_KEY || '';
 
 async function proxyToSource(path: string, query: Record<string, any> = {}): Promise<any> {
   const params = new URLSearchParams(query).toString();
   const url = `${SOURCE_API}${path}${params ? `?${params}` : ''}`;
-  const response = await fetch(url);
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  if (TQF_API_KEY) {
+    headers['x-api-key'] = TQF_API_KEY;
+  }
+  const response = await fetch(url, { headers });
   if (!response.ok) {
     throw new Error(`Source API error: ${response.status}`);
   }
