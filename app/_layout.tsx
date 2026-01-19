@@ -5,13 +5,14 @@ import { Svg, Path, Circle, Rect, Line } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LocationProvider } from '../lib/LocationContext';
 import { ThemeProvider, useTheme } from '../lib/ThemeContext';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { logEnvOnce } from "@/lib/env";
 import { initI18n } from '../lib/i18n';
 import { useTranslation } from 'react-i18next';
 import Constants from 'expo-constants';
 import { SwipeTabs, type SwipeTab } from '../components/SwipeTabs';
 import { InterruptionLayer } from '../components/InterruptionLayer';
+import { initAppStateListener, useAppStateListener } from '../lib/useAppState';
 
 const isWeb = Platform.OS === 'web';
 const isExpoGo = (): boolean => Constants.appOwnership === 'expo';
@@ -275,10 +276,26 @@ function ThemedApp() {
   const { colors } = useTheme();
   const [showInterruption, setShowInterruption] = useState(true);
   const [i18nReady, setI18nReady] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     initI18n().then(() => setI18nReady(true));
   }, []);
+
+  useEffect(() => {
+    const cleanup = initAppStateListener();
+    return cleanup;
+  }, []);
+
+  const handleNewDay = useCallback(() => {
+    console.log('[ThemedApp] New day detected, showing interruption');
+    setShowInterruption(true);
+    setRefreshKey(k => k + 1);
+  }, []);
+
+  useAppStateListener({
+    onNewDay: handleNewDay,
+  });
 
   if (!i18nReady) {
     return (
@@ -293,10 +310,10 @@ function ThemedApp() {
   }
   
   if (shouldUseSwipeTabs) {
-    return <SwipeTabsNavigator />;
+    return <SwipeTabsNavigator key={refreshKey} />;
   }
   
-  return <ExpoRouterTabsNavigator />;
+  return <ExpoRouterTabsNavigator key={refreshKey} />;
 }
 
 export default function RootLayout() {

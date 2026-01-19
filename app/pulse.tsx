@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from 'expo-router';
@@ -11,6 +11,7 @@ import { getApiLang } from '../lib/lang';
 import { useTranslation } from 'react-i18next';
 import { useEntitlement } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
+import { useAppStateListener } from '../lib/useAppState';
 
 // Map API moon phase values to translation keys
 const getMoonPhaseKey = (phase: string): string => {
@@ -419,83 +420,91 @@ export default function FieldScreen() {
     }));
   };
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const lang = getApiLang();
-        const [bundleData, instantData, bioData, consciousnessData, timingData] = await Promise.all([
-          api.getDailyBundle(coordinates.lat, coordinates.lng, lang, timezone)
-            .then(res => res.success ? res.data : null)
-            .catch(() => null),
-          api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone)
-            .catch(() => null),
-          api.getBiologicalRhythms(coordinates.lat, coordinates.lng, timezone)
-            .catch(() => null),
-          api.getConsciousnessAnalysis(lang)
-            .catch(() => null),
-          api.getOptimalTiming(coordinates.lat, coordinates.lng, timezone, lang)
-            .catch(() => null)
-        ]);
+  const loadData = useCallback(async (showLoading = true) => {
+    if (showLoading) setLoading(true);
+    try {
+      const lang = getApiLang();
+      const [bundleData, instantData, bioData, consciousnessData, timingData] = await Promise.all([
+        api.getDailyBundle(coordinates.lat, coordinates.lng, lang, timezone)
+          .then(res => res.success ? res.data : null)
+          .catch(() => null),
+        api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone)
+          .catch(() => null),
+        api.getBiologicalRhythms(coordinates.lat, coordinates.lng, timezone)
+          .catch(() => null),
+        api.getConsciousnessAnalysis(lang)
+          .catch(() => null),
+        api.getOptimalTiming(coordinates.lat, coordinates.lng, timezone, lang)
+          .catch(() => null)
+      ]);
 
-        // Mock Data Fallbacks
-        const mockBundle = {
-          echo_cards: [],
-          planetary_context: {
-            lunar: {
-              phase: 'Waxing Gibbous',
-              illumination: 82,
-              message: 'Moon building toward fullness.'
-            },
-            solar: {
-              phase: 'Afternoon Light',
-              time_to_sunset: 3,
-              message: 'Sun descending toward the horizon.'
-            },
-            consciousness_index: {
-              global_coherence: 68,
-              regional_resonance: 65,
-              trend: 'stable'
-            }
+      const mockBundle = {
+        echo_cards: [],
+        planetary_context: {
+          lunar: {
+            phase: 'Waxing Gibbous',
+            illumination: 82,
+            message: 'Moon building toward fullness.'
           },
-          location: {
-            timezone,
-            local_time: new Date().toLocaleTimeString(),
-            coordinates: { lat: coordinates.lat, lng: coordinates.lng }
+          solar: {
+            phase: 'Afternoon Light',
+            time_to_sunset: 3,
+            message: 'Sun descending toward the horizon.'
+          },
+          consciousness_index: {
+            global_coherence: 68,
+            regional_resonance: 65,
+            trend: 'stable'
           }
-        };
+        },
+        location: {
+          timezone,
+          local_time: new Date().toLocaleTimeString(),
+          coordinates: { lat: coordinates.lat, lng: coordinates.lng }
+        }
+      };
 
-        const mockInstant = {
-          lunar: { phase: 'Waxing Gibbous', illumination: 82 },
-          solar: { sunrise: '07:00', sunset: '19:00', currentPhase: 'Afternoon Light' },
-          geomagnetic: { activity: 'Quiet', kpIndex: 2 },
-          seasonal: { season: 'Winter', progress: 35 },
-          consciousness: { global_coherence: 68, regional_resonance: 65, trend: 'stable' }
-        };
+      const mockInstant = {
+        lunar: { phase: 'Waxing Gibbous', illumination: 82 },
+        solar: { sunrise: '07:00', sunset: '19:00', currentPhase: 'Afternoon Light' },
+        geomagnetic: { activity: 'Quiet', kpIndex: 2 },
+        seasonal: { season: 'Winter', progress: 35 },
+        consciousness: { global_coherence: 68, regional_resonance: 65, trend: 'stable' }
+      };
 
-        const mockBioRhythms = {
-          circadian: {
-            phase: 'Balanced',
-            description: 'Steady mid-cycle phase.'
-          },
-          ultradian_remaining: 45,
-          observations: [
-            'Focus window active',
-            'Energy levels stable',
-            'Cycle midpoint'
-          ]
-        };
+      const mockBioRhythms = {
+        circadian: {
+          phase: 'Balanced',
+          description: 'Steady mid-cycle phase.'
+        },
+        ultradian_remaining: 45,
+        observations: [
+          'Focus window active',
+          'Energy levels stable',
+          'Cycle midpoint'
+        ]
+      };
 
-        setBundle(bundleData || mockBundle);
-        setInstant(instantData || mockInstant);
-        setBioRhythms(bioData || mockBioRhythms);
-        setConsciousness(consciousnessData);
-        setOptimalTiming(timingData);
-      } finally {
-        setLoading(false);
-      }
+      setBundle(bundleData || mockBundle);
+      setInstant(instantData || mockInstant);
+      setBioRhythms(bioData || mockBioRhythms);
+      setConsciousness(consciousnessData);
+      setOptimalTiming(timingData);
+    } finally {
+      setLoading(false);
     }
+  }, [coordinates.lat, coordinates.lng, timezone]);
+
+  useEffect(() => {
     loadData();
-  }, [coordinateKey, coordinates, timezone, language]);
+  }, [coordinateKey, coordinates, timezone, language, loadData]);
+
+  useAppStateListener({
+    onResume: () => {
+      console.log('[Pulse] App resumed, refreshing data');
+      loadData(false);
+    },
+  });
 
   if (loading) {
     return (
