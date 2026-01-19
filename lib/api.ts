@@ -265,6 +265,20 @@ class EchoesAPI {
     }
   }
 
+  async getCompanionContext(lat: number, lon: number, lang: string = 'en'): Promise<any> {
+    try {
+      const endpoint = ContentEndpoints.companionContext(lat, lon, lang);
+      console.log('📡 Fetching companion context...');
+      
+      const data = await fetchContentJson(endpoint);
+      console.log('✅ Companion context received:', data);
+      return data;
+    } catch (error) {
+      console.error('❌ Companion context error:', error);
+      return null;
+    }
+  }
+
   async getCulturalContent(limit: number = 5, lang: string = 'en'): Promise<any[]> {
     const { filterCulturalContent, getCuratedArtifact } = require('./culturalFilter');
     

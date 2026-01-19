@@ -405,6 +405,7 @@ export default function FieldScreen() {
   const [bioRhythms, setBioRhythms] = useState<any>(null);
   const [consciousness, setConsciousness] = useState<any>(null);
   const [optimalTiming, setOptimalTiming] = useState<any>(null);
+  const [companionContext, setCompanionContext] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
   // Expanded states - timing expanded by default for immediate value
@@ -424,7 +425,7 @@ export default function FieldScreen() {
     if (showLoading) setLoading(true);
     try {
       const lang = getApiLang();
-      const [bundleData, instantData, bioData, consciousnessData, timingData] = await Promise.all([
+      const [bundleData, instantData, bioData, consciousnessData, timingData, companionData] = await Promise.all([
         api.getDailyBundle(coordinates.lat, coordinates.lng, lang, timezone)
           .then(res => res.success ? res.data : null)
           .catch(() => null),
@@ -435,6 +436,8 @@ export default function FieldScreen() {
         api.getConsciousnessAnalysis(lang)
           .catch(() => null),
         api.getOptimalTiming(coordinates.lat, coordinates.lng, timezone, lang)
+          .catch(() => null),
+        api.getCompanionContext(coordinates.lat, coordinates.lng, lang)
           .catch(() => null)
       ]);
 
@@ -490,6 +493,7 @@ export default function FieldScreen() {
       setBioRhythms(bioData || mockBioRhythms);
       setConsciousness(consciousnessData);
       setOptimalTiming(timingData);
+      setCompanionContext(companionData);
     } finally {
       setLoading(false);
     }
@@ -548,13 +552,15 @@ export default function FieldScreen() {
   
   const lunarContent = getEchoContent('lunar_guidance');
   const solarContent = getEchoContent('solar_rhythm');
-  const geoContent = getEchoContent('global_consciousness');
   
-  // Normalize geomagnetic state (Kp 0-3 = quiet, Kp 4-5 = active, Kp 6+ = stormy)
-  const getGeoState = (kp: number): { label: string; message: string } => {
-    if (kp <= 3) return { label: t('field.quiet'), message: t('field.quietField') };
-    if (kp <= 5) return { label: t('field.active'), message: t('field.elevatedFieldActivity') };
-    return { label: t('field.stormy'), message: t('field.stormyField') };
+  // Get geomagnetic message from companion context API (translated by backend)
+  const geoMessage = companionContext?.planetary?.geomagnetic?.message || null;
+  
+  // Normalize geomagnetic state (Kp 0-2 = quiet, Kp 3-4 = unsettled, Kp 5+ = storm)
+  const getGeoState = (kp: number): { label: string } => {
+    if (kp <= 2) return { label: t('field.quiet') };
+    if (kp <= 4) return { label: t('field.unsettled') };
+    return { label: t('field.stormy') };
   };
   
   const geoState = getGeoState(geoKp);
@@ -1011,12 +1017,12 @@ export default function FieldScreen() {
                   <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>{t('field.stateLabel')}</Text>
                   <Text style={[styles.detailValue, { color: colors.text }]}>{geoState.label}</Text>
                 </View>
-                {geoContent.message && (
+                {geoMessage && (
                   <Text style={[styles.echoMessage, { color: colors.text }]}>
-                    {geoContent.message}
+                    {geoMessage}
                   </Text>
                 )}
-                {!geoContent.message && (
+                {!geoMessage && (
                   <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
                     {t('field.geoExplanation')}
                   </Text>

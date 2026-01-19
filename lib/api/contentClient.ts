@@ -162,4 +162,7 @@ export const ContentEndpoints = {
   
   interruption: (lang: string, timezone: string) =>
     `/api/interruption?lang=${lang}&timezone=${encodeURIComponent(timezone)}`,
+  
+  companionContext: (lat: number, lon: number, lang: string) =>
+    `/api/companion/context?lat=${lat}&lon=${lon}&lang=${lang}`,
 };
