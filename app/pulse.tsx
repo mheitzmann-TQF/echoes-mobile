@@ -42,7 +42,6 @@ interface ExpandableCardProps {
   expandedContent?: React.ReactNode;
   isExpanded?: boolean;
   onToggle?: () => void;
-  chips?: string[];
   howToRead?: string[];
   accentColor?: string;
 }
@@ -56,7 +55,6 @@ function ExpandableCard({
   expandedContent, 
   isExpanded, 
   onToggle,
-  chips,
   howToRead,
   accentColor
 }: ExpandableCardProps) {
@@ -133,19 +131,6 @@ function ExpandableCard({
             </View>
           )}
 
-          {/* Chips Section */}
-          {chips && (
-            <View style={styles.chipsContainer}>
-              <Text style={[styles.chipsLabel, { color: colors.textTertiary }]}>{t('field.usedInEchoes')}</Text>
-              <View style={styles.chipRow}>
-                {chips.map((chip, i) => (
-                  <View key={i} style={[styles.chip, { backgroundColor: colors.surfaceHighlight }]}>
-                    <Text style={[styles.chipText, { color: colors.textSecondary }]}>{chip}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          )}
         </View>
       )}
     </TouchableOpacity>
@@ -442,7 +427,7 @@ export default function FieldScreen() {
       ]);
 
       const mockBundle = {
-        echo_cards: [],
+        echo_cards: [] as any[],
         planetary_context: {
           lunar: {
             phase: 'Waxing Gibbous',
@@ -536,22 +521,6 @@ export default function FieldScreen() {
     return Math.round(regions.reduce((a, b) => a + b, 0) / regions.length);
   };
   const regionalAverage = getRegionalAverage();
-  
-  // Get dynamic content from echo cards by type
-  // Maps: lunar_guidance → Lunar card, solar_rhythm → Solar card, global_consciousness → Geomagnetic card
-  // Returns both message (short action) and explanation (detailed context)
-  const getEchoContent = (echoType: string): { message: string | null; explanation: string | null } => {
-    const echoCards = (bundle as any)?.echo_cards;
-    if (!echoCards || !Array.isArray(echoCards)) return { message: null, explanation: null };
-    const card = echoCards.find((c: any) => c.type === echoType);
-    return { 
-      message: card?.message || null, 
-      explanation: card?.explanation || null 
-    };
-  };
-  
-  const lunarContent = getEchoContent('lunar_guidance');
-  const solarContent = getEchoContent('solar_rhythm');
   
   // Get geomagnetic message from companion context API (translated by backend)
   const geoMessage = companionContext?.planetary?.geomagnetic?.message || null;
@@ -942,22 +911,14 @@ export default function FieldScreen() {
             collapsedDetail={`${Math.round(ctx?.lunar?.illumination || 0)}%`}
             isExpanded={expandedCards['lunar']}
             onToggle={() => toggleCard('lunar')}
-            chips={[t('field.chipPhase'), t('field.chipIllumination')]}
             howToRead={[t('field.lunarNote1'), t('field.lunarNote2'), t('field.lunarNote3')]}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{t(`field.${getMoonPhaseKey(lunarPhase)}`)}</Text>
                 <Text style={[styles.expandedSub, { color: colors.textSecondary }]}>{Math.round(ctx?.lunar?.illumination || 0)}% {t('field.illuminated')}</Text>
-                {lunarContent.message && (
-                  <Text style={[styles.echoMessage, { color: colors.text }]}>
-                    {lunarContent.message}
-                  </Text>
-                )}
-                {!lunarContent.message && (
-                  <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                    {t('field.lunarExplanation')}
-                  </Text>
-                )}
+                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                  {t('field.lunarExplanation')}
+                </Text>
               </View>
             }
           />
@@ -970,21 +931,13 @@ export default function FieldScreen() {
             collapsedDetail={solarPhase}
             isExpanded={expandedCards['solar']}
             onToggle={() => toggleCard('solar')}
-            chips={[t('field.chipPhase'), t('field.chipSunsetTiming')]}
             howToRead={[t('field.solarNote1'), t('field.solarNote2'), t('field.solarNote3')]}
             expandedContent={
               <View style={styles.expandedDetails}>
                 <Text style={[styles.expandedValue, { color: colors.text }]}>{solarPhase}</Text>
-                {solarContent.message && (
-                  <Text style={[styles.echoMessage, { color: colors.text }]}>
-                    {solarContent.message}
-                  </Text>
-                )}
-                {!solarContent.message && (
-                  <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
-                    {t('field.solarExplanation')}
-                  </Text>
-                )}
+                <Text style={[styles.explanationText, { color: colors.textSecondary }]}>
+                  {t('field.solarExplanation')}
+                </Text>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
                 <Text style={[styles.subTitle, { color: colors.textSecondary }]}>{t('field.nextTransition')}</Text>
                 <Text style={[styles.expandedSub, { color: colors.text }]}>{nextTransition.display}</Text>
@@ -1005,7 +958,6 @@ export default function FieldScreen() {
             collapsedDetail={geoState.label}
             isExpanded={expandedCards['geo']}
             onToggle={() => toggleCard('geo')}
-            chips={[t('field.chipActivity'), t('field.chipKpIndex')]}
             howToRead={[t('field.geoNote1'), t('field.geoNote2'), t('field.geoNote3'), t('field.geoNote4')]}
             expandedContent={
               <View style={styles.expandedDetails}>
@@ -1045,7 +997,6 @@ export default function FieldScreen() {
             collapsedDetail={bioRhythms?.circadian?.alertness ? `${bioRhythms.circadian.alertness}%` : t('field.active')}
             isExpanded={expandedCards['body']}
             onToggle={() => toggleCard('body')}
-            chips={[t('field.chipCircadian'), t('field.chipAlertness')]}
             howToRead={[t('field.bodyNote1'), t('field.bodyNote2'), t('field.bodyNote3'), t('field.bodyNote4')]}
             expandedContent={
               <View style={styles.expandedDetails}>
@@ -1279,27 +1230,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     flex: 1,
-  },
-  chipsContainer: {
-    marginTop: 20,
-  },
-  chipsLabel: {
-    fontSize: 11,
-    textTransform: 'uppercase',
-    marginBottom: 8,
-  },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  chip: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  chipText: {
-    fontSize: 11,
   },
   divider: {
     height: 1,
