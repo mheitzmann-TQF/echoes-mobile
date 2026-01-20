@@ -30,6 +30,7 @@ Global state is managed using React Contexts (e.g., `LocationContext`, `ThemeCon
 - **Media Climate:** Presents raw and filtered signal analysis of global media patterns.
 - **"The Cookie":** A daily AI-generated fictional reflection prompt, displayed on the Wisdom tab.
 - **Ancient Wisdom:** Daily guidance from ancient calendar traditions (Hebrew, Mayan, Chinese, Hindu, Islamic).
+- **Dynamic Wisdom Cards:** Server-controlled cards that can be enabled/disabled from source.thequietframe.com without app updates. Used for introducing new features (e.g., "Space" app). See `docs/DYNAMIC_CARDS_API.md` for API contract.
 - **In-App Purchase & Subscription:** Uses a "full access" subscription model (monthly/yearly) with `none`, `trial`, `paid`, and `expired` states. A dev access override is available for testing without real IAP.
 
 ### Tab Content Structure
