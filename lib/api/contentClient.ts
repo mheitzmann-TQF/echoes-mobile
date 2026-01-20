@@ -160,6 +160,8 @@ export const ContentEndpoints = {
   
   wisdomAll: (lang: string) => `/api/wisdom/all?lang=${lang}`,
   
+  dynamicCards: (lang: string) => `/api/wisdom/dynamic-cards?lang=${lang}`,
+  
   interruption: (lang: string, timezone: string) =>
     `/api/interruption?lang=${lang}&timezone=${encodeURIComponent(timezone)}`,
   

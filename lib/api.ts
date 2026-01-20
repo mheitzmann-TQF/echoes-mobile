@@ -113,6 +113,25 @@ export interface RegionalBreakdownResponse {
   };
 }
 
+export interface DynamicWisdomCard {
+  id: string;
+  enabled: boolean;
+  title: string;
+  subtitle?: string;
+  content: string;
+  icon?: string;
+  accentColor?: string;
+  link?: {
+    url: string;
+    label: string;
+  };
+}
+
+export interface DynamicCardsResponse {
+  success: boolean;
+  cards: DynamicWisdomCard[];
+}
+
 class EchoesAPI {
   async getInstantPlanetary(lat: number, lng: number, tz: string = 'UTC'): Promise<PlanetaryData> {
     try {
@@ -421,6 +440,22 @@ class EchoesAPI {
     } catch (error: any) {
       console.error('❌ Ancient wisdom error:', error?.message || error?.toString?.() || 'Unknown error');
       return null;
+    }
+  }
+
+  async getDynamicCards(lang: string = 'en'): Promise<DynamicWisdomCard[]> {
+    try {
+      const endpoint = ContentEndpoints.dynamicCards(lang);
+      console.log('[DynamicCards] Fetching:', endpoint);
+      const data = await fetchContentJson<DynamicCardsResponse>(endpoint);
+      console.log('✅ Dynamic cards received:', data);
+      if (data.success && Array.isArray(data.cards)) {
+        return data.cards.filter(card => card.enabled);
+      }
+      return [];
+    } catch (error: any) {
+      console.log('[DynamicCards] Not available:', error?.message || 'endpoint not ready');
+      return [];
     }
   }
 }

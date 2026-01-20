@@ -5,13 +5,14 @@ import { useFocusEffect } from 'expo-router';
 import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getApiLang } from '../lib/lang';
-import api, { RegionalBreakdown, AncientWisdomCulture } from '../lib/api';
+import api, { RegionalBreakdown, AncientWisdomCulture, DynamicWisdomCard } from '../lib/api';
 import { Brain, Sparkles, Info, X, FileText, Globe } from 'lucide-react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import i18next from 'i18next';
 import { useEntitlement } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
 import AncientWisdomCard from '../components/AncientWisdomCard';
+import DynamicWisdomCardComponent from '../components/DynamicWisdomCard';
 import { cookieService } from '../lib/CookieService';
 
 const { width } = Dimensions.get('window');
@@ -250,6 +251,7 @@ export default function WisdomScreen() {
   const [consciousness, setConsciousness] = useState<any>(null);
   const [ancientWisdom, setAncientWisdom] = useState<AncientWisdomCulture[]>([]);
   const [regionalData, setRegionalData] = useState<RegionalBreakdown[]>([]);
+  const [dynamicCards, setDynamicCards] = useState<DynamicWisdomCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [methodologyVisible, setMethodologyVisible] = useState(false);
   const [cookie, setCookie] = useState<string | null>(null);
@@ -263,15 +265,17 @@ export default function WisdomScreen() {
     setAncientWisdom([]);
     setConsciousness(null);
     setRegionalData([]);
+    setDynamicCards([]);
     
     async function loadData() {
       try {
         console.log('[WisdomScreen] Loading data with lang:', currentLang);
         
-        const [consciousnessData, wisdomData, regionalResponse] = await Promise.all([
+        const [consciousnessData, wisdomData, regionalResponse, dynamicCardsData] = await Promise.all([
           api.getConsciousnessAnalysis(currentLang).catch(() => null),
           api.getWisdomCycle(currentLang).catch(() => null),
           api.getRegionalBreakdown().catch(() => null),
+          api.getDynamicCards(currentLang).catch(() => []),
         ]);
         
         setConsciousness(consciousnessData);
@@ -281,6 +285,7 @@ export default function WisdomScreen() {
         if (regionalResponse?.success && regionalResponse?.data?.regions) {
           setRegionalData(regionalResponse.data.regions);
         }
+        setDynamicCards(dynamicCardsData || []);
       } finally {
         setLoading(false);
       }
@@ -489,6 +494,15 @@ export default function WisdomScreen() {
             </TouchableOpacity>
           </View>
         </View>
+
+        {/* Dynamic Cards - Server-controlled content */}
+        {dynamicCards.length > 0 && (
+          <View style={styles.section}>
+            {dynamicCards.map((card) => (
+              <DynamicWisdomCardComponent key={card.id} card={card} />
+            ))}
+          </View>
+        )}
 
       </ScrollView>
       
