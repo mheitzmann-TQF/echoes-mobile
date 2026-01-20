@@ -251,7 +251,22 @@ export default function WisdomScreen() {
   const [consciousness, setConsciousness] = useState<any>(null);
   const [ancientWisdom, setAncientWisdom] = useState<AncientWisdomCulture[]>([]);
   const [regionalData, setRegionalData] = useState<RegionalBreakdown[]>([]);
-  const [dynamicCards, setDynamicCards] = useState<DynamicWisdomCard[]>([]);
+  const [dynamicCards, setDynamicCards] = useState<DynamicWisdomCard[]>([
+    // TEST CARD - Remove after visual confirmation
+    {
+      id: 'space-intro-test',
+      enabled: true,
+      title: 'The Space',
+      subtitle: 'A different kind of conversation',
+      content: 'Some experiences ask for presence beyond text. This one speaks.',
+      icon: '🌌',
+      accentColor: '#8b5cf6',
+      link: {
+        url: 'https://space.thequietframe.com/enter',
+        label: 'Enter the space'
+      }
+    }
+  ]);
   const [loading, setLoading] = useState(true);
   const [methodologyVisible, setMethodologyVisible] = useState(false);
   const [cookie, setCookie] = useState<string | null>(null);
@@ -265,7 +280,7 @@ export default function WisdomScreen() {
     setAncientWisdom([]);
     setConsciousness(null);
     setRegionalData([]);
-    setDynamicCards([]);
+    // Don't reset dynamicCards - keeping test card visible
     
     async function loadData() {
       try {
@@ -285,7 +300,8 @@ export default function WisdomScreen() {
         if (regionalResponse?.success && regionalResponse?.data?.regions) {
           setRegionalData(regionalResponse.data.regions);
         }
-        setDynamicCards(dynamicCardsData || []);
+        // Skip setting dynamicCards - test card in initial state
+        // setDynamicCards(dynamicCardsData || []);
       } finally {
         setLoading(false);
       }
