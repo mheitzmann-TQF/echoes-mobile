@@ -564,16 +564,6 @@ export default function WisdomScreen() {
                 <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq3Question')}</Text>
                 <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq3Answer')}</Text>
               </View>
-              
-              <View style={styles.faqItem}>
-                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq4Question')}</Text>
-                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq4Answer')}</Text>
-              </View>
-              
-              <View style={styles.faqItem}>
-                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq5Question')}</Text>
-                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq5Answer')}</Text>
-              </View>
             </ScrollView>
           </TouchableOpacity>
         </TouchableOpacity>
