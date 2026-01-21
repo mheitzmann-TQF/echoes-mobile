@@ -45,9 +45,8 @@ function PulseIcon({ color }: { color: string }) {
 function WisdomIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
-      <Circle cx={12} cy={12} r={10} stroke={color} strokeWidth={2} />
-      <Path d="M12 16v-4" stroke={color} strokeWidth={2} strokeLinecap="round" />
-      <Circle cx={12} cy={8} r={1} fill={color} />
+      <Path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
     </Svg>
   );
 }
