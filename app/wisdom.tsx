@@ -524,7 +524,7 @@ export default function WisdomScreen() {
                 <X size={24} color={colors.text} />
               </TouchableOpacity>
             </View>
-            <ScrollView showsVerticalScrollIndicator={false} style={{ maxHeight: 400 }}>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <Text style={[styles.methodologyDesc, { color: colors.textSecondary }]}>{t('learn.methodologyDesc')}</Text>
               
               <View style={styles.methodologySection}>
