@@ -376,7 +376,7 @@ export default function SettingsScreen() {
             {t('settings.partOf')}
           </Text>
           <TouchableOpacity onPress={() => Linking.openURL('https://thequietframe.com')}>
-            <Text style={[styles.aboutLink, { color: colors.textSecondary }]}>
+            <Text style={[styles.aboutLink, { color: colors.accent }]}>
               The Quiet Frame
             </Text>
           </TouchableOpacity>
