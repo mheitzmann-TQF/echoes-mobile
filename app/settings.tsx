@@ -380,6 +380,12 @@ export default function SettingsScreen() {
               The Quiet Frame
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.privacyButton, { backgroundColor: colors.surfaceHighlight }]}
+            onPress={() => Linking.openURL('https://thequietframe.com/#privacy')}
+          >
+            <Text style={[styles.privacyButtonText, { color: colors.accent }]}>{t('settings.privacyPolicy')}</Text>
+          </TouchableOpacity>
           <TouchableOpacity 
             onLongPress={handleDevAccessCycle}
             delayLongPress={1000}
@@ -609,6 +615,16 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textDecorationLine: 'underline',
     marginBottom: 16,
+  },
+  privacyButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  privacyButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
   },
   versionText: {
     fontSize: 11,
