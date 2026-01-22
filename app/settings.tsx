@@ -613,7 +613,6 @@ const styles = StyleSheet.create({
   aboutLink: {
     fontSize: 14,
     fontWeight: '600',
-    textDecorationLine: 'underline',
     marginBottom: 16,
   },
   versionText: {
