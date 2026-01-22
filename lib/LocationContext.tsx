@@ -3,6 +3,14 @@ import * as Location from 'expo-location';
 import { getLocales } from 'expo-localization';
 import { useTranslation } from 'react-i18next';
 import { getCurrentLanguage } from './i18n';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const STORAGE_KEYS = {
+  USE_CURRENT_LOCATION: '@location_use_current',
+  LOCATION_NAME: '@location_name',
+  COORDINATES: '@location_coords',
+  TIMEZONE: '@location_timezone',
+};
 
 interface Coordinates {
   lat: number;
@@ -109,15 +117,68 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
-  const [timezone, setTimezone] = useState('America/New_York'); // Default to NYC timezone
+  const [timezone, setTimezone] = useState('America/New_York');
   const [language, setLanguage] = useState(detectDeviceLanguage());
+  const [isInitialized, setIsInitialized] = useState(false);
   const prevLangRef = useRef(i18n.language);
 
+  // Load saved location settings on mount
   useEffect(() => {
-    if (useCurrentLocation) {
+    const loadSavedSettings = async () => {
+      try {
+        const [savedUseCurrentLocation, savedName, savedCoords, savedTimezone] = await Promise.all([
+          AsyncStorage.getItem(STORAGE_KEYS.USE_CURRENT_LOCATION),
+          AsyncStorage.getItem(STORAGE_KEYS.LOCATION_NAME),
+          AsyncStorage.getItem(STORAGE_KEYS.COORDINATES),
+          AsyncStorage.getItem(STORAGE_KEYS.TIMEZONE),
+        ]);
+
+        if (savedUseCurrentLocation !== null) {
+          setUseCurrentLocation(savedUseCurrentLocation === 'true');
+        }
+        if (savedName) {
+          setLocationName(savedName);
+        }
+        if (savedCoords) {
+          const parsed = JSON.parse(savedCoords);
+          if (parsed.lat && parsed.lng) {
+            setCoordinates(parsed);
+          }
+        }
+        if (savedTimezone) {
+          setTimezone(savedTimezone);
+        }
+        console.log('[Location] Loaded saved settings:', { savedUseCurrentLocation, savedName, savedTimezone });
+      } catch (e) {
+        console.error('[Location] Failed to load saved settings:', e);
+      } finally {
+        setIsInitialized(true);
+      }
+    };
+    loadSavedSettings();
+  }, []);
+
+  // Save useCurrentLocation when it changes
+  useEffect(() => {
+    if (isInitialized) {
+      AsyncStorage.setItem(STORAGE_KEYS.USE_CURRENT_LOCATION, String(useCurrentLocation));
+    }
+  }, [useCurrentLocation, isInitialized]);
+
+  // Save manual location settings when they change
+  useEffect(() => {
+    if (isInitialized && !useCurrentLocation) {
+      AsyncStorage.setItem(STORAGE_KEYS.LOCATION_NAME, locationName);
+      AsyncStorage.setItem(STORAGE_KEYS.COORDINATES, JSON.stringify(coordinates));
+      AsyncStorage.setItem(STORAGE_KEYS.TIMEZONE, timezone);
+    }
+  }, [locationName, coordinates, timezone, useCurrentLocation, isInitialized]);
+
+  useEffect(() => {
+    if (useCurrentLocation && isInitialized) {
       requestUserLocation();
     }
-  }, [useCurrentLocation]);
+  }, [useCurrentLocation, isInitialized]);
 
   useEffect(() => {
     if (!useCurrentLocation && locationName && locationName !== 'New York') {
