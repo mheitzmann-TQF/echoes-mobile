@@ -350,6 +350,12 @@ export default function SettingsScreen() {
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <Text style={[styles.sectionLabel, { color: colors.text }]}>{t('settings.privacy')}</Text>
           <Text style={[styles.infoText, { color: colors.textSecondary }]}>{t('settings.privacyNote')}</Text>
+          <TouchableOpacity
+            style={[styles.supportButton, { backgroundColor: colors.surfaceHighlight }]}
+            onPress={() => Linking.openURL('https://thequietframe.com/#privacy')}
+          >
+            <Text style={[styles.supportButtonText, { color: colors.accent }]}>{t('paywall.privacyPolicy')}</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Support Section */}
@@ -379,12 +385,6 @@ export default function SettingsScreen() {
             <Text style={[styles.aboutLink, { color: colors.accent }]}>
               The Quiet Frame
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.privacyButton, { backgroundColor: colors.surfaceHighlight }]}
-            onPress={() => Linking.openURL('https://thequietframe.com/#privacy')}
-          >
-            <Text style={[styles.privacyButtonText, { color: colors.accent }]}>{t('settings.privacyPolicy')}</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             onLongPress={handleDevAccessCycle}
@@ -615,16 +615,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textDecorationLine: 'underline',
     marginBottom: 16,
-  },
-  privacyButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  privacyButtonText: {
-    fontSize: 13,
-    fontWeight: '600',
   },
   versionText: {
     fontSize: 11,
