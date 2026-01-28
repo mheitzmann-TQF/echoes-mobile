@@ -423,10 +423,10 @@
     "contactUs": "Fale conosco",
     "about": "Sobre",
     "partOf": "Parte de",
-    "version": "Echoes v1.0"
+    "version": "The Quiet Frame v1.0"
   },
   "paywall": {
-    "continue": "Continuar com Echoes",
+    "continue": "Continuar com The Quiet Frame",
     "subtitle": "Acesso completo a Pulso, Sabedoria e Próximo.",
     "features": {
       "pulseWisdom": "Acesso completo a Pulso e Sabedoria",
@@ -449,7 +449,7 @@
     "privacyPolicy": "Política de Privacidade",
     "maybeLater": "Talvez depois",
     "subscribed": "Você é assinante!",
-    "thankYou": "Obrigado por apoiar o Echoes. Aproveite o acesso completo a todos os recursos.",
+    "thankYou": "Obrigado por apoiar The Quiet Frame. Aproveite o acesso completo a todos os recursos.",
     "noPurchasesFound": "Nenhuma compra encontrada para restaurar",
     "noActiveSubscription": "Nenhuma assinatura ativa encontrada",
     "purchaseFailed": "A compra falhou",

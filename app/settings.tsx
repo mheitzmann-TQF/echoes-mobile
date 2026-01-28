@@ -339,7 +339,13 @@ export default function SettingsScreen() {
         </View>
 
         {/* Paywall Modal */}
-        <Modal visible={showPaywall} animationType="slide" presentationStyle="pageSheet">
+        <Modal 
+          visible={showPaywall} 
+          animationType="slide" 
+          presentationStyle="fullScreen"
+          statusBarTranslucent={true}
+          onRequestClose={() => setShowPaywall(false)}
+        >
           <Paywall 
             onClose={() => setShowPaywall(false)}
             onSubscribed={() => setShowPaywall(false)}

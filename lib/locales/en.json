@@ -542,10 +542,10 @@
     "contactUs": "Contact us",
     "about": "About",
     "partOf": "Part of",
-    "version": "Echoes v1.0"
+    "version": "The Quiet Frame v1.0"
   },
   "paywall": {
-    "continue": "Continue with Echoes",
+    "continue": "Continue with The Quiet Frame",
     "subtitle": "Full access across Pulse, Wisdom, and Upcoming.",
     "features": {
       "pulseWisdom": "Full access to Pulse and Wisdom",
@@ -568,7 +568,7 @@
     "privacyPolicy": "Privacy Policy",
     "maybeLater": "Maybe later",
     "subscribed": "You're subscribed!",
-    "thankYou": "Thank you for supporting Echoes. Enjoy full access to all features.",
+    "thankYou": "Thank you for supporting The Quiet Frame. Enjoy full access to all features.",
     "noPurchasesFound": "No purchases found to restore",
     "noActiveSubscription": "No active subscriptions found",
     "purchaseFailed": "Purchase failed",

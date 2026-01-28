@@ -21,9 +21,11 @@ interface PaywallProps {
 }
 
 function getLocalizedPrice(products: ProductSubscription[], sku: string, fallback: string): string {
-  const product = products.find((p: any) => p.id === sku);
-  if (product && (product as any).displayPrice) {
-    return (product as any).displayPrice;
+  const product = products.find((p: any) => p.productId === sku || p.id === sku);
+  if (product) {
+    // expo-iap may use different field names across versions
+    const price = (product as any).localizedPrice || (product as any).displayPrice || (product as any).price;
+    if (price) return price;
   }
   return fallback;
 }

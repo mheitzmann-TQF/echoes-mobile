@@ -59,7 +59,8 @@ export default function PausedOverlay({ section, onRefreshEntitlement }: PausedO
       <Modal
         visible={paywallVisible}
         animationType="slide"
-        presentationStyle="pageSheet"
+        presentationStyle="fullScreen"
+        statusBarTranslucent={true}
         onRequestClose={() => setPaywallVisible(false)}
       >
         <Paywall
