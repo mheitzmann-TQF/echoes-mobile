@@ -47,6 +47,11 @@ let modulePendingCheckStatus: Promise<{ entitlement: 'full' | 'free'; expiresAt:
 let moduleLastVerificationTime: number = 0;
 const VERIFICATION_PROTECTION_MS = 10000; // 10 seconds protection window
 
+// Track auto-restore attempts to prevent loops
+let moduleLastAutoRestoreTime: number = 0;
+const AUTO_RESTORE_COOLDOWN_MS = 60000; // 1 minute cooldown between auto-restore attempts
+let moduleAutoRestoreInProgress = false;
+
 // Module-level state update registry - allows listeners to update all active instances
 type StateUpdater = {
   setIsFullAccess: (v: boolean) => void;
@@ -317,6 +322,58 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         setGraceReason('none');
         await setAccessCache(status.entitlement, status.expiresAt);
         console.log('[ENTITLEMENT] Refreshed from backend:', status);
+        
+        // Auto-restore: If subscription expired, check if Google has a renewed subscription
+        if (!hasAccess && status.expiresAt && moduleIAPInitialized && !moduleAutoRestoreInProgress) {
+          const expiry = new Date(status.expiresAt).getTime();
+          const now = Date.now();
+          const timeSinceLastRestore = now - moduleLastAutoRestoreTime;
+          
+          // Only attempt auto-restore if:
+          // 1. Subscription has actually expired (not just free tier)
+          // 2. Not in cooldown period
+          if (expiry < now && timeSinceLastRestore > AUTO_RESTORE_COOLDOWN_MS) {
+            console.log('[ENTITLEMENT] Subscription expired, attempting auto-restore to check renewals');
+            moduleAutoRestoreInProgress = true;
+            moduleLastAutoRestoreTime = now;
+            
+            try {
+              const purchases = await restorePurchases();
+              console.log('[ENTITLEMENT] Auto-restore got', purchases.length, 'purchases');
+              
+              if (purchases.length > 0) {
+                const currentInstallId = moduleInstallId;
+                if (currentInstallId) {
+                  for (const purchase of purchases) {
+                    console.log('[ENTITLEMENT] Auto-restore verifying:', purchase.productId);
+                    const verification = await verifyPurchaseWithBackend(currentInstallId, purchase);
+                    console.log('[ENTITLEMENT] Auto-restore verification result:', verification);
+                    
+                    if (verification.entitlement === 'full') {
+                      // Update all active hook instances
+                      for (const updater of moduleStateUpdaters) {
+                        updater.setIsFullAccess(true);
+                        updater.setExpiresAt(verification.expiresAt);
+                        updater.setError(null);
+                        updater.setIsGrace(false);
+                        updater.setGraceReason('none');
+                      }
+                      // Update cache to prevent future overwrites
+                      await setAccessCache('full', verification.expiresAt);
+                      moduleLastVerificationTime = Date.now();
+                      console.log('[ENTITLEMENT] Auto-restore successful, subscription renewed');
+                      break;
+                    }
+                  }
+                }
+              }
+            } catch (restoreErr) {
+              console.log('[ENTITLEMENT] Auto-restore failed (non-critical):', restoreErr);
+            } finally {
+              moduleAutoRestoreInProgress = false;
+            }
+          }
+        }
       } catch (err) {
         console.error('[ENTITLEMENT] Error refreshing:', err);
         const graceCheck = await checkGraceEligibility();
