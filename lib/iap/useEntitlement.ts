@@ -43,6 +43,9 @@ let modulePurchaseUpdateSub: { remove: () => void } | null = null;
 let modulePurchaseErrorSub: { remove: () => void } | null = null;
 let moduleHookInstanceCount = 0;
 let modulePendingCheckStatus: Promise<{ entitlement: 'full' | 'free'; expiresAt: string | null }> | null = null;
+// Track when last successful verification happened to prevent stale status overwrites
+let moduleLastVerificationTime: number = 0;
+const VERIFICATION_PROTECTION_MS = 10000; // 10 seconds protection window
 
 // Module-level state update registry - allows listeners to update all active instances
 type StateUpdater = {
@@ -214,6 +217,13 @@ async function verifyPurchaseWithBackend(
     // Normalize 'pro' to 'full' for consistent internal state
     const entitlement = (data.entitlement === 'pro' || data.entitlement === 'full') ? 'full' : 'free';
     console.log('[ENTITLEMENT] Verification result:', { entitlement, expiresAt: data.expiresAt });
+    
+    // Mark successful verification time to protect against stale status overwrites
+    if (entitlement === 'full') {
+      moduleLastVerificationTime = Date.now();
+      console.log('[ENTITLEMENT] Set verification protection timestamp');
+    }
+    
     return {
       entitlement,
       expiresAt: data.expiresAt || null,
@@ -292,6 +302,14 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       try {
         const status = await checkEntitlementStatus(currentInstallId);
         const hasAccess = status.entitlement === 'full';
+        
+        // Protect against stale status overwrites after successful verification
+        const timeSinceVerification = Date.now() - moduleLastVerificationTime;
+        if (!hasAccess && timeSinceVerification < VERIFICATION_PROTECTION_MS) {
+          console.log('[ENTITLEMENT] Skipping stale status (within protection window):', timeSinceVerification, 'ms since verification');
+          return; // Don't overwrite fresh verification with stale status
+        }
+        
         setIsFullAccess(hasAccess);
         setExpiresAt(status.expiresAt);
         setError(null);
@@ -487,7 +505,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
                 }
               });
               
-              modulePurchaseErrorSub = purchaseErrorListener(async (err) => {
+              modulePurchaseErrorSub = purchaseErrorListener(async (err: { message?: string; code?: string }) => {
                 console.error('[ENTITLEMENT] Purchase error:', err);
                 
                 // Handle 'already-owned' by automatically restoring purchases
