@@ -442,13 +442,16 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   }, [isDevMode]);
 
   const purchaseMonthly = useCallback(async (offerToken?: string): Promise<boolean> => {
-    // In dev mode, simulate purchase by setting override to 'paid'
     if (isDevMode) {
       await devSetAccess('paid');
       return true;
     }
     
-    if (!installId) return false;
+    const currentInstallId = installIdRef.current;
+    if (!currentInstallId) {
+      console.log('[ENTITLEMENT] No installId available for purchase');
+      return false;
+    }
     
     setError(null);
     const result = await purchaseSubscription(SUBSCRIPTION_IDS.monthly, offerToken);
@@ -459,23 +462,26 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
     
     if (result.purchase) {
-      const verification = await verifyPurchaseWithBackend(installId, result.purchase);
+      const verification = await verifyPurchaseWithBackend(currentInstallId, result.purchase);
       setIsFullAccess(verification.entitlement === 'full');
       setExpiresAt(verification.expiresAt);
       return verification.entitlement === 'full';
     }
     
     return false;
-  }, [installId, isDevMode, devSetAccess]);
+  }, [isDevMode, devSetAccess]);
 
   const purchaseYearly = useCallback(async (offerToken?: string): Promise<boolean> => {
-    // In dev mode, simulate purchase by setting override to 'paid'
     if (isDevMode) {
       await devSetAccess('paid');
       return true;
     }
     
-    if (!installId) return false;
+    const currentInstallId = installIdRef.current;
+    if (!currentInstallId) {
+      console.log('[ENTITLEMENT] No installId available for purchase');
+      return false;
+    }
     
     setError(null);
     const result = await purchaseSubscription(SUBSCRIPTION_IDS.yearly, offerToken);
@@ -486,27 +492,27 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
     
     if (result.purchase) {
-      const verification = await verifyPurchaseWithBackend(installId, result.purchase);
+      const verification = await verifyPurchaseWithBackend(currentInstallId, result.purchase);
       setIsFullAccess(verification.entitlement === 'full');
       setExpiresAt(verification.expiresAt);
       return verification.entitlement === 'full';
     }
     
     return false;
-  }, [installId, isDevMode, devSetAccess]);
+  }, [isDevMode, devSetAccess]);
 
   const restorePurchasesAction = useCallback(async (): Promise<boolean> => {
     console.log('[ENTITLEMENT] Restore purchases started');
     
-    // In dev mode, simulate restore by setting override to 'paid'
     if (isDevMode) {
       console.log('[ENTITLEMENT] Dev mode - simulating restore');
       await devSetAccess('paid');
       return true;
     }
     
-    if (!installId) {
-      console.log('[ENTITLEMENT] No installId - cannot restore');
+    const currentInstallId = installIdRef.current;
+    if (!currentInstallId) {
+      console.log('[ENTITLEMENT] No installId available for restore');
       return false;
     }
     
@@ -525,7 +531,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       
       for (const purchase of purchases) {
         console.log('[ENTITLEMENT] Verifying purchase:', purchase.productId);
-        const verification = await verifyPurchaseWithBackend(installId, purchase);
+        const verification = await verifyPurchaseWithBackend(currentInstallId, purchase);
         console.log('[ENTITLEMENT] Verification result:', verification);
         if (verification.entitlement === 'full') {
           setIsFullAccess(true);
@@ -546,7 +552,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     } finally {
       setIsLoading(false);
     }
-  }, [installId, isDevMode, devSetAccess]);
+  }, [isDevMode, devSetAccess]);
 
   return {
     isFullAccess,
