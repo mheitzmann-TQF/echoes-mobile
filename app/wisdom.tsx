@@ -9,7 +9,7 @@ import api, { RegionalBreakdown, AncientWisdomCulture, DynamicWisdomCard } from 
 import { Brain, Sparkles, Info, X, FileText, Globe } from 'lucide-react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import i18next from 'i18next';
-import { useEntitlement } from '../lib/iap/useEntitlement';
+import { useEntitlementContext } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
 import AncientWisdomCard from '../components/AncientWisdomCard';
 import DynamicWisdomCardComponent from '../components/DynamicWisdomCard';
@@ -239,7 +239,7 @@ function RegionalBreakdownCard({ regions, t }: { regions: RegionalBreakdown[]; t
 export default function WisdomScreen() {
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
-  const { isFullAccess, refresh } = useEntitlement();
+  const { isFullAccess, refresh } = useEntitlementContext();
   
   // Refresh entitlement when screen gains focus
   useFocusEffect(

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, createContext, useContext, type ReactNode } from 'react';
 import { Platform, AppState, AppStateStatus } from 'react-native';
 import {
   initIAP,
@@ -682,4 +682,24 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     refresh,
     devSetAccess,
   };
+}
+
+// Context for sharing entitlement state across the app
+type EntitlementContextType = EntitlementState & EntitlementActions;
+
+const EntitlementContext = createContext<EntitlementContextType | null>(null);
+
+// Provider component - use this at app root
+export function EntitlementProvider({ children }: { children: ReactNode }): React.ReactElement {
+  const entitlement = useEntitlement();
+  return React.createElement(EntitlementContext.Provider, { value: entitlement }, children);
+}
+
+// Consumer hook - use this in components instead of useEntitlement directly
+export function useEntitlementContext(): EntitlementContextType {
+  const context = useContext(EntitlementContext);
+  if (!context) {
+    throw new Error('useEntitlementContext must be used within an EntitlementProvider');
+  }
+  return context;
 }

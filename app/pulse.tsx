@@ -9,7 +9,7 @@ import { ChevronDown, ChevronUp, Info, Moon, Sun, Globe, Zap, Dna, Clock } from 
 import { toTitleCase } from '../lib/labelize';
 import { getApiLang } from '../lib/lang';
 import { useTranslation } from 'react-i18next';
-import { useEntitlement } from '../lib/iap/useEntitlement';
+import { useEntitlementContext } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
 import { useAppStateListener } from '../lib/useAppState';
 
@@ -376,7 +376,7 @@ export default function FieldScreen() {
   const language = i18n.language;
   const { coordinates, timezone, coordinateKey } = useLocation();
   const { colors, theme } = useTheme();
-  const { isFullAccess, refresh } = useEntitlement();
+  const { isFullAccess, refresh } = useEntitlementContext();
   
   // Refresh entitlement when screen gains focus
   useFocusEffect(

@@ -13,6 +13,7 @@ import Constants from 'expo-constants';
 import { SwipeTabs, type SwipeTab } from '../components/SwipeTabs';
 import { InterruptionLayer } from '../components/InterruptionLayer';
 import { initAppStateListener, useAppStateListener } from '../lib/useAppState';
+import { EntitlementProvider } from '../lib/iap/useEntitlement';
 
 const isWeb = Platform.OS === 'web';
 const isExpoGo = (): boolean => Constants.appOwnership === 'expo';
@@ -320,7 +321,9 @@ export default function RootLayout() {
   return (
     <LocationProvider>
       <ThemeProvider>
-        <ThemedApp />
+        <EntitlementProvider>
+          <ThemedApp />
+        </EntitlementProvider>
       </ThemeProvider>
     </LocationProvider>
   );

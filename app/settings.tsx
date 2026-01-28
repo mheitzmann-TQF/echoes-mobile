@@ -4,7 +4,7 @@ import { useLocation } from '../lib/LocationContext';
 import { useState, useCallback } from 'react';
 import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X } from 'lucide-react-native';
 import { useTheme } from '../lib/ThemeContext';
-import { useEntitlement } from '@/lib/iap/useEntitlement';
+import { useEntitlementContext } from '@/lib/iap/useEntitlement';
 import Paywall from '@/components/Paywall';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, changeLanguage, getCurrentLanguage, type SupportedLanguage } from '../lib/i18n';
@@ -37,7 +37,7 @@ export default function SettingsScreen() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<SupportedLanguage>(getCurrentLanguage());
   
-  const { isFullAccess, isLoading: entitlementLoading, expiresAt, restorePurchasesAction, devOverride, isDevMode, refresh: refreshEntitlement } = useEntitlement();
+  const { isFullAccess, isLoading: entitlementLoading, expiresAt, restorePurchasesAction, devOverride, isDevMode, refresh: refreshEntitlement } = useEntitlementContext();
   
   const handleDevAccessCycle = useCallback(async () => {
     if (!isDevMode) return;

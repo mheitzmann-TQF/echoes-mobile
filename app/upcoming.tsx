@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import contentService from '../lib/ContentService';
 import { cleanTone, getCategoryLabel, formatOrigin } from '../lib/labelize';
 import { Clock, Moon, Leaf, Sparkles, Globe, Star } from 'lucide-react-native';
-import { useEntitlement } from '../lib/iap/useEntitlement';
+import { useEntitlementContext } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
 import { getApiLang } from '../lib/lang';
 
@@ -275,7 +275,7 @@ export default function UpcomingScreen() {
   const { coordinates, timezone, coordinateKey } = useLocation();
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
-  const { isFullAccess, refresh } = useEntitlement();
+  const { isFullAccess, refresh } = useEntitlementContext();
   
   // Refresh entitlement when screen gains focus
   useFocusEffect(

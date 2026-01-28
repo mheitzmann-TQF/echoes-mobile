@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Sparkles, Check, RotateCcw, X } from 'lucide-react-native';
-import { useEntitlement } from '@/lib/iap/useEntitlement';
+import { useEntitlementContext } from '@/lib/iap/useEntitlement';
 import { HAS_TRIAL_OFFER, TRIAL_DAYS, LEGAL_URLS, SUBSCRIPTION_IDS } from '@/lib/iap/products';
 import type { ProductSubscription } from '@/lib/iap/iap';
 import { useTranslation } from 'react-i18next';
@@ -47,7 +47,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
     purchaseMonthly,
     purchaseYearly,
     restorePurchasesAction,
-  } = useEntitlement();
+  } = useEntitlementContext();
 
   const [purchasing, setPurchasing] = useState<'monthly' | 'yearly' | null>(null);
   const [restoring, setRestoring] = useState(false);
