@@ -136,8 +136,10 @@ async function checkEntitlementStatusInternal(installId: string, isRetry = false
   
   const data = await response.json();
   console.log('[ENTITLEMENT] Status response:', data);
+  // Normalize 'pro' to 'full' for consistent internal state
+  const entitlement = (data.entitlement === 'pro' || data.entitlement === 'full') ? 'full' : 'free';
   return {
-    entitlement: data.entitlement || 'free',
+    entitlement,
     expiresAt: data.expiresAt || null,
   };
 }
@@ -209,8 +211,11 @@ async function verifyPurchaseWithBackend(
     
     await finishTransaction(purchase);
     
+    // Normalize 'pro' to 'full' for consistent internal state
+    const entitlement = (data.entitlement === 'pro' || data.entitlement === 'full') ? 'full' : 'free';
+    console.log('[ENTITLEMENT] Verification result:', { entitlement, expiresAt: data.expiresAt });
     return {
-      entitlement: data.entitlement || 'free',
+      entitlement,
       expiresAt: data.expiresAt || null,
     };
   } catch (error) {
