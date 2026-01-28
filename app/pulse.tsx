@@ -1263,13 +1263,14 @@ const styles = StyleSheet.create({
   signalTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
+    marginTop: 4,
   },
   signalTag: {
-    fontSize: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
+    fontSize: 13,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
     overflow: 'hidden',
   },
   timingRow: {
