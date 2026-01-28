@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Sparkles, Check, RotateCcw, X } from 'lucide-react-native';
 import { useEntitlement } from '@/lib/iap/useEntitlement';
 import { HAS_TRIAL_OFFER, TRIAL_DAYS, LEGAL_URLS, SUBSCRIPTION_IDS } from '@/lib/iap/products';
@@ -37,6 +38,7 @@ function getPeriodLabel(sku: string): string {
 
 export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const {
     isFullAccess,
     isLoading,
@@ -100,43 +102,46 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
 
   if (isFullAccess) {
     return (
-      <View style={styles.container}>
-        <View style={styles.successCard}>
-          <Check size={48} color="#10B981" />
-          <Text style={styles.successTitle}>{t('paywall.subscribed')}</Text>
-          <Text style={styles.successText}>
-            {t('paywall.thankYou')}
-          </Text>
-          {onClose && (
-            <TouchableOpacity 
-              style={styles.closeButton} 
-              onPress={onClose}
-              data-testid="button-close-paywall"
-            >
-              <Text style={styles.closeButtonText}>{t('common.continue')}</Text>
-            </TouchableOpacity>
-          )}
+      <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+        <View style={styles.container}>
+          <View style={styles.successCard}>
+            <Check size={48} color="#10B981" />
+            <Text style={styles.successTitle}>{t('paywall.subscribed')}</Text>
+            <Text style={styles.successText}>
+              {t('paywall.thankYou')}
+            </Text>
+            {onClose && (
+              <TouchableOpacity 
+                style={styles.closeButton} 
+                onPress={onClose}
+                data-testid="button-close-paywall"
+              >
+                <Text style={styles.closeButtonText}>{t('common.continue')}</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <ScrollView 
-      style={styles.scrollView}
-      contentContainerStyle={styles.scrollContent}
-    >
-      <View style={styles.container}>
-        {onClose && (
-          <TouchableOpacity
-            style={styles.headerCloseButton}
-            onPress={onClose}
-            data-testid="button-close-paywall-x"
-          >
-            <X size={24} color="rgba(255,255,255,0.6)" />
-          </TouchableOpacity>
-        )}
-        <View style={styles.header}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={[styles.scrollContent, { paddingBottom: Math.max(insets.bottom, 20) + 60 }]}
+      >
+        <View style={styles.container}>
+          {onClose && (
+            <TouchableOpacity
+              style={[styles.headerCloseButton, { top: 8 }]}
+              onPress={onClose}
+              data-testid="button-close-paywall-x"
+            >
+              <X size={24} color="rgba(255,255,255,0.6)" />
+            </TouchableOpacity>
+          )}
+          <View style={styles.header}>
           <Sparkles size={32} color="#F59E0B" />
           <Text style={styles.title}>{t('paywall.continue')}</Text>
           <Text style={styles.subtitle}>
@@ -251,9 +256,9 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
             <Text style={styles.skipText}>{t('paywall.maybeLater')}</Text>
           </TouchableOpacity>
         )}
-        <View style={styles.bottomSpacer} />
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -267,6 +272,10 @@ function FeatureItem({ text }: { text: string }) {
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#000000',
+  },
   scrollView: {
     flex: 1,
     backgroundColor: '#000000',
@@ -435,9 +444,6 @@ const styles = StyleSheet.create({
   skipText: {
     fontSize: 15,
     color: 'rgba(255,255,255,0.4)',
-  },
-  bottomSpacer: {
-    height: Platform.OS === 'android' ? 100 : 40,
   },
   successCard: {
     flex: 1,
