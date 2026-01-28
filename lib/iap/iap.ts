@@ -145,7 +145,10 @@ export async function restorePurchases(): Promise<Purchase[]> {
 
     console.log('[IAP] Restoring purchases...');
     const purchases = await iap.getAvailablePurchases();
-    console.log('[IAP] Restored purchases:', purchases.length);
+    console.log('[IAP] Restored purchases count:', purchases.length);
+    if (purchases.length > 0) {
+      console.log('[IAP] Restored purchases details:', JSON.stringify(purchases, null, 2));
+    }
     return purchases as Purchase[];
   } catch (error) {
     console.error('[IAP] Error restoring purchases:', error);

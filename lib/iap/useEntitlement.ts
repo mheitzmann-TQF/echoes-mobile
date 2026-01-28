@@ -473,34 +473,47 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   }, [installId, isDevMode, devSetAccess]);
 
   const restorePurchasesAction = useCallback(async (): Promise<boolean> => {
+    console.log('[ENTITLEMENT] Restore purchases started');
+    
     // In dev mode, simulate restore by setting override to 'paid'
     if (isDevMode) {
+      console.log('[ENTITLEMENT] Dev mode - simulating restore');
       await devSetAccess('paid');
       return true;
     }
     
-    if (!installId) return false;
+    if (!installId) {
+      console.log('[ENTITLEMENT] No installId - cannot restore');
+      return false;
+    }
     
     setError(null);
     setIsLoading(true);
     
     try {
       const purchases = await restorePurchases();
+      console.log('[ENTITLEMENT] Got', purchases.length, 'purchases from store');
       
       if (purchases.length === 0) {
+        console.log('[ENTITLEMENT] No purchases found in store');
         setError('paywall.noPurchasesFound');
         return false;
       }
       
       for (const purchase of purchases) {
+        console.log('[ENTITLEMENT] Verifying purchase:', purchase.productId);
         const verification = await verifyPurchaseWithBackend(installId, purchase);
+        console.log('[ENTITLEMENT] Verification result:', verification);
         if (verification.entitlement === 'full') {
           setIsFullAccess(true);
           setExpiresAt(verification.expiresAt);
+          setIsGrace(false);
+          setGraceReason('none');
           return true;
         }
       }
       
+      console.log('[ENTITLEMENT] No active subscription found after verification');
       setError('paywall.noActiveSubscription');
       return false;
     } catch (err) {

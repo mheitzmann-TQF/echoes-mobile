@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { Sparkles, Check, RotateCcw } from 'lucide-react-native';
+import { Sparkles, Check, RotateCcw, X } from 'lucide-react-native';
 import { useEntitlement } from '@/lib/iap/useEntitlement';
 import { HAS_TRIAL_OFFER, TRIAL_DAYS, LEGAL_URLS, SUBSCRIPTION_IDS } from '@/lib/iap/products';
 import type { ProductSubscription } from '@/lib/iap/iap';
@@ -49,35 +49,45 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
 
   const [purchasing, setPurchasing] = useState<'monthly' | 'yearly' | null>(null);
   const [restoring, setRestoring] = useState(false);
+  const [wasNotFullAccess, setWasNotFullAccess] = useState(!isFullAccess);
+  const didAutoCloseRef = useRef(false);
+
+  useEffect(() => {
+    if (wasNotFullAccess && isFullAccess && !didAutoCloseRef.current) {
+      didAutoCloseRef.current = true;
+      console.log('[Paywall] Full access gained, auto-closing');
+      onSubscribed?.();
+      const timer = setTimeout(() => onClose?.(), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [isFullAccess, wasNotFullAccess, onClose, onSubscribed]);
+
+  useEffect(() => {
+    if (!isFullAccess) {
+      setWasNotFullAccess(true);
+      didAutoCloseRef.current = false;
+    }
+  }, [isFullAccess]);
 
   const monthlyPrice = getLocalizedPrice(products, SUBSCRIPTION_IDS.monthly, '$7.99');
   const yearlyPrice = getLocalizedPrice(products, SUBSCRIPTION_IDS.yearly, '$79.90');
 
   const handlePurchaseMonthly = async () => {
     setPurchasing('monthly');
-    const success = await purchaseMonthly();
+    await purchaseMonthly();
     setPurchasing(null);
-    if (success) {
-      onSubscribed?.();
-    }
   };
 
   const handlePurchaseYearly = async () => {
     setPurchasing('yearly');
-    const success = await purchaseYearly();
+    await purchaseYearly();
     setPurchasing(null);
-    if (success) {
-      onSubscribed?.();
-    }
   };
 
   const handleRestore = async () => {
     setRestoring(true);
-    const success = await restorePurchasesAction();
+    await restorePurchasesAction();
     setRestoring(false);
-    if (success) {
-      onSubscribed?.();
-    }
   };
 
   const handleOpenTerms = () => {
@@ -117,6 +127,15 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
       contentContainerStyle={styles.scrollContent}
     >
       <View style={styles.container}>
+        {onClose && (
+          <TouchableOpacity
+            style={styles.headerCloseButton}
+            onPress={onClose}
+            data-testid="button-close-paywall-x"
+          >
+            <X size={24} color="rgba(255,255,255,0.6)" />
+          </TouchableOpacity>
+        )}
         <View style={styles.header}>
           <Sparkles size={32} color="#F59E0B" />
           <Text style={styles.title}>{t('paywall.continue')}</Text>
@@ -232,6 +251,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
             <Text style={styles.skipText}>{t('paywall.maybeLater')}</Text>
           </TouchableOpacity>
         )}
+        <View style={styles.bottomSpacer} />
       </View>
     </ScrollView>
   );
@@ -258,6 +278,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: '#000000',
+  },
+  headerCloseButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    zIndex: 10,
+    padding: 8,
   },
   header: {
     alignItems: 'center',
@@ -408,6 +435,9 @@ const styles = StyleSheet.create({
   skipText: {
     fontSize: 15,
     color: 'rgba(255,255,255,0.4)',
+  },
+  bottomSpacer: {
+    height: Platform.OS === 'android' ? 100 : 40,
   },
   successCard: {
     flex: 1,
