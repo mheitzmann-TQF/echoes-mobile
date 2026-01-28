@@ -454,6 +454,13 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
               // Set up module-level listeners (only once) that notify ALL active instances
               modulePurchaseUpdateSub = purchaseUpdatedListener(async (purchase) => {
                 console.log('[ENTITLEMENT] Purchase updated:', purchase.productId);
+                
+                // Skip purchases with missing required fields (prevents duplicate/malformed calls)
+                if (!purchase.purchaseToken || !purchase.productId) {
+                  console.log('[ENTITLEMENT] Skipping purchase with missing token or productId');
+                  return;
+                }
+                
                 const currentId = moduleInstallId;
                 if (!currentId) {
                   console.error('[ENTITLEMENT] No installId for purchase verification');

@@ -118,9 +118,17 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
           },
     };
 
-    const purchase = await iap.requestPurchase(purchaseArgs);
+    const purchaseResult = await iap.requestPurchase(purchaseArgs);
 
-    console.log('[IAP] Purchase successful:', purchase);
+    console.log('[IAP] Purchase successful:', purchaseResult);
+    
+    // requestPurchase returns an array of purchases - extract the first one
+    const purchase = Array.isArray(purchaseResult) ? purchaseResult[0] : purchaseResult;
+    
+    if (!purchase) {
+      return { success: false, error: 'No purchase returned' };
+    }
+    
     return { success: true, purchase: purchase as Purchase };
   } catch (error: any) {
     console.error('[IAP] Purchase error:', error);
