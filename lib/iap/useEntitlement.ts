@@ -487,9 +487,46 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
                 }
               });
               
-              modulePurchaseErrorSub = purchaseErrorListener((err) => {
+              modulePurchaseErrorSub = purchaseErrorListener(async (err) => {
                 console.error('[ENTITLEMENT] Purchase error:', err);
-                // Notify ALL active instances of error
+                
+                // Handle 'already-owned' by automatically restoring purchases
+                if (err.code === 'already-owned' || err.message?.includes('already owned')) {
+                  console.log('[ENTITLEMENT] Already owned - triggering automatic restore');
+                  try {
+                    const purchases = await restorePurchases();
+                    console.log('[ENTITLEMENT] Auto-restore got', purchases.length, 'purchases');
+                    
+                    if (purchases.length > 0 && moduleInstallId) {
+                      for (const purchase of purchases) {
+                        console.log('[ENTITLEMENT] Auto-restore verifying:', purchase.productId);
+                        const verification = await verifyPurchaseWithBackend(moduleInstallId, purchase);
+                        if (verification.entitlement === 'full') {
+                          console.log('[ENTITLEMENT] Auto-restore successful');
+                          moduleStateUpdaters.forEach(updater => {
+                            updater.setIsFullAccess(true);
+                            updater.setExpiresAt(verification.expiresAt);
+                            updater.setError(null);
+                          });
+                          await setAccessCache('full', verification.expiresAt);
+                          return; // Success - exit early
+                        }
+                      }
+                    }
+                    // If we get here, restore didn't find valid subscription
+                    moduleStateUpdaters.forEach(updater => {
+                      updater.setError('paywall.restoreFailed');
+                    });
+                  } catch (restoreErr) {
+                    console.error('[ENTITLEMENT] Auto-restore failed:', restoreErr);
+                    moduleStateUpdaters.forEach(updater => {
+                      updater.setError('paywall.restoreFailed');
+                    });
+                  }
+                  return;
+                }
+                
+                // For other errors, notify ALL active instances
                 moduleStateUpdaters.forEach(updater => {
                   updater.setError(err.message || 'Purchase failed');
                 });
