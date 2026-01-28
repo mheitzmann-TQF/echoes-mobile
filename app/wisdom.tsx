@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, Dimensions, Modal, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from 'expo-router';
 import { useTheme } from '../lib/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getApiLang } from '../lib/lang';
@@ -241,12 +240,6 @@ export default function WisdomScreen() {
   const { t, i18n } = useTranslation();
   const { isFullAccess, refresh } = useEntitlementContext();
   
-  // Refresh entitlement when screen gains focus
-  useFocusEffect(
-    useCallback(() => {
-      refresh();
-    }, [refresh])
-  );
   
   const [consciousness, setConsciousness] = useState<any>(null);
   const [ancientWisdom, setAncientWisdom] = useState<AncientWisdomCulture[]>([]);

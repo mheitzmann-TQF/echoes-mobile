@@ -42,6 +42,7 @@ let moduleIAPCleanup: (() => Promise<void>) | null = null;
 let modulePurchaseUpdateSub: { remove: () => void } | null = null;
 let modulePurchaseErrorSub: { remove: () => void } | null = null;
 let moduleHookInstanceCount = 0;
+let modulePendingCheckStatus: Promise<{ entitlement: 'full' | 'free'; expiresAt: string | null }> | null = null;
 
 // Module-level state update registry - allows listeners to update all active instances
 type StateUpdater = {
@@ -92,7 +93,7 @@ class BackendUnavailableError extends Error {
   }
 }
 
-async function checkEntitlementStatus(installId: string, isRetry = false): Promise<{
+async function checkEntitlementStatusInternal(installId: string, isRetry = false): Promise<{
   entitlement: 'full' | 'free';
   expiresAt: string | null;
 }> {
@@ -122,7 +123,7 @@ async function checkEntitlementStatus(installId: string, isRetry = false): Promi
     if (!isRetry) {
       console.warn('[ENTITLEMENT] Session expired, refreshing and retrying...');
       await refreshSession();
-      return checkEntitlementStatus(installId, true);
+      return checkEntitlementStatusInternal(installId, true);
     }
     console.error('[ENTITLEMENT] Session still invalid after refresh');
     throw new BackendUnavailableError('Session invalid after refresh');
@@ -139,6 +140,22 @@ async function checkEntitlementStatus(installId: string, isRetry = false): Promi
     entitlement: data.entitlement || 'free',
     expiresAt: data.expiresAt || null,
   };
+}
+
+async function checkEntitlementStatus(installId: string): Promise<{
+  entitlement: 'full' | 'free';
+  expiresAt: string | null;
+}> {
+  if (modulePendingCheckStatus) {
+    console.log('[ENTITLEMENT] Reusing pending status check');
+    return modulePendingCheckStatus;
+  }
+  
+  modulePendingCheckStatus = checkEntitlementStatusInternal(installId).finally(() => {
+    modulePendingCheckStatus = null;
+  });
+  
+  return modulePendingCheckStatus;
 }
 
 async function verifyPurchaseWithBackend(

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from 'expo-router';
 import { useLocation } from '../lib/LocationContext';
 import { useTheme, ThemeColors } from '../lib/ThemeContext';
 import api, { DailyBundleResponse, PlanetaryData } from '../lib/api';
@@ -378,12 +377,6 @@ export default function FieldScreen() {
   const { colors, theme } = useTheme();
   const { isFullAccess, refresh } = useEntitlementContext();
   
-  // Refresh entitlement when screen gains focus
-  useFocusEffect(
-    useCallback(() => {
-      refresh();
-    }, [refresh])
-  );
   
   const [bundle, setBundle] = useState<DailyBundleResponse['data'] | null>(null);
   const [instant, setInstant] = useState<PlanetaryData | null>(null);
