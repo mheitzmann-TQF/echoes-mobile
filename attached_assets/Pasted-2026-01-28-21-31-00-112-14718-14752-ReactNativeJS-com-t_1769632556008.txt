@@ -1,0 +1,44 @@
+2026-01-28 21:31:00.112 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 21:31:00.829 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: '2026-01-28T20:28:24.338Z',
+                                                                                                      expired: true,
+                                                                                                      source: 'server' }
+2026-01-28 21:31:00.835 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: '2026-01-28T20:28:24.338Z' }
+2026-01-28 21:35:26.171 14718-14752 ReactNativeJS           com.thequietframe.echoes             E  '[ENTITLEMENT] Purchase error:', { code: 'already-owned',
+                                                                                                      message: 'Item is already owned',
+                                                                                                      platform: 'android' }
+2026-01-28 21:35:26.172 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  [ENTITLEMENT] Already owned - triggering automatic restore
+2026-01-28 21:35:26.173 14718-14753 unknown:ReactNative     com.thequietframe.echoes             E  console.error: [ENTITLEMENT] Purchase error: {"code":"already-owned","message":"Item is already owned","platform":"android"}, stack:
+                                                                                                    _construct@1:265874
+                                                                                                    Wrapper@1:265527
+                                                                                                    _callSuper@1:230904
+                                                                                                    SyntheticError@1:265012
+                                                                                                    reactConsoleErrorHandler@1:264578
+                                                                                                    ?anon_0_@1:1881996
+                                                                                                    asyncGeneratorStep@1:704072
+                                                                                                    _next@1:704331
+                                                                                                    anonymous@1:704283
+                                                                                                    anonymous@1:704204
+                                                                                                    anonymous@1:1882962
+                                                                                                    wrappedListener@1:1891183
+2026-01-28 21:35:26.180 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 21:35:26.330 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Auto-restore got', 1, 'purchases'
+2026-01-28 21:35:26.330 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Auto-restore verifying:', 'com.thequietframe.echoes.monthly'
+2026-01-28 21:35:26.331 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Verifying purchase with backend:', { platform: 'android',
+                                                                                                      sku: 'com.thequietframe.echoes.monthly',
+                                                                                                      purchaseToken: 'hjogidpmklnocpipgmjiaibo.AO-J1OynMNUoTe1t0SyBgXL2Y34JQgRvt8pJsmed9i4hiQF4I18MxUDWTKQtAMZHsVqcvmnRpDBy75iBjb2XuZmtQM_DHeKRhqJhaqaF7tHs600urTqbBnc',
+                                                                                                      packageName: 'com.thequietframe.echoes',
+                                                                                                      productId: 'com.thequietframe.echoes.monthly' }, ''
+2026-01-28 21:35:27.014 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: '2026-01-28T20:28:24.338Z',
+                                                                                                      expired: true,
+                                                                                                      source: 'server' }
+2026-01-28 21:35:27.122 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: '2026-01-28T20:28:24.338Z' }
+2026-01-28 21:35:27.358 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Verification response:', { entitled: true,
+                                                                                                      entitlement: 'pro',
+                                                                                                      expiresAt: '2026-01-28T20:38:24.338Z',
+                                                                                                      source: 'google',
+                                                                                                      productId: 'com.thequietframe.echoes.monthly' }
+2026-01-28 21:35:27.694 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Verification result:', { entitlement: 'full', expiresAt: '2026-01-28T20:38:24.338Z' }
+2026-01-28 21:35:27.694 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  [ENTITLEMENT] Set verification protection timestamp
+2026-01-28 21:35:27.694 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  [ENTITLEMENT] Auto-restore successful

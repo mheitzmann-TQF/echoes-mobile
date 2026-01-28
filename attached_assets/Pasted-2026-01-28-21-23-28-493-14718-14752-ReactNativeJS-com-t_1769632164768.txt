@@ -1,0 +1,15 @@
+2026-01-28 21:23:28.493 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Verification response:', { entitled: true,
+                                                                                                      entitlement: 'pro',
+                                                                                                      expiresAt: '2026-01-28T20:28:24.338Z',
+                                                                                                      source: 'google',
+                                                                                                      productId: 'com.thequietframe.echoes.monthly' }
+2026-01-28 21:23:29.046 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Verification result:', { entitlement: 'full', expiresAt: '2026-01-28T20:28:24.338Z' }
+2026-01-28 21:23:29.046 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  [ENTITLEMENT] Set verification protection timestamp
+2026-01-28 21:23:29.132 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Verification result:', { entitlement: 'full', expiresAt: '2026-01-28T20:28:24.338Z' }
+2026-01-28 21:23:29.132 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  [ENTITLEMENT] Set verification protection timestamp
+2026-01-28 21:28:35.023 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 21:28:35.821 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: '2026-01-28T20:28:24.338Z',
+                                                                                                      expired: true,
+                                                                                                      source: 'server' }
+2026-01-28 21:28:35.926 14718-14752 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: '2026-01-28T20:28:24.338Z' }
