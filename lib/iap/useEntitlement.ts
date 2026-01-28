@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Platform, AppState, AppStateStatus } from 'react-native';
 import {
   initIAP,
@@ -190,13 +190,16 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   const [isDevMode] = useState(isDevOverrideAvailable());
   const [isGrace, setIsGrace] = useState(false);
   const [graceReason, setGraceReason] = useState<'fresh_install' | 'prior_access' | 'none'>('none');
+  
+  const isInitializedRef = useRef(false);
+  const pendingRefreshRef = useRef<Promise<void> | null>(null);
+  const installIdRef = useRef<string | null>(null);
 
   const refresh = useCallback(async () => {
     if (isDevMode) {
       const override = await getDevAccessOverride();
       setDevOverride(override);
       
-      // If dev override is set, use it
       if (override) {
         const mapped = devStateToEntitlement(override);
         if (mapped) {
@@ -209,12 +212,9 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         }
       }
       
-      // If backend testing is enabled, call the backend
       if (isDevBackendEnabled()) {
         console.log('[ENTITLEMENT] Dev mode with backend enabled, calling API...');
-        // Fall through to backend call below
       } else {
-        // Default to trial when backend is disabled
         const mapped = devStateToEntitlement('trial');
         if (mapped) {
           setIsFullAccess(mapped.isFullAccess);
@@ -227,38 +227,55 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       }
     }
     
-    if (!installId) {
-      console.log('[ENTITLEMENT] No installId, skipping refresh');
+    if (!isInitializedRef.current) {
+      console.log('[ENTITLEMENT] Not initialized yet, skipping refresh');
       return;
     }
     
-    setIsLoading(true);
-    try {
-      const status = await checkEntitlementStatus(installId);
-      const hasAccess = status.entitlement === 'full';
-      setIsFullAccess(hasAccess);
-      setExpiresAt(status.expiresAt);
-      setError(null);
-      setIsGrace(false);
-      setGraceReason('none');
-      await setAccessCache(status.entitlement, status.expiresAt);
-      console.log('[ENTITLEMENT] Refreshed from backend:', status);
-    } catch (err) {
-      console.error('[ENTITLEMENT] Error refreshing:', err);
-      const graceCheck = await checkGraceEligibility();
-      if (graceCheck.shouldGrantGrace) {
-        setIsFullAccess(true);
-        setIsGrace(true);
-        setGraceReason(graceCheck.reason);
-        setError(null);
-        console.log('[ENTITLEMENT] Granting grace access:', graceCheck.reason, graceCheck.hoursRemaining, 'hours remaining');
-      } else {
-        setError('paywall.checkFailed');
-      }
-    } finally {
-      setIsLoading(false);
+    const currentInstallId = installIdRef.current;
+    if (!currentInstallId) {
+      console.log('[ENTITLEMENT] No installId available, skipping refresh');
+      return;
     }
-  }, [installId, isDevMode]);
+    
+    if (pendingRefreshRef.current) {
+      console.log('[ENTITLEMENT] Refresh already in progress, waiting...');
+      return pendingRefreshRef.current;
+    }
+    
+    const doRefresh = async () => {
+      setIsLoading(true);
+      try {
+        const status = await checkEntitlementStatus(currentInstallId);
+        const hasAccess = status.entitlement === 'full';
+        setIsFullAccess(hasAccess);
+        setExpiresAt(status.expiresAt);
+        setError(null);
+        setIsGrace(false);
+        setGraceReason('none');
+        await setAccessCache(status.entitlement, status.expiresAt);
+        console.log('[ENTITLEMENT] Refreshed from backend:', status);
+      } catch (err) {
+        console.error('[ENTITLEMENT] Error refreshing:', err);
+        const graceCheck = await checkGraceEligibility();
+        if (graceCheck.shouldGrantGrace) {
+          setIsFullAccess(true);
+          setIsGrace(true);
+          setGraceReason(graceCheck.reason);
+          setError(null);
+          console.log('[ENTITLEMENT] Granting grace access:', graceCheck.reason, graceCheck.hoursRemaining, 'hours remaining');
+        } else {
+          setError('paywall.checkFailed');
+        }
+      } finally {
+        setIsLoading(false);
+        pendingRefreshRef.current = null;
+      }
+    };
+    
+    pendingRefreshRef.current = doRefresh();
+    return pendingRefreshRef.current;
+  }, [isDevMode]);
 
   useEffect(() => {
     let cleanup: (() => Promise<void>) | null = null;
@@ -268,7 +285,10 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     async function initialize() {
       try {
         const id = await getInstallId();
+        installIdRef.current = id;
         setInstallId(id);
+        isInitializedRef.current = true;
+        console.log('[ENTITLEMENT] Initialized with installId:', id);
         
         if (isDevMode) {
           const override = await getDevAccessOverride();
@@ -382,7 +402,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     initialize();
 
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'active' && installId) {
+      if (nextAppState === 'active' && isInitializedRef.current && installIdRef.current) {
         refresh();
       }
     };
@@ -399,7 +419,10 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
 
   useEffect(() => {
     if (installId) {
-      refresh();
+      installIdRef.current = installId;
+      if (isInitializedRef.current) {
+        refresh();
+      }
     }
   }, [installId, refresh]);
 

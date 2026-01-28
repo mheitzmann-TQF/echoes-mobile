@@ -1,0 +1,740 @@
+2026-01-28 17:57:20.392  8984-8984  Finsky                  com.android.vending                  I  [2] Memory trim requested to level 40
+2026-01-28 17:57:20.393  8984-8984  Finsky                  com.android.vending                  I  [2] Flushing in-memory image cache
+2026-01-28 17:57:25.045 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  Running "main"
+2026-01-28 17:57:25.115 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '🔑 API Config:', { mode: 'direct-first-with-proxy-fallback' }
+2026-01-28 17:57:25.136 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '🔐 BOOT:', { API_URL: 'http://localhost:5000',
+                                                                                                      TQF_API_KEY: 'MISSING',
+                                                                                                      EXPO_PUBLIC_API_URL_present: false,
+                                                                                                      EXPO_PUBLIC_TQF_API_KEY_present: false }
+2026-01-28 17:57:25.137 25803-25839 ReactNativeJS           com.thequietframe.echoes             W  'react-i18next:: useTranslation: You will need to pass in an i18next instance by using initReactI18next', { code: 'NO_I18NEXT_INSTANCE' }
+2026-01-28 17:57:25.140 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '🌍 Detected language:', 'fr', '→ API code:', 'fr'
+2026-01-28 17:57:25.151 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[i18n] Device language:', 'fr'
+2026-01-28 17:57:25.151 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[i18n] Saved language (explicit):', null
+2026-01-28 17:57:25.151 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[i18n] Using language:', 'fr'
+2026-01-28 17:57:25.153 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[Interruption] Fetching:', '/api/interruption?lang=fr&timezone=America%2FNew_York'
+2026-01-28 17:57:25.153 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/interruption?lang=fr&timezone=America%2FNew_York'
+2026-01-28 17:57:25.161 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[AppState] Loaded last active date:', '2026-01-28'
+2026-01-28 17:57:25.167 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[Location] Loaded saved settings:', { savedUseCurrentLocation: 'false',
+                                                                                                      savedName: 'New York',
+                                                                                                      savedTimezone: 'America/New_York' }
+2026-01-28 17:57:25.168 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '🌍 Detected language:', 'fr', '→ API code:', 'fr'
+2026-01-28 17:57:25.173 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[AppState] App became active. Last active:', '2026-01-28', 'Today:', '2026-01-28', 'New day:', false
+2026-01-28 17:57:26.576 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[Interruption] Received:', { success: true,
+                                                                                                      message: 'Le tumulte semble fort, mais ton calme n\'est pas en jeu.',
+                                                                                                      interruption_type: 'urgency_disruption',
+                                                                                                      cached: false,
+                                                                                                      media_climate: 
+                                                                                                       { dominant_mode: 'reactive',
+                                                                                                         intensity: 'high',
+                                                                                                         transformational_percent: 0,
+                                                                                                         misaligned_percent: 88 } }
+2026-01-28 17:57:32.944 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '🌟 No astronomical events from API, adding fallbacks for band:', 'soon'
+2026-01-28 17:57:33.043 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching daily bundle...
+2026-01-28 17:57:33.043 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/echoes/daily-bundle?lat=40.7128&lng=-74.006&lang=fr&tz=America/New_York'
+2026-01-28 17:57:33.043 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching calendars...
+2026-01-28 17:57:33.043 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/planetary/traditional-calendars?tz=America/New_York&lang=fr&lat=40.7128&lng=-74.006'
+2026-01-28 17:57:33.044 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/consciousness/current'
+2026-01-28 17:57:33.045 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/consciousness-analysis/raw-analysis?lang=fr'
+2026-01-28 17:57:33.045 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching planetary data...
+2026-01-28 17:57:33.045 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/echoes/instant?lat=40.7128&lng=-74.006&tz=America/New_York'
+2026-01-28 17:57:33.047 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching daily bundle...
+2026-01-28 17:57:33.047 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/echoes/daily-bundle?lat=40.7128&lng=-74.006&lang=fr&tz=America/New_York'
+2026-01-28 17:57:33.047 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching planetary data...
+2026-01-28 17:57:33.048 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/echoes/instant?lat=40.7128&lng=-74.006&tz=America/New_York'
+2026-01-28 17:57:33.048 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching biological rhythms...
+2026-01-28 17:57:33.048 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/planetary/biological-rhythms?tz=America/New_York&lat=40.7128&lng=-74.006'
+2026-01-28 17:57:33.049 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/consciousness/current'
+2026-01-28 17:57:33.049 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/consciousness-analysis/raw-analysis?lang=fr'
+2026-01-28 17:57:33.050 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/planetary/optimal-timing?tz=America/New_York&lang=fr&lat=40.7128&lng=-74.006'
+2026-01-28 17:57:33.050 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching companion context...
+2026-01-28 17:57:33.050 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/companion/context?lat=40.7128&lon=-74.006&lang=fr'
+2026-01-28 17:57:33.053 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[WisdomScreen] Loading data with lang:', 'fr'
+2026-01-28 17:57:33.053 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/consciousness/current'
+2026-01-28 17:57:33.054 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/consciousness-analysis/raw-analysis?lang=fr'
+2026-01-28 17:57:33.054 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[WisdomCycle] Fetching:', '/api/wisdom/cycle?lang=fr'
+2026-01-28 17:57:33.054 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/wisdom/cycle?lang=fr'
+2026-01-28 17:57:33.055 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/consciousness-analysis/regional-breakdown'
+2026-01-28 17:57:33.055 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[DynamicCards] Fetching:', '/api/wisdom/dynamic-cards?lang=fr'
+2026-01-28 17:57:33.059 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/wisdom/dynamic-cards?lang=fr'
+2026-01-28 17:57:33.059 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[Cookie] Loading cookie for language:', 'fr'
+2026-01-28 17:57:33.059 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[Cookie] Fetching from API for language:', 'fr'
+2026-01-28 17:57:33.060 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/cookie?lang=fr'
+2026-01-28 17:57:33.061 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/planetary/events?limit=50&lang=fr'
+2026-01-28 17:57:33.061 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/important-dates/upcoming?lang=fr&days=90'
+2026-01-28 17:57:33.068 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  [ENTITLEMENT] No installId, skipping refresh
+2026-01-28 17:57:33.069 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  [ENTITLEMENT] No installId, skipping refresh
+2026-01-28 17:57:33.069 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  [ENTITLEMENT] No installId, skipping refresh
+2026-01-28 17:57:33.118 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Daily bundle received:', { success: true,
+                                                                                                      generated_at: '2026-01-28T16:50:56.717Z',
+                                                                                                      expires_at: '2026-01-28T17:20:56.717Z',
+                                                                                                      cache_status: 'hit',
+                                                                                                      response_time_ms: 2044,
+                                                                                                      data: 
+                                                                                                       { echo_cards: 
+                                                                                                          [ { id: 'lunar_1769619054715_1',
+                                                                                                              type: 'lunar_guidance',
+                                                                                                              title: 'Influence du Croissant',
+                                                                                                              message: 'Gibbeuse croissante à 72% — historiquement associée au raffinement et à la patience.',
+                                                                                                              explanation: 'Cette phase est observée comme un temps de peaufinage.',
+                                                                                                              background_theme: 'night_sky',
+                                                                                                              relevance_score: 92 },
+                                                                                                            { id: 'ancestral_1769619054715_7',
+                                                                                                              type: 'ancestral_wisdom',
+                                                                                                              title: 'Essaie Ça',
+                                                                                                              message: 'Appelle un aîné de ta famille aujourd\'hui - une courte conversation vaut de l\'or.',
+                                                                                                              explanation: 'Les traditions ancestrales valorisent la connexion intergénérationnelle.',
+                                                                                                              background_theme: 'ancient_wisdom',
+                                                                                                              relevance_score: 86 },
+                                                                                                            { id: 'consciousness_1769619054715_2',
+                                                                                                              type: 'global_consciousness',
+                                                                                                              title: 'Action Rapide',
+                                                                                                              message: 'Note 3 bonnes choses d\'aujourd\'hui - ça prend 2 minutes.',
+                                                                                                              explanation: 'La gratitude active les réseaux neuronaux positifs dans le cerveau.',
+                                                                                                              background_theme: 'aurora',
+                                                                                                              relevance_score: 84 },
+                                                                                                            { id: 'cultural_1769619054715_6',
+                                                                                                              type: 'cultural_rhythms',
+                                                                                                              title: 'Tradition Utile',
+                                                                                                              message: 'Prépare du thé sans regarder ton téléphone - ça calme l\'esprit.',
+                                                                                                              explanation: 'La cérémonie du thé japonaise cultive la présence et le calme mental.',
+                                                                                                              background_theme: 'cultural_tapestry',
+                                                                                                              relevance_score: 79 },
+                                                                                                            { id: 'solar_1769619054715_3',
+                                                                                                              type: 'solar_rhythm',
+                                                                                                              title: 'Observation temporelle',
+                                                                                                              message: 'Lumière solaire maximale — rythmes circadiens influencés par la journée',
+                                                                                                              explanation: 'Pendant la journée d\'hiver à midi, les rythmes circadiens sont influencés par la forte luminosité, malgré une activité géomagnétique Kp 4.',
+                                                                                                              background_theme: 'sunset',
+                                                                                                              relevance_score: 77 } ],
+                                                                                                         planetary_context: 
+                                                                                                          { lunar: 
+                                                                                                             { phase: 'waxing_gibbous',
+                                                                                                               illumination: 72,
+                                                                                                               message: 'Affine et prépare-toi à la plénitude' },
+                                                                                                            solar: 
+                                                                                                             { phase: 'midday',
+                                                                                                               time_to_sunset: 319.267,
+                                                                                                               message: 'Clarté maximale illumine ton chemin' },
+                                                                                                            geomagnetic: 
+                                                                                                             { kp_index: 4,
+                                                                                                               activity: 'unsettled',
+                                                                                                               message: 'Kp 4.0 — Activité géomagnétique instable.' },
+                                                                                                            consciousness_index: 
+                                                                                                             { global_coherence: 14.5,
+                                                                                                               regional_resonance: 72,
+                                                                                                               trend: 'falling' } },
+                                                                                                         location: 
+                                                                                                          { timezone: 'America/New_York',
+                                                                                                            local_time: '2026-01-28T16:50:56.717Z',
+                                                                                                            coordinates: { lat: 40.7128, lng: -74.006 } } } }
+2026-01-28 17:57:33.119 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Planetary data received:', { success: true,
+                                                                                                      cache_status: 'hit',
+                                                                                                      response_time_ms: 0,
+                                                                                                      data: 
+                                                                                                       { lunar: { phase: 'waxing_gibbous', illumination: 72 },
+                                                                                                         solar: 
+                                                                                                          { sunrise: '2026-01-28T12:07:48.000Z',
+                                                                                                            sunset: '2026-01-28T22:10:09.000Z',
+                                                                                                            current_phase: 'midday' },
+                                                                                                         geomagnetic: { activity: 'unsettled', kp_index: 4 },
+                                                                                                         seasonal: { season: 'winter', progress: 100 } },
+                                                                                                      expires_at: '2026-01-28T17:11:35.807Z' }
+2026-01-28 17:57:33.120 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Daily bundle received:', { success: true,
+                                                                                                      generated_at: '2026-01-28T16:50:56.717Z',
+                                                                                                      expires_at: '2026-01-28T17:20:56.717Z',
+                                                                                                      cache_status: 'hit',
+                                                                                                      response_time_ms: 2044,
+                                                                                                      data: 
+                                                                                                       { echo_cards: 
+                                                                                                          [ { id: 'lunar_1769619054715_1',
+                                                                                                              type: 'lunar_guidance',
+                                                                                                              title: 'Influence du Croissant',
+                                                                                                              message: 'Gibbeuse croissante à 72% — historiquement associée au raffinement et à la patience.',
+                                                                                                              explanation: 'Cette phase est observée comme un temps de peaufinage.',
+                                                                                                              background_theme: 'night_sky',
+                                                                                                              relevance_score: 92 },
+                                                                                                            { id: 'ancestral_1769619054715_7',
+                                                                                                              type: 'ancestral_wisdom',
+                                                                                                              title: 'Essaie Ça',
+                                                                                                              message: 'Appelle un aîné de ta famille aujourd\'hui - une courte conversation vaut de l\'or.',
+                                                                                                              explanation: 'Les traditions ancestrales valorisent la connexion intergénérationnelle.',
+                                                                                                              background_theme: 'ancient_wisdom',
+                                                                                                              relevance_score: 86 },
+                                                                                                            { id: 'consciousness_1769619054715_2',
+                                                                                                              type: 'global_consciousness',
+                                                                                                              title: 'Action Rapide',
+                                                                                                              message: 'Note 3 bonnes choses d\'aujourd\'hui - ça prend 2 minutes.',
+                                                                                                              explanation: 'La gratitude active les réseaux neuronaux positifs dans le cerveau.',
+                                                                                                              background_theme: 'aurora',
+                                                                                                              relevance_score: 84 },
+                                                                                                            { id: 'cultural_1769619054715_6',
+                                                                                                              type: 'cultural_rhythms',
+                                                                                                              title: 'Tradition Utile',
+                                                                                                              message: 'Prépare du thé sans regarder ton téléphone - ça calme l\'esprit.',
+                                                                                                              explanation: 'La cérémonie du thé japonaise cultive la présence et le calme mental.',
+                                                                                                              background_theme: 'cultural_tapestry',
+                                                                                                              relevance_score: 79 },
+                                                                                                            { id: 'solar_1769619054715_3',
+                                                                                                              type: 'solar_rhythm',
+                                                                                                              title: 'Observation temporelle',
+                                                                                                              message: 'Lumière solaire maximale — rythmes circadiens influencés par la journée',
+                                                                                                              explanation: 'Pendant la journée d\'hiver à midi, les rythmes circadiens sont influencés par la forte luminosité, malgré une activité géomagnétique Kp 4.',
+                                                                                                              background_theme: 'sunset',
+                                                                                                              relevance_score: 77 } ],
+                                                                                                         planetary_context: 
+                                                                                                          { lunar: 
+                                                                                                             { phase: 'waxing_gibbous',
+                                                                                                               illumination: 72,
+                                                                                                               message: 'Affine et prépare-toi à la plénitude' },
+                                                                                                            solar: 
+                                                                                                             { phase: 'midday',
+                                                                                                               time_to_sunset: 319.267,
+                                                                                                               message: 'Clarté maximale illumine ton chemin' },
+                                                                                                            geomagnetic: 
+                                                                                                             { kp_index: 4,
+                                                                                                               activity: 'unsettled',
+                                                                                                               message: 'Kp 4.0 — Activité géomagnétique instable.' },
+                                                                                                            consciousness_index: 
+                                                                                                             { global_coherence: 14.5,
+                                                                                                               regional_resonance: 72,
+                                                                                                               trend: 'falling' } },
+                                                                                                         location: 
+                                                                                                          { timezone: 'America/New_York',
+                                                                                                            local_time: '2026-01-28T16:50:56.717Z',
+                                                                                                            coordinates: { lat: 40.7128, lng: -74.006 } } } }
+2026-01-28 17:57:33.121 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Planetary data received:', { success: true,
+                                                                                                      cache_status: 'hit',
+                                                                                                      response_time_ms: 0,
+                                                                                                      data: 
+                                                                                                       { lunar: { phase: 'waxing_gibbous', illumination: 72 },
+                                                                                                         solar: 
+                                                                                                          { sunrise: '2026-01-28T12:07:48.000Z',
+                                                                                                            sunset: '2026-01-28T22:10:09.000Z',
+                                                                                                            current_phase: 'midday' },
+                                                                                                         geomagnetic: { activity: 'unsettled', kp_index: 4 },
+                                                                                                         seasonal: { season: 'winter', progress: 100 } },
+                                                                                                      expires_at: '2026-01-28T17:11:35.807Z' }
+2026-01-28 17:57:33.216 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Retrieved existing installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8'
+2026-01-28 17:57:33.216 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.217 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.218 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.249 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Retrieved existing installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8'
+2026-01-28 17:57:33.250 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.254 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.254 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.264 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Consciousness data received:', { success: true,
+                                                                                                      cache_status: 'hit',
+                                                                                                      is_stale: false,
+                                                                                                      response_time_ms: 0,
+                                                                                                      global_coherence: 14.5,
+                                                                                                      transformational_percent: 3,
+                                                                                                      destructive_percent: 83,
+                                                                                                      hope_level: 51,
+                                                                                                      articles_analyzed: 24726,
+                                                                                                      dominant_themes: [ 'challenge', 'growth', 'adaptation' ],
+                                                                                                      trend_7d: '-0.6',
+                                                                                                      synchronicity_level: 'minimal',
+                                                                                                      collective_mood: 'integration_phase',
+                                                                                                      last_updated: '2026-01-28T16:50:52.847Z',
+                                                                                                      next_update: '2026-01-28T17:11:35.838Z',
+                                                                                                      methodology: 'Real-time analysis of global news and cultural content for TQF alignment' }
+2026-01-28 17:57:33.267 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Raw analysis data received:', { success: true,
+                                                                                                      data: 
+                                                                                                       { rawCoherence: 14.5,
+                                                                                                         filteredCoherence: 78.7,
+                                                                                                         noiseLevel: 85.5,
+                                                                                                         signalStrength: 57,
+                                                                                                         dominantEmotions: [ 'uncertainty', 'challenge', 'adaptation', 'resilience' ],
+                                                                                                         stressIndicators: [ 'conflict', 'fear', 'division' ],
+                                                                                                         hopeLevel: 51,
+                                                                                                         transformationalContent: 3,
+                                                                                                         destructiveContent: 83,
+                                                                                                         totalArticles: 24886,
+                                                                                                         scoredArticles: 24726,
+                                                                                                         trend7d: -0.6,
+                                                                                                         metadata: 
+                                                                                                          { contentAnalyzed: 24726,
+                                                                                                            analysisTimestamp: '2026-01-28T16:50:52.925Z',
+                                                                                                            methodology: 'real_time_database_analysis',
+                                                                                                            contentSources: 
+                                                                                                             [ 'Actualités et médias mondiaux',
+                                                                                                               'Contenu environnemental',
+                                                                                                               'Publications culturelles',
+                                                                                                               'Traditions de sagesse',
+                                                                                                               'Perspectives régionales' ],
+                                                                                                            dataNote: 'Real-time analysis of 24,726 scored articles' } },
+                                                                                                      cached: true,
+                                                                                                      cacheAge: '400s' }
+2026-01-28 17:57:33.267 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Retrieved existing installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8'
+2026-01-28 17:57:33.267 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.268 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.270 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.281 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Retrieved existing installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8'
+2026-01-28 17:57:33.282 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.304 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Consciousness data received:', { success: true,
+                                                                                                      cache_status: 'hit',
+                                                                                                      is_stale: false,
+                                                                                                      response_time_ms: 0,
+                                                                                                      global_coherence: 14.5,
+                                                                                                      transformational_percent: 3,
+                                                                                                      destructive_percent: 83,
+                                                                                                      hope_level: 51,
+                                                                                                      articles_analyzed: 24726,
+                                                                                                      dominant_themes: [ 'challenge', 'growth', 'adaptation' ],
+                                                                                                      trend_7d: '-0.6',
+                                                                                                      synchronicity_level: 'minimal',
+                                                                                                      collective_mood: 'integration_phase',
+                                                                                                      last_updated: '2026-01-28T16:50:52.847Z',
+                                                                                                      next_update: '2026-01-28T17:11:35.838Z',
+                                                                                                      methodology: 'Real-time analysis of global news and cultural content for TQF alignment' }
+2026-01-28 17:57:33.307 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Raw analysis data received:', { success: true,
+                                                                                                      data: 
+                                                                                                       { rawCoherence: 14.5,
+                                                                                                         filteredCoherence: 78.7,
+                                                                                                         noiseLevel: 85.5,
+                                                                                                         signalStrength: 57,
+                                                                                                         dominantEmotions: [ 'uncertainty', 'challenge', 'adaptation', 'resilience' ],
+                                                                                                         stressIndicators: [ 'conflict', 'fear', 'division' ],
+                                                                                                         hopeLevel: 51,
+                                                                                                         transformationalContent: 3,
+                                                                                                         destructiveContent: 83,
+                                                                                                         totalArticles: 24886,
+                                                                                                         scoredArticles: 24726,
+                                                                                                         trend7d: -0.6,
+                                                                                                         metadata: 
+                                                                                                          { contentAnalyzed: 24726,
+                                                                                                            analysisTimestamp: '2026-01-28T16:50:52.925Z',
+                                                                                                            methodology: 'real_time_database_analysis',
+                                                                                                            contentSources: 
+                                                                                                             [ 'Actualités et médias mondiaux',
+                                                                                                               'Contenu environnemental',
+                                                                                                               'Publications culturelles',
+                                                                                                               'Traditions de sagesse',
+                                                                                                               'Perspectives régionales' ],
+                                                                                                            dataNote: 'Real-time analysis of 24,726 scored articles' } },
+                                                                                                      cached: true,
+                                                                                                      cacheAge: '400s' }
+2026-01-28 17:57:33.308 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:33.339 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  [Photo] Selected Unsplash photo (80% chance)
+2026-01-28 17:57:33.440 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Biological rhythms received:', { circadian: 
+                                                                                                       { timeOfDay: 'Late Morning',
+                                                                                                         phase: 'Peak Alertness',
+                                                                                                         cortisol: 70,
+                                                                                                         melatonin: 5,
+                                                                                                         bodyTemp: 98.6,
+                                                                                                         alertness: 95,
+                                                                                                         recommendations: 
+                                                                                                          [ 'Optimal time for complex cognitive tasks and important decisions',
+                                                                                                            'Schedule challenging work during this high-performance window',
+                                                                                                            'Ideal for learning new information and creative problem-solving',
+                                                                                                            'Take advantage of peak coordination for physical activities' ] },
+                                                                                                      seasonal: 
+                                                                                                       { type: 'Seasonal',
+                                                                                                         phase: 'Inner Renewal',
+                                                                                                         intensity: 90,
+                                                                                                         description: 'Reduced daylight affects circadian rhythm, natural slowing down for deep rest and renewal',
+                                                                                                         recommendations: 
+                                                                                                          [ 'Support mood with light therapy if experiencing seasonal changes',
+                                                                                                            'Allow for more sleep and indoor contemplative practices',
+                                                                                                            'Focus on warming foods and immune-supporting nutrition',
+                                                                                                            'Use this restorative time for deep healing and visioning' ],
+                                                                                                         planetaryCorrelations: 
+                                                                                                          [ 'Solar angle affects vitamin D synthesis and mood regulation',
+                                                                                                            'Daylight duration influences melatonin production cycles',
+                                                                                                            'Natural temperature rhythms guide metabolic adjustments' ] },
+                                                                                                      lunar: 
+                                                                                                       { type: 'Lunar',
+                                                                                                         phase: 'Dynamic Tension',
+                                                                                                         intensity: 70,
+                                                                                                         description: 'Strong lunar pull may intensify emotions and physical sensations',
+                                                                                                         recommendations: 
+                                                                                                          [ 'Stay well-hydrated as body water content is influenced',
+                                                                                                            'May experience heightened intuition and psychic sensitivity',
+                                                                                                            'Physical energy peaks - excellent for challenging workouts',
+                                                                                                            'Practice grounding techniques if feeling overstimulated' ],
+                                                                                                         planetaryCorrelations: 
+                                                                                                          [ 'Lunar gravitational pull affects all body fluids (60% of human body)',
+                                                                                                            'Moon phases correlate with sleep quality and dream intensity',
+                                                                                                            'Traditional medicine systems worldwide recognize lunar health influences',
+                                                                                                            'Emergency room visits and childbirth rates show lunar correlations' ] },
+                                                                                                      geomagnetic: 
+                                                                                                       { type: 'Geomagnetic',
+                                                                                                         phase: 'Stable Field',
+                                                                                                         intensity: 20,
+                                                                                                         description: 'Stable earth magnetic field supports normal biological rhythms',
+                                                                                                         recommendations: 
+                                                                                                          [ 'Optimal time for meditation and inner work',
+                                                                                                            'Clear thinking and stable mood typically supported',
+                                                                                                            'Good time for important decisions and planning',
+                                                                                                            'Normal sleep patterns and circadian rhythm stability' ],
+                                                                                                         planetaryCorrelations: 
+                                                                                                          [ 'Earth\'s magnetic field changes affect human pineal gland and melatonin production',
+                                                                                                            'Geomagnetic activity correlates with increased hospital admissions',
+                                                                                                            'Heart rate variability changes during geomagnetic disturbances',
+                                                                                                            'Migratory animals use geomagnetic fields for navigation - humans retain sensitivity' ] },
+                                                                                                      location: 
+                                                                                                       { sunrise: '07:07 AM',
+                                                                                                         sunset: '05:10 PM',
+                                                                                                         dayLength: 10,
+                                                                                                         solarPhase: 'day' } }
+2026-01-28 17:57:33.461 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Consciousness data received:', { success: true,
+                                                                                                      cache_status: 'hit',
+                                                                                                      is_stale: false,
+                                                                                                      response_time_ms: 0,
+                                                                                                      global_coherence: 14.5,
+                                                                                                      transformational_percent: 3,
+                                                                                                      destructive_percent: 83,
+                                                                                                      hope_level: 51,
+                                                                                                      articles_analyzed: 24726,
+                                                                                                      dominant_themes: [ 'challenge', 'growth', 'adaptation' ],
+                                                                                                      trend_7d: '-0.6',
+                                                                                                      synchronicity_level: 'minimal',
+                                                                                                      collective_mood: 'integration_phase',
+                                                                                                      last_updated: '2026-01-28T16:50:52.847Z',
+                                                                                                      next_update: '2026-01-28T17:11:35.838Z',
+                                                                                                      methodology: 'Real-time analysis of global news and cultural content for TQF alignment' }
+2026-01-28 17:57:33.464 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Raw analysis data received:', { success: true,
+                                                                                                      data: 
+                                                                                                       { rawCoherence: 14.5,
+                                                                                                         filteredCoherence: 78.7,
+                                                                                                         noiseLevel: 85.5,
+                                                                                                         signalStrength: 57,
+                                                                                                         dominantEmotions: [ 'uncertainty', 'challenge', 'adaptation', 'resilience' ],
+                                                                                                         stressIndicators: [ 'conflict', 'fear', 'division' ],
+                                                                                                         hopeLevel: 51,
+                                                                                                         transformationalContent: 3,
+                                                                                                         destructiveContent: 83,
+                                                                                                         totalArticles: 24886,
+                                                                                                         scoredArticles: 24726,
+                                                                                                         trend7d: -0.6,
+                                                                                                         metadata: 
+                                                                                                          { contentAnalyzed: 24726,
+                                                                                                            analysisTimestamp: '2026-01-28T16:50:52.925Z',
+                                                                                                            methodology: 'real_time_database_analysis',
+                                                                                                            contentSources: 
+                                                                                                             [ 'Actualités et médias mondiaux',
+                                                                                                               'Contenu environnemental',
+                                                                                                               'Publications culturelles',
+                                                                                                               'Traditions de sagesse',
+                                                                                                               'Perspectives régionales' ],
+                                                                                                            dataNote: 'Real-time analysis of 24,726 scored articles' } },
+                                                                                                      cached: true,
+                                                                                                      cacheAge: '400s' }
+2026-01-28 17:57:33.522 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Regional breakdown received:', { success: true,
+                                                                                                      data: 
+                                                                                                       { totalArticles: 24746,
+                                                                                                         regionCount: 7,
+                                                                                                         regions: 
+                                                                                                          [ { region: 'asia',
+                                                                                                              regionDisplay: 'Asia',
+                                                                                                              articleCount: 7991,
+                                                                                                              percentOfTotal: 32.3,
+                                                                                                              avgAlignment: 15.2,
+                                                                                                              filteredAlignment: 78.2,
+                                                                                                              breakdown: { transformational: 3.9, neutral: 16.1, misaligned: 80 } },
+                                                                                                            { region: 'europe',
+                                                                                                              regionDisplay: 'Europe',
+                                                                                                              articleCount: 3813,
+                                                                                                              percentOfTotal: 15.4,
+                                                                                                              avgAlignment: 10.7,
+                                                                                                              filteredAlignment: 78.8,
+                                                                                                              breakdown: { transformational: 1.7, neutral: 9.3, misaligned: 89 } },
+                                                                                                            { region: 'north_america',
+                                                                                                              regionDisplay: 'North America',
+                                                                                                              articleCount: 3522,
+                                                                                                              percentOfTotal: 14.2,
+                                                                                                              avgAlignment: 14.9,
+                                                                                                              filteredAlignment: 81.6,
+                                                                                                              breakdown: { transformational: 7.2, neutral: 8.1, misaligned: 84.7 } },
+                                                                                                            { region: 'middle_east',
+                                                                                                              regionDisplay: 'Middle East',
+                                                                                                              articleCount: 3217,
+                                                                                                              percentOfTotal: 13,
+                                                                                                              avgAlignment: 12.2,
+                                                                                                              filteredAlignment: 79.4,
+                                                                                                              breakdown: { transformational: 1.1, neutral: 10.9, misaligned: 88 } },
+                                                                                                            { region: 'latin_america',
+                                                                                                              regionDisplay: 'Latin America',
+                                                                                                              articleCount: 2291,
+                                                                                                              percentOfTotal: 9.3,
+                                                                                                              avgAlignment: 15.9,
+                                                                                                              filteredAlignment: 78.4,
+                                                                                                              breakdown: { transformational: 2.5, neutral: 17.8, misaligned: 79.7 } },
+                                                                                                            { region: 'oceania',
+                                                                                                              regionDisplay: 'Oceania',
+                                                                                                              articleCount: 2063,
+                                                                                                              percentOfTotal: 8.3,
+                                                                                                              avgAlignment: 16.8,
+                                                                                                              filteredAlignment: 78.2,
+                                                                                                              breakdown: { transformational: 2.4, neutral: 17, misaligned: 80.6 } },
+                                                                                                            { region: 'africa',
+                                                                                                              regionDisplay: 'Africa',
+                                                                                                              articleCount: 1849,
+                                                                                                              percentOfTotal: 7.5,
+                                                                                                              avgAlignment: 17.6,
+                                                                                                              filteredAlignment: 79.3,
+                                                                                                              breakdown: { transformational: 2.9, neutral: 20.9, misaligned: 76.3 } } ],
+                                                                                                         dataWindow: '30 days',
+                                                                                                         lastUpdated: '2026-01-28T16:57:33.431Z' } }
+2026-01-28 17:57:33.651 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Dynamic cards received:', { success: true, cards: [] }
+2026-01-28 17:57:33.873 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '📊 Merged events from source:', 13
+2026-01-28 17:57:33.874 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '🔍 Filtering', 13, 'events for band:', 'soon'
+2026-01-28 17:57:33.875 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '🔍 Date range:', 'Wed Jan 28 2026', 'to', 'Wed Feb 11 2026'
+2026-01-28 17:57:33.875 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '🌟 No astronomical events from API, adding fallbacks for band:', 'soon'
+2026-01-28 17:57:33.982 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:33.986 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:33.986 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Init backend returned:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:34.046 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  [IAP] Initializing connection...
+2026-01-28 17:57:34.071 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:34.075 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:34.075 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:34.120  8984-9563  Finsky                  com.android.vending                  I  [169] com.thequietframe.echoes: Account determined from installer data - [2XBM_axdpoOkQ0o-hi2q2bxw1o8EEEFW1r5qVk9a8D4]
+2026-01-28 17:57:34.121  8984-9563  Finsky                  com.android.vending                  I  [169] Billing preferred account via installer for com.thequietframe.echoes: [2XBM_axdpoOkQ0o-hi2q2bxw1o8EEEFW1r5qVk9a8D4]
+2026-01-28 17:57:34.130  8984-9563  Finsky                  com.android.vending                  I  [169] com.thequietframe.echoes: Account determined from installer data - [2XBM_axdpoOkQ0o-hi2q2bxw1o8EEEFW1r5qVk9a8D4]
+2026-01-28 17:57:34.130  8984-9563  Finsky                  com.android.vending                  I  [169] Billing preferred account via installer for com.thequietframe.echoes: [2XBM_axdpoOkQ0o-hi2q2bxw1o8EEEFW1r5qVk9a8D4]
+2026-01-28 17:57:34.143 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Connection initialized:', true
+2026-01-28 17:57:34.143 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetching products...', [ 'com.thequietframe.echoes.monthly',
+                                                                                                      'com.thequietframe.echoes.yearly' ]
+2026-01-28 17:57:34.198 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetched products:', 2
+2026-01-28 17:57:34.217 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:34.226 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:34.226 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:34.288 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:34.299 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:34.300 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Init backend returned:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:34.300 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  [IAP] Initializing connection...
+2026-01-28 17:57:34.301 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Connection initialized:', true
+2026-01-28 17:57:34.301 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetching products...', [ 'com.thequietframe.echoes.monthly',
+                                                                                                      'com.thequietframe.echoes.yearly' ]
+2026-01-28 17:57:34.316 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetched products:', 2
+2026-01-28 17:57:34.495 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:34.500 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:34.500 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:34.509 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:34.511 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:34.511 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:34.651 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:34.657 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:34.657 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Init backend returned:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:34.657 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  [IAP] Initializing connection...
+2026-01-28 17:57:34.659 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Connection initialized:', true
+2026-01-28 17:57:34.659 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetching products...', [ 'com.thequietframe.echoes.monthly',
+                                                                                                      'com.thequietframe.echoes.yearly' ]
+2026-01-28 17:57:34.664 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetched products:', 2
+2026-01-28 17:57:34.728 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:34.730 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:34.730 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:34.861 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:34.865 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:34.865 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:34.897 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Companion context received:', { success: true,
+                                                                                                      location: 
+                                                                                                       { coordinates: { lat: '40.7128', lng: '-74.006' },
+                                                                                                         city: 'Unknown Location',
+                                                                                                         timezone: 'UTC' },
+                                                                                                      planetary: 
+                                                                                                       { lunar: 
+                                                                                                          { phase: 'waxing_gibbous',
+                                                                                                            age: 10.099887487407408,
+                                                                                                            illumination: 72,
+                                                                                                            phaseMessage: 'Waxing gibbous phase — traditionally influences creativity and personal growth exploration.' },
+                                                                                                         solar: 
+                                                                                                          { sunrise: '2026-01-28T12:07:48.000Z',
+                                                                                                            sunset: '2026-01-28T22:10:09.000Z',
+                                                                                                            solarNoon: '2026-01-28T17:08:58.000Z',
+                                                                                                            dayLength: 10.039166666666667,
+                                                                                                            currentPhase: 'midday',
+                                                                                                            solarMessage: 'Peak sunlight — circadian patterns shift at full intensity',
+                                                                                                            timeToSunset: 312.5910666666667 },
+                                                                                                         geomagnetic: 
+                                                                                                          { kpIndex: 4.33,
+                                                                                                            activity: 'storm',
+                                                                                                            humanEffect: 'heightened psychic sensitivity, mood swings, vivid dreams',
+                                                                                                            message: 'Une tempête géomagnétique affecte la planète — une sensibilité inhabituelle est couramment observée' },
+                                                                                                         seasonal: 
+                                                                                                          { season: 'winter',
+                                                                                                            progress: 100,
+                                                                                                            message: 'The deep inward time of rest and renewal. You are 100% through winter\'s contemplation.' },
+                                                                                                         source: 'live' },
+                                                                                                      hebrewCalendar: 
+                                                                                                       { date: 'י׳ בִּשְׁבָט תשפ״ו',
+                                                                                                         hebrewYear: 5786,
+                                                                                                         hebrewMonth: 'Sh\'vat',
+                                                                                                         hebrewDay: 10,
+                                                                                                         todayHoliday: null,
+                                                                                                         upcomingHolidays: 
+                                                                                                          [ { title: 'Shabbat Shirah',
+                                                                                                              date: '2026-01-31',
+                                                                                                              hebrew: 'שבת שירה' },
+                                                                                                            { title: 'Tu BiShvat', date: '2026-02-02', hebrew: 'ט״ו בשבט' },
+                                                                                                            { title: 'Shabbat Shekalim',
+                                                                                                              date: '2026-02-14',
+                                                                                                              hebrew: 'שבת שקלים' } ],
+                                                                                                         shabbat: null,
+                                                                                                         isShabbat: false,
+                                                                                                         roshChodesh: false,
+                                                                                                         omer: null,
+                                                                                                         message: 'Today is 10 Sh\'vat 5786. The Hebrew calendar marks sacred time through the rhythm of moon and tradition.' },
+                                                                                                      timestamp: '2026-01-28T16:57:34.815Z' }
+2026-01-28 17:57:34.900 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[Pulse] Using API solar phase:', 'midday'
+2026-01-28 17:57:35.067 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:35.068 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:35.074 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:35.075 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:35.091 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:35.091 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Init backend returned:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:35.091 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  [IAP] Initializing connection...
+2026-01-28 17:57:35.094 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Connection initialized:', true
+2026-01-28 17:57:35.094 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetching products...', [ 'com.thequietframe.echoes.monthly',
+                                                                                                      'com.thequietframe.echoes.yearly' ]
+2026-01-28 17:57:35.097 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetched products:', 2
+2026-01-28 17:57:35.283 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '✅ Ancient wisdom received:', { date: '2026-01-28',
+                                                                                                      cultures: 
+                                                                                                       [ { name: 'Décan Égyptien',
+                                                                                                           culture: 'egyptian',
+                                                                                                           icon: '✨',
+                                                                                                           decan: 'Khent-Heru',
+                                                                                                           message: 'Le Dékan de Khent-Heru (étoile : Alnilam). Le chronométrage égyptien a influencé Babylone, la Grèce et Rome — notre calendrier porte des échos de la sagesse des dékans.' },
+                                                                                                         { name: 'Calendrier Éthiopien',
+                                                                                                           culture: 'ethiopian',
+                                                                                                           icon: '🇪🇹',
+                                                                                                           dayName: '20',
+                                                                                                           month: 'Ṭərr',
+                                                                                                           message: 'Aujourd\'hui, c\'est le Ṭərr 20, année 2018 en Éthiopie. Le festival de Meskel le 27 septembre commémore la découverte de la Vraie Croix, marqué par des feux de joie à travers le pays.' } ] }
+2026-01-28 17:57:37.359 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Retrieved existing installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8'
+2026-01-28 17:57:37.359 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:37.383 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 17:57:37.682 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:37.683 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: null,
+                                                                                                      expired: false,
+                                                                                                      source: 'server' }
+2026-01-28 17:57:37.689 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:37.689 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Init backend returned:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:37.689 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  [IAP] Initializing connection...
+2026-01-28 17:57:37.691 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Connection initialized:', true
+2026-01-28 17:57:37.691 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetching products...', [ 'com.thequietframe.echoes.monthly',
+                                                                                                      'com.thequietframe.echoes.yearly' ]
+2026-01-28 17:57:37.693 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 17:57:37.693 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: null }
+2026-01-28 17:57:37.715 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Fetched products:', 2
+2026-01-28 17:57:40.686 25803-25839 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Requesting subscription purchase:', 'com.thequietframe.echoes.monthly'
+2026-01-28 17:57:40.870  8984-8984  Finsky                  com.android.vending                  I  [2] setOwned true for mheitzmann@me.com
+2026-01-28 17:57:41.696  8984-8984  Finsky                  com.android.vending                  I  [2] Applying library update: account=[2XBM_axdpoOkQ0o-hi2q2bxw1o8EEEFW1r5qVk9a8D4]
+2026-01-28 17:57:41.700  8984-8984  Finsky                  com.android.vending                  I  [2] id: e
+2026-01-28 17:57:41.737  8984-8984  Finsky                  com.android.vending                  I  [2] [ContentSync] App library has changed, requesting content sync.
+2026-01-28 17:57:41.741  8984-25947 Finsky                  com.android.vending                  I  [809] SCH: Received scheduling request: Id: 12-1, Constraints: [{ L: 15000, D: 86400000, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+2026-01-28 17:57:41.755  8984-9062  Finsky                  com.android.vending                  I  [113] WM::SCH: Logging work initialize for 12-1
+2026-01-28 17:57:41.757  8984-9070  Finsky                  com.android.vending                  I  [116] SCH: Scheduling phonesky job Id: 12-1, CT: 1769619461741, Constraints: [{ L: 15000, D: 86400000, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+2026-01-28 17:57:41.759  8984-9072  Finsky                  com.android.vending                  I  [118] SCH: Scheduling 1 system job(s)
+2026-01-28 17:57:41.759  8984-9072  Finsky                  com.android.vending                  I  [118] SCH: Scheduling system job Id: 9900, L: 14982, D: 45302155, C: false, I: false, N: 1
+2026-01-28 17:57:41.767  8984-9058  Finsky                  com.android.vending                  I  [110] [ContentSync] finished, scheduled=true
+2026-01-28 17:57:43.961  8984-9031  Finsky                  com.android.vending                  I  [102] Stats for Executor: LightweightExecutor usf@29a9ec0[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 38800]
+2026-01-28 17:57:43.962  8984-9031  Finsky                  com.android.vending                  I  [102] Stats for Executor: BlockingExecutor usf@b447f9[Running, pool size = 1, active threads = 0, queued tasks = 0, completed tasks = 341]
+2026-01-28 17:57:44.019  8984-9031  Finsky                  com.android.vending                  I  [102] Stats for Executor: bgExecutor usf@e46b33e[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 3855]
+2026-01-28 17:57:54.099  8984-9031  Finsky                  com.android.vending                  I  [102] Stats for Executor: GrpcBackgroundExecutor usf@40bacec[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 62]
+2026-01-28 17:58:07.999  8984-8984  Finsky                  com.android.vending                  I  [2] SCH: job service start with id 9900.
+2026-01-28 17:58:08.023  8984-25947 Finsky                  com.android.vending                  I  [809] SCH: Satisfied jobs for 9900 are: 12-1
+2026-01-28 17:58:08.024  8984-25953 Finsky                  com.android.vending                  I  [811] SCH: Job 12-1 starting
+2026-01-28 17:58:08.026  8984-8984  Finsky                  com.android.vending                  I  [2] WM::SCH: Logging work start for 12-1
+2026-01-28 17:58:08.028  8984-8984  Finsky                  com.android.vending                  I  [2] [ContentSync] job started
+2026-01-28 17:58:08.281  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.wifi' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.288  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.widevine.nonupdatable' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.292  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.samsung.android.camera.unihal' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.332  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.samsung.android.shell' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.503  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.apex.cts.shim' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.605  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.appsearch' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.618  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.art' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.644  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.bt' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.716  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.mediaprovider' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.759  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.virt' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.779  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.resolv' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.812  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.configinfrastructure' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.814  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.media' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.863  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.vndk.v31' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.940  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.sdkext' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.974  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.samsung.android.biometrics.face' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.976  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.adservices' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:08.983  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.tethering' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:09.101  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.runtime' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:09.226  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.cellbroadcast' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:09.258  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.rkpd' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:09.414  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.samsung.android.vital' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:09.559  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.tzdata6' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:09.608  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.permission' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:09.856  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.samsung.android.biometrics.fingerprint' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.152  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.media.swcodec' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.164  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.uprobestats' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.191  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.profiling' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.235  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.hardware.cas.lazy' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.265  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.samsung.android.media.extractor' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.339  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.samsung.android.media.imagecodec.system' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.382  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.adbd' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.410  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.i18n' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.448  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.samsung.android.spqr' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.449  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.conscrypt' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.576  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.neuralnetworks' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.595  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.ipsec' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.608  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.devicelock' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.634  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.ondevicepersonalization' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.647  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.healthfitness' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.725  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.android.uwb' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.726  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.extservices' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.771  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.os.statsd' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.832  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.google.android.scheduling' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.840  8984-8984  Finsky                  com.android.vending                  W  [2] STU: Failed to get storage stats for package 'com.samsung.android.lifeguard' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+2026-01-28 17:58:10.849  8984-8984  Finsky                  com.android.vending                  I  [2] App states replicator found 60 unowned apps
+2026-01-28 17:58:10.856  8984-9072  Finsky                  com.android.vending                  I  [118] Completed 0 account content syncs with 0 successful.
+2026-01-28 17:58:10.856  8984-8984  Finsky                  com.android.vending                  I  [2] [ContentSync] Installation state replication succeeded.
+2026-01-28 17:58:10.857  8984-8984  Finsky                  com.android.vending                  I  [2] SCH: jobFinished: 12-1. TimeElapsed: 2831ms.
+2026-01-28 17:58:10.857  8984-8984  Finsky                  com.android.vending                  I  [2] WM::SCH: Logging work end for 12-1
+2026-01-28 17:58:10.864  8984-9070  Finsky                  com.android.vending                  I  [116] SCH: Scheduling phonesky job Id: 1-1337, CT: 1769583881531, Constraints: [{ L: 37682383, D: 80882383, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+2026-01-28 17:58:10.864  8984-9070  Finsky                  com.android.vending                  I  [116] SCH: Scheduling phonesky job Id: 34-234, CT: 1769583897253, Constraints: [{ L: 604800000, D: 2548635757, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+2026-01-28 17:58:10.864  8984-9070  Finsky                  com.android.vending                  I  [116] SCH: Scheduling phonesky job Id: 34-245, CT: 1769583897243, Constraints: [{ L: 35833875, D: 1331833875, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+2026-01-28 17:58:10.867  8984-9072  Finsky                  com.android.vending                  I  [118] SCH: Scheduling 1 system job(s)
+2026-01-28 17:58:10.867  8984-9072  Finsky                  com.android.vending                  I  [118] SCH: Scheduling system job Id: 9904, L: 240251, D: 45273047, C: false, I: false, N: 1
+2026-01-28 17:58:10.870  8984-25953 Finsky                  com.android.vending                  I  [811] SCH: job service finished with id 9900.
+2026-01-28 17:58:11.137  8984-8984  Finsky                  com.android.vending                  I  [2] Memory trim requested to level 20
+2026-01-28 17:58:11.137  8984-8984  Finsky                  com.android.vending                  I  [2] Flushing in-memory image cache
+2026-01-28 17:58:21.086  8984-25630 Finsky                  com.android.vending                  I  [796] Triggered update for experiment package com.google.android.finsky.stable.
+2026-01-28 17:58:21.119  8984-25630 Finsky                  com.android.vending                  I  [796] Already at the latest configurations for experiment package com.google.android.finsky.stable.
+2026-01-28 17:58:21.119  8984-25630 Finsky                  com.android.vending                  I  [796] Triggered update for experiment package com.google.android.finsky.regular.
+2026-01-28 17:58:21.141  8984-25630 Finsky                  com.android.vending                  I  [796] Already at the latest configurations for experiment package com.google.android.finsky.regular.
+2026-01-28 17:58:21.142  8984-25630 Finsky                  com.android.vending                  I  [796] Triggered update for experiment package com.google.android.finsky.regular.
+2026-01-28 17:58:21.165  8984-25630 Finsky                  com.android.vending                  I  [796] Already at the latest configurations for experiment package com.google.android.finsky.regular.
