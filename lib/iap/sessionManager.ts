@@ -14,6 +14,7 @@ interface SessionData {
 }
 
 let cachedSession: SessionData | null = null;
+let pendingSessionRequest: Promise<SessionData | null> | null = null;
 
 function getAppVersion(): string {
   const expoConfig = Constants.expoConfig || Constants.manifest;
@@ -143,10 +144,22 @@ export async function ensureSession(): Promise<string | null> {
     return storedSession.token;
   }
 
+  // Deduplicate concurrent session requests
+  if (pendingSessionRequest) {
+    console.log('[SESSION] Request already in progress, waiting...');
+    const result = await pendingSessionRequest;
+    return result?.token || null;
+  }
+
   const installId = await getInstallId();
-  const newSession = await requestNewSession(installId);
   
-  return newSession?.token || null;
+  pendingSessionRequest = requestNewSession(installId);
+  try {
+    const newSession = await pendingSessionRequest;
+    return newSession?.token || null;
+  } finally {
+    pendingSessionRequest = null;
+  }
 }
 
 export async function getSessionToken(): Promise<string | null> {
@@ -164,12 +177,24 @@ export async function getSessionToken(): Promise<string | null> {
 }
 
 export async function refreshSession(): Promise<string | null> {
+  // If a session request is already pending, wait for it
+  if (pendingSessionRequest) {
+    console.log('[SESSION] Refresh waiting for pending request...');
+    const result = await pendingSessionRequest;
+    return result?.token || null;
+  }
+  
   await clearStoredSession();
   
   const installId = await getInstallId();
-  const newSession = await requestNewSession(installId);
   
-  return newSession?.token || null;
+  pendingSessionRequest = requestNewSession(installId);
+  try {
+    const newSession = await pendingSessionRequest;
+    return newSession?.token || null;
+  } finally {
+    pendingSessionRequest = null;
+  }
 }
 
 export async function clearSession(): Promise<void> {

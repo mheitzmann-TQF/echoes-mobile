@@ -30,6 +30,29 @@ import {
   type GraceResult,
 } from './accessCache';
 
+// Module-level deduplication - shared across all hook instances
+let moduleInstallId: string | null = null;
+let moduleInstallIdReady = false;
+let moduleInstallIdPromise: Promise<string> | null = null;
+let modulePendingRefresh: Promise<void> | null = null;
+let moduleIAPInitialized = false;
+let moduleIAPPromise: Promise<void> | null = null;
+let moduleProducts: ProductSubscription[] = [];
+let moduleIAPCleanup: (() => Promise<void>) | null = null;
+let modulePurchaseUpdateSub: { remove: () => void } | null = null;
+let modulePurchaseErrorSub: { remove: () => void } | null = null;
+let moduleHookInstanceCount = 0;
+
+// Module-level state update registry - allows listeners to update all active instances
+type StateUpdater = {
+  setIsFullAccess: (v: boolean) => void;
+  setExpiresAt: (v: string | null) => void;
+  setError: (v: string | null) => void;
+  setIsGrace: (v: boolean) => void;
+  setGraceReason: (v: 'fresh_install' | 'prior_access' | 'none') => void;
+};
+const moduleStateUpdaters: Set<StateUpdater> = new Set();
+
 function isDevBackendEnabled(): boolean {
   const expoConfig = Constants.expoConfig || Constants.manifest;
   const extra = (expoConfig as any)?.extra;
@@ -191,9 +214,8 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   const [isGrace, setIsGrace] = useState(false);
   const [graceReason, setGraceReason] = useState<'fresh_install' | 'prior_access' | 'none'>('none');
   
-  const isInitializedRef = useRef(false);
-  const pendingRefreshRef = useRef<Promise<void> | null>(null);
-  const installIdRef = useRef<string | null>(null);
+  // Local ref to track module state for this instance
+  const installIdRef = useRef<string | null>(moduleInstallId);
 
   const refresh = useCallback(async () => {
     if (isDevMode) {
@@ -227,20 +249,20 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       }
     }
     
-    if (!isInitializedRef.current) {
+    if (!moduleInstallIdReady) {
       console.log('[ENTITLEMENT] Not initialized yet, skipping refresh');
       return;
     }
     
-    const currentInstallId = installIdRef.current;
+    const currentInstallId = moduleInstallId;
     if (!currentInstallId) {
       console.log('[ENTITLEMENT] No installId available, skipping refresh');
       return;
     }
     
-    if (pendingRefreshRef.current) {
+    if (modulePendingRefresh) {
       console.log('[ENTITLEMENT] Refresh already in progress, waiting...');
-      return pendingRefreshRef.current;
+      return modulePendingRefresh;
     }
     
     const doRefresh = async () => {
@@ -269,26 +291,65 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         }
       } finally {
         setIsLoading(false);
-        pendingRefreshRef.current = null;
+        modulePendingRefresh = null;
       }
     };
     
-    pendingRefreshRef.current = doRefresh();
-    return pendingRefreshRef.current;
+    modulePendingRefresh = doRefresh();
+    return modulePendingRefresh;
   }, [isDevMode]);
 
   useEffect(() => {
-    let cleanup: (() => Promise<void>) | null = null;
-    let purchaseUpdateSub: { remove: () => void } | null = null;
-    let purchaseErrorSub: { remove: () => void } | null = null;
-
+    // Track hook instances for cleanup reference counting
+    moduleHookInstanceCount++;
+    
+    // Register this instance's state updaters for listener callbacks
+    const thisUpdater: StateUpdater = {
+      setIsFullAccess,
+      setExpiresAt,
+      setError,
+      setIsGrace,
+      setGraceReason,
+    };
+    moduleStateUpdaters.add(thisUpdater);
+    
     async function initialize() {
-      try {
-        const id = await getInstallId();
+      let id: string;
+      
+      // Module-level dedup for installId fetching
+      if (moduleInstallIdReady && moduleInstallId) {
+        id = moduleInstallId;
         installIdRef.current = id;
         setInstallId(id);
-        isInitializedRef.current = true;
-        console.log('[ENTITLEMENT] Initialized with installId:', id);
+        console.log('[ENTITLEMENT] Using cached installId:', id);
+      } else if (moduleInstallIdPromise) {
+        console.log('[ENTITLEMENT] InstallId fetch in progress, waiting...');
+        try {
+          id = await moduleInstallIdPromise;
+          installIdRef.current = id;
+          setInstallId(id);
+        } catch (err) {
+          console.error('[ENTITLEMENT] InstallId fetch failed:', err);
+          throw err;
+        }
+      } else {
+        // First instance to initialize - fetch installId
+        moduleInstallIdPromise = getInstallId();
+        try {
+          id = await moduleInstallIdPromise;
+          moduleInstallId = id;
+          moduleInstallIdReady = true;
+          moduleInstallIdPromise = null; // Clear after success
+          installIdRef.current = id;
+          setInstallId(id);
+          console.log('[ENTITLEMENT] Initialized with installId:', id);
+        } catch (err) {
+          moduleInstallIdPromise = null; // Clear on failure so retry is possible
+          throw err;
+        }
+      }
+      
+      try {
         
         if (isDevMode) {
           const override = await getDevAccessOverride();
@@ -358,29 +419,64 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         }
 
         if (Platform.OS !== 'web') {
-          try {
-            cleanup = await initIAP();
-            const fetchedProducts = await getProducts();
-            setProducts(fetchedProducts);
+          // Module-level dedup for IAP initialization
+          if (moduleIAPInitialized) {
+            setProducts(moduleProducts);
+            console.log('[ENTITLEMENT] Using cached IAP products');
+          } else if (moduleIAPPromise) {
+            console.log('[ENTITLEMENT] IAP init in progress, waiting...');
+            await moduleIAPPromise;
+            setProducts(moduleProducts);
+          } else {
+            const doIAPInit = async () => {
+              moduleIAPCleanup = await initIAP();
+              const fetchedProducts = await getProducts();
+              moduleProducts = fetchedProducts;
+              setProducts(fetchedProducts);
+              
+              // Set up module-level listeners (only once) that notify ALL active instances
+              modulePurchaseUpdateSub = purchaseUpdatedListener(async (purchase) => {
+                console.log('[ENTITLEMENT] Purchase updated:', purchase.productId);
+                const currentId = moduleInstallId;
+                if (!currentId) {
+                  console.error('[ENTITLEMENT] No installId for purchase verification');
+                  return;
+                }
+                const result = await verifyPurchaseWithBackend(currentId, purchase);
+                const hasAccess = result.entitlement === 'full';
+                
+                // Update ALL active hook instances
+                moduleStateUpdaters.forEach(updater => {
+                  updater.setIsFullAccess(hasAccess);
+                  updater.setExpiresAt(result.expiresAt);
+                  updater.setIsGrace(false);
+                  updater.setGraceReason('none');
+                });
+                
+                if (hasAccess) {
+                  await setAccessCache('full', result.expiresAt);
+                }
+              });
+              
+              modulePurchaseErrorSub = purchaseErrorListener((err) => {
+                console.error('[ENTITLEMENT] Purchase error:', err);
+                // Notify ALL active instances of error
+                moduleStateUpdaters.forEach(updater => {
+                  updater.setError(err.message || 'Purchase failed');
+                });
+              });
+              
+              moduleIAPInitialized = true;
+              moduleIAPPromise = null; // Clear after success
+            };
             
-            purchaseUpdateSub = purchaseUpdatedListener(async (purchase) => {
-              console.log('[ENTITLEMENT] Purchase updated:', purchase.productId);
-              const result = await verifyPurchaseWithBackend(id, purchase);
-              setIsFullAccess(result.entitlement === 'full');
-              setExpiresAt(result.expiresAt);
-              setIsGrace(false);
-              setGraceReason('none');
-              if (result.entitlement === 'full') {
-                await setAccessCache('full', result.expiresAt);
-              }
-            });
-            
-            purchaseErrorSub = purchaseErrorListener((err) => {
-              console.error('[ENTITLEMENT] Purchase error:', err);
-              setError(err.message || 'Purchase failed');
-            });
-          } catch (storeErr) {
-            console.error('[ENTITLEMENT] Store init error (non-blocking):', storeErr);
+            try {
+              moduleIAPPromise = doIAPInit();
+              await moduleIAPPromise;
+            } catch (storeErr) {
+              console.error('[ENTITLEMENT] Store init error (non-blocking):', storeErr);
+              moduleIAPPromise = null; // Allow retry on failure
+            }
           }
         }
       } catch (err) {
@@ -402,7 +498,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     initialize();
 
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'active' && isInitializedRef.current && installIdRef.current) {
+      if (nextAppState === 'active' && moduleInstallIdReady && moduleInstallId) {
         refresh();
       }
     };
@@ -410,17 +506,33 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     const appStateSubscription = AppState.addEventListener('change', handleAppStateChange);
 
     return () => {
-      cleanup?.();
-      purchaseUpdateSub?.remove();
-      purchaseErrorSub?.remove();
       appStateSubscription.remove();
+      
+      // Unregister this instance's state updaters
+      moduleStateUpdaters.delete(thisUpdater);
+      
+      // Reference counting for module-level cleanup
+      moduleHookInstanceCount--;
+      if (moduleHookInstanceCount === 0) {
+        // Last instance unmounting - clean up module resources
+        moduleIAPCleanup?.();
+        modulePurchaseUpdateSub?.remove();
+        modulePurchaseErrorSub?.remove();
+        
+        // Reset module state so next mount can reinitialize
+        moduleIAPInitialized = false;
+        moduleIAPCleanup = null;
+        modulePurchaseUpdateSub = null;
+        modulePurchaseErrorSub = null;
+        moduleProducts = [];
+      }
     };
   }, []);
 
   useEffect(() => {
     if (installId) {
       installIdRef.current = installId;
-      if (isInitializedRef.current) {
+      if (moduleInstallIdReady) {
         refresh();
       }
     }
