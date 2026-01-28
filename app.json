@@ -24,6 +24,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
+      "splash": {
+        "image": "./assets/splash-android.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#000000"
+      },
       "package": "com.thequietframe.echoes",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
