@@ -1,0 +1,296 @@
+2026-01-28 19:27:31.418 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Requesting subscription purchase:', 'com.thequietframe.echoes.monthly'
+2026-01-28 19:27:56.638 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Purchase updated:', 'com.thequietframe.echoes.monthly'
+2026-01-28 19:27:56.639 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Verifying purchase with backend:', { platform: 'android',
+                                                                                                      sku: 'com.thequietframe.echoes.monthly',
+                                                                                                      purchaseToken: 'dnhklacofbphmkkifeffniil.AO-J1OwW9cwloQPF3BtYp01kL5qLZlytLBLol-ZoMd74lY7AVTEXRmpU8FbArARvamu36TzMa8qImN5MMj_4PcRnVyauJfb9gdAmB3Hzjg6KDzKJntX1VCo',
+                                                                                                      packageName: 'com.thequietframe.echoes',
+                                                                                                      productId: 'com.thequietframe.echoes.monthly' }, ''
+2026-01-28 19:27:56.640 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[IAP] Purchase successful:', [ { __typename: 'PurchaseAndroid',
+                                                                                                        autoRenewingAndroid: true,
+                                                                                                        currentPlanId: 'monthly',
+                                                                                                        dataAndroid: '{"orderId":"GPA.3301-5671-9033-92634","packageName":"com.thequietframe.echoes","productId":"com.thequietframe.echoes.monthly","purchaseTime":1769624872478,"purchaseState":0,"purchaseToken":"dnhklacofbphmkkifeffniil.AO-J1OwW9cwloQPF3BtYp01kL5qLZlytLBLol-ZoMd74lY7AVTEXRmpU8FbArARvamu36TzMa8qImN5MMj_4PcRnVyauJfb9gdAmB3Hzjg6KDzKJntX1VCo","quantity":1,"autoRenewing":true,"acknowledged":false}',
+                                                                                                        developerPayloadAndroid: '',
+                                                                                                        id: 'GPA.3301-5671-9033-92634',
+                                                                                                        ids: [ 'com.thequietframe.echoes.monthly' ],
+                                                                                                        isAcknowledgedAndroid: false,
+                                                                                                        isAutoRenewing: true,
+                                                                                                        isSuspendedAndroid: false,
+                                                                                                        obfuscatedAccountIdAndroid: '',
+                                                                                                        obfuscatedProfileIdAndroid: '',
+                                                                                                        packageNameAndroid: 'com.thequietframe.echoes',
+                                                                                                        platform: 'android',
+                                                                                                        productId: 'com.thequietframe.echoes.monthly',
+                                                                                                        purchaseState: 'purchased',
+                                                                                                        purchaseToken: 'dnhklacofbphmkkifeffniil.AO-J1OwW9cwloQPF3BtYp01kL5qLZlytLBLol-ZoMd74lY7AVTEXRmpU8FbArARvamu36TzMa8qImN5MMj_4PcRnVyauJfb9gdAmB3Hzjg6KDzKJntX1VCo',
+                                                                                                        quantity: 1,
+                                                                                                        signatureAndroid: 'jLANrWHzeFoAWac2dFFkrrrxUz76laZetrzj+NTJmnHh6Y6IFu1BW+MMz/Y7dpyiJs7K44lzjMwXgEQEXfwYOs/a/CVgEx5tZAQ3fkCK2N52n0z/bm5Lf2MEQSeMX4Swyus/hAV3oUoec6Yd4f6icXKe9jxyOLZDQxJcsu9KgYT/uCGTxE1pyTF9nrZKEcqYvEQxgnU8RRC4Zf9QJbDDYs7Vt2TKywVwP2L5oX4889xBcc2188swCGi18MEf3TO1LW6tV+8bg8CXb2x7HxROuPjudpqeMC0d5iCJtom92vtSb54wSCtIcXyjG1nHa07r0NzfQBLD3vdFML8mKYBBfQ==',
+                                                                                                        store: 'google',
+                                                                                                        transactionDate: 1769624872478,
+                                                                                                        transactionId: 'GPA.3301-5671-9033-92634' } ]
+2026-01-28 19:27:56.640 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Verifying purchase with backend:', { platform: 'android',
+                                                                                                      sku: undefined,
+                                                                                                      purchaseToken: undefined,
+                                                                                                      packageName: 'com.thequietframe.echoes',
+                                                                                                      productId: undefined }, ''
+2026-01-28 19:27:56.642 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[AppState] App became active. Last active:', '2026-01-28', 'Today:', '2026-01-28', 'New day:', false
+2026-01-28 19:27:56.642 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  [Pulse] App resumed, refreshing data
+2026-01-28 19:27:56.643 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching daily bundle...
+2026-01-28 19:27:56.644 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/echoes/daily-bundle?lat=40.7128&lng=-74.006&lang=fr&tz=America/New_York'
+2026-01-28 19:27:56.646 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching planetary data...
+2026-01-28 19:27:56.646 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/echoes/instant?lat=40.7128&lng=-74.006&tz=America/New_York'
+2026-01-28 19:27:56.649 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching biological rhythms...
+2026-01-28 19:27:56.650 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/planetary/biological-rhythms?tz=America/New_York&lat=40.7128&lng=-74.006'
+2026-01-28 19:27:56.651 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/consciousness/current'
+2026-01-28 19:27:56.652 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/consciousness-analysis/raw-analysis?lang=fr'
+2026-01-28 19:27:56.653 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/planetary/optimal-timing?tz=America/New_York&lang=fr&lat=40.7128&lng=-74.006'
+2026-01-28 19:27:56.653 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  📡 Fetching companion context...
+2026-01-28 19:27:56.653 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[CONTENT] Fetching direct:', 'https://source.thequietframe.com/api/companion/context?lat=40.7128&lon=-74.006&lang=fr'
+2026-01-28 19:27:56.654 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Checking status for installId:', 'd1e6f261-5f1d-4c67-8d0a-95f906c27da8', ''
+2026-01-28 19:27:56.657 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[Pulse] Using API solar phase:', 'midday'
+2026-01-28 19:27:56.783 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '✅ Daily bundle received:', { success: true,
+                                                                                                      generated_at: '2026-01-28T18:25:04.656Z',
+                                                                                                      expires_at: '2026-01-28T18:55:04.656Z',
+                                                                                                      cache_status: 'hit',
+                                                                                                      response_time_ms: 2062,
+                                                                                                      data: 
+                                                                                                       { echo_cards: 
+                                                                                                          [ { id: 'ancestral_1769624702655_7',
+                                                                                                              type: 'ancestral_wisdom',
+                                                                                                              title: 'Essaie Ça',
+                                                                                                              message: 'Appelle un aîné de ta famille aujourd\'hui - une courte conversation vaut de l\'or.',
+                                                                                                              explanation: 'Les traditions ancestrales valorisent la connexion intergénérationnelle.',
+                                                                                                              background_theme: 'ancient_wisdom',
+                                                                                                              relevance_score: 91 },
+                                                                                                            { id: 'lunar_1769624702655_1',
+                                                                                                              type: 'lunar_guidance',
+                                                                                                              title: 'Observation lunaire actuelle',
+                                                                                                              message: 'Phase gibbeuse croissante — influence souvent la concentration accrue et la réflexion intérieure',
+                                                                                                              explanation: 'La phase gibbeuse croissante à 72% d\'illumination influence souvent l\'introspection en hiver.',
+                                                                                                              background_theme: 'night_sky',
+                                                                                                              relevance_score: 88 },
+                                                                                                            { id: 'consciousness_1769624702655_2',
+                                                                                                              type: 'global_consciousness',
+                                                                                                              title: 'Observation collective',
+                                                                                                              message: 'Phase de lune à 72 % — influence sur la conscience globale',
+                                                                                                              explanation: 'La phase de lune à 72 % et le Kp 4 influencent l\'alignement collectif en hiver.',
+                                                                                                              background_theme: 'aurora',
+                                                                                                              relevance_score: 88 },
+                                                                                                            { id: 'solar_1769624702655_3',
+                                                                                                              type: 'solar_rhythm',
+                                                                                                              title: 'Observation temporelle',
+                                                                                                              message: 'Lumière solaire maximale — rythmes circadiens influencés par la journée',
+                                                                                                              explanation: 'Pendant la journée d\'hiver à midi, les rythmes circadiens sont influencés par la forte luminosité, malgré une activité géomagnétique Kp 4.',
+                                                                                                              background_theme: 'sunset',
+                                                                                                              relevance_score: 84 },
+                                                                                                            { id: 'cultural_1769624702655_6',
+                                                                                                              type: 'cultural_rhythms',
+                                                                                                              title: 'Observation lunaire et tradition',
+                                                                                                              message: 'La lune gibbeuse croissante — influence de renouvellement et introspection',
+                                                                                                              explanation: 'La phase gibbeuse croissante à 72% d\'illumination est souvent associée à un moment de réflexion accrue.',
+                                                                                                              background_theme: 'cultural_tapestry',
+                                                                                                              relevance_score: 81 } ],
+                                                                                                         planetary_context: 
+                                                                                                          { lunar: 
+                                                                                                             { phase: 'waxing_gibbous',
+                                                                                                               illumination: 72,
+                                                                                                               message: 'Affine et prépare-toi à la plénitude' },
+                                                                                                            solar: 
+                                                                                                             { phase: 'midday',
+                                                                                                               time_to_sunset: 230.04931666666667,
+                                                                                                               message: 'Clarté maximale illumine ton chemin' },
+                                                                                                            geomagnetic: 
+                                                                                                             { kp_index: 1,
+                                                                                                               activity: 'quiet',
+                                                                                                               message: 'Kp 1.0 — Conditions de champ magnétique calmes.' },
+                                                                                                            consciousness_index: 
+                                                                                                             { global_coherence: null,
+                                                                                                               regional_resonance: 72,
+                                                                                                               trend: 'falling' } },
+                                                                                                         location: 
+                                                                                                          { timezone: 'America/New_York',
+                                                                                                            local_time: '2026-01-28T18:25:04.656Z',
+                                                                                                            coordinates: { lat: 40.7128, lng: -74.006 } } } }
+2026-01-28 19:27:56.791 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '✅ Planetary data received:', { success: true,
+                                                                                                      cache_status: 'hit',
+                                                                                                      response_time_ms: 0,
+                                                                                                      data: 
+                                                                                                       { lunar: { phase: 'waxing_gibbous', illumination: 72 },
+                                                                                                         solar: 
+                                                                                                          { sunrise: '2026-01-28T12:07:48.000Z',
+                                                                                                            sunset: '2026-01-28T22:10:09.000Z',
+                                                                                                            current_phase: 'midday' },
+                                                                                                         geomagnetic: { activity: 'quiet', kp_index: 1 },
+                                                                                                         seasonal: { season: 'winter', progress: 100 } },
+                                                                                                      expires_at: '2026-01-28T18:40:02.593Z' }
+2026-01-28 19:27:56.845 31581-31675 ReactNativeJS           com.thequietframe.echoes             E  '[ENTITLEMENT] Verification failed:', 400
+2026-01-28 19:27:56.848 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[Pulse] Using API solar phase:', 'midday'
+2026-01-28 19:27:56.966 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '✅ Consciousness data received:', { success: true,
+                                                                                                      cache_status: 'hit',
+                                                                                                      is_stale: false,
+                                                                                                      response_time_ms: 0,
+                                                                                                      global_coherence: 0,
+                                                                                                      transformational_percent: 0,
+                                                                                                      destructive_percent: 0,
+                                                                                                      hope_level: 0,
+                                                                                                      articles_analyzed: 0,
+                                                                                                      dominant_themes: [ 'transformation', 'awareness', 'connection' ],
+                                                                                                      trend_7d: '-0.8',
+                                                                                                      synchronicity_level: 'minimal',
+                                                                                                      collective_mood: 'integration_phase',
+                                                                                                      last_updated: '2026-01-28T18:21:47.042Z',
+                                                                                                      next_update: '2026-01-28T18:42:20.956Z',
+                                                                                                      methodology: 'Real-time analysis of global news and cultural content for TQF alignment' }
+2026-01-28 19:27:56.967 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '✅ Raw analysis data received:', { success: true,
+                                                                                                      data: 
+                                                                                                       { rawCoherence: 14.4,
+                                                                                                         filteredCoherence: 78.7,
+                                                                                                         noiseLevel: 85.6,
+                                                                                                         signalStrength: 57,
+                                                                                                         dominantEmotions: [ 'uncertainty', 'challenge', 'adaptation', 'resilience' ],
+                                                                                                         stressIndicators: [ 'conflict', 'fear', 'division' ],
+                                                                                                         hopeLevel: 51,
+                                                                                                         transformationalContent: 3,
+                                                                                                         destructiveContent: 83,
+                                                                                                         totalArticles: 25058,
+                                                                                                         scoredArticles: 24898,
+                                                                                                         trend7d: -0.6,
+                                                                                                         metadata: 
+                                                                                                          { contentAnalyzed: 24898,
+                                                                                                            analysisTimestamp: '2026-01-28T18:25:02.964Z',
+                                                                                                            methodology: 'real_time_database_analysis',
+                                                                                                            contentSources: 
+                                                                                                             [ 'Actualités et médias mondiaux',
+                                                                                                               'Contenu environnemental',
+                                                                                                               'Publications culturelles',
+                                                                                                               'Traditions de sagesse',
+                                                                                                               'Perspectives régionales' ],
+                                                                                                            dataNote: 'Real-time analysis of 24,898 scored articles' } },
+                                                                                                      cached: true,
+                                                                                                      cacheAge: '174s' }
+2026-01-28 19:27:57.161 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '✅ Biological rhythms received:', { circadian: 
+                                                                                                       { timeOfDay: 'Late Morning',
+                                                                                                         phase: 'Peak Alertness',
+                                                                                                         cortisol: 70,
+                                                                                                         melatonin: 5,
+                                                                                                         bodyTemp: 98.6,
+                                                                                                         alertness: 95,
+                                                                                                         recommendations: 
+                                                                                                          [ 'Optimal time for complex cognitive tasks and important decisions',
+                                                                                                            'Schedule challenging work during this high-performance window',
+                                                                                                            'Ideal for learning new information and creative problem-solving',
+                                                                                                            'Take advantage of peak coordination for physical activities' ] },
+                                                                                                      seasonal: 
+                                                                                                       { type: 'Seasonal',
+                                                                                                         phase: 'Inner Renewal',
+                                                                                                         intensity: 90,
+                                                                                                         description: 'Reduced daylight affects circadian rhythm, natural slowing down for deep rest and renewal',
+                                                                                                         recommendations: 
+                                                                                                          [ 'Support mood with light therapy if experiencing seasonal changes',
+                                                                                                            'Allow for more sleep and indoor contemplative practices',
+                                                                                                            'Focus on warming foods and immune-supporting nutrition',
+                                                                                                            'Use this restorative time for deep healing and visioning' ],
+                                                                                                         planetaryCorrelations: 
+                                                                                                          [ 'Solar angle affects vitamin D synthesis and mood regulation',
+                                                                                                            'Daylight duration influences melatonin production cycles',
+                                                                                                            'Natural temperature rhythms guide metabolic adjustments' ] },
+                                                                                                      lunar: 
+                                                                                                       { type: 'Lunar',
+                                                                                                         phase: 'Dynamic Tension',
+                                                                                                         intensity: 70,
+                                                                                                         description: 'Strong lunar pull may intensify emotions and physical sensations',
+                                                                                                         recommendations: 
+                                                                                                          [ 'Stay well-hydrated as body water content is influenced',
+                                                                                                            'May experience heightened intuition and psychic sensitivity',
+                                                                                                            'Physical energy peaks - excellent for challenging workouts',
+                                                                                                            'Practice grounding techniques if feeling overstimulated' ],
+                                                                                                         planetaryCorrelations: 
+                                                                                                          [ 'Lunar gravitational pull affects all body fluids (60% of human body)',
+                                                                                                            'Moon phases correlate with sleep quality and dream intensity',
+                                                                                                            'Traditional medicine systems worldwide recognize lunar health influences',
+                                                                                                            'Emergency room visits and childbirth rates show lunar correlations' ] },
+                                                                                                      geomagnetic: 
+                                                                                                       { type: 'Geomagnetic',
+                                                                                                         phase: 'Stable Field',
+                                                                                                         intensity: 20,
+                                                                                                         description: 'Stable earth magnetic field supports normal biological rhythms',
+                                                                                                         recommendations: 
+                                                                                                          [ 'Optimal time for meditation and inner work',
+                                                                                                            'Clear thinking and stable mood typically supported',
+                                                                                                            'Good time for important decisions and planning',
+                                                                                                            'Normal sleep patterns and circadian rhythm stability' ],
+                                                                                                         planetaryCorrelations: 
+                                                                                                          [ 'Earth\'s magnetic field changes affect human pineal gland and melatonin production',
+                                                                                                            'Geomagnetic activity correlates with increased hospital admissions',
+                                                                                                            'Heart rate variability changes during geomagnetic disturbances',
+                                                                                                            'Migratory animals use geomagnetic fields for navigation - humans retain sensitivity' ] },
+                                                                                                      location: 
+                                                                                                       { sunrise: '07:07 AM',
+                                                                                                         sunset: '05:10 PM',
+                                                                                                         dayLength: 10,
+                                                                                                         solarPhase: 'day' } }
+2026-01-28 19:27:57.259 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Status response:', { entitlement: 'free',
+                                                                                                      expiresAt: '2026-01-28T17:11:14.570Z',
+                                                                                                      expired: true,
+                                                                                                      source: 'server' }
+2026-01-28 19:27:57.264 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[Pulse] Using API solar phase:', 'midday'
+2026-01-28 19:27:57.359 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[ACCESS_CACHE] Cached access state:', 'free'
+2026-01-28 19:27:57.359 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Refreshed from backend:', { entitlement: 'free', expiresAt: '2026-01-28T17:11:14.570Z' }
+2026-01-28 19:27:57.362 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[Pulse] Using API solar phase:', 'midday'
+2026-01-28 19:27:57.447 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[ENTITLEMENT] Verification response:', { entitled: true,
+                                                                                                      entitlement: 'pro',
+                                                                                                      expiresAt: '2026-01-28T18:32:52.478Z',
+                                                                                                      source: 'google',
+                                                                                                      productId: 'com.thequietframe.echoes.monthly' }
+2026-01-28 19:27:57.447 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  [IAP] Finishing transaction...
+2026-01-28 19:27:58.025 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  [IAP] Transaction finished
+2026-01-28 19:27:58.027 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[Pulse] Using API solar phase:', 'midday'
+2026-01-28 19:27:58.532 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '✅ Companion context received:', { success: true,
+                                                                                                      location: 
+                                                                                                       { coordinates: { lat: '40.7128', lng: '-74.006' },
+                                                                                                         city: 'Unknown Location',
+                                                                                                         timezone: 'UTC' },
+                                                                                                      planetary: 
+                                                                                                       { lunar: 
+                                                                                                          { phase: 'waxing_gibbous',
+                                                                                                            age: 10.16527923509259,
+                                                                                                            illumination: 72,
+                                                                                                            phaseMessage: 'Moon softly brightens — traditionally influences heightened awareness and organization preparation' },
+                                                                                                         solar: 
+                                                                                                          { sunrise: '2026-01-28T12:07:48.000Z',
+                                                                                                            sunset: '2026-01-28T22:10:09.000Z',
+                                                                                                            solarNoon: '2026-01-28T17:08:58.000Z',
+                                                                                                            dayLength: 10.039166666666667,
+                                                                                                            currentPhase: 'midday',
+                                                                                                            solarMessage: 'Peak sunlight — circadian patterns shift at full intensity',
+                                                                                                            timeToSunset: 222.19558333333333 },
+                                                                                                         geomagnetic: 
+                                                                                                          { kpIndex: 1,
+                                                                                                            activity: 'quiet',
+                                                                                                            humanEffect: 'stable, grounded, clear thinking',
+                                                                                                            message: 'Le champ magnétique terrestre est calme — souvent associé à une pensée claire et une conscience ancrée' },
+                                                                                                         seasonal: 
+                                                                                                          { season: 'winter',
+                                                                                                            progress: 100,
+                                                                                                            message: 'The deep inward time of rest and renewal. You are 100% through winter\'s contemplation.' },
+                                                                                                         source: 'live' },
+                                                                                                      hebrewCalendar: 
+                                                                                                       { date: 'י׳ בִּשְׁבָט תשפ״ו',
+                                                                                                         hebrewYear: 5786,
+                                                                                                         hebrewMonth: 'Sh\'vat',
+                                                                                                         hebrewDay: 10,
+                                                                                                         todayHoliday: null,
+                                                                                                         upcomingHolidays: 
+                                                                                                          [ { title: 'Shabbat Shirah',
+                                                                                                              date: '2026-01-31',
+                                                                                                              hebrew: 'שבת שירה' },
+                                                                                                            { title: 'Tu BiShvat', date: '2026-02-02', hebrew: 'ט״ו בשבט' },
+                                                                                                            { title: 'Shabbat Shekalim',
+                                                                                                              date: '2026-02-14',
+                                                                                                              hebrew: 'שבת שקלים' } ],
+                                                                                                         shabbat: null,
+                                                                                                         isShabbat: false,
+                                                                                                         roshChodesh: false,
+                                                                                                         omer: null,
+                                                                                                         message: 'Today is 10 Sh\'vat 5786. The Hebrew calendar marks sacred time through the rhythm of moon and tradition.' },
+                                                                                                      timestamp: '2026-01-28T18:27:58.369Z' }
+2026-01-28 19:27:58.536 31581-31675 ReactNativeJS           com.thequietframe.echoes             I  '[Pulse] Using API solar phase:', 'midday'
