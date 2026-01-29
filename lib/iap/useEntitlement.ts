@@ -52,6 +52,9 @@ let moduleLastAutoRestoreTime: number = 0;
 const AUTO_RESTORE_COOLDOWN_MS = 60000; // 1 minute cooldown between auto-restore attempts
 let moduleAutoRestoreInProgress = false;
 
+// Deduplication for purchase verification - prevent duplicate requests for same token
+const modulePendingVerifications: Map<string, Promise<{ entitlement: 'full' | 'free'; expiresAt: string | null }>> = new Map();
+
 // Module-level state update registry - allows listeners to update all active instances
 type StateUpdater = {
   setIsFullAccess: (v: boolean) => void;
@@ -168,7 +171,7 @@ async function checkEntitlementStatus(installId: string): Promise<{
   return modulePendingCheckStatus;
 }
 
-async function verifyPurchaseWithBackend(
+async function verifyPurchaseWithBackendInternal(
   installId: string,
   purchase: Purchase,
   isRetry = false
@@ -203,7 +206,7 @@ async function verifyPurchaseWithBackend(
       if (!isRetry) {
         console.warn('[ENTITLEMENT] Session expired during verification, refreshing and retrying...');
         await refreshSession();
-        return verifyPurchaseWithBackend(installId, purchase, true);
+        return verifyPurchaseWithBackendInternal(installId, purchase, true);
       }
       console.error('[ENTITLEMENT] Session still invalid after refresh during verification');
       return { entitlement: 'free', expiresAt: null };
@@ -237,6 +240,48 @@ async function verifyPurchaseWithBackend(
     console.error('[ENTITLEMENT] Error verifying purchase:', error);
     return { entitlement: 'free', expiresAt: null };
   }
+}
+
+async function verifyPurchaseWithBackend(
+  installId: string,
+  purchase: Purchase,
+  isRetry = false
+): Promise<{
+  entitlement: 'full' | 'free';
+  expiresAt: string | null;
+}> {
+  // Build dedupe key from purchase fields directly
+  // iOS uses transactionId, Android uses purchaseToken
+  const platform = Platform.OS;
+  const uniqueId = platform === 'ios' 
+    ? purchase.transactionId 
+    : purchase.purchaseToken;
+  
+  // Skip deduplication if no unique identifier available
+  if (!uniqueId) {
+    console.warn('[ENTITLEMENT] No unique ID for deduplication, proceeding without');
+    return verifyPurchaseWithBackendInternal(installId, purchase, isRetry);
+  }
+  
+  const dedupeKey = `${installId}:${platform}:${uniqueId}`;
+  
+  // Check if there's already a pending verification for this token
+  const existing = modulePendingVerifications.get(dedupeKey);
+  if (existing) {
+    console.log('[ENTITLEMENT] Reusing pending verification for:', purchase.productId);
+    return existing;
+  }
+  
+  // Start new verification and track it
+  const promise = verifyPurchaseWithBackendInternal(installId, purchase, isRetry);
+  modulePendingVerifications.set(dedupeKey, promise);
+  
+  // Clean up after completion
+  promise.finally(() => {
+    modulePendingVerifications.delete(dedupeKey);
+  });
+  
+  return promise;
 }
 
 export function useEntitlement(): EntitlementState & EntitlementActions {
