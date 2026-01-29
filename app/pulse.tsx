@@ -1045,19 +1045,28 @@ export default function FieldScreen() {
           />
         </View>
 
-        {/* Signals */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textTertiary }]}>{t('field.inputSignals').toUpperCase()}</Text>
-          <View style={[styles.signalsContainer, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <Text style={[styles.signalsText, { color: colors.textSecondary }]}>
-              {t('field.dataFromInputs')}
-            </Text>
-            <View style={styles.signalTags}>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalMoon')}</Text>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalSun')}</Text>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalCoherence')}</Text>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalGeo')}</Text>
-              <Text style={[styles.signalTag, { backgroundColor: colors.surfaceHighlight, color: colors.textSecondary }]}>{t('field.signalSeasonal')}: {(() => {
+        {/* Input Signals - styled like Wisdom tab sources */}
+        <View style={styles.inputSignalsSection}>
+          <View style={styles.inputSignalsHeader}>
+            <Zap size={16} color={colors.textSecondary} />
+            <Text style={[styles.inputSignalsTitle, { color: colors.text }]}>{t('field.inputSignals')}</Text>
+          </View>
+          <View style={styles.inputSignalsTags}>
+            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
+              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalMoon')}</Text>
+            </View>
+            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
+              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalSun')}</Text>
+            </View>
+            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
+              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalCoherence')}</Text>
+            </View>
+            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
+              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalGeo')}</Text>
+            </View>
+            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
+              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalSeasonal')}</Text>
+              <Text style={[styles.inputSignalTagValue, { color: colors.textSecondary }]}>{(() => {
                 const seasonMap: Record<string, string> = { winter: 'seasonWinter', spring: 'seasonSpring', summer: 'seasonSummer', autumn: 'seasonAutumn', fall: 'seasonAutumn' };
                 const season = instant?.seasonal?.season?.toLowerCase();
                 return season && seasonMap[season] ? t(`field.${seasonMap[season]}`) : t('field.active');
@@ -1244,27 +1253,41 @@ const styles = StyleSheet.create({
     height: 1,
     marginVertical: 16,
   },
-  signalsContainer: {
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
+  inputSignalsSection: {
+    marginBottom: 24,
+    paddingTop: 8,
   },
-  signalsText: {
-    fontSize: 13,
+  inputSignalsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
     marginBottom: 12,
   },
-  signalTags: {
+  inputSignalsTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  inputSignalsTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
-    marginTop: 4,
+    gap: 8,
   },
-  signalTag: {
-    fontSize: 13,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
-    overflow: 'hidden',
+  inputSignalTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  inputSignalTagText: {
+    fontSize: 12,
+    fontWeight: '500',
+    marginRight: 6,
+  },
+  inputSignalTagValue: {
+    fontSize: 12,
+    fontWeight: '600',
   },
   timingRow: {
     flexDirection: 'row',
