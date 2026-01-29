@@ -24,9 +24,15 @@ interface PaywallProps {
 function getLocalizedPrice(products: ProductSubscription[], sku: string, fallback: string): string {
   const product = products.find((p: any) => p.productId === sku || p.id === sku);
   if (product) {
-    // expo-iap may use different field names across versions
-    const price = (product as any).localizedPrice || (product as any).displayPrice || (product as any).price;
-    if (price) return price;
+    // expo-iap may use different field names across versions and platforms
+    // iOS StoreKit2: displayPrice, localizedPrice
+    // Android: localizedPrice, formattedPrice
+    const price = (product as any).displayPrice 
+      || (product as any).localizedPrice 
+      || (product as any).formattedPrice
+      || (product as any).priceString
+      || (product as any).price;
+    if (price && typeof price === 'string') return price;
   }
   return fallback;
 }
@@ -59,7 +65,9 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
       didAutoCloseRef.current = true;
       console.log('[Paywall] Full access gained, auto-closing');
       onSubscribed?.();
-      const timer = setTimeout(() => onClose?.(), 1500);
+      // iOS may need a brief delay for UI to update before closing
+      const delay = Platform.OS === 'ios' ? 500 : 1500;
+      const timer = setTimeout(() => onClose?.(), delay);
       return () => clearTimeout(timer);
     }
   }, [isFullAccess, wasNotFullAccess, onClose, onSubscribed]);
@@ -70,6 +78,13 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
       didAutoCloseRef.current = false;
     }
   }, [isFullAccess]);
+
+  // Debug: log product structure to identify correct price field on iOS
+  useEffect(() => {
+    if (products.length > 0 && Platform.OS === 'ios') {
+      console.log('[Paywall] iOS product structure:', JSON.stringify(products[0], null, 2));
+    }
+  }, [products]);
 
   const monthlyPrice = getLocalizedPrice(products, SUBSCRIPTION_IDS.monthly, '$7.99');
   const yearlyPrice = getLocalizedPrice(products, SUBSCRIPTION_IDS.yearly, '$79.90');
@@ -134,7 +149,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
         <View style={styles.container}>
           {onClose && (
             <TouchableOpacity
-              style={[styles.headerCloseButton, { top: 8 }]}
+              style={[styles.headerCloseButton, { top: Platform.OS === 'ios' ? insets.top + 8 : 8 }]}
               onPress={onClose}
               data-testid="button-close-paywall-x"
             >
