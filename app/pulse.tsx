@@ -1046,7 +1046,7 @@ export default function FieldScreen() {
         </View>
 
         {/* Input Signals - styled like Wisdom tab sources */}
-        <View style={styles.inputSignalsSection}>
+        <View style={[styles.inputSignalsSection, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={styles.inputSignalsHeader}>
             <Zap size={16} color={colors.textSecondary} />
             <Text style={[styles.inputSignalsTitle, { color: colors.text }]}>{t('field.inputSignals')}</Text>
@@ -1255,7 +1255,9 @@ const styles = StyleSheet.create({
   },
   inputSignalsSection: {
     marginBottom: 24,
-    paddingTop: 8,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
   },
   inputSignalsHeader: {
     flexDirection: 'row',
