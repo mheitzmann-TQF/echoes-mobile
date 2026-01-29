@@ -58,6 +58,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  console.log('[THEME:PROVIDER] ThemeProvider called');
   const systemColorScheme = useColorScheme();
   const [theme, setTheme] = useState<ThemeType>('dark'); // Default to dark
 

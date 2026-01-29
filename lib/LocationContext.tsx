@@ -111,6 +111,7 @@ const geocodeLocation = async (locationName: string, lang: string = 'en'): Promi
 };
 
 export function LocationProvider({ children }: { children: ReactNode }) {
+  console.log('[LOCATION:PROVIDER] LocationProvider called');
   const { i18n } = useTranslation();
   const [locationName, setLocationName] = useState('New York');
   const [coordinates, setCoordinates] = useState<Coordinates>({ lat: 40.7128, lng: -74.006 });

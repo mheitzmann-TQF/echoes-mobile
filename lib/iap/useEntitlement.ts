@@ -1026,7 +1026,9 @@ const EntitlementContext = createContext<EntitlementContextType | null>(null);
 
 // Provider component - use this at app root
 export function EntitlementProvider({ children }: { children: ReactNode }): React.ReactElement {
+  console.log('[ENTITLEMENT:PROVIDER] EntitlementProvider called');
   const entitlement = useEntitlement();
+  console.log('[ENTITLEMENT:PROVIDER] useEntitlement returned');
   return React.createElement(EntitlementContext.Provider, { value: entitlement }, children);
 }
 

@@ -317,6 +317,7 @@ function ThemedApp() {
 }
 
 export default function RootLayout() {
+  console.log('[ROOT:LAYOUT] RootLayout function called');
   logEnvOnce("BOOT");
   return (
     <LocationProvider>
