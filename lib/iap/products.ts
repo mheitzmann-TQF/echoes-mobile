@@ -7,23 +7,23 @@ import { Platform } from 'react-native';
  * iOS (App Store Connect):
  * 1. Create a Subscription Group called "Echoes Premium"
  * 2. Add products:
- *    - com.thequietframe.echoes.monthly ($7.99/month)
- *    - com.thequietframe.echoes.yearly ($79.90/year)
+ *    - ltd.ignea.echoes.monthly ($7.99/month)
+ *    - ltd.ignea.echoes.yearly ($79.90/year)
  * 3. For each product, add Introductory Offer:
  *    - Type: Free Trial
  *    - Duration: 3 days
  *    - Eligibility: New subscribers only
  * 4. Ensure products are "Ready to Submit" or approved
  * 5. Add Sandbox testers in Users and Access > Sandbox Testers
- * 6. Bundle ID must match: com.thequietframe.echoes
+ * 6. Bundle ID must match: ltd.ignea.echoes
  * 
  * Android (Google Play Console):
  * 1. Create subscription products:
- *    - com.thequietframe.echoes.monthly ($7.99/month)
- *    - com.thequietframe.echoes.yearly ($79.90/year)
+ *    - ltd.ignea.echoes.monthly ($7.99/month)
+ *    - ltd.ignea.echoes.yearly ($79.90/year)
  * 2. For each subscription, create a base plan with:
  *    - Free trial offer: 3 days
- * 3. Package name must match: com.thequietframe.echoes
+ * 3. Package name must match: ltd.ignea.echoes
  * 4. Add license testers in Setup > License testing
  * 5. Products must be active (not draft)
  * 
@@ -34,8 +34,8 @@ import { Platform } from 'react-native';
  */
 
 export const SUBSCRIPTION_IDS = {
-  monthly: 'com.thequietframe.echoes.monthly',
-  yearly: 'com.thequietframe.echoes.yearly',
+  monthly: 'ltd.ignea.echoes.monthly',
+  yearly: 'ltd.ignea.echoes.yearly',
 } as const;
 
 export const SUBSCRIPTION_SKUS = Platform.select({
