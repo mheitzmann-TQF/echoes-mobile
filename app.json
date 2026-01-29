@@ -15,6 +15,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ignea.thequietframe",
+      "splash": {
+        "image": "./assets/splash-ios.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#000000"
+      },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
