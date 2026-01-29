@@ -306,6 +306,9 @@ async function verifyPurchaseWithBackend(
 }
 
 export function useEntitlement(): EntitlementState & EntitlementActions {
+  // DIAGNOSTIC: This should be the FIRST log from useEntitlement
+  console.log('[ENTITLEMENT:BOOT] useEntitlement hook called, Platform:', Platform.OS, '__DEV__:', __DEV__);
+  
   const [isFullAccess, setIsFullAccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<ProductSubscription[]>([]);
@@ -316,6 +319,9 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   const [isDevMode] = useState(isDevOverrideAvailable());
   const [isGrace, setIsGrace] = useState(false);
   const [graceReason, setGraceReason] = useState<'fresh_install' | 'prior_access' | 'none'>('none');
+  
+  // DIAGNOSTIC: Log isDevMode decision
+  console.log('[ENTITLEMENT:BOOT] isDevMode:', isDevMode);
   
   // Local ref to track module state for this instance
   const installIdRef = useRef<string | null>(moduleInstallId);
@@ -477,6 +483,8 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     moduleStateUpdaters.add(thisUpdater);
     
     async function initialize() {
+      console.log('[ENTITLEMENT:INIT] initialize() called');
+      
       let id: string;
       
       // Module-level dedup for installId fetching
