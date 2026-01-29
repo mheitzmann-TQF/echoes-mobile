@@ -1,0 +1,31 @@
+default	19:22:55.884561+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 9029 TheQuietFrame
+default	19:22:55.905297+0100	iapd	Received state update for 8116 (app<com.leica-camera.leicaCamera(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	19:22:59.107804+0100	iapd	FIXME: IOUnserialize has detected a string that is not valid UTF-8, "(null)".
+default	19:22:59.107841+0100	iapd	__update_battery_state: battCap 75 (0) / 100, onAC 1, charging 1, chargingCapable 1, source 0
+default	19:22:59.524573+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-active-Visible
+default	19:22:59.629933+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-active-Visible
+default	19:22:59.633436+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-suspended-Visible
+default	19:23:04.056489+0100	iapd	"The connection to ACDAccountStore was invalidated."
+default	19:23:04.056706+0100	iapd	[0x9000008a1228280] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	19:23:04.328030+0100	iapd	Received state update for 8116 (app<com.leica-camera.leicaCamera(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	19:23:13.520375+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-active-Visible
+default	19:23:13.625416+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-active-Visible
+default	19:23:13.628002+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-suspended-Visible
+error	19:23:19.064759+0100	symptomsd	COSMCtrl applyPolicyDelta unexpected absence of policy on appRecord com.ignea.thequietframe bg time + grace 2026-01-29 19:27:44.645 +0100  now 2026-01-29 19:23:19.064 +0100
+default	19:23:19.115048+0100	iapd	FIXME: IOUnserialize has detected a string that is not valid UTF-8, "(null)".
+default	19:23:19.115123+0100	iapd	__update_battery_state: battCap 75 (0) / 100, onAC 1, charging 1, chargingCapable 1, source 0
+default	19:23:28.220751+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-active-Visible
+default	19:23:28.327034+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-active-Visible
+default	19:23:28.329871+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-suspended-Visible
+default	19:23:28.617038+0100	iapd	FIXME: IOUnserialize has detected a string that is not valid UTF-8, "(null)".
+default	19:23:28.617048+0100	iapd	__update_battery_state: battCap 76 (0) / 100, onAC 1, charging 1, chargingCapable 1, source 0
+default	19:23:34.431147+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 9029 TheQuietFrame
+default	19:23:34.453922+0100	iapd	Received state update for 8116 (app<com.leica-camera.leicaCamera(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	19:23:35.983987+0100	iapd	Received state update for 8116 (app<com.leica-camera.leicaCamera(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	19:23:48.091685+0100	iapd	FIXME: IOUnserialize has detected a string that is not valid UTF-8, "(null)".
+default	19:23:48.091830+0100	iapd	__update_battery_state: battCap 76 (0) / 100, onAC 1, charging 1, chargingCapable 1, source 0
+default	19:23:54.087745+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 9029 TheQuietFrame
+default	19:23:54.110137+0100	iapd	Received state update for 8116 (app<com.leica-camera.leicaCamera(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	19:23:59.621301+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-active-Visible
+default	19:23:59.726268+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-active-Visible
+default	19:23:59.729176+0100	iapd	Received state update for 6104 (xpcservice<com.apple.MercuryPoster([osservice<com.apple.SpringBoard>:6097])>{vt hash: 126936722}[uuid:00000000-0000-0000-0000-000000000001]{definition:com.apple.MercuryPoster[extension][client]}, running-suspended-Visible

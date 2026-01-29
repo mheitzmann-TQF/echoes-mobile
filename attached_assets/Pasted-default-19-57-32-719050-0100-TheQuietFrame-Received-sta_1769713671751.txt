@@ -1,0 +1,484 @@
+default	19:57:32.719050+0100	TheQuietFrame	Received state update for 9224 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	19:57:32.731379+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:57:32.732012+0100	TheQuietFrame	Deactivation reason added: 5; deactivation reasons: 6144 -> 6176; animating application lifecycle event: 1
+default	19:57:32.732033+0100	TheQuietFrame	Ignoring already applied deactivation reason: 12; deactivation reasons: 6176
+default	19:57:32.732151+0100	TheQuietFrame	{"msg":"CLLocationManager", "event":"activity", "_cmd":"onWillEnterForeground:", "self":"0x10ae449b0", "notification":<private>}
+default	19:57:32.732170+0100	TheQuietFrame	Deactivation reason removed: 11; deactivation reasons: 6176 -> 4128; animating application lifecycle event: 1
+default	19:57:32.732177+0100	TheQuietFrame	app did resume for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:32.732184+0100	TheQuietFrame	suspended changed from: YES --> NO for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:32.732204+0100	TheQuietFrame	establishing connection to agent
+default	19:57:32.732218+0100	TheQuietFrame	[0x121d32530] Session created.
+default	19:57:32.732223+0100	TheQuietFrame	[0x121d32530] Session created from connection [0x116554640]
+default	19:57:32.732764+0100	TheQuietFrame	[0x116554640] activating connection: mach=true listener=false peer=false name=com.apple.uiintelligencesupport.agent
+default	19:57:32.735537+0100	TheQuietFrame	[0x121d32530] Session activated
+default	19:57:32.735543+0100	TheQuietFrame	[0x10afe9680] Re-initialization successful; calling out to event handler with XPC_ERROR_CONNECTION_INTERRUPTED
+default	19:57:32.735702+0100	TheQuietFrame	[0x10ae709a0] [keyboardFocus] Recreation of event deferring records requested: removing recreation reason: detachedContext; for reason: _UIEventDeferringManager: 0x10ae709a0: recreating keyboardFocus: context attached for window: 0x10ad90000; contextID: 0xA7E0B048
+default	19:57:32.735719+0100	TheQuietFrame	Connection established with agent PID: 3959
+default	19:57:32.735732+0100	TheQuietFrame	#Warning Connection interrupted!
+default	19:57:32.736131+0100	TheQuietFrame	Target list changed: <CADisplay:LCD primary>
+default	19:57:32.736136+0100	TheQuietFrame	startConnection
+default	19:57:32.736169+0100	TheQuietFrame	[0x121d42d00] activating connection: mach=true listener=false peer=false name=com.apple.UIKit.KeyboardManagement.hosted
+default	19:57:32.736710+0100	TheQuietFrame	{"msg":"CLConnection::handleInterruption", "event":"activity"}
+default	19:57:32.736757+0100	TheQuietFrame	handleKeyboardChange: set currentKeyboard:N (wasKeyboard:N)
+default	19:57:32.736767+0100	TheQuietFrame	{"msg":"Sending cached messages to daemon", "event":"activity"}
+default	19:57:32.736879+0100	TheQuietFrame	{"msg":"CLClientInterruptionHandler", "event":"activity", "client":"0x10eadbb80"}
+default	19:57:32.736937+0100	TheQuietFrame	[C19.1.1 Hostname#32417d8b:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @85.314s, uuid: 1F3E7C6E-BCD4-4D0D-837A-5B60B37832F4
+default	19:57:32.736957+0100	TheQuietFrame	[C19.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @85.314s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:32.736963+0100	TheQuietFrame	[C19 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @85.314s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:32.738018+0100	TheQuietFrame	[C19.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @85.317s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:32.738029+0100	TheQuietFrame	[C19 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @85.317s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:32.738944+0100	TheQuietFrame	[C19.1.1.1 Hostname#32417d8b:443 ready resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @85.318s, uuid: 9B842199-B3F0-40BB-AE74-57C2619F7C80
+default	19:57:32.738956+0100	TheQuietFrame	[C19.1.1 Hostname#32417d8b:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @85.318s, uuid: 1F3E7C6E-BCD4-4D0D-837A-5B60B37832F4
+default	19:57:32.738992+0100	TheQuietFrame	{"msg":"CLLocationManager", "event":"activity", "_cmd":"onClientEventRegistration:", "self":"0x10ae449b0", "clientKey":"icom.ignea.thequietframe:"}
+default	19:57:32.739074+0100	TheQuietFrame	[C19.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @85.318s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:32.739089+0100	TheQuietFrame	[C19 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @85.320s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:32.739691+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:57:32.740055+0100	TheQuietFrame	Not push traits update to screen for new style 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:57:32.740257+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:57:32.741024+0100	TheQuietFrame	Updating existing transaction <SKPaymentTransaction: 0x10ae44c30>
+default	19:57:32.742433+0100	TheQuietFrame	[C20 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:receive_nexus @85.329s
+default	19:57:32.742765+0100	TheQuietFrame	quic_conn_handle_error_inner [C19.1.1.1.1:2] [-eb0dcc5379b2e6aa] received error: Socket is not connected (state quic_conn_state_connected, nw path 3ae628b3b47a26d5)
+default	19:57:32.742887+0100	TheQuietFrame	quic_migration_handle_error [C19.1.1.1.1:2] [-eb0dcc5379b2e6aa] path 0x120352bc0 on <private> received an error, closing it
+error	19:57:32.743143+0100	TheQuietFrame	quic_conn_change_current_path [C19.1.1.1.1:2] [-eb0dcc5379b2e6aa] tried to change paths, but no alternatives were found
+default	19:57:32.743215+0100	TheQuietFrame	quic_frame_write_CONNECTION_CLOSE [C19.1.1.1.1:2] [-eb0dcc5379b2e6aa] sending CONNECTION_CLOSE, code NO_ERROR, type UNKNOWN, reason <null>
+default	19:57:32.743257+0100	TheQuietFrame	[C20 283A0BE8-6977-4FC2-AF05-B9FE9DADB084 IPv4#f1c71855:443 quic-connection, url hash: 46f700b1, tls, definite, attribution: developer] cancel
+default	19:57:32.743314+0100	TheQuietFrame	[C20 283A0BE8-6977-4FC2-AF05-B9FE9DADB084 IPv4#f1c71855:443 quic-connection, url hash: 46f700b1, tls, definite, attribution: developer] cancelled
+	[C20 A3D2AB23-E1BB-4A93-8BF0-8F737BAF9013 192.168.0.115:53068<->IPv4#f1c71855:443]
+	Connected Path: satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate
+	Duration: 85.330s, QUIC @0.000s took 0.000s, TLS 1.3 took 0.051s
+	bytes in/out: 12999/30109, packets in/out: 65/88, rtt: 0.018s, retransmitted bytes: 0, out-of-order bytes: 1453
+	ecn packets sent/acked/marked/lost: 80/66/0/0
+default	19:57:32.743638+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C20] reporting state cancelled
+default	19:57:32.743690+0100	TheQuietFrame	quic_conn_log_summary [C19.1.1.1.1:2] [-eb0dcc5379b2e6aa] 
+	Connection attempts: 1, RETRY received: no, PTOs: 1
+	Early data: no, Keep-alives sent/acknowledged: 2/2
+	Migration events: 0, paths validated: 0
+	Inbound unidirectional/bidirectional streams: 3/0
+	Outbound unidirectional/bidirectional streams: 3/14
+	DATA_BLOCKED frames sent/received: 0/0
+	STREAM_DATA_BLOCKED frames sent/received: 0/0
+default	19:57:32.743765+0100	TheQuietFrame	nw_protocol_boringssl_error(2283) [C20:1][0x120891960] Lower protocol stack error post TLS handshake. [57: <private>]
+default	19:57:32.743769+0100	TheQuietFrame	nw_protocol_boringssl_error(2301) [C20:1][0x120891960] Propagating error up the stack
+error	19:57:32.743944+0100	TheQuietFrame	quic_conn_send_frames_for_key_state_block_invoke [C19.1.1.1.1:2] [-eb0dcc5379b2e6aa] unable to request outbound data
+default	19:57:32.744055+0100	TheQuietFrame	[C19.1.1.1.1 IPv4#f1c71855:443 failed channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:disconnect @85.336s, error Socket is not connected
+default	19:57:32.744092+0100	TheQuietFrame	[C19.1.1.1 Hostname#32417d8b:443 failed resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:disconnect @85.336s
+default	19:57:32.744158+0100	TheQuietFrame	[C19.1.1 Hostname#32417d8b:443 failed transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:disconnect @85.336s
+default	19:57:32.744193+0100	TheQuietFrame	[C19.1 Hostname#32417d8b:443 failed fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:disconnect @85.336s
+default	19:57:32.744204+0100	TheQuietFrame	[C19 IPv4#f1c71855:443 failed parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:disconnect @85.336s
+default	19:57:32.744209+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C19] reporting state failed error Socket is not connected
+default	19:57:32.744214+0100	TheQuietFrame	Connection 19: final read 0:0, complete[Y], final[Y]
+default	19:57:32.744223+0100	TheQuietFrame	Connection 19: cleaning up
+default	19:57:32.744230+0100	TheQuietFrame	[C19 36D04D01-F867-40FE-969A-FA65F03405B8 Hostname#32417d8b:443 quic-connection, url hash: 46f700b1, definite, attribution: developer] cancel
+default	19:57:32.744321+0100	TheQuietFrame	[C19 36D04D01-F867-40FE-969A-FA65F03405B8 Hostname#32417d8b:443 quic-connection, url hash: 46f700b1, definite, attribution: developer] cancelled
+	[C19.1.1.1.1 A3D2AB23-E1BB-4A93-8BF0-8F737BAF9013 192.168.0.115:53068<->IPv4#f1c71855:443]
+	Connected Path: satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate
+	Privacy Stance: Not Eligible
+	Duration: 85.336s, DNS @0.001s took 0.000s, QUIC @0.003s took 0.053s
+	bytes in/out: 0/0, packets in/out: 0/0, rtt: 0.000s, retransmitted bytes: 0, out-of-order bytes: 0
+	ecn packets sent/acked/marked/lost: 0/0/0/0
+default	19:57:32.744573+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C19] reporting state cancelled error Socket is not connected
+error	19:57:32.744577+0100	TheQuietFrame	0x1203c4018 19 Server protocol violation 0x02
+fault	19:57:32.744590+0100	TheQuietFrame	0x1203c4018 19 Control stream closed but connection is alive
+default	19:57:32.744595+0100	TheQuietFrame	Connection 19: done
+default	19:57:32.767342+0100	TheQuietFrame	Received state update for 9224 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	19:57:32.813940+0100	TheQuietFrame	Received state update for 9224 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	19:57:32.996195+0100	TheQuietFrame	Not push traits update to screen for new style 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:57:32.996347+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:57:32.996382+0100	TheQuietFrame	Deactivation reason removed: 12; deactivation reasons: 4128 -> 32; animating application lifecycle event: 1
+default	19:57:32.996390+0100	TheQuietFrame	Send setDeactivating: N (-DeactivationReason:SuspendedEventsOnly)
+default	19:57:32.996434+0100	TheQuietFrame	app did resume for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:32.996887+0100	TheQuietFrame	Deactivation reason removed: 5; deactivation reasons: 32 -> 0; animating application lifecycle event: 0
+default	19:57:32.996907+0100	TheQuietFrame	App transitioned to foreground, resuming HangTracing.
+default	19:57:32.996915+0100	TheQuietFrame	Updating event->rollingFGTimestamp from INVALID_FOREGROUND_TIMESTAMP to 5013344307780
+default	19:57:32.997687+0100	TheQuietFrame	{"msg":"CLLocationManager", "event":"activity", "_cmd":"onDidBecomeActive:", "self":"0x10ae449b0", "notification":<private>}
+default	19:57:32.997694+0100	TheQuietFrame	app did become active for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:33.008083+0100	TheQuietFrame	Task <F877F5FA-4B72-4184-B2A3-AB0893AA1129>.<80> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:57:33.010607+0100	TheQuietFrame	Task <41C0DB8E-171C-4F9C-ABB5-0B9931380D20>.<81> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:57:33.010822+0100	TheQuietFrame	Task <2946E7BC-F3D1-40F3-B11E-B9895E65E9C4>.<82> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:57:33.011535+0100	TheQuietFrame	Task <4E1B0F2F-BCD3-46F3-A188-F561105ADDC0>.<83> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:57:33.011847+0100	TheQuietFrame	Task <28E7C949-76E7-4A67-AE6D-4B504B4009D9>.<84> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:57:33.012032+0100	TheQuietFrame	Task <C52AA2D4-1263-41A0-9B38-9DF0922E4B3E>.<85> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:57:33.012136+0100	TheQuietFrame	Task <1806F561-2A0B-45BF-92F2-35B940A0BEA5>.<86> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:57:33.012279+0100	TheQuietFrame	Task <BB0D1D83-FB68-412D-87BA-E9082E83F9C5>.<87> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:57:33.012670+0100	TheQuietFrame	Task <F877F5FA-4B72-4184-B2A3-AB0893AA1129>.<80> summary for task success {transaction_duration_ms=5, response_status=200, cache_hit=true}
+default	19:57:33.012676+0100	TheQuietFrame	Task <F877F5FA-4B72-4184-B2A3-AB0893AA1129>.<80> finished successfully
+default	19:57:33.012708+0100	TheQuietFrame	Task <41C0DB8E-171C-4F9C-ABB5-0B9931380D20>.<81> summary for task success {transaction_duration_ms=3, response_status=200, cache_hit=true}
+default	19:57:33.012741+0100	TheQuietFrame	Task <41C0DB8E-171C-4F9C-ABB5-0B9931380D20>.<81> finished successfully
+default	19:57:33.012828+0100	TheQuietFrame	Connection 0: creating secure tcp or quic connection
+default	19:57:33.012840+0100	TheQuietFrame	Task <4E1B0F2F-BCD3-46F3-A188-F561105ADDC0>.<83> waiting for setup of Connection 23
+default	19:57:33.012845+0100	TheQuietFrame	Task <28E7C949-76E7-4A67-AE6D-4B504B4009D9>.<84> waiting for setup of Connection 23
+default	19:57:33.012852+0100	TheQuietFrame	Task <C52AA2D4-1263-41A0-9B38-9DF0922E4B3E>.<85> waiting for setup of Connection 23
+default	19:57:33.012856+0100	TheQuietFrame	Task <1806F561-2A0B-45BF-92F2-35B940A0BEA5>.<86> waiting for setup of Connection 23
+default	19:57:33.012861+0100	TheQuietFrame	Task <BB0D1D83-FB68-412D-87BA-E9082E83F9C5>.<87> waiting for setup of Connection 23
+default	19:57:33.012865+0100	TheQuietFrame	Connection 23: enabling TLS
+default	19:57:33.012868+0100	TheQuietFrame	Connection 23: starting, TC(0x0)
+default	19:57:33.012876+0100	TheQuietFrame	[C23 D3991A11-6E9B-413F-9150-CF8C086036A8 Hostname#32417d8b:443 quic-connection, url hash: 5e9c6106, definite, attribution: developer, context: com.apple.CFNetwork.NSURLSession.{F8F05FA5-C2FE-4703-B551-D3EB12FF05FF}{(null)}{Y}{2}{0x0} (private), proc: EFFC66A1-E6A2-3E39-A473-856B06D5CA8C, delegated upid: 0] start
+default	19:57:33.012890+0100	TheQuietFrame	[C23 Hostname#32417d8b:443 initial parent-flow ((null))] event: path:start @0.000s
+default	19:57:33.012923+0100	TheQuietFrame	[C23 Hostname#32417d8b:443 waiting parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: path:satisfied @0.000s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:33.012981+0100	TheQuietFrame	[C23 Hostname#32417d8b:443 in_progress parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: flow:start_connect @0.000s
+default	19:57:33.012985+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C23] reporting state preparing
+default	19:57:33.013003+0100	TheQuietFrame	[C23 Hostname#32417d8b:443 in_progress parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: flow:start_child @0.000s
+default	19:57:33.013020+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 initial path ((null))] event: path:start @0.000s
+default	19:57:33.013242+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 waiting path (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: path:satisfied @0.000s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:33.013328+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 in_progress fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: fallback:start_primary @0.002s
+default	19:57:33.013344+0100	TheQuietFrame	[C23.1.1 Hostname#32417d8b:443 initial path ((null))] event: path:start @0.002s
+default	19:57:33.013483+0100	TheQuietFrame	[C23.1.1 Hostname#32417d8b:443 waiting path (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: path:satisfied @0.003s, uuid: 1F3E7C6E-BCD4-4D0D-837A-5B60B37832F4
+default	19:57:33.013529+0100	TheQuietFrame	[C23.1.1 Hostname#32417d8b:443 in_progress transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: transform:start @0.003s
+default	19:57:33.013629+0100	TheQuietFrame	[C23.1.1.1 Hostname#32417d8b:443 initial path ((null))] event: path:start @0.003s
+default	19:57:33.013689+0100	TheQuietFrame	[C23.1.1.1 Hostname#32417d8b:443 waiting path (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: path:satisfied @0.003s, uuid: 9B842199-B3F0-40BB-AE74-57C2619F7C80
+default	19:57:33.013710+0100	TheQuietFrame	[C23.1.1.1 Hostname#32417d8b:443 in_progress resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: resolver:start_dns @0.003s
+default	19:57:33.013741+0100	TheQuietFrame	Task <2946E7BC-F3D1-40F3-B11E-B9895E65E9C4>.<82> setting up Connection 23
+default	19:57:33.014004+0100	TheQuietFrame	nw_endpoint_resolver_update [C23.1.1.1 Hostname#32417d8b:443 in_progress resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] Adding endpoint handler for IPv4#f1c71855:443
+default	19:57:33.014028+0100	TheQuietFrame	[C23.1.1.1 Hostname#32417d8b:443 in_progress resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: resolver:receive_dns @0.004s
+default	19:57:33.014061+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 initial path ((null))] event: path:start @0.004s
+default	19:57:33.014121+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 waiting path (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: path:satisfied @0.004s, uuid: A3D2AB23-E1BB-4A93-8BF0-8F737BAF9013
+default	19:57:33.014147+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:start_nexus @0.004s
+default	19:57:33.014324+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:receive_nexus @0.005s
+default	19:57:33.014403+0100	TheQuietFrame	quic_conn_initialize_inner [C23.1.1.1.1:2] [-745934608200a864] created QUIC connection (spin bit enabled)
+default	19:57:33.014563+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:start_connect @0.006s
+default	19:57:33.014735+0100	TheQuietFrame	quic_crypto_new_flow [C23.1.1.1.1:2] [-745934608200a864] TLS stream is: [C24]
+default	19:57:33.014740+0100	TheQuietFrame	[C24 4E2D6715-426A-42BC-9064-ACA6FBF4F416 IPv4#f1c71855:443 quic-connection, url hash: 5e9c6106, tls, definite, attribution: developer, context: com.apple.CFNetwork.NSURLSession.{F8F05FA5-C2FE-4703-B551-D3EB12FF05FF}{(null)}{Y}{2}{0x0} (private), proc: EFFC66A1-E6A2-3E39-A473-856B06D5CA8C, delegated upid: 0] start
+default	19:57:33.014753+0100	TheQuietFrame	[C24 IPv4#f1c71855:443 initial socket-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: path:start @0.000s
+default	19:57:33.014765+0100	TheQuietFrame	[C24 IPv4#f1c71855:443 waiting socket-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: path:satisfied @0.000s, uuid: A3D2AB23-E1BB-4A93-8BF0-8F737BAF9013
+default	19:57:33.014789+0100	TheQuietFrame	[C24 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:start_connect @0.000s
+default	19:57:33.014792+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C24] reporting state preparing
+default	19:57:33.014808+0100	TheQuietFrame	nw_flow_connected [C24 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] Transport protocol connected (quic-connection)
+default	19:57:33.014815+0100	TheQuietFrame	[C24 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:finish_transport @0.000s
+default	19:57:33.014863+0100	TheQuietFrame	boringssl_session_apply_protocol_options_for_transport_block_invoke_2(2323) [C24:1][0x120891960] TLS configured [min_version(0x0304) max_version(0x0304) name(redacted) tickets(false) false_start(false) enforce_ev(false) enforce_ats(false) ats_non_pfs_ciphersuite_allowed(false) ech(false) pqtls(true), pake(false)]
+default	19:57:33.014923+0100	TheQuietFrame	boringssl_context_info_handler(2390) [C24:1][0x120891960] Client handshake started
+default	19:57:33.015399+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS client enter_early_data
+default	19:57:33.015548+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS client read_server_hello
+default	19:57:33.058837+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client read_hello_retry_request
+default	19:57:33.058851+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client read_server_hello
+default	19:57:33.058923+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client read_encrypted_extensions
+default	19:57:33.058968+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client read_certificate_request
+default	19:57:33.059010+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client read_server_certificate
+default	19:57:33.059015+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client read_server_certificate_verify
+default	19:57:33.059169+0100	TheQuietFrame	boringssl_context_evaluate_trust_async(1833) [C24:1][0x120891960] Performing external trust evaluation
+default	19:57:33.059197+0100	TheQuietFrame	boringssl_context_evaluate_trust_async_external(1818) [C24:1][0x120891960] Asyncing for external verify block
+default	19:57:33.059290+0100	TheQuietFrame	Connection 23: asked to evaluate TLS Trust
+default	19:57:33.059370+0100	TheQuietFrame	Task <2946E7BC-F3D1-40F3-B11E-B9895E65E9C4>.<82> auth completion disp=1 cred=0x0
+default	19:57:33.059454+0100	TheQuietFrame	(Trust 0x120bc52c0) No pending evals, starting
+default	19:57:33.059607+0100	TheQuietFrame	[0x116557840] activating connection: mach=true listener=false peer=false name=com.apple.trustd
+default	19:57:33.059614+0100	TheQuietFrame	(Trust 0x120bc52c0) Completed async eval kickoff
+default	19:57:33.061182+0100	TheQuietFrame	(Trust 0x120bc52c0) trustd returned 4
+default	19:57:33.061203+0100	TheQuietFrame	System Trust Evaluation yielded status(0)
+default	19:57:33.061214+0100	TheQuietFrame	(Trust 0x120bc5680) No pending evals, starting
+default	19:57:33.061249+0100	TheQuietFrame	[0x116556580] activating connection: mach=true listener=false peer=false name=com.apple.trustd
+default	19:57:33.061294+0100	TheQuietFrame	(Trust 0x120bc5680) Completed async eval kickoff
+default	19:57:33.061309+0100	TheQuietFrame	[0x116557840] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	19:57:33.062927+0100	TheQuietFrame	(Trust 0x120bc5680) trustd returned 4
+default	19:57:33.062952+0100	TheQuietFrame	Connection 23: TLS Trust result 0
+default	19:57:33.062958+0100	TheQuietFrame	boringssl_context_evaluate_trust_async_external_block_invoke_3(1773) [C24:1][0x120891960] Returning from external verify block with result: true
+default	19:57:33.062972+0100	TheQuietFrame	boringssl_context_certificate_verify_callback(2014) [C24:1][0x120891960] Certificate verification result: OK
+default	19:57:33.063040+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client read_server_finished
+default	19:57:33.063056+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client send_end_of_early_data
+default	19:57:33.063070+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client send_client_encrypted_extensions
+default	19:57:33.063080+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client send_client_certificate
+default	19:57:33.063092+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client complete_second_flight
+default	19:57:33.063191+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS 1.3 client done
+default	19:57:33.063199+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS client finish_client_handshake
+default	19:57:33.063205+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C24:1][0x120891960] Client handshake state: TLS client done
+default	19:57:33.063211+0100	TheQuietFrame	boringssl_context_info_handler(2396) [C24:1][0x120891960] Client handshake done
+default	19:57:33.063397+0100	TheQuietFrame	nw_protocol_boringssl_signal_connected(895) [C24:1][0x120891960] TLS connected [server(0) version(0x0304) ciphersuite(TLS_AES_256_GCM_SHA384) group(0x001d) signature_alg(0x0403) alpn(h3) resumed(0) offered_ticket(0) in_early_data(0) early_data_accepted(0) false_started(0) ocsp_received(0) sct_received(0) connect_time(49ms) flight_time(43ms) rtt(43ms) write_stalls(0) read_stalls(4) pake(0x0000)]
+default	19:57:33.063424+0100	TheQuietFrame	nw_flow_connected [C24 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] Output protocol connected (tls)
+default	19:57:33.063463+0100	TheQuietFrame	[C24 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:finish_connect @0.048s
+default	19:57:33.063512+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C24] reporting state ready
+default	19:57:33.063518+0100	TheQuietFrame	[C24 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:changed_viability @0.048s
+default	19:57:33.063532+0100	TheQuietFrame	[0x116556580] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	19:57:33.063740+0100	TheQuietFrame	quic_pmtud_restart [C23.1.1.1.1:2] [-f45934608200a864] PMTUD enabled, max PMTU: 1500, header size: 28, current PMTU 1228
+default	19:57:33.063755+0100	TheQuietFrame	quic_crypto_tls_ready_inner [C23.1.1.1.1:2] [-f45934608200a864] QUIC connection established in 49.816 ms, RTT 39.266 ms
+default	19:57:33.063765+0100	TheQuietFrame	nw_flow_connected [C23.1.1.1.1 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] Transport protocol connected (quic-connection)
+default	19:57:33.063808+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:finish_transport @0.056s
+default	19:57:33.063819+0100	TheQuietFrame	nw_flow_connected [C23.1.1.1.1 IPv4#f1c71855:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] Output protocol connected (CFNetworkConnection-2830144213)
+default	19:57:33.063858+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:child_finish_connect @0.056s
+default	19:57:33.063925+0100	TheQuietFrame	[C23.1.1.1 Hostname#32417d8b:443 ready resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:child_finish_connect @0.056s
+default	19:57:33.063941+0100	TheQuietFrame	[C23.1.1 Hostname#32417d8b:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:child_finish_connect @0.056s
+default	19:57:33.064023+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: flow:child_finish_connect @0.057s
+default	19:57:33.064038+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: fallback:finish_primary @0.057s
+default	19:57:33.064062+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:changed_viability @0.057s
+default	19:57:33.064079+0100	TheQuietFrame	[C23.1.1.1 Hostname#32417d8b:443 ready resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:changed_viability @0.057s
+default	19:57:33.064090+0100	TheQuietFrame	[C23.1.1 Hostname#32417d8b:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: flow:changed_viability @0.057s
+default	19:57:33.064110+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: flow:changed_viability @0.057s
+default	19:57:33.064143+0100	TheQuietFrame	nw_flow_connected [C23 IPv4#f1c71855:443 in_progress parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] Output protocol connected (endpoint_flow)
+default	19:57:33.064161+0100	TheQuietFrame	[C23 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: flow:finish_connect @0.057s
+default	19:57:33.064194+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C23] reporting state ready
+default	19:57:33.064201+0100	TheQuietFrame	[C23 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: flow:changed_viability @0.057s
+default	19:57:33.064205+0100	TheQuietFrame	nw_connection_send_viability_changed_on_nw_queue [C23] viability_changed_handler(true)
+default	19:57:33.064249+0100	TheQuietFrame	quic_migration_path_event_block_invoke [C23.1.1.1.1:2] [-f45934608200a864] path b1b4468a1e823c5b over en0 received event established
+default	19:57:33.064279+0100	TheQuietFrame	quic_migration_evaluate_primary [C23.1.1.1.1:2] [-f45934608200a864] promoted path 0x121a58700 over en0 to primary
+default	19:57:33.064287+0100	TheQuietFrame	quic_migration_fallback [C23.1.1.1.1:2] [-f45934608200a864] fallback event, interface pdp_ip0, should fallback? 1, weak? 0
+error	19:57:33.064292+0100	TheQuietFrame	quic_migration_fallback [C23.1.1.1.1:2] [-f45934608200a864] no path found for pdp_ip0
+default	19:57:33.064296+0100	TheQuietFrame	nw_protocol_instance_report_ready [C23.1.1.1.1:2] Calling notify with interface <private> for flow_registration <private>
+default	19:57:33.064357+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: path:migrated @0.057s, uuid: A3D2AB23-E1BB-4A93-8BF0-8F737BAF9013
+default	19:57:33.064376+0100	TheQuietFrame	[C23.1.1.1 Hostname#32417d8b:443 ready resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: path:migrated @0.057s, uuid: 9B842199-B3F0-40BB-AE74-57C2619F7C80
+default	19:57:33.064388+0100	TheQuietFrame	[C23.1.1 Hostname#32417d8b:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] event: path:migrated @0.057s, uuid: 1F3E7C6E-BCD4-4D0D-837A-5B60B37832F4
+default	19:57:33.064405+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: path:migrated @0.057s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:33.064412+0100	TheQuietFrame	[C23 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: path:migrated @0.057s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:33.064421+0100	TheQuietFrame	quic_stream_create_inbound [C23.1.1.1.1:2] [-f45934608200a864] creating inbound stream 3
+default	19:57:33.064461+0100	TheQuietFrame	quic_migration_evaluate [C23.1.1.1.1:2] [-f45934608200a864] evaluating path migration
+default	19:57:33.064467+0100	TheQuietFrame	quic_migration_evaluate_block_invoke [C23.1.1.1.1:2] [-f45934608200a864] path b1b4468a1e823c5b state validated (0), ifname en0, primary? 1, initial? 1, fallback? 0, preferred? 0 lossy? 0
+default	19:57:33.064474+0100	TheQuietFrame	quic_migration_evaluate [C23.1.1.1.1:2] [-f45934608200a864] current path is usable, no strong fallback or we are probing
+default	19:57:33.064479+0100	TheQuietFrame	Connection 23: connected successfully
+default	19:57:33.064483+0100	TheQuietFrame	Connection 23: TLS handshake complete
+default	19:57:33.064488+0100	TheQuietFrame	Connection 23: ready C(Y) E(N)
+default	19:57:33.064620+0100	TheQuietFrame	[C23] event: client:connection_reused @0.057s
+default	19:57:33.064646+0100	TheQuietFrame	Task <2946E7BC-F3D1-40F3-B11E-B9895E65E9C4>.<82> now using Connection 23
+default	19:57:33.064766+0100	TheQuietFrame	Task <4E1B0F2F-BCD3-46F3-A188-F561105ADDC0>.<83> now using Connection 23
+default	19:57:33.064893+0100	TheQuietFrame	Task <28E7C949-76E7-4A67-AE6D-4B504B4009D9>.<84> now using Connection 23
+default	19:57:33.064980+0100	TheQuietFrame	Task <C52AA2D4-1263-41A0-9B38-9DF0922E4B3E>.<85> now using Connection 23
+default	19:57:33.065061+0100	TheQuietFrame	Task <1806F561-2A0B-45BF-92F2-35B940A0BEA5>.<86> now using Connection 23
+default	19:57:33.065205+0100	TheQuietFrame	Task <BB0D1D83-FB68-412D-87BA-E9082E83F9C5>.<87> now using Connection 23
+default	19:57:33.065331+0100	TheQuietFrame	Connection 23: received viability advisory(Y)
+default	19:57:33.065422+0100	TheQuietFrame	0x11f7ace18 ID=0 Task <2946E7BC-F3D1-40F3-B11E-B9895E65E9C4>.<82> sent request, body N 0
+default	19:57:33.065428+0100	TheQuietFrame	0x11f7adf98 ID=4 Task <4E1B0F2F-BCD3-46F3-A188-F561105ADDC0>.<83> sent request, body N 0
+default	19:57:33.065435+0100	TheQuietFrame	0x11f7ae858 ID=8 Task <28E7C949-76E7-4A67-AE6D-4B504B4009D9>.<84> sent request, body N 0
+default	19:57:33.065442+0100	TheQuietFrame	0x11f7ac018 ID=12 Task <C52AA2D4-1263-41A0-9B38-9DF0922E4B3E>.<85> sent request, body N 0
+default	19:57:33.065449+0100	TheQuietFrame	0x11f7ae158 ID=16 Task <1806F561-2A0B-45BF-92F2-35B940A0BEA5>.<86> sent request, body N 0
+default	19:57:33.065457+0100	TheQuietFrame	0x11f7aef58 ID=20 Task <BB0D1D83-FB68-412D-87BA-E9082E83F9C5>.<87> sent request, body N 0
+default	19:57:33.163158+0100	TheQuietFrame	boringssl_context_new_session_handler(1533) [C24:1][0x120891960] Asyncing for session update block
+default	19:57:33.163211+0100	TheQuietFrame	boringssl_context_new_session_handler(1533) [C24:1][0x120891960] Asyncing for session update block
+default	19:57:33.163273+0100	TheQuietFrame	nw_protocol_boringssl_signal_connected(895) [C24:1][0x120891960] TLS connected [server(0) version(0x0304) ciphersuite(TLS_AES_256_GCM_SHA384) group(0x001d) signature_alg(0x0403) alpn(h3) resumed(0) offered_ticket(0) in_early_data(0) early_data_accepted(0) false_started(0) ocsp_received(0) sct_received(0) connect_time(49ms) flight_time(43ms) rtt(43ms) write_stalls(0) read_stalls(4) pake(0x0000)]
+default	19:57:33.163295+0100	TheQuietFrame	nw_flow_connected [C24 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, uses cell, LQM: moderate, LQM: moderate)] Output protocol connected (tls)
+default	19:57:33.165030+0100	TheQuietFrame	boringssl_context_new_session_handler_block_invoke(1536) [C24:1][0x120891960] Returning from session update block
+default	19:57:33.165105+0100	TheQuietFrame	boringssl_context_new_session_handler_block_invoke(1536) [C24:1][0x120891960] Returning from session update block
+default	19:57:33.277194+0100	TheQuietFrame	quic_stream_create_inbound [C23.1.1.1.1:2] [-f45934608200a864] creating inbound stream 7 (out of order)
+default	19:57:33.277340+0100	TheQuietFrame	quic_stream_create_inbound [C23.1.1.1.1:2] [-f45934608200a864] creating inbound stream 11
+default	19:57:33.277925+0100	TheQuietFrame	0x11f7adf98 ID=4 Task <4E1B0F2F-BCD3-46F3-A188-F561105ADDC0>.<83> received response, status 200 content K
+default	19:57:33.278137+0100	TheQuietFrame	[0x116556580] activating connection: mach=true listener=false peer=false name=com.apple.trustd
+default	19:57:33.281389+0100	TheQuietFrame	[0x116556580] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	19:57:33.281591+0100	TheQuietFrame	Task <4E1B0F2F-BCD3-46F3-A188-F561105ADDC0>.<83> response ended
+default	19:57:33.281687+0100	TheQuietFrame	Task <4E1B0F2F-BCD3-46F3-A188-F561105ADDC0>.<83> done using Connection 23
+default	19:57:33.281912+0100	TheQuietFrame	Task <4E1B0F2F-BCD3-46F3-A188-F561105ADDC0>.<83> summary for task success {transaction_duration_ms=279, response_status=200, connection=23, reused=1, reused_after_ms=0, request_start_ms=62, request_duration_ms=0, response_start_ms=275, response_duration_ms=3, request_bytes=337, request_throughput_kbps=4259, response_bytes=875, response_throughput_kbps=1809, cache_hit=true}
+default	19:57:33.281929+0100	TheQuietFrame	Task <4E1B0F2F-BCD3-46F3-A188-F561105ADDC0>.<83> finished successfully
+default	19:57:33.282114+0100	TheQuietFrame	0x11f7ae858 ID=8 Task <28E7C949-76E7-4A67-AE6D-4B504B4009D9>.<84> received response, status 200 content K
+default	19:57:33.282390+0100	TheQuietFrame	Task <28E7C949-76E7-4A67-AE6D-4B504B4009D9>.<84> response ended
+default	19:57:33.282430+0100	TheQuietFrame	Task <28E7C949-76E7-4A67-AE6D-4B504B4009D9>.<84> done using Connection 23
+default	19:57:33.282448+0100	TheQuietFrame	Task <28E7C949-76E7-4A67-AE6D-4B504B4009D9>.<84> summary for task success {transaction_duration_ms=279, response_status=200, connection=23, reused=1, reused_after_ms=0, request_start_ms=61, request_duration_ms=0, response_start_ms=279, response_duration_ms=0, request_bytes=362, request_throughput_kbps=5189, response_bytes=798, response_throughput_kbps=16888, cache_hit=true}
+default	19:57:33.282452+0100	TheQuietFrame	Task <28E7C949-76E7-4A67-AE6D-4B504B4009D9>.<84> finished successfully
+default	19:57:33.351680+0100	TheQuietFrame	policyStatus:<BKSHIDEventDeliveryPolicyObserver: 0x10ac79a40; token: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default; status: ancestor> was:none
+default	19:57:33.351696+0100	TheQuietFrame	Scene target of keyboard event deferring environment did change: 1; scene: UIWindowScene: 0x1061e1110; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default
+default	19:57:33.351727+0100	TheQuietFrame	[0x10ae709a0] Scene target of event deferring environments did update: scene: 0x1061e1110; current systemShellManagesKeyboardFocus: 1; systemShellManagesKeyboardFocusForScene: 1; eligibleForRecordRemoval: 1;
+default	19:57:33.351742+0100	TheQuietFrame	Scene became target of keyboard event deferring environment: UIWindowScene: 0x1061e1110; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default
+default	19:57:33.360616+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:57:33.366939+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:57:33.465145+0100	TheQuietFrame	0x11f7ace18 ID=0 Task <2946E7BC-F3D1-40F3-B11E-B9895E65E9C4>.<82> received response, status 304 content U
+default	19:57:33.466527+0100	TheQuietFrame	Task <2946E7BC-F3D1-40F3-B11E-B9895E65E9C4>.<82> done using Connection 23
+default	19:57:33.466577+0100	TheQuietFrame	Task <2946E7BC-F3D1-40F3-B11E-B9895E65E9C4>.<82> summary for task success {transaction_duration_ms=463, response_status=304, connection=23, protocol="h3", domain_lookup_duration_ms=1, connect_duration_ms=51, secure_connection_duration_ms=49, private_relay=false, request_start_ms=62, request_duration_ms=0, response_start_ms=462, response_duration_ms=0, request_bytes=396, request_throughput_kbps=3964, response_bytes=76, response_throughput_kbps=0, cache_hit=true}
+default	19:57:33.466604+0100	TheQuietFrame	Task <2946E7BC-F3D1-40F3-B11E-B9895E65E9C4>.<82> finished successfully
+default	19:57:33.475922+0100	TheQuietFrame	0x11f7aef58 ID=20 Task <BB0D1D83-FB68-412D-87BA-E9082E83F9C5>.<87> received response, status 304 content U
+default	19:57:33.476772+0100	TheQuietFrame	Task <BB0D1D83-FB68-412D-87BA-E9082E83F9C5>.<87> done using Connection 23
+default	19:57:33.476799+0100	TheQuietFrame	Task <BB0D1D83-FB68-412D-87BA-E9082E83F9C5>.<87> summary for task success {transaction_duration_ms=472, response_status=304, connection=23, reused=1, reused_after_ms=0, request_start_ms=61, request_duration_ms=0, response_start_ms=472, response_duration_ms=0, request_bytes=415, request_throughput_kbps=12528, response_bytes=100, response_throughput_kbps=0, cache_hit=true}
+default	19:57:33.476809+0100	TheQuietFrame	Task <BB0D1D83-FB68-412D-87BA-E9082E83F9C5>.<87> finished successfully
+default	19:57:33.605561+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:57:35.041819+0100	TheQuietFrame	0x11f7ac018 ID=12 Task <C52AA2D4-1263-41A0-9B38-9DF0922E4B3E>.<85> received response, status 304 content U
+default	19:57:35.043061+0100	TheQuietFrame	Task <C52AA2D4-1263-41A0-9B38-9DF0922E4B3E>.<85> done using Connection 23
+default	19:57:35.043129+0100	TheQuietFrame	Task <C52AA2D4-1263-41A0-9B38-9DF0922E4B3E>.<85> summary for task success {transaction_duration_ms=2039, response_status=304, connection=23, reused=1, reused_after_ms=0, request_start_ms=61, request_duration_ms=0, response_start_ms=2038, response_duration_ms=0, request_bytes=399, request_throughput_kbps=6488, response_bytes=120, response_throughput_kbps=996, cache_hit=true}
+default	19:57:35.043143+0100	TheQuietFrame	Task <C52AA2D4-1263-41A0-9B38-9DF0922E4B3E>.<85> finished successfully
+default	19:57:35.319361+0100	TheQuietFrame	[C23.1.1 Hostname#32417d8b:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.312s, uuid: 1F3E7C6E-BCD4-4D0D-837A-5B60B37832F4
+default	19:57:35.319483+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: path:satisfied_change @2.312s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:35.319497+0100	TheQuietFrame	[C23 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, uses cell, fallback: {interface: pdp_ip0, agent: 1C157BCD-EDF6-4A44-B378-088025A8D07C, generation: 5532}, LQM: moderate, LQM: moderate)] event: path:satisfied_change @2.312s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:35.320101+0100	TheQuietFrame	[C23 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.312s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:35.320163+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.313s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:35.320171+0100	TheQuietFrame	[C23 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.313s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:35.320332+0100	TheQuietFrame	[C23.1.1.1 Hostname#32417d8b:443 ready resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.313s, uuid: 9B842199-B3F0-40BB-AE74-57C2619F7C80
+default	19:57:35.320346+0100	TheQuietFrame	[C23.1.1 Hostname#32417d8b:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.313s, uuid: 1F3E7C6E-BCD4-4D0D-837A-5B60B37832F4
+default	19:57:35.322170+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.313s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:35.322184+0100	TheQuietFrame	[C23 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.313s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:35.322388+0100	TheQuietFrame	[C24 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.306s, uuid: A3D2AB23-E1BB-4A93-8BF0-8F737BAF9013
+default	19:57:35.322901+0100	TheQuietFrame	quic_migration_fallback [C23.1.1.1.1:2] [-f45934608200a864] fallback event, no longer in fallback mode
+default	19:57:35.322906+0100	TheQuietFrame	quic_migration_evaluate [C23.1.1.1.1:2] [-f45934608200a864] evaluating path migration
+default	19:57:35.322940+0100	TheQuietFrame	quic_migration_evaluate_block_invoke [C23.1.1.1.1:2] [-f45934608200a864] path b1b4468a1e823c5b state validated (0), ifname en0, primary? 1, initial? 1, fallback? 0, preferred? 0 lossy? 0
+default	19:57:35.322956+0100	TheQuietFrame	quic_migration_evaluate [C23.1.1.1.1:2] [-f45934608200a864] current path is usable, no strong fallback or we are probing
+default	19:57:35.322968+0100	TheQuietFrame	[C24 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:receive_nexus @2.307s
+default	19:57:35.325380+0100	TheQuietFrame	[C23.1.1.1.1 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.315s, uuid: A3D2AB23-E1BB-4A93-8BF0-8F737BAF9013
+default	19:57:35.325407+0100	TheQuietFrame	[C23.1.1.1 Hostname#32417d8b:443 ready resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.315s, uuid: 9B842199-B3F0-40BB-AE74-57C2619F7C80
+default	19:57:35.325419+0100	TheQuietFrame	[C23.1.1 Hostname#32417d8b:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.315s, uuid: 1F3E7C6E-BCD4-4D0D-837A-5B60B37832F4
+default	19:57:35.325440+0100	TheQuietFrame	[C23.1 Hostname#32417d8b:443 ready fallback (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.315s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:35.325448+0100	TheQuietFrame	[C23 IPv4#f1c71855:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied_change @2.315s, uuid: 71E3B8BC-E811-470B-A998-9247AA9CB792
+default	19:57:35.326738+0100	TheQuietFrame	nw_endpoint_resolver_update [C25.1 dry-run Hostname#32417d8b:443 in_progress resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] Adding endpoint handler for IPv4#f1c71855:443
+default	19:57:36.796101+0100	TheQuietFrame	[C23] event: client:data_stall @3.788s
+default	19:57:41.901583+0100	TheQuietFrame	0x11f7ae158 ID=16 Task <1806F561-2A0B-45BF-92F2-35B940A0BEA5>.<86> received response, status 200 content K
+default	19:57:41.905993+0100	TheQuietFrame	Task <1806F561-2A0B-45BF-92F2-35B940A0BEA5>.<86> response ended
+default	19:57:41.906100+0100	TheQuietFrame	[C23] event: client:connection_idle @8.899s
+default	19:57:41.906164+0100	TheQuietFrame	Task <1806F561-2A0B-45BF-92F2-35B940A0BEA5>.<86> done using Connection 23
+default	19:57:41.906258+0100	TheQuietFrame	Task <1806F561-2A0B-45BF-92F2-35B940A0BEA5>.<86> summary for task success {transaction_duration_ms=8902, response_status=200, connection=23, reused=1, reused_after_ms=0, request_start_ms=61, request_duration_ms=0, response_start_ms=8897, response_duration_ms=4, request_bytes=382, request_throughput_kbps=8192, response_bytes=1705, response_throughput_kbps=2795, cache_hit=true}
+default	19:57:41.906270+0100	TheQuietFrame	Task <1806F561-2A0B-45BF-92F2-35B940A0BEA5>.<86> finished successfully
+default	19:57:51.537731+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:57:51.538512+0100	TheQuietFrame	policyStatus:<BKSHIDEventDeliveryPolicyObserver: 0x10ac79a40; token: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default; status: none> was:ancestor
+default	19:57:51.538541+0100	TheQuietFrame	Scene target of keyboard event deferring environment did change: 0; scene: UIWindowScene: 0x1061e1110; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default
+default	19:57:59.447469+0100	TheQuietFrame	SpringBoard emitted telemetry: 1
+default	19:57:59.447475+0100	TheQuietFrame	Updating event->rollingFGTimestamp from INVALID_FOREGROUND_TIMESTAMP to 5013978595959
+default	19:57:59.447484+0100	TheQuietFrame	Not push traits update to screen for new style 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:57:59.447489+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:57:59.447501+0100	TheQuietFrame	Deactivation reason added: 5; deactivation reasons: 0 -> 32; animating application lifecycle event: 1
+default	19:57:59.447508+0100	TheQuietFrame	App transitioned to background, suspending HangTracing.
+default	19:57:59.447514+0100	TheQuietFrame	App with bundleID:com.ignea.thequietframe is no longer foreground at time=5013978963404, attempting to emit telemetry with emission type: HTFGUpdateAppBackgrounded
+default	19:57:59.447568+0100	TheQuietFrame	app will resign active for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:59.447575+0100	TheQuietFrame	Deactivation reason added: 12; deactivation reasons: 32 -> 4128; animating application lifecycle event: 1
+default	19:57:59.447580+0100	TheQuietFrame	app will suspend for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:59.447587+0100	TheQuietFrame	suspended changed from: NO --> YES for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:59.447592+0100	TheQuietFrame	_internal_deactivateEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>, clientCount: 0, suspended: 1
+default	19:57:59.447607+0100	TheQuietFrame	_internal_teardownUnderlyingPlayerIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:59.447618+0100	TheQuietFrame	_internal_deactivateEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000> tearedDown: 1
+default	19:57:59.447640+0100	TheQuietFrame	_internal_cooldownEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:59.448170+0100	TheQuietFrame	_internal_cooldownUnderlyingPlayerIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:57:59.448240+0100	TheQuietFrame	        CHHapticEngine.mm:1224  -[CHHapticEngine stopPrewarm]: Stopping prewarm on the underlying Haptic Player
+default	19:57:59.448252+0100	TheQuietFrame	        AVHapticPlayer.mm:665   -[AVHapticPlayer stopPrewarm]: stop prewarm: clientID: 0x1002408
+default	19:57:59.448259+0100	TheQuietFrame	        AVHapticClient.mm:353   -[AVHapticClient stopPrewarm]: Client 0x1002408 stopping prewarm
+default	19:58:00.820616+0100	TheQuietFrame	Not push traits update to screen for new style 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:58:00.820733+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:58:00.820764+0100	TheQuietFrame	Deactivation reason removed: 12; deactivation reasons: 4128 -> 32; animating application lifecycle event: 1
+default	19:58:00.820789+0100	TheQuietFrame	Send setDeactivating: N (-DeactivationReason:SuspendedEventsOnly)
+default	19:58:00.821156+0100	TheQuietFrame	app did resume for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.821162+0100	TheQuietFrame	suspended changed from: YES --> NO for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.821438+0100	TheQuietFrame	Deactivation reason removed: 5; deactivation reasons: 32 -> 0; animating application lifecycle event: 0
+default	19:58:00.821444+0100	TheQuietFrame	App transitioned to foreground, resuming HangTracing.
+default	19:58:00.821451+0100	TheQuietFrame	Updating event->rollingFGTimestamp from INVALID_FOREGROUND_TIMESTAMP to 5014012088408
+default	19:58:00.835130+0100	TheQuietFrame	{"msg":"CLLocationManager", "event":"activity", "_cmd":"onDidBecomeActive:", "self":"0x10ae449b0", "notification":<private>}
+default	19:58:00.835141+0100	TheQuietFrame	app did become active for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.835561+0100	TheQuietFrame	Task <C0CAA959-50EC-41B9-9807-AC7D0FD95FC4>.<88> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:58:00.835825+0100	TheQuietFrame	Task <D3D60120-2C11-4383-8A78-4E2889ABB124>.<89> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:58:00.836163+0100	TheQuietFrame	Task <E33A7351-DBE4-48B6-B0DA-8B18E1103FC9>.<90> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:58:00.836738+0100	TheQuietFrame	Task <94274D4B-1BC3-4CF9-A570-4F1775CA65A5>.<91> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:58:00.837040+0100	TheQuietFrame	Task <408656F9-D1EF-4541-936C-0A7FE25886BC>.<92> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:58:00.838999+0100	TheQuietFrame	Task <F661CC20-381F-40D5-840C-162830C2E3AB>.<93> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:58:00.839234+0100	TheQuietFrame	[C23] event: client:connection_reused @27.822s
+default	19:58:00.839715+0100	TheQuietFrame	Task <E33A7351-DBE4-48B6-B0DA-8B18E1103FC9>.<90> now using Connection 23
+default	19:58:00.840209+0100	TheQuietFrame	Task <7A040E9E-0918-4E8C-919C-0B8A0929AABD>.<94> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:58:00.840703+0100	TheQuietFrame	Task <408656F9-D1EF-4541-936C-0A7FE25886BC>.<92> now using Connection 23
+default	19:58:00.840894+0100	TheQuietFrame	Task <F8292089-B257-4CCD-B194-9AEE080BD656>.<95> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	19:58:00.841681+0100	TheQuietFrame	[(FBSceneManager):sceneID:com.ignea.thequietframe-default] Received action(s) in scene-update: <FBSceneSnapshotAction: 0x17d1be2c>
+default	19:58:00.842116+0100	TheQuietFrame	Not push traits update to screen for new style 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:58:00.842134+0100	TheQuietFrame	[0x116554640] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	19:58:00.842139+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:58:00.842189+0100	TheQuietFrame	[0x121d32530] Session canceled.
+default	19:58:00.842201+0100	TheQuietFrame	Deactivation reason added: 12; deactivation reasons: 0 -> 4096; animating application lifecycle event: 0
+default	19:58:00.842212+0100	TheQuietFrame	App transitioned to background, suspending HangTracing.
+default	19:58:00.842219+0100	TheQuietFrame	App with bundleID:com.ignea.thequietframe is no longer foreground at time=5014012439993, attempting to emit telemetry with emission type: HTFGUpdateAppBackgrounded
+default	19:58:00.842375+0100	TheQuietFrame	app will resign active for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.842381+0100	TheQuietFrame	app will suspend for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.842386+0100	TheQuietFrame	Deactivation reason added: 11; deactivation reasons: 4096 -> 6144; animating application lifecycle event: 0
+default	19:58:00.842396+0100	TheQuietFrame	suspended changed from: NO --> YES for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.842401+0100	TheQuietFrame	_internal_deactivateEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>, clientCount: 0, suspended: 1
+default	19:58:00.842406+0100	TheQuietFrame	_internal_teardownUnderlyingPlayerIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.842411+0100	TheQuietFrame	_internal_deactivateEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000> tearedDown: 1
+default	19:58:00.842447+0100	TheQuietFrame	_internal_cooldownEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.842453+0100	TheQuietFrame	_internal_cooldownUnderlyingPlayerIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.842461+0100	TheQuietFrame	        CHHapticEngine.mm:1224  -[CHHapticEngine stopPrewarm]: Stopping prewarm on the underlying Haptic Player
+default	19:58:00.842467+0100	TheQuietFrame	        AVHapticPlayer.mm:665   -[AVHapticPlayer stopPrewarm]: stop prewarm: clientID: 0x1002408
+default	19:58:00.842477+0100	TheQuietFrame	        AVHapticClient.mm:353   -[AVHapticClient stopPrewarm]: Client 0x1002408 stopping prewarm
+default	19:58:00.842535+0100	TheQuietFrame	app will suspend for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x110def000>
+default	19:58:00.842555+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: (null)
+default	19:58:00.842570+0100	TheQuietFrame	Creating new assertion because there is no existing background assertion.
+default	19:58:00.842580+0100	TheQuietFrame	Creating new background assertion
+default	19:58:00.842657+0100	TheQuietFrame	Created new background assertion <BKSProcessAssertion: 0x121d321c0>
+default	19:58:00.842704+0100	TheQuietFrame	agent connection cancelled (details: Session manually canceled)
+default	19:58:00.842802+0100	TheQuietFrame	[0x121d32530] Disposing of session
+default	19:58:00.842890+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	19:58:00.842896+0100	TheQuietFrame	Created background task <private>.
+default	19:58:00.842907+0100	TheQuietFrame	com.ignea.thequietframe(9224) invalidateConnection (appDidSuspend)
+default	19:58:00.843003+0100	TheQuietFrame	[0x121d42d00] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	19:58:00.843028+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x11f2c1f20>
+default	19:58:00.843034+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x121d321c0>
+default	19:58:00.843146+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	19:58:00.843163+0100	TheQuietFrame	Created background task <private>.
+default	19:58:00.843190+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 18
+default	19:58:00.843214+0100	TheQuietFrame	Ending task with identifier 18 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x11f2c1f20>
+default	19:58:00.843230+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 18: <private>)
+default	19:58:00.843235+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x11f2c1f20>
+default	19:58:00.843242+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x121d321c0>
+default	19:58:00.843420+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	19:58:00.843425+0100	TheQuietFrame	Created background task <private>.
+default	19:58:00.843430+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 19
+default	19:58:00.843467+0100	TheQuietFrame	Ending task with identifier 19 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x11f2c1bc0>
+default	19:58:00.843475+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 19: <private>)
+default	19:58:00.843579+0100	TheQuietFrame	{"msg":"CLLocationManager", "event":"activity", "_cmd":"onDidEnterBackground:", "self":"0x10ae449b0", "notification":<private>}
+default	19:58:00.843588+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x11f2c2130>
+default	19:58:00.843594+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x121d321c0>
+default	19:58:00.843599+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	19:58:00.843604+0100	TheQuietFrame	Created background task <private>.
+default	19:58:00.843609+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 20
+default	19:58:00.843615+0100	TheQuietFrame	Ending task with identifier 20 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x11f2c2130>
+default	19:58:00.843622+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 20: <private>)
+default	19:58:00.843658+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x11f2c2130>
+default	19:58:00.843664+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x121d321c0>
+default	19:58:00.843668+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	19:58:00.843672+0100	TheQuietFrame	Created background task <private>.
+default	19:58:00.843677+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 21
+default	19:58:00.843683+0100	TheQuietFrame	Ending task with identifier 21 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x11f2c2130>
+default	19:58:00.843688+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 21: <private>)
+default	19:58:00.843693+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x11f2c2130>
+default	19:58:00.843698+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x121d321c0>
+default	19:58:00.843704+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	19:58:00.844110+0100	TheQuietFrame	Created background task <private>.
+default	19:58:00.844115+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 22
+default	19:58:00.844121+0100	TheQuietFrame	Ending task with identifier 22 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x11f2c2130>
+default	19:58:00.844126+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 22: <private>)
+default	19:58:00.845061+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x11f2c3cc0>
+default	19:58:00.845067+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x121d321c0>
+default	19:58:00.845076+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	19:58:00.845082+0100	TheQuietFrame	Created background task <private>.
+default	19:58:00.845087+0100	TheQuietFrame	forceReloadInputViews
+default	19:58:00.845098+0100	TheQuietFrame	Reloading input views for key-window scene responder: <(null): 0x0; > force:Y
+default	19:58:00.845141+0100	TheQuietFrame	Push traits update to screen for new style 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:58:00.845319+0100	TheQuietFrame	forceReloadInputViews
+default	19:58:00.845334+0100	TheQuietFrame	Reloading input views for key-window scene responder: <(null): 0x0; > force:Y
+default	19:58:00.845638+0100	TheQuietFrame	Should not send trait collection or coordinate space update, interface style 2 -> 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:58:00.845719+0100	TheQuietFrame	Performing snapshot request 0x11f7f2f10 (type 1)
+default	19:58:00.845732+0100	TheQuietFrame	[(FBSceneManager):sceneID:com.ignea.thequietframe-default] Sending action(s): <FBSSceneSnapshotRequestAction: 0x24080003>
+default	19:58:00.848912+0100	TheQuietFrame	Task <F661CC20-381F-40D5-840C-162830C2E3AB>.<93> now using Connection 23
+default	19:58:00.863317+0100	TheQuietFrame	0x116640558 ID=24 Task <E33A7351-DBE4-48B6-B0DA-8B18E1103FC9>.<90> sent request, body N 0
+default	19:58:00.863325+0100	TheQuietFrame	0x116642bd8 ID=28 Task <408656F9-D1EF-4541-936C-0A7FE25886BC>.<92> sent request, body N 0
+default	19:58:00.863331+0100	TheQuietFrame	0x1166401d8 ID=32 Task <F661CC20-381F-40D5-840C-162830C2E3AB>.<93> sent request, body N 0
+default	19:58:00.864509+0100	TheQuietFrame	Task <7A040E9E-0918-4E8C-919C-0B8A0929AABD>.<94> now using Connection 23
+default	19:58:00.864963+0100	TheQuietFrame	Task <C0CAA959-50EC-41B9-9807-AC7D0FD95FC4>.<88> summary for task success {transaction_duration_ms=25, response_status=200, cache_hit=true}
+default	19:58:00.864975+0100	TheQuietFrame	Task <C0CAA959-50EC-41B9-9807-AC7D0FD95FC4>.<88> finished successfully
+default	19:58:00.865406+0100	TheQuietFrame	Task <D3D60120-2C11-4383-8A78-4E2889ABB124>.<89> summary for task success {transaction_duration_ms=25, response_status=200, cache_hit=true}
+default	19:58:00.865411+0100	TheQuietFrame	Task <D3D60120-2C11-4383-8A78-4E2889ABB124>.<89> finished successfully
+default	19:58:00.867147+0100	TheQuietFrame	Task <94274D4B-1BC3-4CF9-A570-4F1775CA65A5>.<91> summary for task success {transaction_duration_ms=26, response_status=200, cache_hit=true}
+default	19:58:00.867166+0100	TheQuietFrame	Task <94274D4B-1BC3-4CF9-A570-4F1775CA65A5>.<91> finished successfully
+default	19:58:00.867180+0100	TheQuietFrame	Task <F8292089-B257-4CCD-B194-9AEE080BD656>.<95> now using Connection 23
+default	19:58:00.897463+0100	TheQuietFrame	0x116641c18 ID=36 Task <7A040E9E-0918-4E8C-919C-0B8A0929AABD>.<94> sent request, body N 0
+default	19:58:00.897469+0100	TheQuietFrame	0x116643818 ID=40 Task <F8292089-B257-4CCD-B194-9AEE080BD656>.<95> sent request, body N 0
+default	19:58:00.968909+0100	TheQuietFrame	Received state update for 9224 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	19:58:00.975414+0100	TheQuietFrame	Snapshot request 0x11f7f2f10 complete
+default	19:58:00.975565+0100	TheQuietFrame	forceReloadInputViews
+default	19:58:00.975574+0100	TheQuietFrame	Reloading input views for key-window scene responder: <(null): 0x0; > force:Y
+default	19:58:00.975631+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 23
+default	19:58:00.975641+0100	TheQuietFrame	Ending task with identifier 23 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x11f2c3cc0>
+default	19:58:00.975646+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 23: <private>)
+default	19:58:00.977364+0100	TheQuietFrame	Push traits update to screen for new style 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:58:00.977875+0100	TheQuietFrame	Should not send trait collection or coordinate space update, interface style 2 -> 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:58:00.978636+0100	TheQuietFrame	[0x10ae709a0] [keyboardFocus] Disabling event deferring records requested: adding recreation reason: detachedContext; for reason: _UIEventDeferringManager: 0x10ae709a0: disabling keyboardFocus: context detached for window: 0x10ad90000; contextID: 0xA7E0B048
+default	19:58:00.979538+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: (null)
+default	19:58:00.979563+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x121d321c0>
+default	19:58:00.979568+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	19:58:00.979573+0100	TheQuietFrame	Created background task <private>.
+default	19:58:00.980453+0100	TheQuietFrame	Target list changed:
+default	19:58:00.980460+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 17
+default	19:58:00.980487+0100	TheQuietFrame	Ending task with identifier 17 and description: <private>, _expireHandler: (null)
+default	19:58:00.980493+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 17: <private>)
+default	19:58:00.983870+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 3321FB76-0811-4ECE-A189-C00739361161
+default	19:58:00.983895+0100	TheQuietFrame	Not push traits update to screen for new style 2, <UIWindowScene: 0x1061e1110> (3321FB76-0811-4ECE-A189-C00739361161)
+default	19:58:00.993379+0100	TheQuietFrame	Received state update for 9224 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	19:58:01.008733+0100	TheQuietFrame	0x116642bd8 ID=28 Task <408656F9-D1EF-4541-936C-0A7FE25886BC>.<92> received response, status 200 content K
+default	19:58:01.008846+0100	TheQuietFrame	Task <408656F9-D1EF-4541-936C-0A7FE25886BC>.<92> response ended
+default	19:58:01.008908+0100	TheQuietFrame	Task <408656F9-D1EF-4541-936C-0A7FE25886BC>.<92> done using Connection 23
+default	19:58:01.008991+0100	TheQuietFrame	Task <408656F9-D1EF-4541-936C-0A7FE25886BC>.<92> summary for task success {transaction_duration_ms=178, response_status=200, connection=23, reused=1, reused_after_ms=0, request_start_ms=2, request_duration_ms=16, response_start_ms=178, response_duration_ms=0, request_bytes=365, request_throughput_kbps=177, response_bytes=815, response_throughput_kbps=29773, cache_hit=true}
+default	19:58:01.008996+0100	TheQuietFrame	Task <408656F9-D1EF-4541-936C-0A7FE25886BC>.<92> finished successfully
+default	19:58:01.051662+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 24
+default	19:58:01.051670+0100	TheQuietFrame	Ending task with identifier 24 and description: <private>, _expireHandler: (null)
+default	19:58:01.051676+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 24: <private>)
+default	19:58:01.051687+0100	TheQuietFrame	Will invalidate assertion: <BKSProcessAssertion: 0x121d321c0> for task identifier: 24
+default	19:58:01.073751+0100	TheQuietFrame	Received state update for 9224 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	19:58:01.154128+0100	TheQuietFrame	0x116640558 ID=24 Task <E33A7351-DBE4-48B6-B0DA-8B18E1103FC9>.<90> received response, status 304 content U
+default	19:58:01.154473+0100	TheQuietFrame	Task <E33A7351-DBE4-48B6-B0DA-8B18E1103FC9>.<90> done using Connection 23
+default	19:58:01.154499+0100	TheQuietFrame	Task <E33A7351-DBE4-48B6-B0DA-8B18E1103FC9>.<90> summary for task success {transaction_duration_ms=325, response_status=304, connection=23, reused=1, reused_after_ms=18924, request_start_ms=1, request_duration_ms=18, response_start_ms=324, response_duration_ms=0, request_bytes=396, request_throughput_kbps=168, response_bytes=64, response_throughput_kbps=1001, cache_hit=true}
+default	19:58:01.154675+0100	TheQuietFrame	Task <E33A7351-DBE4-48B6-B0DA-8B18E1103FC9>.<90> finished successfully
+default	19:58:01.196500+0100	TheQuietFrame	Received state update for 9224 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	19:58:01.248903+0100	TheQuietFrame	0x116643818 ID=40 Task <F8292089-B257-4CCD-B194-9AEE080BD656>.<95> received response, status 304 content U
+default	19:58:01.249134+0100	TheQuietFrame	Task <F8292089-B257-4CCD-B194-9AEE080BD656>.<95> done using Connection 23
+default	19:58:01.249520+0100	TheQuietFrame	Task <F8292089-B257-4CCD-B194-9AEE080BD656>.<95> summary for task success {transaction_duration_ms=397, response_status=304, connection=23, reused=1, reused_after_ms=0, request_start_ms=2, request_duration_ms=15, response_start_ms=396, response_duration_ms=0, request_bytes=136, request_throughput_kbps=70, response_bytes=85, response_throughput_kbps=1915, cache_hit=true}
+default	19:58:01.249552+0100	TheQuietFrame	Task <F8292089-B257-4CCD-B194-9AEE080BD656>.<95> finished successfully
+default	19:58:01.296716+0100	TheQuietFrame	[C24 IPv4#f1c71855:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:receive_nexus @28.282s

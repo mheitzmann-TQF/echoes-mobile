@@ -29,6 +29,7 @@ import {
   checkGraceEligibility,
   type GraceResult,
 } from './accessCache';
+import { iapLog, generateFlowId } from './iosLogger';
 
 // Module-level deduplication - shared across all hook instances
 let moduleInstallId: string | null = null;
@@ -174,22 +175,33 @@ async function checkEntitlementStatus(installId: string): Promise<{
 async function verifyPurchaseWithBackendInternal(
   installId: string,
   purchase: Purchase,
-  isRetry = false
+  isRetry = false,
+  flowId?: string
 ): Promise<{
   entitlement: 'full' | 'free';
   expiresAt: string | null;
 }> {
+  const fid = flowId || generateFlowId();
   try {
     const payload = getPurchasePayload(purchase);
     console.log('[ENTITLEMENT] Verifying purchase with backend:', payload, isRetry ? '(retry)' : '');
+    iapLog.verify.info('Starting verification', {
+      installId: installId.substring(0, 8) + '...',
+      productId: purchase.productId,
+      transactionId: purchase.transactionId,
+      isRetry
+    }, fid);
     
     const sessionToken = await ensureSession();
     if (!sessionToken) {
       console.error('[ENTITLEMENT] No session token available for verification');
+      iapLog.verify.error('No session token', {}, fid);
       return { entitlement: 'free', expiresAt: null };
     }
     
     const apiBase = getBillingApiBase();
+    iapLog.verify.info('Calling backend verify', { apiBase }, fid);
+    
     const response = await fetch(`${apiBase}/api/billing/verify`, {
       method: 'POST',
       headers: { 
@@ -202,29 +214,37 @@ async function verifyPurchaseWithBackendInternal(
       }),
     });
     
+    iapLog.verify.info('Backend response', { status: response.status }, fid);
+    
     if (response.status === 401) {
       if (!isRetry) {
         console.warn('[ENTITLEMENT] Session expired during verification, refreshing and retrying...');
+        iapLog.verify.warn('Session expired, retrying', {}, fid);
         await refreshSession();
-        return verifyPurchaseWithBackendInternal(installId, purchase, true);
+        return verifyPurchaseWithBackendInternal(installId, purchase, true, fid);
       }
       console.error('[ENTITLEMENT] Session still invalid after refresh during verification');
+      iapLog.verify.error('Session invalid after retry', {}, fid);
       return { entitlement: 'free', expiresAt: null };
     }
     
     if (!response.ok) {
       console.error('[ENTITLEMENT] Verification failed:', response.status);
+      const errorText = await response.text().catch(() => 'unknown');
+      iapLog.verify.error('Backend rejected', { status: response.status, body: errorText }, fid);
       return { entitlement: 'free', expiresAt: null };
     }
     
     const data = await response.json();
     console.log('[ENTITLEMENT] Verification response:', data);
+    iapLog.verify.info('Verification response', data, fid);
     
     await finishTransaction(purchase);
     
     // Normalize 'pro' to 'full' for consistent internal state
     const entitlement = (data.entitlement === 'pro' || data.entitlement === 'full') ? 'full' : 'free';
     console.log('[ENTITLEMENT] Verification result:', { entitlement, expiresAt: data.expiresAt });
+    iapLog.result.info('Verification complete', { entitlement, expiresAt: data.expiresAt }, fid);
     
     // Mark successful verification time to protect against stale status overwrites
     if (entitlement === 'full') {
@@ -236,8 +256,9 @@ async function verifyPurchaseWithBackendInternal(
       entitlement,
       expiresAt: data.expiresAt || null,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('[ENTITLEMENT] Error verifying purchase:', error);
+    iapLog.verify.error('Exception', { message: error?.message }, fid);
     return { entitlement: 'free', expiresAt: null };
   }
 }
@@ -534,6 +555,9 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         
         let hasAccess = false;
         let backendSucceeded = false;
+        const initFlowId = generateFlowId();
+        
+        iapLog.status.info('Starting init', { installId: id.substring(0, 8) + '...' }, initFlowId);
         
         try {
           const status = await checkEntitlementStatus(id);
@@ -545,8 +569,10 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
           await setAccessCache(status.entitlement, status.expiresAt);
           backendSucceeded = true;
           console.log('[ENTITLEMENT] Init backend returned:', status);
-        } catch (backendErr) {
+          iapLog.status.info('Backend status', { entitlement: status.entitlement, hasAccess }, initFlowId);
+        } catch (backendErr: any) {
           console.error('[ENTITLEMENT] Backend check failed during init:', backendErr);
+          iapLog.status.error('Backend check failed', { message: backendErr?.message }, initFlowId);
           const graceCheck = await checkGraceEligibility();
           if (graceCheck.shouldGrantGrace) {
             setIsFullAccess(true);
@@ -561,6 +587,79 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         }
 
         if (Platform.OS !== 'web') {
+          // iOS-SPECIFIC: If user doesn't have access, check StoreKit for existing subscriptions
+          // This recovers subscriptions that failed to verify originally or when backend is down
+          if (Platform.OS === 'ios' && !hasAccess) {
+            iapLog.restore.info('No access, checking StoreKit for iOS subscriptions', { backendSucceeded }, initFlowId);
+            console.log('[ENTITLEMENT] iOS: No access yet, checking StoreKit for existing subscriptions...');
+            
+            try {
+              // Ensure IAP is fully initialized before checking StoreKit
+              if (moduleIAPInitialized) {
+                iapLog.init.info('IAP already initialized', {}, initFlowId);
+              } else if (moduleIAPPromise) {
+                iapLog.init.info('Waiting for IAP init in progress', {}, initFlowId);
+                await moduleIAPPromise;
+              } else {
+                iapLog.init.info('Initializing IAP for StoreKit check', {}, initFlowId);
+                moduleIAPPromise = (async () => {
+                  moduleIAPCleanup = await initIAP();
+                  moduleIAPInitialized = true;
+                })();
+                await moduleIAPPromise;
+                moduleIAPPromise = null;
+              }
+              
+              const storeKitPurchases = await restorePurchases();
+              iapLog.restore.info('StoreKit returned', { count: storeKitPurchases.length }, initFlowId);
+              
+              if (storeKitPurchases.length > 0) {
+                console.log('[ENTITLEMENT] iOS: Found', storeKitPurchases.length, 'purchases in StoreKit, verifying...');
+                
+                for (const purchase of storeKitPurchases) {
+                  iapLog.verify.info('Verifying StoreKit purchase', {
+                    productId: purchase.productId,
+                    transactionId: purchase.transactionId
+                  }, initFlowId);
+                  
+                  const verification = await verifyPurchaseWithBackend(id, purchase);
+                  
+                  if (verification.entitlement === 'full') {
+                    iapLog.result.info('StoreKit verification SUCCESS', {
+                      entitlement: verification.entitlement,
+                      expiresAt: verification.expiresAt
+                    }, initFlowId);
+                    console.log('[ENTITLEMENT] iOS: StoreKit subscription verified successfully!');
+                    
+                    setIsFullAccess(true);
+                    setExpiresAt(verification.expiresAt);
+                    setIsGrace(false);
+                    setGraceReason('none');
+                    hasAccess = true;
+                    await setAccessCache('full', verification.expiresAt);
+                    break; // Found valid subscription, stop checking
+                  } else {
+                    iapLog.verify.warn('StoreKit purchase not entitled', {
+                      productId: purchase.productId,
+                      result: verification.entitlement
+                    }, initFlowId);
+                  }
+                }
+                
+                if (!hasAccess) {
+                  iapLog.result.info('No valid StoreKit subscription found', {}, initFlowId);
+                  console.log('[ENTITLEMENT] iOS: No valid subscription found in StoreKit');
+                }
+              } else {
+                iapLog.restore.info('No purchases in StoreKit', {}, initFlowId);
+                console.log('[ENTITLEMENT] iOS: No purchases found in StoreKit');
+              }
+            } catch (storeKitErr: any) {
+              iapLog.restore.error('StoreKit check failed', { message: storeKitErr?.message }, initFlowId);
+              console.error('[ENTITLEMENT] iOS: Error checking StoreKit:', storeKitErr);
+              // Non-fatal - continue with whatever status we have
+            }
+          }
           // Module-level dedup for IAP initialization
           if (moduleIAPInitialized) {
             setProducts(moduleProducts);
@@ -578,51 +677,91 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
               
               // Set up module-level listeners (only once) that notify ALL active instances
               modulePurchaseUpdateSub = purchaseUpdatedListener(async (purchase) => {
+                const listenerFlowId = generateFlowId();
                 console.log('[ENTITLEMENT] Purchase updated:', purchase.productId);
+                iapLog.listener.info('Purchase listener fired', {
+                  productId: purchase.productId,
+                  transactionId: purchase.transactionId,
+                  hasToken: !!purchase.purchaseToken
+                }, listenerFlowId);
                 
-                // Skip purchases with missing required fields (prevents duplicate/malformed calls)
-                if (!purchase.purchaseToken || !purchase.productId) {
-                  console.log('[ENTITLEMENT] Skipping purchase with missing token or productId');
+                // Check for required fields - need productId plus at least one identifier
+                // iOS typically uses transactionId, Android uses purchaseToken
+                // Accept if we have productId and at least one of: transactionId, purchaseToken
+                const hasProductId = !!purchase.productId;
+                const hasAnyIdentifier = !!purchase.transactionId || !!purchase.purchaseToken;
+                
+                if (!hasProductId || !hasAnyIdentifier) {
+                  console.log('[ENTITLEMENT] Skipping purchase with missing fields');
+                  iapLog.listener.warn('Missing required fields', {
+                    platform: Platform.OS,
+                    hasTransactionId: !!purchase.transactionId,
+                    hasToken: !!purchase.purchaseToken,
+                    hasProductId: hasProductId
+                  }, listenerFlowId);
                   return;
                 }
                 
                 const currentId = moduleInstallId;
                 if (!currentId) {
                   console.error('[ENTITLEMENT] No installId for purchase verification');
+                  iapLog.listener.error('No installId', {}, listenerFlowId);
                   return;
                 }
+                
+                iapLog.listener.info('Starting verification from listener', { installId: currentId.substring(0, 8) + '...' }, listenerFlowId);
                 const result = await verifyPurchaseWithBackend(currentId, purchase);
-                const hasAccess = result.entitlement === 'full';
+                const newHasAccess = result.entitlement === 'full';
+                
+                iapLog.result.info('Listener verification complete', {
+                  hasAccess: newHasAccess,
+                  expiresAt: result.expiresAt
+                }, listenerFlowId);
                 
                 // Update ALL active hook instances
                 moduleStateUpdaters.forEach(updater => {
-                  updater.setIsFullAccess(hasAccess);
+                  updater.setIsFullAccess(newHasAccess);
                   updater.setExpiresAt(result.expiresAt);
                   updater.setIsGrace(false);
                   updater.setGraceReason('none');
                 });
                 
-                if (hasAccess) {
+                if (newHasAccess) {
                   await setAccessCache('full', result.expiresAt);
                 }
               });
               
               modulePurchaseErrorSub = purchaseErrorListener(async (err: { message?: string; code?: string }) => {
+                const errorFlowId = generateFlowId();
                 console.error('[ENTITLEMENT] Purchase error:', err);
+                iapLog.listener.error('Purchase error received', {
+                  code: err.code,
+                  message: err.message
+                }, errorFlowId);
                 
                 // Handle 'already-owned' by automatically restoring purchases
                 if (err.code === 'already-owned' || err.message?.includes('already owned')) {
                   console.log('[ENTITLEMENT] Already owned - triggering automatic restore');
+                  iapLog.restore.info('Already owned - auto-restoring', {}, errorFlowId);
                   try {
                     const purchases = await restorePurchases();
                     console.log('[ENTITLEMENT] Auto-restore got', purchases.length, 'purchases');
+                    iapLog.restore.info('Auto-restore got purchases', { count: purchases.length }, errorFlowId);
                     
                     if (purchases.length > 0 && moduleInstallId) {
                       for (const purchase of purchases) {
                         console.log('[ENTITLEMENT] Auto-restore verifying:', purchase.productId);
+                        iapLog.verify.info('Verifying from auto-restore', {
+                          productId: purchase.productId,
+                          transactionId: purchase.transactionId
+                        }, errorFlowId);
                         const verification = await verifyPurchaseWithBackend(moduleInstallId, purchase);
                         if (verification.entitlement === 'full') {
                           console.log('[ENTITLEMENT] Auto-restore successful');
+                          iapLog.result.info('Auto-restore SUCCESS', {
+                            entitlement: verification.entitlement,
+                            expiresAt: verification.expiresAt
+                          }, errorFlowId);
                           moduleStateUpdaters.forEach(updater => {
                             updater.setIsFullAccess(true);
                             updater.setExpiresAt(verification.expiresAt);
@@ -634,11 +773,13 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
                       }
                     }
                     // If we get here, restore didn't find valid subscription
+                    iapLog.result.error('Auto-restore failed - no valid subscription', {}, errorFlowId);
                     moduleStateUpdaters.forEach(updater => {
                       updater.setError('paywall.restoreFailed');
                     });
-                  } catch (restoreErr) {
+                  } catch (restoreErr: any) {
                     console.error('[ENTITLEMENT] Auto-restore failed:', restoreErr);
+                    iapLog.restore.error('Auto-restore exception', { message: restoreErr?.message }, errorFlowId);
                     moduleStateUpdaters.forEach(updater => {
                       updater.setError('paywall.restoreFailed');
                     });

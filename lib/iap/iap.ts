@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import { SUBSCRIPTION_SKUS } from './products';
+import { iapLog, generateFlowId } from './iosLogger';
 
 let ExpoIap: typeof import('expo-iap') | null = null;
 let isConnected = false;
@@ -15,6 +16,7 @@ async function getExpoIap() {
 }
 
 export async function initIAP(): Promise<() => Promise<void>> {
+  const flowId = generateFlowId();
   try {
     if (Platform.OS === 'web') {
       console.log('[IAP] Skipping IAP init on web');
@@ -25,9 +27,11 @@ export async function initIAP(): Promise<() => Promise<void>> {
     if (!iap) return async () => {};
 
     console.log('[IAP] Initializing connection...');
+    iapLog.init.info('Starting IAP connection', { platform: Platform.OS }, flowId);
     const connected = await iap.initConnection();
     isConnected = !!connected;
     console.log('[IAP] Connection initialized:', connected);
+    iapLog.init.info('Connection result', { connected: !!connected }, flowId);
     
     return async () => {
       try {
@@ -94,6 +98,7 @@ export interface PurchaseResult {
 }
 
 export async function purchaseSubscription(sku: string, offerToken?: string): Promise<PurchaseResult> {
+  const flowId = generateFlowId();
   try {
     if (Platform.OS === 'web' || !isConnected) {
       return { success: false, error: 'IAP not available on web' };
@@ -103,6 +108,7 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
     if (!iap) return { success: false, error: 'IAP module not available' };
 
     console.log('[IAP] Requesting subscription purchase:', sku);
+    iapLog.purchase.info('Starting purchase', { sku, hasOfferToken: !!offerToken }, flowId);
 
     const purchaseArgs = {
       type: 'subs' as const,
@@ -118,20 +124,36 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
           },
     };
 
+    iapLog.purchase.info('Calling requestPurchase', { args: JSON.stringify(purchaseArgs) }, flowId);
     const purchaseResult = await iap.requestPurchase(purchaseArgs);
 
     console.log('[IAP] Purchase successful:', purchaseResult);
+    iapLog.purchase.info('Purchase returned', { 
+      isArray: Array.isArray(purchaseResult),
+      count: Array.isArray(purchaseResult) ? purchaseResult.length : 1
+    }, flowId);
     
     // requestPurchase returns an array of purchases - extract the first one
     const purchase = Array.isArray(purchaseResult) ? purchaseResult[0] : purchaseResult;
     
     if (!purchase) {
+      iapLog.purchase.error('No purchase in result', {}, flowId);
       return { success: false, error: 'No purchase returned' };
     }
+    
+    iapLog.purchase.info('Purchase success', { 
+      productId: (purchase as any).productId,
+      transactionId: (purchase as any).transactionId,
+      hasToken: !!(purchase as any).purchaseToken
+    }, flowId);
     
     return { success: true, purchase: purchase as Purchase };
   } catch (error: any) {
     console.error('[IAP] Purchase error:', error);
+    iapLog.purchase.error('Purchase failed', { 
+      code: error?.code,
+      message: error?.message 
+    }, flowId);
     
     if (error?.code === 'E_USER_CANCELLED') {
       return { success: false, error: 'Purchase cancelled' };
@@ -142,9 +164,11 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
 }
 
 export async function restorePurchases(): Promise<Purchase[]> {
+  const flowId = generateFlowId();
   try {
     if (Platform.OS === 'web' || !isConnected) {
       console.log('[IAP] Cannot restore - not connected or on web');
+      iapLog.restore.warn('Cannot restore', { connected: isConnected, platform: Platform.OS }, flowId);
       return [];
     }
 
@@ -152,14 +176,27 @@ export async function restorePurchases(): Promise<Purchase[]> {
     if (!iap) return [];
 
     console.log('[IAP] Restoring purchases...');
+    iapLog.restore.info('Calling getAvailablePurchases', {}, flowId);
     const purchases = await iap.getAvailablePurchases();
     console.log('[IAP] Restored purchases count:', purchases.length);
+    iapLog.restore.info('Got purchases', { count: purchases.length }, flowId);
+    
     if (purchases.length > 0) {
       console.log('[IAP] Restored purchases details:', JSON.stringify(purchases, null, 2));
+      for (const p of purchases) {
+        iapLog.restore.info('Purchase found', {
+          productId: (p as any).productId,
+          transactionId: (p as any).transactionId,
+          hasToken: !!(p as any).purchaseToken
+        }, flowId);
+      }
+    } else {
+      iapLog.restore.warn('No purchases found in StoreKit', {}, flowId);
     }
     return purchases as Purchase[];
-  } catch (error) {
+  } catch (error: any) {
     console.error('[IAP] Error restoring purchases:', error);
+    iapLog.restore.error('Restore failed', { message: error?.message }, flowId);
     return [];
   }
 }
