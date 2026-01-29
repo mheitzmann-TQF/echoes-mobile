@@ -47,9 +47,16 @@ export async function fetchContent(
     console.log('[CONTENT] Direct fetch failed, trying proxy as fallback');
   }
   
-  // Fallback to proxy - preserve full endpoint including query params
-  // Endpoint already starts with /api/, so replace /api/ with /api/proxy/
+  // Fallback to proxy - only if a valid proxy base URL is configured
   const proxyBase = getProxyBaseUrl();
+  
+  // Skip proxy fallback if no valid proxy URL (e.g., in production/TestFlight builds)
+  if (!proxyBase) {
+    console.log('[CONTENT] No proxy configured, cannot fallback');
+    throw new Error(`Failed to fetch: ${endpoint}`);
+  }
+  
+  // Endpoint already starts with /api/, so replace /api/ with /api/proxy/
   const proxyUrl = `${proxyBase}${endpoint.replace('/api/', '/api/proxy/')}`;
   
   console.log('[CONTENT] Fetching via proxy:', proxyUrl);
