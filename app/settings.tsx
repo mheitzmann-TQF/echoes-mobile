@@ -56,6 +56,7 @@ export default function SettingsScreen() {
   const [debugInstallId, setDebugInstallId] = useState<string>('loading...');
   const [debugTapCount, setDebugTapCount] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
   const [restoreDiagnostics, setRestoreDiagnostics] = useState<RestoreDiagnostics | null>(null);
   
   useEffect(() => {
@@ -74,6 +75,19 @@ export default function SettingsScreen() {
       setIsRefreshing(false);
     }
   }, [refreshEntitlement]);
+  
+  const handleDebugRestore = useCallback(async () => {
+    setIsRestoring(true);
+    try {
+      await restorePurchasesAction();
+      const id = await getInstallId();
+      setDebugInstallId(id);
+      // Get latest restore diagnostics after restore
+      setRestoreDiagnostics(getLastRestoreDiagnostics());
+    } finally {
+      setIsRestoring(false);
+    }
+  }, [restorePurchasesAction]);
   
   // Update diagnostics when debug panel is shown
   useEffect(() => {
@@ -552,6 +566,11 @@ export default function SettingsScreen() {
                 <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.finalCount > 0 ? '#22C55E' : '#EF4444', fontWeight: '600' }]}>
                   Final: {restoreDiagnostics.finalCount} purchase(s) found
                 </Text>
+                {restoreDiagnostics.finalCount === 0 && (
+                  <Text style={[styles.debugDiagnosticsText, { color: '#F59E0B', fontSize: 9, marginTop: 4 }]}>
+                    Tip: If you have an active subscription, try: Kill app → Reopen → Wait 30s → Tap "Restore Purchases"
+                  </Text>
+                )}
                 {restoreDiagnostics.purchaseDetails && (
                   <>
                     <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, marginTop: 4 }]}>
@@ -650,11 +669,21 @@ export default function SettingsScreen() {
             <TouchableOpacity 
               style={[styles.debugRefreshButton, { backgroundColor: '#F59E0B' }]}
               onPress={handleDebugRefresh}
-              disabled={isRefreshing}
+              disabled={isRefreshing || isRestoring}
             >
               <RefreshCw size={16} color="#000" style={isRefreshing ? { opacity: 0.5 } : undefined} />
               <Text style={styles.debugRefreshText}>
                 {isRefreshing ? 'Refreshing...' : 'Refresh Status'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.debugRefreshButton, { backgroundColor: '#22C55E', marginTop: 8 }]}
+              onPress={handleDebugRestore}
+              disabled={isRefreshing || isRestoring}
+            >
+              <RefreshCw size={16} color="#000" style={isRestoring ? { opacity: 0.5 } : undefined} />
+              <Text style={styles.debugRefreshText}>
+                {isRestoring ? 'Restoring...' : 'Restore Purchases'}
               </Text>
             </TouchableOpacity>
           </View>

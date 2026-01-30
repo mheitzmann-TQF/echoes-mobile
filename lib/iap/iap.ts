@@ -237,14 +237,25 @@ export function updateRestoreDiagnosticsVerify(verifyResult: {
 export async function restorePurchases(): Promise<Purchase[]> {
   const flowId = generateFlowId();
   
-  // Initialize diagnostics
+  // Reset transaction ID tracking for this restore attempt
+  lastTransactionIdSource = '';
+  lastRawObjectKeys = '';
+  
+  // Initialize FRESH diagnostics - clear any stale verify data from previous attempts
   const diagnostics: RestoreDiagnostics = {
     timestamp: new Date().toISOString(),
     getAvailablePurchases: { tried: false, count: 0 },
     getActiveSubscriptions: { tried: false, count: 0 },
     currentEntitlement: { tried: false, found: false },
     finalCount: 0,
+    // Explicitly clear verify fields to prevent stale data from showing
+    purchaseDetails: undefined,
+    verifyRequest: undefined,
+    verifyResponse: undefined,
   };
+  
+  // Set diagnostics immediately so any concurrent reads see fresh state
+  lastRestoreDiagnostics = diagnostics;
   
   try {
     if (Platform.OS === 'web' || !isConnected) {
