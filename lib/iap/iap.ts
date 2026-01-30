@@ -175,6 +175,20 @@ export async function restorePurchases(): Promise<Purchase[]> {
     const iap = await getExpoIap();
     if (!iap) return [];
 
+    // iOS StoreKit 2 fix: Must populate product store before getAvailablePurchases works
+    // This is NOT needed on Android - only iOS has this dependency
+    if (Platform.OS === 'ios') {
+      console.log('[IAP] iOS: Fetching subscriptions first (StoreKit 2 requirement)...');
+      iapLog.restore.info('iOS: Fetching subscriptions first', { skus: SUBSCRIPTION_SKUS }, flowId);
+      try {
+        await iap.fetchProducts({ skus: SUBSCRIPTION_SKUS, type: 'subs' });
+        console.log('[IAP] iOS: Subscriptions fetched, now getting available purchases');
+      } catch (subErr: any) {
+        console.warn('[IAP] iOS: Failed to fetch subscriptions, continuing anyway:', subErr?.message);
+        iapLog.restore.warn('iOS: fetchProducts failed', { error: subErr?.message }, flowId);
+      }
+    }
+
     console.log('[IAP] Restoring purchases...');
     iapLog.restore.info('Calling getAvailablePurchases', {}, flowId);
     const purchases = await iap.getAvailablePurchases();
