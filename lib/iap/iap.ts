@@ -170,6 +170,13 @@ export interface RestoreDiagnostics {
   getActiveSubscriptions: { tried: boolean; count: number; error?: string };
   currentEntitlement: { tried: boolean; found: boolean; productId?: string; error?: string };
   finalCount: number;
+  purchaseDetails?: {
+    productId: string;
+    hasTransactionId: boolean;
+    hasTransactionReceipt: boolean;
+    hasPurchaseToken: boolean;
+    receiptLength?: number;
+  };
 }
 
 let lastRestoreDiagnostics: RestoreDiagnostics | null = null;
@@ -301,20 +308,33 @@ export async function restorePurchases(): Promise<Purchase[]> {
     }
     
     diagnostics.finalCount = purchases.length;
-    lastRestoreDiagnostics = diagnostics;
     
+    // Capture first purchase details for debugging
     if (purchases.length > 0) {
+      const firstPurchase = purchases[0] as any;
+      diagnostics.purchaseDetails = {
+        productId: firstPurchase.productId || 'unknown',
+        hasTransactionId: !!firstPurchase.transactionId,
+        hasTransactionReceipt: !!firstPurchase.transactionReceipt,
+        hasPurchaseToken: !!firstPurchase.purchaseToken,
+        receiptLength: firstPurchase.transactionReceipt?.length || 0,
+      };
+      
       console.log('[IAP] Restored purchases details:', JSON.stringify(purchases, null, 2));
       for (const p of purchases) {
         iapLog.restore.info('Purchase found', {
           productId: (p as any).productId,
           transactionId: (p as any).transactionId,
-          hasToken: !!(p as any).purchaseToken
+          hasToken: !!(p as any).purchaseToken,
+          hasReceipt: !!(p as any).transactionReceipt,
+          receiptLen: (p as any).transactionReceipt?.length || 0
         }, flowId);
       }
     } else {
       iapLog.restore.warn('No purchases found from any method', { diagnostics }, flowId);
     }
+    
+    lastRestoreDiagnostics = diagnostics;
     return purchases;
   } catch (error: any) {
     console.error('[IAP] Error restoring purchases:', error);
@@ -339,11 +359,17 @@ export async function finishTransaction(purchase: Purchase): Promise<void> {
 
 export function getPurchasePayload(purchase: Purchase): object {
   if (Platform.OS === 'ios') {
+    // For iOS StoreKit 2, send transactionReceipt (JWS) and transactionId
+    // The backend can use either:
+    // 1. transactionReceipt for full validation
+    // 2. transactionId with App Store Server API
     return {
       platform: 'ios',
       sku: purchase.productId,
       transactionId: purchase.transactionId,
-      purchaseToken: purchase.purchaseToken,
+      transactionReceipt: purchase.transactionReceipt,
+      // Also include purchaseToken if available (legacy compatibility)
+      purchaseToken: purchase.purchaseToken || purchase.transactionReceipt,
     };
   } else {
     return {

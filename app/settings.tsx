@@ -552,6 +552,19 @@ export default function SettingsScreen() {
                 <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.finalCount > 0 ? '#22C55E' : '#EF4444', fontWeight: '600' }]}>
                   Final: {restoreDiagnostics.finalCount} purchase(s) found
                 </Text>
+                {restoreDiagnostics.purchaseDetails && (
+                  <>
+                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, marginTop: 4 }]}>
+                      Product: {restoreDiagnostics.purchaseDetails.productId}
+                    </Text>
+                    <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.purchaseDetails.hasTransactionId ? '#22C55E' : '#EF4444' }]}>
+                      TransactionId: {restoreDiagnostics.purchaseDetails.hasTransactionId ? 'YES' : 'MISSING'}
+                    </Text>
+                    <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.purchaseDetails.hasTransactionReceipt ? '#22C55E' : '#EF4444' }]}>
+                      Receipt: {restoreDiagnostics.purchaseDetails.hasTransactionReceipt ? `YES (${restoreDiagnostics.purchaseDetails.receiptLength} bytes)` : 'MISSING'}
+                    </Text>
+                  </>
+                )}
               </View>
             )}
             {!restoreDiagnostics && (
