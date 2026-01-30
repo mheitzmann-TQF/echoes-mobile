@@ -12,6 +12,7 @@ import { contentService } from '../lib/ContentService';
 import { cookieService } from '../lib/CookieService';
 import { cycleDevAccessState, type DevAccessState } from '@/lib/iap/devAccessOverride';
 import { getInstallId } from '@/lib/iap/installId';
+import { getLastRestoreDiagnostics, type RestoreDiagnostics } from '@/lib/iap/iap';
 
 const THEMES = ['Dark', 'Light'];
 
@@ -55,6 +56,7 @@ export default function SettingsScreen() {
   const [debugInstallId, setDebugInstallId] = useState<string>('loading...');
   const [debugTapCount, setDebugTapCount] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [restoreDiagnostics, setRestoreDiagnostics] = useState<RestoreDiagnostics | null>(null);
   
   useEffect(() => {
     getInstallId().then(id => setDebugInstallId(id));
@@ -66,10 +68,19 @@ export default function SettingsScreen() {
       await refreshEntitlement();
       const id = await getInstallId();
       setDebugInstallId(id);
+      // Get latest restore diagnostics after refresh
+      setRestoreDiagnostics(getLastRestoreDiagnostics());
     } finally {
       setIsRefreshing(false);
     }
   }, [refreshEntitlement]);
+  
+  // Update diagnostics when debug panel is shown
+  useEffect(() => {
+    if (showDebugPanel) {
+      setRestoreDiagnostics(getLastRestoreDiagnostics());
+    }
+  }, [showDebugPanel]);
   
   const handleVersionTap = useCallback(() => {
     const newCount = debugTapCount + 1;
@@ -519,6 +530,36 @@ export default function SettingsScreen() {
               </Text>
             </View>
             
+            {/* Restore Diagnostics Section */}
+            {restoreDiagnostics && (
+              <View style={styles.debugDiagnosticsSection}>
+                <Text style={[styles.debugDiagnosticsTitle, { color: '#F59E0B' }]}>Restore Diagnostics:</Text>
+                <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary }]}>
+                  Time: {restoreDiagnostics.timestamp.split('T')[1]?.split('.')[0] || 'N/A'}
+                </Text>
+                <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.getAvailablePurchases.count > 0 ? '#22C55E' : '#EF4444' }]}>
+                  getAvailablePurchases: {restoreDiagnostics.getAvailablePurchases.tried ? `${restoreDiagnostics.getAvailablePurchases.count} found` : 'not tried'}
+                  {restoreDiagnostics.getAvailablePurchases.error ? ` (err: ${restoreDiagnostics.getAvailablePurchases.error.substring(0, 30)})` : ''}
+                </Text>
+                <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.getActiveSubscriptions.count > 0 ? '#22C55E' : (restoreDiagnostics.getActiveSubscriptions.tried ? '#EF4444' : colors.textSecondary) }]}>
+                  getActiveSubscriptions: {restoreDiagnostics.getActiveSubscriptions.tried ? `${restoreDiagnostics.getActiveSubscriptions.count} found` : 'not tried'}
+                  {restoreDiagnostics.getActiveSubscriptions.error ? ` (err: ${restoreDiagnostics.getActiveSubscriptions.error.substring(0, 30)})` : ''}
+                </Text>
+                <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.currentEntitlement.found ? '#22C55E' : (restoreDiagnostics.currentEntitlement.tried ? '#EF4444' : colors.textSecondary) }]}>
+                  currentEntitlement: {restoreDiagnostics.currentEntitlement.tried ? (restoreDiagnostics.currentEntitlement.found ? `found (${restoreDiagnostics.currentEntitlement.productId})` : 'not found') : 'not tried'}
+                  {restoreDiagnostics.currentEntitlement.error ? ` (err: ${restoreDiagnostics.currentEntitlement.error.substring(0, 30)})` : ''}
+                </Text>
+                <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.finalCount > 0 ? '#22C55E' : '#EF4444', fontWeight: '600' }]}>
+                  Final: {restoreDiagnostics.finalCount} purchase(s) found
+                </Text>
+              </View>
+            )}
+            {!restoreDiagnostics && (
+              <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, marginTop: 8 }]}>
+                No restore attempt yet. Tap Refresh to trigger restore.
+              </Text>
+            )}
+            
             <TouchableOpacity 
               style={[styles.debugRefreshButton, { backgroundColor: '#F59E0B' }]}
               onPress={handleDebugRefresh}
@@ -864,5 +905,21 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 14,
     fontWeight: '600',
+  },
+  debugDiagnosticsSection: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(245, 158, 11, 0.3)',
+  },
+  debugDiagnosticsTitle: {
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  debugDiagnosticsText: {
+    fontSize: 11,
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+    marginBottom: 3,
   },
 });

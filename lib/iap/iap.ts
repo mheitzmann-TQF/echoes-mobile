@@ -163,17 +163,46 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
   }
 }
 
+// Restore diagnostics for debugging
+export interface RestoreDiagnostics {
+  timestamp: string;
+  getAvailablePurchases: { tried: boolean; count: number; error?: string };
+  getActiveSubscriptions: { tried: boolean; count: number; error?: string };
+  currentEntitlement: { tried: boolean; found: boolean; productId?: string; error?: string };
+  finalCount: number;
+}
+
+let lastRestoreDiagnostics: RestoreDiagnostics | null = null;
+
+export function getLastRestoreDiagnostics(): RestoreDiagnostics | null {
+  return lastRestoreDiagnostics;
+}
+
 export async function restorePurchases(): Promise<Purchase[]> {
   const flowId = generateFlowId();
+  
+  // Initialize diagnostics
+  const diagnostics: RestoreDiagnostics = {
+    timestamp: new Date().toISOString(),
+    getAvailablePurchases: { tried: false, count: 0 },
+    getActiveSubscriptions: { tried: false, count: 0 },
+    currentEntitlement: { tried: false, found: false },
+    finalCount: 0,
+  };
+  
   try {
     if (Platform.OS === 'web' || !isConnected) {
       console.log('[IAP] Cannot restore - not connected or on web');
       iapLog.restore.warn('Cannot restore', { connected: isConnected, platform: Platform.OS }, flowId);
+      lastRestoreDiagnostics = diagnostics;
       return [];
     }
 
     const iap = await getExpoIap();
-    if (!iap) return [];
+    if (!iap) {
+      lastRestoreDiagnostics = diagnostics;
+      return [];
+    }
 
     // iOS StoreKit 2 fix: Must populate product store before getAvailablePurchases works
     // This is NOT needed on Android - only iOS has this dependency
@@ -189,18 +218,31 @@ export async function restorePurchases(): Promise<Purchase[]> {
       }
     }
 
+    // Method 1: getAvailablePurchases
     console.log('[IAP] Restoring purchases...');
     iapLog.restore.info('Calling getAvailablePurchases', {}, flowId);
-    let purchases = await iap.getAvailablePurchases();
-    console.log('[IAP] getAvailablePurchases count:', purchases.length);
-    iapLog.restore.info('getAvailablePurchases result', { count: purchases.length }, flowId);
+    diagnostics.getAvailablePurchases.tried = true;
+    let purchases: Purchase[] = [];
+    try {
+      const available = await iap.getAvailablePurchases();
+      purchases = available as Purchase[];
+      diagnostics.getAvailablePurchases.count = purchases.length;
+      console.log('[IAP] getAvailablePurchases count:', purchases.length);
+      iapLog.restore.info('getAvailablePurchases result', { count: purchases.length }, flowId);
+    } catch (availErr: any) {
+      diagnostics.getAvailablePurchases.error = availErr?.message;
+      console.warn('[IAP] getAvailablePurchases failed:', availErr?.message);
+      iapLog.restore.warn('getAvailablePurchases failed', { error: availErr?.message }, flowId);
+    }
     
-    // iOS fallback: try getActiveSubscriptions if getAvailablePurchases returns empty
+    // iOS fallback #1: try getActiveSubscriptions if getAvailablePurchases returns empty
     if (purchases.length === 0 && Platform.OS === 'ios') {
       console.log('[IAP] iOS: getAvailablePurchases empty, trying getActiveSubscriptions...');
       iapLog.restore.info('iOS: Trying getActiveSubscriptions fallback', { skus: SUBSCRIPTION_SKUS }, flowId);
+      diagnostics.getActiveSubscriptions.tried = true;
       try {
         const activeSubs = await iap.getActiveSubscriptions(SUBSCRIPTION_SKUS);
+        diagnostics.getActiveSubscriptions.count = activeSubs?.length ?? 0;
         console.log('[IAP] iOS: getActiveSubscriptions returned:', activeSubs?.length ?? 0);
         iapLog.restore.info('iOS: getActiveSubscriptions result', { count: activeSubs?.length ?? 0 }, flowId);
         if (activeSubs && activeSubs.length > 0) {
@@ -210,13 +252,56 @@ export async function restorePurchases(): Promise<Purchase[]> {
             transactionId: sub.transactionId || sub.originalTransactionIdIOS,
             transactionReceipt: sub.transactionReceipt,
           }));
-          purchases = mappedPurchases as any;
+          purchases = mappedPurchases;
         }
       } catch (activeSubsErr: any) {
+        diagnostics.getActiveSubscriptions.error = activeSubsErr?.message;
         console.warn('[IAP] iOS: getActiveSubscriptions failed:', activeSubsErr?.message);
         iapLog.restore.warn('iOS: getActiveSubscriptions failed', { error: activeSubsErr?.message }, flowId);
       }
     }
+    
+    // iOS fallback #2: try currentEntitlementIOS for each subscription SKU
+    if (purchases.length === 0 && Platform.OS === 'ios') {
+      console.log('[IAP] iOS: Still no purchases, trying currentEntitlementIOS...');
+      iapLog.restore.info('iOS: Trying currentEntitlementIOS fallback', { skus: SUBSCRIPTION_SKUS }, flowId);
+      diagnostics.currentEntitlement.tried = true;
+      try {
+        for (const sku of SUBSCRIPTION_SKUS) {
+          console.log('[IAP] iOS: Checking currentEntitlement for:', sku);
+          const entitlement = await iap.currentEntitlementIOS(sku);
+          if (entitlement) {
+            console.log('[IAP] iOS: currentEntitlementIOS found entitlement for:', sku);
+            iapLog.restore.info('iOS: currentEntitlementIOS found', { 
+              productId: (entitlement as any).productId,
+              transactionId: (entitlement as any).transactionId
+            }, flowId);
+            diagnostics.currentEntitlement.found = true;
+            diagnostics.currentEntitlement.productId = (entitlement as any).productId;
+            
+            // Map to Purchase type
+            const mappedPurchase: Purchase = {
+              productId: (entitlement as any).productId || sku,
+              transactionId: (entitlement as any).transactionId || (entitlement as any).originalTransactionIdIOS,
+              transactionReceipt: (entitlement as any).transactionReceipt,
+            };
+            purchases = [mappedPurchase];
+            break; // Found one, no need to check others
+          }
+        }
+        if (!diagnostics.currentEntitlement.found) {
+          console.log('[IAP] iOS: currentEntitlementIOS found nothing for any SKU');
+          iapLog.restore.warn('iOS: currentEntitlementIOS found nothing', {}, flowId);
+        }
+      } catch (entitlementErr: any) {
+        diagnostics.currentEntitlement.error = entitlementErr?.message;
+        console.warn('[IAP] iOS: currentEntitlementIOS failed:', entitlementErr?.message);
+        iapLog.restore.warn('iOS: currentEntitlementIOS failed', { error: entitlementErr?.message }, flowId);
+      }
+    }
+    
+    diagnostics.finalCount = purchases.length;
+    lastRestoreDiagnostics = diagnostics;
     
     if (purchases.length > 0) {
       console.log('[IAP] Restored purchases details:', JSON.stringify(purchases, null, 2));
@@ -228,12 +313,13 @@ export async function restorePurchases(): Promise<Purchase[]> {
         }, flowId);
       }
     } else {
-      iapLog.restore.warn('No purchases found from any method', {}, flowId);
+      iapLog.restore.warn('No purchases found from any method', { diagnostics }, flowId);
     }
-    return purchases as Purchase[];
+    return purchases;
   } catch (error: any) {
     console.error('[IAP] Error restoring purchases:', error);
     iapLog.restore.error('Restore failed', { message: error?.message }, flowId);
+    lastRestoreDiagnostics = diagnostics;
     return [];
   }
 }
