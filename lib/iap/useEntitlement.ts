@@ -10,6 +10,7 @@ import {
   purchaseUpdatedListener,
   purchaseErrorListener,
   updateRestoreDiagnosticsVerify,
+  updateRestoreDiagnosticsVerifyRequest,
   type ProductSubscription,
   type Purchase,
 } from './iap';
@@ -184,7 +185,7 @@ async function verifyPurchaseWithBackendInternal(
 }> {
   const fid = flowId || generateFlowId();
   try {
-    const payload = getPurchasePayload(purchase);
+    const payload = getPurchasePayload(purchase) as Record<string, any>;
     console.log('[ENTITLEMENT] Verifying purchase with backend:', payload, isRetry ? '(retry)' : '');
     iapLog.verify.info('Starting verification', {
       installId: installId.substring(0, 8) + '...',
@@ -193,10 +194,23 @@ async function verifyPurchaseWithBackendInternal(
       isRetry
     }, fid);
     
+    // Capture verify request for diagnostics
+    updateRestoreDiagnosticsVerifyRequest({
+      installId: installId.substring(0, 8) + '...' + installId.substring(installId.length - 4),
+      platform: payload.platform || Platform.OS,
+      sku: payload.sku || purchase.productId,
+      transactionId: payload.transactionId,
+      hasReceipt: !!payload.transactionReceipt,
+    });
+    
     const sessionToken = await ensureSession();
     if (!sessionToken) {
       console.error('[ENTITLEMENT] No session token available for verification');
       iapLog.verify.error('No session token', {}, fid);
+      updateRestoreDiagnosticsVerify({
+        called: false,
+        error: 'No session token',
+      });
       return { entitlement: 'free', expiresAt: null };
     }
     
@@ -237,7 +251,8 @@ async function verifyPurchaseWithBackendInternal(
         called: true,
         status: response.status,
         entitlement: 'free',
-        error: errorText.substring(0, 100),
+        error: errorText.substring(0, 200),
+        rawBody: errorText.substring(0, 500),
       });
       return { entitlement: 'free', expiresAt: null };
     }
@@ -253,11 +268,15 @@ async function verifyPurchaseWithBackendInternal(
     console.log('[ENTITLEMENT] Verification result:', { entitlement, expiresAt: data.expiresAt });
     iapLog.result.info('Verification complete', { entitlement, expiresAt: data.expiresAt }, fid);
     
-    // Update diagnostics with verify response
+    // Update diagnostics with full verify response including any Apple debug info
     updateRestoreDiagnosticsVerify({
       called: true,
       status: response.status,
       entitlement,
+      expiresAt: data.expiresAt,
+      appleEnvironment: data.appleEnvironment || data.environment || data.debug?.environment,
+      appleStatus: data.appleStatus || data.subscriptionStatus || data.debug?.status,
+      rawBody: JSON.stringify(data).substring(0, 500),
     });
     
     // Mark successful verification time to protect against stale status overwrites

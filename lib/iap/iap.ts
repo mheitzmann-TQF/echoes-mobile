@@ -173,15 +173,27 @@ export interface RestoreDiagnostics {
   purchaseDetails?: {
     productId: string;
     hasTransactionId: boolean;
+    transactionId?: string;
     hasTransactionReceipt: boolean;
     hasPurchaseToken: boolean;
     receiptLength?: number;
+  };
+  verifyRequest?: {
+    installId: string;
+    platform: string;
+    sku: string;
+    transactionId?: string;
+    hasReceipt: boolean;
   };
   verifyResponse?: {
     called: boolean;
     status?: number;
     entitlement?: string;
     error?: string;
+    rawBody?: string;
+    appleEnvironment?: string;
+    appleStatus?: string;
+    expiresAt?: string;
   };
 }
 
@@ -191,11 +203,27 @@ export function getLastRestoreDiagnostics(): RestoreDiagnostics | null {
   return lastRestoreDiagnostics;
 }
 
+export function updateRestoreDiagnosticsVerifyRequest(request: {
+  installId: string;
+  platform: string;
+  sku: string;
+  transactionId?: string;
+  hasReceipt: boolean;
+}): void {
+  if (lastRestoreDiagnostics) {
+    lastRestoreDiagnostics.verifyRequest = request;
+  }
+}
+
 export function updateRestoreDiagnosticsVerify(verifyResult: {
   called: boolean;
   status?: number;
   entitlement?: string;
   error?: string;
+  rawBody?: string;
+  appleEnvironment?: string;
+  appleStatus?: string;
+  expiresAt?: string;
 }): void {
   if (lastRestoreDiagnostics) {
     lastRestoreDiagnostics.verifyResponse = verifyResult;
@@ -332,6 +360,7 @@ export async function restorePurchases(): Promise<Purchase[]> {
       diagnostics.purchaseDetails = {
         productId: firstPurchase.productId || 'unknown',
         hasTransactionId: !!firstPurchase.transactionId,
+        transactionId: firstPurchase.transactionId || undefined,
         hasTransactionReceipt: !!firstPurchase.transactionReceipt,
         hasPurchaseToken: !!firstPurchase.purchaseToken,
         receiptLength: firstPurchase.transactionReceipt?.length || 0,

@@ -560,8 +560,32 @@ export default function SettingsScreen() {
                     <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.purchaseDetails.hasTransactionId ? '#22C55E' : '#EF4444' }]}>
                       TransactionId: {restoreDiagnostics.purchaseDetails.hasTransactionId ? 'YES' : 'MISSING'}
                     </Text>
+                    {restoreDiagnostics.purchaseDetails.transactionId && (
+                      <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
+                        ID: {restoreDiagnostics.purchaseDetails.transactionId}
+                      </Text>
+                    )}
                     <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.purchaseDetails.hasTransactionReceipt ? '#22C55E' : '#EF4444' }]}>
                       Receipt: {restoreDiagnostics.purchaseDetails.hasTransactionReceipt ? `YES (${restoreDiagnostics.purchaseDetails.receiptLength} bytes)` : 'MISSING'}
+                    </Text>
+                  </>
+                )}
+                {restoreDiagnostics.verifyRequest && (
+                  <>
+                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, marginTop: 8, fontWeight: '600' }]}>
+                      Verify Request Sent:
+                    </Text>
+                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
+                      installId: {restoreDiagnostics.verifyRequest.installId}
+                    </Text>
+                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
+                      platform: {restoreDiagnostics.verifyRequest.platform}, sku: {restoreDiagnostics.verifyRequest.sku}
+                    </Text>
+                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
+                      transactionId: {restoreDiagnostics.verifyRequest.transactionId || 'MISSING'}
+                    </Text>
+                    <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.verifyRequest.hasReceipt ? '#22C55E' : '#F59E0B', fontSize: 10 }]}>
+                      hasReceipt: {restoreDiagnostics.verifyRequest.hasReceipt ? 'YES' : 'NO'}
                     </Text>
                   </>
                 )}
@@ -571,11 +595,31 @@ export default function SettingsScreen() {
                       Verify Response:
                     </Text>
                     <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.verifyResponse.entitlement === 'full' ? '#22C55E' : '#EF4444' }]}>
-                      Status: {restoreDiagnostics.verifyResponse.status || 'N/A'} → {restoreDiagnostics.verifyResponse.entitlement || 'error'}
+                      HTTP {restoreDiagnostics.verifyResponse.status || 'N/A'} → {restoreDiagnostics.verifyResponse.entitlement || 'error'}
                     </Text>
+                    {restoreDiagnostics.verifyResponse.expiresAt && (
+                      <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
+                        expiresAt: {restoreDiagnostics.verifyResponse.expiresAt}
+                      </Text>
+                    )}
+                    {restoreDiagnostics.verifyResponse.appleEnvironment && (
+                      <Text style={[styles.debugDiagnosticsText, { color: '#3B82F6', fontSize: 10 }]}>
+                        Apple Env: {restoreDiagnostics.verifyResponse.appleEnvironment}
+                      </Text>
+                    )}
+                    {restoreDiagnostics.verifyResponse.appleStatus && (
+                      <Text style={[styles.debugDiagnosticsText, { color: '#3B82F6', fontSize: 10 }]}>
+                        Apple Status: {restoreDiagnostics.verifyResponse.appleStatus}
+                      </Text>
+                    )}
                     {restoreDiagnostics.verifyResponse.error && (
-                      <Text style={[styles.debugDiagnosticsText, { color: '#EF4444' }]}>
+                      <Text style={[styles.debugDiagnosticsText, { color: '#EF4444', fontSize: 10 }]}>
                         Error: {restoreDiagnostics.verifyResponse.error}
+                      </Text>
+                    )}
+                    {restoreDiagnostics.verifyResponse.rawBody && (
+                      <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 9, marginTop: 4 }]}>
+                        Raw: {restoreDiagnostics.verifyResponse.rawBody}
                       </Text>
                     )}
                   </>
