@@ -177,12 +177,29 @@ export interface RestoreDiagnostics {
     hasPurchaseToken: boolean;
     receiptLength?: number;
   };
+  verifyResponse?: {
+    called: boolean;
+    status?: number;
+    entitlement?: string;
+    error?: string;
+  };
 }
 
 let lastRestoreDiagnostics: RestoreDiagnostics | null = null;
 
 export function getLastRestoreDiagnostics(): RestoreDiagnostics | null {
   return lastRestoreDiagnostics;
+}
+
+export function updateRestoreDiagnosticsVerify(verifyResult: {
+  called: boolean;
+  status?: number;
+  entitlement?: string;
+  error?: string;
+}): void {
+  if (lastRestoreDiagnostics) {
+    lastRestoreDiagnostics.verifyResponse = verifyResult;
+  }
 }
 
 export async function restorePurchases(): Promise<Purchase[]> {
@@ -359,18 +376,28 @@ export async function finishTransaction(purchase: Purchase): Promise<void> {
 
 export function getPurchasePayload(purchase: Purchase): object {
   if (Platform.OS === 'ios') {
-    // For iOS StoreKit 2, send transactionReceipt (JWS) and transactionId
-    // The backend can use either:
-    // 1. transactionReceipt for full validation
-    // 2. transactionId with App Store Server API
-    return {
+    // For iOS StoreKit 2: Backend uses App Store Server API with transactionId
+    // Only include fields that are actually present to signal verification mode
+    const payload: Record<string, any> = {
       platform: 'ios',
       sku: purchase.productId,
       transactionId: purchase.transactionId,
-      transactionReceipt: purchase.transactionReceipt,
-      // Also include purchaseToken if available (legacy compatibility)
-      purchaseToken: purchase.purchaseToken || purchase.transactionReceipt,
     };
+    
+    // Only include receipt data if available (usually only present during original purchase)
+    // For restores, transactionId alone is sufficient for backend verification
+    if (purchase.transactionReceipt) {
+      payload.transactionReceipt = purchase.transactionReceipt;
+    }
+    
+    console.log('[IAP] iOS payload:', {
+      sku: payload.sku,
+      hasTransactionId: !!payload.transactionId,
+      hasReceipt: !!payload.transactionReceipt,
+      receiptLen: payload.transactionReceipt?.length || 0
+    });
+    
+    return payload;
   } else {
     return {
       platform: 'android',

@@ -565,6 +565,26 @@ export default function SettingsScreen() {
                     </Text>
                   </>
                 )}
+                {restoreDiagnostics.verifyResponse && (
+                  <>
+                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, marginTop: 8, fontWeight: '600' }]}>
+                      Verify Response:
+                    </Text>
+                    <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.verifyResponse.entitlement === 'full' ? '#22C55E' : '#EF4444' }]}>
+                      Status: {restoreDiagnostics.verifyResponse.status || 'N/A'} → {restoreDiagnostics.verifyResponse.entitlement || 'error'}
+                    </Text>
+                    {restoreDiagnostics.verifyResponse.error && (
+                      <Text style={[styles.debugDiagnosticsText, { color: '#EF4444' }]}>
+                        Error: {restoreDiagnostics.verifyResponse.error}
+                      </Text>
+                    )}
+                  </>
+                )}
+                {!restoreDiagnostics.verifyResponse && restoreDiagnostics.finalCount > 0 && (
+                  <Text style={[styles.debugDiagnosticsText, { color: '#F59E0B', marginTop: 8 }]}>
+                    Verify: NOT CALLED (purchase found but not verified)
+                  </Text>
+                )}
               </View>
             )}
             {!restoreDiagnostics && (

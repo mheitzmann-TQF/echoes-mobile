@@ -9,6 +9,7 @@ import {
   getPurchasePayload,
   purchaseUpdatedListener,
   purchaseErrorListener,
+  updateRestoreDiagnosticsVerify,
   type ProductSubscription,
   type Purchase,
 } from './iap';
@@ -232,6 +233,12 @@ async function verifyPurchaseWithBackendInternal(
       console.error('[ENTITLEMENT] Verification failed:', response.status);
       const errorText = await response.text().catch(() => 'unknown');
       iapLog.verify.error('Backend rejected', { status: response.status, body: errorText }, fid);
+      updateRestoreDiagnosticsVerify({
+        called: true,
+        status: response.status,
+        entitlement: 'free',
+        error: errorText.substring(0, 100),
+      });
       return { entitlement: 'free', expiresAt: null };
     }
     
@@ -246,6 +253,13 @@ async function verifyPurchaseWithBackendInternal(
     console.log('[ENTITLEMENT] Verification result:', { entitlement, expiresAt: data.expiresAt });
     iapLog.result.info('Verification complete', { entitlement, expiresAt: data.expiresAt }, fid);
     
+    // Update diagnostics with verify response
+    updateRestoreDiagnosticsVerify({
+      called: true,
+      status: response.status,
+      entitlement,
+    });
+    
     // Mark successful verification time to protect against stale status overwrites
     if (entitlement === 'full') {
       moduleLastVerificationTime = Date.now();
@@ -259,6 +273,10 @@ async function verifyPurchaseWithBackendInternal(
   } catch (error: any) {
     console.error('[ENTITLEMENT] Error verifying purchase:', error);
     iapLog.verify.error('Exception', { message: error?.message }, fid);
+    updateRestoreDiagnosticsVerify({
+      called: true,
+      error: error?.message?.substring(0, 100) || 'exception',
+    });
     return { entitlement: 'free', expiresAt: null };
   }
 }
