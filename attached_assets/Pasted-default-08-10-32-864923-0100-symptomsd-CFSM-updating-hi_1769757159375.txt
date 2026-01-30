@@ -1,0 +1,876 @@
+default	08:10:32.864923+0100	symptomsd	CFSM updating higher layers with consider alternate update, triggered by advice level change: {
+    updateDetail =     {
+        detail = 2;
+        reasons =         {
+            "com.apple.stocks.widget" = AppFreePassed;
+            "com.ignea.thequietframe" = AppFreePassed;
+        };
+        states =         {
+            "com.apple.stocks.widget" = 1;
+            "com.ignea.thequietframe" = 2;
+        };
+    };
+}
+default	08:10:32.865120+0100	symptomsd	CFSM dynamic blacklist short returning (value/reason): {
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = 0;
+    "com.apple.WebKit.Networking" = 0;
+    "com.apple.chrono.WidgetRenderer-Activities" = 0;
+    "com.apple.family" = 0;
+    "com.apple.fskit.exfat" = 0;
+    "com.apple.fskit.msdos" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FMDMagSafeExtension" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FindMyDeviceBluetoothExtension" = 0;
+    "com.apple.lighthouse.BiomeSELFIngestor" = 0;
+    "com.apple.lighthouse.IFTelemetrySELFIngestor" = 0;
+    "com.apple.lighthouse.IFTranscriptSELFIngestor" = 0;
+    "com.apple.siri.GMSSELFIngestor" = 0;
+    "com.apple.siri.LLMCacheSELFIngestor" = 0;
+    "com.apple.stocks.widget" = 1;
+    "com.ignea.thequietframe" = 1;
+}/{
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = AppUnknown;
+    "com.apple.WebKit.Networking" = AppUnknown;
+    "com.apple.chrono.WidgetRenderer-Activities" = AppUnknown;
+    "com.apple.family" = AppUnknown;
+    "com.apple.fskit.exfat" = AppUnknown;
+default	08:10:32.865565+0100	symptomsd	CFSM updating higher layers with consider alternate update, triggered by advice level change: {
+    updateDetail =     {
+        detail = 2;
+        reasons =         {
+            "com.apple.stocks.widget" = AppFreePassed;
+            "com.ignea.thequietframe" = AppFreePassed;
+        };
+        states =         {
+            "com.apple.stocks.widget" = 1;
+            "com.ignea.thequietframe" = 2;
+        };
+    };
+}
+default	08:10:32.865672+0100	symptomsd	CFSM dynamic blacklist short returning (value/reason): {
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = 0;
+    "com.apple.WebKit.Networking" = 0;
+    "com.apple.chrono.WidgetRenderer-Activities" = 0;
+    "com.apple.family" = 0;
+    "com.apple.fskit.exfat" = 0;
+    "com.apple.fskit.msdos" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FMDMagSafeExtension" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FindMyDeviceBluetoothExtension" = 0;
+    "com.apple.lighthouse.BiomeSELFIngestor" = 0;
+    "com.apple.lighthouse.IFTelemetrySELFIngestor" = 0;
+    "com.apple.lighthouse.IFTranscriptSELFIngestor" = 0;
+    "com.apple.siri.GMSSELFIngestor" = 0;
+    "com.apple.siri.LLMCacheSELFIngestor" = 0;
+    "com.apple.stocks.widget" = 1;
+    "com.ignea.thequietframe" = 1;
+}/{
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = AppUnknown;
+    "com.apple.WebKit.Networking" = AppUnknown;
+    "com.apple.chrono.WidgetRenderer-Activities" = AppUnknown;
+    "com.apple.family" = AppUnknown;
+    "com.apple.fskit.exfat" = AppUnknown;
+default	08:10:32.867927+0100	symptomsd	Consider alternate update: level: 2, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:32.868029+0100	symptomsd	Consider alternate update: level: 2, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:32.870804+0100	nesessionmanager	Consider alternate update, new advice: level: 2, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:32.871031+0100	symptomsd	Consider alternate update: level: 2, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:32.871295+0100	symptomsd	Consider alternate update: level: 2, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:32.871360+0100	symptomsd	Consider alternate update: level: 2, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:32.871920+0100	symptomsd	Consider alternate update: level: 2, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:32.875899+0100	symptomsd	Consider alternate update: level: 2, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:32.876030+0100	symptomsd	Consider alternate update: level: 2, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:50.478166+0100	symptomsd	CFSM dynamic blacklist returning (value/reason/headroom/overdraft): {
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = 0;
+    "com.apple.HostInferenceProviderService" = 0;
+    "com.apple.WebKit.Networking" = 0;
+    "com.apple.chrono.WidgetRenderer-Activities" = 0;
+    "com.apple.family" = 0;
+    "com.apple.fskit.exfat" = 0;
+    "com.apple.fskit.msdos" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FMDMagSafeExtension" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FindMyDeviceBluetoothExtension" = 0;
+    "com.apple.lighthouse.BiomeSELFIngestor" = 0;
+    "com.apple.lighthouse.IFTelemetrySELFIngestor" = 0;
+    "com.apple.lighthouse.IFTranscriptSELFIngestor" = 0;
+    "com.apple.siri.GMSSELFIngestor" = 0;
+    "com.apple.siri.LLMCacheSELFIngestor" = 0;
+    "com.apple.stocks.widget" = 1;
+    "com.ignea.thequietframe" = 1;
+}/{
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = AppUnknown;
+    "com.apple.HostInferenceProviderService" = AppUnknown;
+    "com.apple.WebKit.Networking" = AppUnknown;
+    "com.apple.chrono.WidgetRendere/<decode: missing data>/<decode: missing data>
+default	08:10:50.520104+0100	symptomsd	CFSM dynamic blacklist short returning (value/reason): {
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = 0;
+    "com.apple.WebKit.Networking" = 0;
+    "com.apple.chrono.WidgetRenderer-Activities" = 0;
+    "com.apple.family" = 0;
+    "com.apple.fskit.exfat" = 0;
+    "com.apple.fskit.msdos" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FMDMagSafeExtension" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FindMyDeviceBluetoothExtension" = 0;
+    "com.apple.lighthouse.BiomeSELFIngestor" = 0;
+    "com.apple.lighthouse.IFTelemetrySELFIngestor" = 0;
+    "com.apple.lighthouse.IFTranscriptSELFIngestor" = 0;
+    "com.apple.siri.GMSSELFIngestor" = 0;
+    "com.apple.siri.LLMCacheSELFIngestor" = 0;
+    "com.apple.stocks.widget" = 1;
+    "com.ignea.thequietframe" = 1;
+}/{
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = AppUnknown;
+    "com.apple.WebKit.Networking" = AppUnknown;
+    "com.apple.chrono.WidgetRenderer-Activities" = AppUnknown;
+    "com.apple.family" = AppUnknown;
+    "com.apple.fskit.exfat" = AppUnknown;
+default	08:10:51.295969+0100	symptomsd	CFSM dynamic blacklist short returning (value/reason): {
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = 0;
+    "com.apple.HostInferenceProviderService" = 0;
+    "com.apple.WebKit.Networking" = 0;
+    "com.apple.chrono.WidgetRenderer-Activities" = 0;
+    "com.apple.family" = 0;
+    "com.apple.fskit.exfat" = 0;
+    "com.apple.fskit.msdos" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FMDMagSafeExtension" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FindMyDeviceBluetoothExtension" = 0;
+    "com.apple.lighthouse.BiomeSELFIngestor" = 0;
+    "com.apple.lighthouse.IFTelemetrySELFIngestor" = 0;
+    "com.apple.lighthouse.IFTranscriptSELFIngestor" = 0;
+    "com.apple.siri.GMSSELFIngestor" = 0;
+    "com.apple.siri.LLMCacheSELFIngestor" = 0;
+    "com.apple.stocks.widget" = 1;
+    "com.ignea.thequietframe" = 1;
+}/{
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = AppUnknown;
+    "com.apple.HostInferenceProviderService" = AppUnknown;
+    "com.apple.WebKit.Networking" = AppUnknown;
+    "com.apple.chrono.WidgetRendere
+default	08:10:51.403281+0100	symptomsd	CFSM dynamic blacklist short returning (value/reason): {
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = 0;
+    "com.apple.WebKit.Networking" = 0;
+    "com.apple.chrono.WidgetRenderer-Activities" = 0;
+    "com.apple.family" = 0;
+    "com.apple.fskit.exfat" = 0;
+    "com.apple.fskit.msdos" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FMDMagSafeExtension" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FindMyDeviceBluetoothExtension" = 0;
+    "com.apple.lighthouse.BiomeSELFIngestor" = 0;
+    "com.apple.lighthouse.IFTelemetrySELFIngestor" = 0;
+    "com.apple.lighthouse.IFTranscriptSELFIngestor" = 0;
+    "com.apple.siri.GMSSELFIngestor" = 0;
+    "com.apple.siri.LLMCacheSELFIngestor" = 0;
+    "com.apple.stocks.widget" = 1;
+    "com.ignea.thequietframe" = 1;
+}/{
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = AppUnknown;
+    "com.apple.WebKit.Networking" = AppUnknown;
+    "com.apple.chrono.WidgetRenderer-Activities" = AppUnknown;
+    "com.apple.family" = AppUnknown;
+    "com.apple.fskit.exfat" = AppUnknown;
+default	08:10:55.317456+0100	symptomsd	CFSM updating higher layers with consider alternate update, triggered by advice level change: {
+    updateDetail =     {
+        detail = 0;
+        reasons =         {
+            "com.apple.stocks.widget" = AppFreePassed;
+            "com.ignea.thequietframe" = AppFreePassed;
+        };
+        states =         {
+            "com.apple.stocks.widget" = 1;
+            "com.ignea.thequietframe" = 2;
+        };
+    };
+}
+default	08:10:55.317643+0100	symptomsd	CFSM dynamic blacklist short returning (value/reason): {
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = 0;
+    "com.apple.WebKit.Networking" = 0;
+    "com.apple.chrono.WidgetRenderer-Activities" = 0;
+    "com.apple.family" = 0;
+    "com.apple.fskit.exfat" = 0;
+    "com.apple.fskit.msdos" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FMDMagSafeExtension" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FindMyDeviceBluetoothExtension" = 0;
+    "com.apple.lighthouse.BiomeSELFIngestor" = 0;
+    "com.apple.lighthouse.IFTelemetrySELFIngestor" = 0;
+    "com.apple.lighthouse.IFTranscriptSELFIngestor" = 0;
+    "com.apple.siri.GMSSELFIngestor" = 0;
+    "com.apple.siri.LLMCacheSELFIngestor" = 0;
+    "com.apple.stocks.widget" = 1;
+    "com.ignea.thequietframe" = 1;
+}/{
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = AppUnknown;
+    "com.apple.WebKit.Networking" = AppUnknown;
+    "com.apple.chrono.WidgetRenderer-Activities" = AppUnknown;
+    "com.apple.family" = AppUnknown;
+    "com.apple.fskit.exfat" = AppUnknown;
+default	08:10:55.318756+0100	symptomsd	CFSM updating higher layers with consider alternate update, triggered by advice level change: {
+    updateDetail =     {
+        detail = 0;
+        reasons =         {
+            "com.apple.stocks.widget" = AppFreePassed;
+            "com.ignea.thequietframe" = AppFreePassed;
+        };
+        states =         {
+            "com.apple.stocks.widget" = 1;
+            "com.ignea.thequietframe" = 2;
+        };
+    };
+}
+default	08:10:55.318872+0100	symptomsd	CFSM dynamic blacklist short returning (value/reason): {
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = 0;
+    "com.apple.WebKit.Networking" = 0;
+    "com.apple.chrono.WidgetRenderer-Activities" = 0;
+    "com.apple.family" = 0;
+    "com.apple.fskit.exfat" = 0;
+    "com.apple.fskit.msdos" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FMDMagSafeExtension" = 0;
+    "com.apple.icloud.FindMyDevice.FindMyExtensionContainer.FindMyDeviceBluetoothExtension" = 0;
+    "com.apple.lighthouse.BiomeSELFIngestor" = 0;
+    "com.apple.lighthouse.IFTelemetrySELFIngestor" = 0;
+    "com.apple.lighthouse.IFTranscriptSELFIngestor" = 0;
+    "com.apple.siri.GMSSELFIngestor" = 0;
+    "com.apple.siri.LLMCacheSELFIngestor" = 0;
+    "com.apple.stocks.widget" = 1;
+    "com.ignea.thequietframe" = 1;
+}/{
+    "com.apple.CloudDocs.iCloudDriveFileProvider" = AppUnknown;
+    "com.apple.WebKit.Networking" = AppUnknown;
+    "com.apple.chrono.WidgetRenderer-Activities" = AppUnknown;
+    "com.apple.family" = AppUnknown;
+    "com.apple.fskit.exfat" = AppUnknown;
+default	08:10:55.321717+0100	symptomsd	Consider alternate update: level: 0, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:55.321990+0100	symptomsd	Consider alternate update: level: 0, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:55.323999+0100	symptomsd	Consider alternate update: level: 0, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:55.324371+0100	symptomsd	Consider alternate update: level: 0, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:55.324460+0100	symptomsd	Consider alternate update: level: 0, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:55.324779+0100	symptomsd	Consider alternate update: level: 0, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:55.326345+0100	nesessionmanager	Consider alternate update, new advice: level: 0, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:55.326709+0100	symptomsd	Consider alternate update: level: 0, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:55.326792+0100	symptomsd	Consider alternate update: level: 0, (com.ignea.thequietframe, 2, AppFreePassed), (com.apple.stocks.widget, 1, AppFreePassed)
+default	08:10:58.837034+0100	wifid	WiFiDeviceManagerCatsSetLowLatencyApp: CATSUpdate en0: fgApp:com.ignea.thequietframe b=0x0 rc=0
+default	08:10:58.837127+0100	wifid	WiFiDeviceManagerCatsSetForegroundApp: CATSUpdate en0: fgApp:com.ignea.thequietframe hs=1 t=1 rc=0
+default	08:10:58.916707+0100	SpringBoard	rules: (scene setting) REMOVED keyboardFocus environment from scene: sceneID:com.ignea.thequietframe-default
+default	08:10:58.917346+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 8842C8A8-7D7F-455D-9613-5CCB2840C463
+default	08:10:58.917629+0100	cameracaptured	<<<< FigCaptureDisplayLayoutMonitor >>>> -[FigCaptureDisplayLayoutMonitor _parseFBSDisplayLayout:]: <FigCaptureDisplayLayoutMonitor: 0xb6ad288a0 Main Display> <FBSDisplayLayout: 0xb6a2e93c0; displayIdentity: Main> {    bounds = {{0, 0}, {440, 956}};    interfaceOrientation = "portrait (1)";    backlightLevel = 5;    backlightState = 3;    elements = {        <SBSDisplayLayoutElement: 0xb6b2665a0; sceneID:com.ignea.thequietframe-default; bundleID: com.ignea.thequietframe; frame: {{0, 0}, {440, 956}}; level: 1; hasKeyboardFocus; role: primary>;    }    timestamp = 30 January 2026 at 08:10:58 CET;}
+default	08:10:58.917920+0100	cameracaptured	<<<< FigCaptureDisplayLayoutMonitor >>>> -[FigCaptureDisplayLayoutMonitor _updateObserversWithLayout:]: <FigCaptureDisplayLayoutMonitor: 0xb6ad288a0 Main Display> <FigCaptureDisplayLayout: 0xb6a2eac80 01-30-2026 08:10:58, Main Display, foreground:[com.ignea.thequietframe]>
+default	08:10:58.917972+0100	TheQuietFrame	policyStatus:<BKSHIDEventDeliveryPolicyObserver: 0x109072d00; token: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default; status: none> was:ancestor
+default	08:10:58.918176+0100	TheQuietFrame	Scene target of keyboard event deferring environment did change: 0; scene: UIWindowScene: 0x1036185a0; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default
+default	08:10:58.920172+0100	bluetoothd	SystemUI unknown identifier: 'sceneID:com.ignea.thequietframe-default' / 'com.ignea.thequietframe'
+default	08:11:02.983850+0100	kernel	SK[2]: ch_close_common                ch 0x0 (flowswitch:com.apple.nexus.flowswitch:"fsw_en0[33]_TheQuietFrame.977":33:-1) uuid CC7C8E3A-89A3-4C7A-A30D-F672D026D451 flags 0x11
+default	08:11:06.818726+0100	SpringBoard	App with bundleID:com.ignea.thequietframe is no longer foreground at time=261563988487, attempting to emit telemetry with emission type: HTFGUpdateUserSwitchedAway
+default	08:11:06.823710+0100	SpringBoard	[sceneID:com.ignea.thequietframe-default] Setting deactivation reasons to: 'systemAnimation' for reason: updateAllScenesForBand - Assertion added.
+default	08:11:06.825515+0100	TheQuietFrame	SpringBoard emitted telemetry: 1
+default	08:11:06.829225+0100	TheQuietFrame	Updating event->rollingFGTimestamp from INVALID_FOREGROUND_TIMESTAMP to 261564009878
+default	08:11:06.829340+0100	TheQuietFrame	Not push traits update to screen for new style 1, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:06.829349+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 8842C8A8-7D7F-455D-9613-5CCB2840C463
+default	08:11:06.829421+0100	TheQuietFrame	Deactivation reason added: 5; deactivation reasons: 0 -> 32; animating application lifecycle event: 1
+default	08:11:06.829441+0100	TheQuietFrame	App transitioned to background, suspending HangTracing.
+default	08:11:06.829461+0100	TheQuietFrame	App with bundleID:com.ignea.thequietframe is no longer foreground at time=261564276554, attempting to emit telemetry with emission type: HTFGUpdateAppBackgrounded
+default	08:11:06.829528+0100	TheQuietFrame	app will resign active for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:06.829535+0100	TheQuietFrame	Deactivation reason added: 12; deactivation reasons: 32 -> 4128; animating application lifecycle event: 1
+default	08:11:06.829540+0100	TheQuietFrame	app will suspend for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:06.829545+0100	TheQuietFrame	suspended changed from: NO --> YES for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:06.829551+0100	TheQuietFrame	_internal_deactivateEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>, clientCount: 0, suspended: 1
+default	08:11:06.829557+0100	TheQuietFrame	_internal_teardownUnderlyingPlayerIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:06.829571+0100	TheQuietFrame	_internal_deactivateEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700> tearedDown: 1
+default	08:11:06.829699+0100	TheQuietFrame	_internal_cooldownEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:06.830168+0100	TheQuietFrame	_internal_cooldownUnderlyingPlayerIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:06.830174+0100	TheQuietFrame	        CHHapticEngine.mm:1224  -[CHHapticEngine stopPrewarm]: Stopping prewarm on the underlying Haptic Player
+default	08:11:06.878200+0100	SpringBoard	Invalidating promoted elements with coversheet suppression YES liquid detection suppression NO proximity reader suppression NO system chrome suppression NO bundleIDs {(
+    "com.ignea.thequietframe"
+)} sceneIds {(
+    "sceneID:com.ignea.thequietframe-default"
+)}
+default	08:11:06.884990+0100	SpringBoard	Resolved Stack (update(CoverSheet)) [
+    Highest: ⬇ ,
+    SystemAperture: ⬇ ,
+    BannerItems: ⬇ ,
+    CameraCaptureOverlay: ⬇ ,
+    HUD: ⬇ ,
+    TransientOverlayPresentation: ⬇ ,
+    CoverSheet: ownsHomeGesture; FGActive; suppressedBundles: com.ignea.thequietframe->mobilecal,weather,com.openai.chat,com.teslamotors.TeslaApp,com.replit.app; suppressedScenes: 1->0,
+    Switcher: ownsHomeGesture: Y->N; FGActive->BG; suppressedBundles: com.ignea.thequietframe->(none); suppressedScenes: 1->0,
+    HomeScreen: BG
+]
+default	08:11:06.886775+0100	SpringBoard	[SwitcherOrientation] outSwitcherOrientation: portrait (1), outElementsOrientations: {
+    "sceneID:com.ignea.thequietframe-default" = 1;
+}
+default	08:11:06.887083+0100	SpringBoard	modifying scene setting userInterfaceStyle to Dark displayIdentity: Main forSceneManagers: Main <SBDeviceApplicationSceneHandle: 0x72401f800; sceneID: sceneID:com.ignea.thequietframe-default; scenePointer: 0x72becd900>
+default	08:11:06.888659+0100	SpringBoard	[Main (EmbeddedDisplay)] dispatch event:
+<SBSceneReadySwitcherModifierEvent: 0x72586e7f0; type: SceneReady; appLayout: <SBAppLayout: 0x7292bdd00; primary: com.ignea.thequietframe:default; environment: main> {
+    configuration = full;
+    environment = main;
+    centerConfiguration = undefined;
+    preferredDisplayOrdinal = 0;
+    continuousExposeIdentifier = com.ignea.thequietframe;
+    layoutItems = {
+        primary = <SBDisplayItem: 0x72e58ab40; type: App; bundleIdentifier: com.ignea.thequietframe; uniqueIdentifier: sceneID:com.ignea.thequietframe-default>;
+    }
+}>
+default	08:11:06.891089+0100	SpringBoard	Returning cached initialization context for com.ignea.thequietframe
+default	08:11:06.891474+0100	TheQuietFrame	        AVHapticPlayer.mm:665   -[AVHapticPlayer stopPrewarm]: stop prewarm: clientID: 0x10003d1
+default	08:11:06.891536+0100	TheQuietFrame	        AVHapticClient.mm:353   -[AVHapticClient stopPrewarm]: Client 0x10003d1 stopping prewarm
+default	08:11:06.892923+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 8842C8A8-7D7F-455D-9613-5CCB2840C463
+default	08:11:06.892927+0100	TheQuietFrame	Scene did update interface style to 2, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:06.892932+0100	TheQuietFrame	Push traits update to screen for new style 2, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:06.893415+0100	SpringBoard	[Main (EmbeddedDisplay)] handle response:
+<SBInjectVelocitySwitcherEventResponse: 0x72e7adf80; key: transform; appLayout: <SBAppLayout: 0x7292bdd00; primary: com.ignea.thequietframe:default; environment: main>>
+default	08:11:06.945226+0100	cameracaptured	<<<< FigCaptureDisplayLayoutMonitor >>>> -[FigCaptureDisplayLayoutMonitor _parseFBSDisplayLayout:]: <FigCaptureDisplayLayoutMonitor: 0xb6ad288a0 Main Display> <FBSDisplayLayout: 0xb6a2e8a80; displayIdentity: Main> {    bounds = {{0, 0}, {440, 956}};    interfaceOrientation = "portrait (1)";    backlightLevel = 0;    backlightState = 1;    elements = {        <SBSDisplayLayoutElement: 0xb6b264460; sceneID:com.ignea.thequietframe-default; bundleID: com.ignea.thequietframe; frame: {{0, 0}, {440, 956}}; level: 1; hasKeyboardFocus; role: primary>;    }    timestamp = 30 January 2026 at 08:11:06 CET;}
+default	08:11:06.945236+0100	cameracaptured	<<<< FigCaptureDisplayLayoutMonitor >>>> -[FigCaptureDisplayLayoutMonitor _updateObserversWithLayout:]: <FigCaptureDisplayLayoutMonitor: 0xb6ad288a0 Main Display> <FigCaptureDisplayLayout: 0xb6a2eac80 01-30-2026 08:11:06, Main Display, foreground:[com.ignea.thequietframe]>
+default	08:11:06.968158+0100	SpringBoard	[Main (EmbeddedDisplay)] dispatch event:
+<SBSceneReadySwitcherModifierEvent: 0x729d81590; type: SceneReady; appLayout: <SBAppLayout: 0x7292bdd00; primary: com.ignea.thequietframe:default; environment: main> {
+    configuration = full;
+    environment = main;
+    centerConfiguration = undefined;
+    preferredDisplayOrdinal = 0;
+    continuousExposeIdentifier = com.ignea.thequietframe;
+    layoutItems = {
+        primary = <SBDisplayItem: 0x72e58ab40; type: App; bundleIdentifier: com.ignea.thequietframe; uniqueIdentifier: sceneID:com.ignea.thequietframe-default>;
+    }
+}>
+default	08:11:07.213841+0100	symptomsd	 FlowOriginLedger for com.ignea.thequietframe, rx 0 tx 0 (combined cell rx 0 tx 0 wifi rx 0 tx 0) num closed 0 last access 2026-01-30 08:10:06.228 +0100
+default	08:11:07.234622+0100	bluetoothd	SystemUI unknown identifier: 'sceneID:com.ignea.thequietframe-default' / 'com.ignea.thequietframe'
+default	08:11:07.764214+0100	SpringBoard	Front display did change: <SBApplication: 0x72bece600; com.ignea.thequietframe>
+default	08:11:08.260970+0100	SpringBoard	[sceneID:com.ignea.thequietframe-default] Setting deactivation reasons to: '(none)' for reason: updateAllScenesForBand - Assertion removed.
+default	08:11:08.262125+0100	SpringBoard	Mutating foregroundness due to under lock change for sceneID:com.ignea.thequietframe-default to Background
+default	08:11:08.262557+0100	SpringBoard	No longer tracking: <FBScene: 0x72becd900; FBSceneManager:sceneID:com.ignea.thequietframe-default>
+default	08:11:08.262571+0100	SpringBoard	[com.apple.springboard] removing scene: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default pid: 977 for reason: didRemoveExternalForegroundApplicationSceneHandle
+default	08:11:08.262660+0100	TheQuietFrame	Not push traits update to screen for new style 2, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:08.262911+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 8842C8A8-7D7F-455D-9613-5CCB2840C463
+default	08:11:08.262919+0100	TheQuietFrame	Deactivation reason removed: 12; deactivation reasons: 4128 -> 32; animating application lifecycle event: 1
+default	08:11:08.262927+0100	SpringBoard	[coordinator] _removeSceneFromRecents didRemoveExternalForegroundApplicationSceneHandle pid:977 scene:com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default now:<empty>
+default	08:11:08.262934+0100	TheQuietFrame	Send setDeactivating: N (-DeactivationReason:SuspendedEventsOnly)
+default	08:11:08.263353+0100	TheQuietFrame	app did resume for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.263365+0100	TheQuietFrame	suspended changed from: YES --> NO for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.263371+0100	TheQuietFrame	Deactivation reason removed: 5; deactivation reasons: 32 -> 0; animating application lifecycle event: 0
+default	08:11:08.263401+0100	TheQuietFrame	App transitioned to foreground, resuming HangTracing.
+default	08:11:08.271254+0100	TheQuietFrame	Updating event->rollingFGTimestamp from INVALID_FOREGROUND_TIMESTAMP to 261598815593
+default	08:11:08.271888+0100	TheQuietFrame	app did become active for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.272114+0100	SpringBoard	<SBSceneSnapshotRequestor: 0x72a49ea30; debugName: LCD> [sceneID:com.ignea.thequietframe-default] Requesting 1 snapshot(s) because the scene actually moved to the background
+default	08:11:08.272340+0100	SpringBoard	Created: <FBSceneSnapshotAction: 0x724186c80; sceneID:com.ignea.thequietframe-default>
+default	08:11:08.272516+0100	runningboardd	Acquiring assertion targeting [app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] from originator [osservice<com.apple.SpringBoard>:37] with description <RBSAssertionDescriptor| "FBSceneSnapshotAction:sceneID:com.ignea.thequietframe-default" ID:36-37-5923 target:977 attributes:[
+	<RBSDomainAttribute| domain:"com.apple.frontboard" name:"SceneSnapshotAction" sourceEnvironment:"(null)">,
+	<RBSDurationAttribute| invalidationDuration:5.00 warningDuration:0.00 startPolicy:Fixed endPolicy:Invalidate>
+	]>
+default	08:11:08.272527+0100	runningboardd	Assertion 36-37-5923 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]) will be created as active
+default	08:11:08.272763+0100	TheQuietFrame	Task <12C56C66-E2E4-418F-B622-8FEBB9A88C7F>.<42> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	08:11:08.275018+0100	runningboardd	Calculated state for app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>: running-active (role: UserInteractiveFocal) (endowments: <private>)
+default	08:11:08.275063+0100	SpringBoard	[(FBSceneManager):sceneID:com.ignea.thequietframe-default] Sending action(s) in update: <FBSceneSnapshotAction: 0x002506ac>
+default	08:11:08.275069+0100	SpringBoard	[(FBSceneManager):sceneID:com.ignea.thequietframe-default] scene content state changed: notReady
+default	08:11:08.275113+0100	SpringBoard	[(FBSceneManager):sceneID:com.ignea.thequietframe-default] Removing parent scene.
+default	08:11:08.275242+0100	TheQuietFrame	Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	08:11:08.275537+0100	SpringBoard	<BSCompoundAssertion:0x72e58bac0> (SBApplicationAppProtectionAssistant: 0x72e58b980 - com.ignea.thequietframe) invalidate acq:0x72905dea0 count:1
+default	08:11:08.275547+0100	SpringBoard	All scenes dismissed for <APApplication: com.ignea.thequietframe>
+default	08:11:08.275568+0100	SpringBoard	[0x72e2a5d40:(FBSceneManager):sceneID:com.ignea.thequietframe-default] Scene lifecycle state did change: Background
+default	08:11:08.275587+0100	SpringBoard	[0x72e2a5d40:(FBSceneManager):sceneID:com.ignea.thequietframe-default] Scene state did change: FG-Active[90].
+default	08:11:08.275839+0100	runningboardd	Acquiring assertion targeting [app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] from originator [osservice<com.apple.SpringBoard>:37] with description <RBSAssertionDescriptor| "FBWorkspace (FG-Active[90])" ID:36-37-5924 target:977 attributes:[
+	<RBSDomainAttribute| domain:"com.apple.frontboard" name:"SuspendableLPRunReason-Resume" sourceEnvironment:"(null)">,
+	<RBSDomainAttribute| domain:"com.apple.frontboard" name:"SuspendableRole-NonUI" sourceEnvironment:"(null)">,
+	<RBSDomainAttribute| domain:"com.apple.frontboard" name:"SuspendableJetsamPriority-ForegroundSupport" sourceEnvironment:"(null)">
+	]>
+default	08:11:08.275850+0100	runningboardd	Assertion 36-37-5924 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]) will be created as active
+default	08:11:08.276279+0100	SpringBoard	[app<com.ignea.thequietframe>:977] Workspace state did change: FV-Focal[100] --> FG-Active[90] (assertion acquired).
+default	08:11:08.276289+0100	SpringBoard	[app<com.ignea.thequietframe>:977] Setting process visibility to: Background
+default	08:11:08.276346+0100	powerd	Process runningboardd.36 Created SystemIsActive "app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>36-37-5923:FBSceneSnapshotAction:sceneID:com.ignea.thequietframe-default" age:00:00:00  id:51539642488 [System: PrevIdle SysAct]
+default	08:11:08.277358+0100	SpringBoard	[0x72e2a5d40:(FBSceneManager):sceneID:com.ignea.thequietframe-default] Sending scene action [Logical Deactivate][0xea55] to process 0x72e47db00 (watchdog: 10.00s)
+default	08:11:08.280071+0100	runningboardd	Calculated state for app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>: running-active (role: UserInteractiveFocal) (endowments: <private>)
+default	08:11:08.282888+0100	backboardd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.282908+0100	runningboardd	Invalidating assertion 36-37-5717 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977](UIScene:com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default)) from originator [osservice<com.apple.SpringBoard>:37]
+default	08:11:08.282927+0100	runningboardd	Invalidating assertion 36-37-5713 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]) from originator [osservice<com.apple.SpringBoard>:37]
+default	08:11:08.310457+0100	TheQuietFrame	Task <4ED046F3-2ADF-4E1C-B4A6-A9AD6C7E55E0>.<44> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	08:11:08.310683+0100	SpringBoard	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.310692+0100	TheQuietFrame	[(FBSceneManager):sceneID:com.ignea.thequietframe-default] Received action(s) in scene-update: <FBSceneSnapshotAction: 0x002506ac>
+default	08:11:08.311377+0100	TheQuietFrame	Not push traits update to screen for new style 2, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:08.311748+0100	CommCenter	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.312328+0100	audiomxd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.312889+0100	CommCenter	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.335333+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 8842C8A8-7D7F-455D-9613-5CCB2840C463
+default	08:11:08.335345+0100	TheQuietFrame	Deactivation reason added: 12; deactivation reasons: 0 -> 4096; animating application lifecycle event: 0
+default	08:11:08.335366+0100	TheQuietFrame	App transitioned to background, suspending HangTracing.
+default	08:11:08.335376+0100	TheQuietFrame	App with bundleID:com.ignea.thequietframe is no longer foreground at time=261599288534, attempting to emit telemetry with emission type: HTFGUpdateAppBackgrounded
+default	08:11:08.335587+0100	TheQuietFrame	app will resign active for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.335593+0100	TheQuietFrame	app will suspend for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.335601+0100	TheQuietFrame	Deactivation reason added: 11; deactivation reasons: 4096 -> 6144; animating application lifecycle event: 0
+default	08:11:08.335618+0100	TheQuietFrame	suspended changed from: NO --> YES for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.335629+0100	TheQuietFrame	_internal_deactivateEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>, clientCount: 0, suspended: 1
+default	08:11:08.335638+0100	TheQuietFrame	_internal_teardownUnderlyingPlayerIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.335654+0100	TheQuietFrame	_internal_deactivateEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700> tearedDown: 1
+default	08:11:08.335659+0100	TheQuietFrame	_internal_cooldownEngineIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.335690+0100	TheQuietFrame	_internal_cooldownUnderlyingPlayerIfPossible <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.335699+0100	TheQuietFrame	        CHHapticEngine.mm:1224  -[CHHapticEngine stopPrewarm]: Stopping prewarm on the underlying Haptic Player
+default	08:11:08.335705+0100	TheQuietFrame	        AVHapticPlayer.mm:665   -[AVHapticPlayer stopPrewarm]: stop prewarm: clientID: 0x10003d1
+default	08:11:08.335710+0100	TheQuietFrame	        AVHapticClient.mm:353   -[AVHapticClient stopPrewarm]: Client 0x10003d1 stopping prewarm
+default	08:11:08.335808+0100	TheQuietFrame	app will suspend for engine <_UIFeedbackCoreHapticsHapticsOnlyEngine: 0x113a16700>
+default	08:11:08.335872+0100	TheQuietFrame	Task <FDFB6C99-F8A4-48FF-B94C-3E692AC90E76>.<45> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	08:11:08.335877+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: (null)
+default	08:11:08.335937+0100	TheQuietFrame	Creating new assertion because there is no existing background assertion.
+default	08:11:08.335952+0100	TheQuietFrame	Creating new background assertion
+default	08:11:08.336057+0100	TheQuietFrame	Created new background assertion <BKSProcessAssertion: 0x10d036fd0>
+default	08:11:08.337248+0100	runningboardd	Acquiring assertion targeting [app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] from originator [app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] with description <RBSAssertionDescriptor| "Shared Background Assertion 2 for com.ignea.thequietframe" ID:36-977-5925 target:977 attributes:[
+	<RBSLegacyAttribute| requestedReason:FinishTask reason:FinishTask flags:( PreventTaskSuspend )>,
+	<RBSAcquisitionCompletionAttribute| policy:AfterValidation>
+	]>
+default	08:11:08.337255+0100	TheQuietFrame	[0x1093d9b80] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	08:11:08.337264+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	08:11:08.337269+0100	TheQuietFrame	[0x113a41ea0] Session canceled.
+default	08:11:08.337274+0100	TheQuietFrame	Created background task <private>.
+default	08:11:08.337281+0100	TheQuietFrame	com.ignea.thequietframe(977) invalidateConnection (appDidSuspend)
+default	08:11:08.337285+0100	TheQuietFrame	[0x1093d8f00] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	08:11:08.337291+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x1209aedf0>
+default	08:11:08.337295+0100	TheQuietFrame	agent connection cancelled (details: Session manually canceled)
+default	08:11:08.337299+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x10d036fd0>
+default	08:11:08.337310+0100	TheQuietFrame	[0x113a41ea0] Disposing of session
+default	08:11:08.337313+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	08:11:08.337316+0100	TheQuietFrame	Created background task <private>.
+default	08:11:08.337321+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 10
+default	08:11:08.337326+0100	TheQuietFrame	Ending task with identifier 10 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x1209aed90>
+default	08:11:08.337330+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 10: <private>)
+default	08:11:08.337976+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x1209aed90>
+default	08:11:08.337985+0100	SpringBoard	com.ignea.thequietframe(977) lostConnection (invalidation)
+default	08:11:08.338145+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x10d036fd0>
+default	08:11:08.338181+0100	runningboardd	Assertion 36-977-5925 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]) will be created as inactive as start-time-defining assertions exist
+default	08:11:08.338186+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	08:11:08.338192+0100	TheQuietFrame	Created background task <private>.
+default	08:11:08.338269+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 11
+default	08:11:08.338279+0100	TheQuietFrame	Ending task with identifier 11 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x1209aed90>
+default	08:11:08.338288+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 11: <private>)
+default	08:11:08.338313+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x1209aed90>
+default	08:11:08.338319+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x10d036fd0>
+default	08:11:08.338329+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	08:11:08.338331+0100	TheQuietFrame	Created background task <private>.
+default	08:11:08.338335+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 12
+default	08:11:08.338340+0100	TheQuietFrame	Ending task with identifier 12 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x1209aed90>
+default	08:11:08.338346+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 12: <private>)
+default	08:11:08.338501+0100	backboardd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.338576+0100	SpringBoard	RX com.ignea.thequietframe(977) setWindowContextID:0 windowState:Disabled level:0.0
+    focusContext:(null)
+default	08:11:08.339066+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: <__NSMallocBlock__: 0x1209aed90>
+default	08:11:08.339137+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x10d036fd0>
+default	08:11:08.339142+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	08:11:08.339145+0100	TheQuietFrame	Created background task <private>.
+default	08:11:08.339149+0100	TheQuietFrame	Push traits update to screen for new style 2, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:08.339608+0100	SpringBoard	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.339735+0100	TheQuietFrame	Should not send trait collection or coordinate space update, interface style 2 -> 2, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:08.343617+0100	audiomxd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.347650+0100	SpringBoard	Verify background audio activity for com.ignea.thequietframe, Recording: 0
+default	08:11:08.348532+0100	TheQuietFrame	Performing snapshot request 0x120a14ed0 (type 1)
+default	08:11:08.349270+0100	TheQuietFrame	[(FBSceneManager):sceneID:com.ignea.thequietframe-default] Sending action(s): <FBSSceneSnapshotRequestAction: 0x03d10001>
+default	08:11:08.349276+0100	TheQuietFrame	Connection 0: creating secure tcp or quic connection
+default	08:11:08.349498+0100	TheQuietFrame	Task <3BC72BB7-1E76-431F-89CD-4743AD1389F7>.<46> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	08:11:08.349848+0100	TheQuietFrame	Task <4ED046F3-2ADF-4E1C-B4A6-A9AD6C7E55E0>.<44> waiting for setup of Connection 15
+default	08:11:08.349870+0100	TheQuietFrame	Connection 15: enabling TLS
+default	08:11:08.349875+0100	TheQuietFrame	Connection 15: starting, TC(0x0)
+default	08:11:08.349885+0100	TheQuietFrame	[C15 937AF735-44BC-48CB-B322-C9B617AAEDD5 Hostname#90796f96:443 quic-connection, url hash: dfb662d7, definite, attribution: developer, context: com.apple.CFNetwork.NSURLSession.{937A8F9A-42B6-4067-BB70-DD2895A3E090}{(null)}{Y}{2}{0x0} (private), proc: EFFC66A1-E6A2-3E39-A473-856B06D5CA8C, delegated upid: 0] start
+default	08:11:08.349905+0100	TheQuietFrame	[C15 Hostname#90796f96:443 initial parent-flow ((null))] event: path:start @0.000s
+default	08:11:08.349921+0100	TheQuietFrame	Task <D371722A-9591-4658-A56B-1544B66196EB>.<47> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	08:11:08.350102+0100	TheQuietFrame	Task <12C56C66-E2E4-418F-B622-8FEBB9A88C7F>.<42> summary for task success {transaction_duration_ms=27, response_status=200, cache_hit=true}
+default	08:11:08.350107+0100	TheQuietFrame	Task <12C56C66-E2E4-418F-B622-8FEBB9A88C7F>.<42> finished successfully
+default	08:11:08.350838+0100	TheQuietFrame	Task <247FD60E-942E-4204-91E1-824A34D28A00>.<48> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	08:11:08.351238+0100	TheQuietFrame	[C15 Hostname#90796f96:443 waiting parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied @0.001s, uuid: 6FE7C249-82E8-4B33-96D2-98667CD9A2F1
+default	08:11:08.351273+0100	TheQuietFrame	[C15 Hostname#90796f96:443 in_progress parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:start_connect @0.001s
+default	08:11:08.351278+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C15] reporting state preparing
+default	08:11:08.351294+0100	TheQuietFrame	[C15 Hostname#90796f96:443 in_progress parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:start_child @0.001s
+default	08:11:08.351315+0100	TheQuietFrame	[C15.1 Hostname#90796f96:443 initial path ((null))] event: path:start @0.001s
+default	08:11:08.351453+0100	TheQuietFrame	[C15.1 Hostname#90796f96:443 waiting path (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied @0.002s, uuid: 6FE7C249-82E8-4B33-96D2-98667CD9A2F1
+default	08:11:08.351504+0100	TheQuietFrame	[C15.1 Hostname#90796f96:443 in_progress transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: transform:start @0.002s
+default	08:11:08.351582+0100	TheQuietFrame	[C15.1.1 Hostname#90796f96:443 initial path ((null))] event: path:start @0.002s
+default	08:11:08.351857+0100	TheQuietFrame	[C15.1.1 Hostname#90796f96:443 waiting path (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied @0.003s, uuid: 19B3741B-49A6-4E88-8D94-55BAA9AA2C76
+default	08:11:08.351944+0100	TheQuietFrame	[C15.1.1 Hostname#90796f96:443 in_progress resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: resolver:start_dns @0.003s
+default	08:11:08.352158+0100	TheQuietFrame	Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> setting up Connection 15
+default	08:11:08.352377+0100	TheQuietFrame	Task <FDFB6C99-F8A4-48FF-B94C-3E692AC90E76>.<45> waiting for setup of Connection 15
+default	08:11:08.352488+0100	TheQuietFrame	Task <3BC72BB7-1E76-431F-89CD-4743AD1389F7>.<46> waiting for setup of Connection 15
+default	08:11:08.352500+0100	TheQuietFrame	Task <D371722A-9591-4658-A56B-1544B66196EB>.<47> waiting for setup of Connection 15
+default	08:11:08.352627+0100	TheQuietFrame	Task <247FD60E-942E-4204-91E1-824A34D28A00>.<48> waiting for setup of Connection 15
+default	08:11:08.352636+0100	TheQuietFrame	Task <23716A98-D65B-4B49-8C96-E3DB4D96A023>.<49> resuming, timeouts(0.0, 604800.0) qos(0x19) voucher((null)) activity(00000000-0000-0000-0000-000000000000)
+default	08:11:08.352888+0100	TheQuietFrame	Task <23716A98-D65B-4B49-8C96-E3DB4D96A023>.<49> waiting for setup of Connection 15
+default	08:11:08.352993+0100	mDNSResponder	[R8131] getaddrinfo start -- flags: 0xC000D000, ifindex: 0, protocols: 0, hostname: <mask.hash: 'JasrswVzyMXVtLV60FC4Pg=='>, options: 0x0 {}, client pid: 977 (TheQuietFrame)
+default	08:11:08.353465+0100	TheQuietFrame	nw_endpoint_resolver_update [C15.1.1 Hostname#90796f96:443 in_progress resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] Adding endpoint handler for IPv4#7f5dd58f:443
+default	08:11:08.353581+0100	mDNSResponder	[R8131] getaddrinfo stop -- hostname: <mask.hash: 'JasrswVzyMXVtLV60FC4Pg=='>, client pid: 977 (TheQuietFrame)
+default	08:11:08.354387+0100	TheQuietFrame	[C15.1.1 Hostname#90796f96:443 in_progress resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: resolver:receive_dns @0.009s
+default	08:11:08.355648+0100	TheQuietFrame	[C15.1.1.1 IPv4#7f5dd58f:443 initial path ((null))] event: path:start @0.010s
+default	08:11:08.360322+0100	SpringBoard	[0x72e2a5d40:(FBSceneManager):sceneID:com.ignea.thequietframe-default] Sending scene action [Forward Event][0x3f98] to process 0x72e47db00 (watchdog: 30.00s)
+default	08:11:08.360415+0100	SpringBoard	Application process state changed for com.ignea.thequietframe: <SBApplicationProcessState: 0x7255517e0; pid: 977; taskState: Running; visibility: Background>
+error	08:11:08.361054+0100	SpringBoard	Advisor: No handle found for currently focused PID: 977; sceneIdentity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default
+default	08:11:08.361109+0100	SpringBoard	[(FBSceneManager):sceneID:com.ignea.thequietframe-default] Received action(s): <FBSSceneSnapshotRequestAction: 0x03d10001>
+default	08:11:08.361264+0100	SpringBoard	<SBSceneSnapshotRequestor: 0x72a49ea30; debugName: LCD> [sceneID:com.ignea.thequietframe-default] Got FBSSceneSnapshotRequestTypePerform (0x725c0bca0)
+default	08:11:08.361392+0100	SpringBoard	[(FBSceneManager):sceneID:com.ignea.thequietframe-default] Delegate <SBSceneManagerCoordinator: 0x72a49e550> handled action(s): <private>
+default	08:11:08.367001+0100	TheQuietFrame	[C15.1.1.1 IPv4#7f5dd58f:443 waiting path (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied @0.036s, uuid: F6CC7433-A8E7-46A1-A0E2-8CCC392874B8
+default	08:11:08.367157+0100	kernel	SK[4]: flow_entry_alloc               fe "0 proc TheQuietFrame(977) nx_port 30 flow_uuid 949A655F-5E9A-4779-9735-684F276ACC2F flags 0x130<TRACK,CONNECTED,QOS_MARKING> ipver=4,src=<IPv4-redacted>.52064,dst=<IPv4-redacted>.443,proto=0x17 mask=0x0000003f,hash=0xd335bf56 tp_proto=0x253"
+default	08:11:08.373069+0100	SpringBoard	[com.ignea.thequietframe] START liquidating the old, as snapshot generation succeeded
+default	08:11:08.373575+0100	SpringBoard	[com.ignea.thequietframe] deleting old snapshots: (
+    "<XBApplicationSnapshot: 0x72476f640; identifier: E08A5755-6CFD-45A4-98F1-FF544EBAA6BB; contentType: SceneContent; referenceSize: {440, 956}; interfaceOrientation: Portrait; userInterfaceStyle: Dark> {\n    creationDate = 30 January 2026 at 08:06:10 CET;\n    lastUsedDate = 30 January 2026 at 08:09:48 CET;\n    keepsImageAccessUntilExpiration = NO;\n    hasGenerationContext = NO;\n    purge = high;\n    context = {\n        contentType = SceneContent;\n        fullScreen = YES;\n        referenceSize = {440, 956};\n        contentFrame = {{0, 0}, {440, 956}};\n        interfaceOrientation = Portrait;\n        userInterfaceStyle = Dark;\n        customSafeAreaInsets = <XBDisplayEdgeInsetsWrapper: 0x725d30ae0; topInset: 62.0; leftInset: 0.0; bottomInset: 34.0; rightInset: 0.0>;\n        additionalContext = {\n            statusBarSettings = <XBStatusBarSettings: 0x72c660ee0; hidden: NO; style: UIStatusBarStyleLightContent; backgroundActivityEnabled: NO>;\n        }\n    }\n    imageContext = {\n        scale = 3.0;\n        opaque = YES;\n        fileRelativeLocation = default;\n        path = /private/var/mobile/Containers/Data/Application/ACAE4572-FE83-4421-85F5-CB584C3C4AAA/Library/SplashBoard/Snapshots/sceneID:com.ignea.thequietframe-default/E08A5755-6CFD-45A4-98F1-FF544EBAA6BB@3x.ktx;\n        fileFormat = ktx;\n    }\n    variants = {\n        downscaled = <XBApplicationSnapshot: 0x72476ef40; identifier: 67525057-3A6A-4057-81FE-13D6B92E35E5; variantID: downscaled; contentType: SceneContent; referenceSize: {440, 956}; interfaceOrientation: Portrait; userInterfaceStyle: Dark> {\n            creationDate = 30 January 2026 at 08:06:10 CET;\n            keepsImageAccessUntilExpiration = NO;\n            hasGenerationContext = NO;\n            purge = high;\n            context = {\n                contentType = SceneContent;\n                fullScreen = YES;\n                referenceSize = {440, 956};\n                contentFrame = {{0, 0}, {440, 956}};\n                interfaceOrientation = Portrait;\n                userInterfaceStyle = Dark;\n                customSafeAreaInsets = <XBDisplayEdgeInsetsWrapper: 0x725d30ae0; topInset: 62.0; leftInset: 0.0; bottomInset: 34.0; rightInset: 0.0>;\n                additionalContext = {\n                    statusBarSettings = <XBStatusBarSettings: 0x72c660ee0; hidden: NO; style: UIStatusBarStyleLightContent; backgroundActivityEnabled: NO>;\n                }\n            }\n            imageContext = {\n                scale = 3.0;\n                opaque = YES;\n                fileRelativeLocation = default;\n                path = /private/var/mobile/Containers/Data/Application/ACAE4572-FE83-4421-85F5-CB584C3C4AAA/Library/SplashBoard/Snapshots/sceneID:com.ignea.thequietframe-default/downscaled/67525057-3A6A-4057-81FE-13D6B92E35E5@3x.ktx;\n                fileFormat = ktx;\n            }\n        };\n    }\n}",
+    "<XBApplicationSnapshot: 0x72476ef40; identifier: 67525057-3A6A-4057-81FE-13D6B92E35E5; variantID: downscaled; contentType: SceneContent; referenceSize: {440, 956}; interfaceOrientation: Portrait; userInterfaceStyle: Dark> {\n    creationDate = 30 January 2026 at 08:06:10 CET;\n    keepsImageAccessUntilExpiration = NO;\n    hasGenerationContext = NO;\n    purge = high;\n    context = {\n        contentType = SceneContent;\n        fullScreen = YES;\n        referenceSize = {440, 956};\n        contentFrame = {{0, 0}, {440, 956}};\n        interfaceOrientation = Portrait;\n        userInterfaceStyle = Dark;\n        customSafeAreaInsets = <XBDisplayEdgeInsetsWrapper: 0x725d30ae0; topInset: 62.0; leftInset: 0.0; bottomInset: 34.0; rightInset: 0.0>;\n        additionalContext = {\n            statusBarSettings = <XBStatusBarSettings: 0x72c660ee0; hidden: NO; style: UIStatusBarStyleLightContent; backgroundActivityEnabled: NO>;\n        }\n    }\n    imageContext = {\n        scale = 3.0;\n        opaque = YES;\n        fileRelativeLocation = default;\n        path = /private/var/mobile/Containers/Data/Application/ACAE4572-FE83-4421-85F5-CB584C3C4AAA/Library/SplashBoard/Snapshots/sceneID:com.ignea.thequietframe-default/downscaled/67525057-3A6A-4057-81FE-13D6B92E35E5@3x.ktx;\n        fileFormat = ktx;\n    }\n}"
+)
+default	08:11:08.376324+0100	TheQuietFrame	[C15.1.1.1 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:start_nexus @0.038s
+default	08:11:08.377424+0100	TheQuietFrame	[C15.1.1.1 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:receive_nexus @0.077s
+default	08:11:08.378082+0100	TheQuietFrame	quic_conn_initialize_inner [C15.1.1.1:2] [-3dece3fe7082bacf] created QUIC connection (spin bit enabled)
+default	08:11:08.378171+0100	kernel	SK[5]: __channel_open                 TheQuietFrame(977) nx_port 30 fd 10 fsw_en0[30]_TheQuietFrame.977
+default	08:11:08.378350+0100	TheQuietFrame	[C15.1.1.1 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:start_connect @0.078s
+default	08:11:08.378451+0100	locationd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.378523+0100	TheQuietFrame	quic_crypto_new_flow [C15.1.1.1:2] [-3dece3fe7082bacf] TLS stream is: [C16]
+default	08:11:08.378529+0100	TheQuietFrame	[C16 F1B9A3ED-AB06-4159-850C-96610F4EDA3E IPv4#7f5dd58f:443 quic-connection, url hash: dfb662d7, tls, definite, attribution: developer, context: com.apple.CFNetwork.NSURLSession.{937A8F9A-42B6-4067-BB70-DD2895A3E090}{(null)}{Y}{2}{0x0} (private), proc: EFFC66A1-E6A2-3E39-A473-856B06D5CA8C, delegated upid: 0] start
+default	08:11:08.378544+0100	TheQuietFrame	[C16 IPv4#7f5dd58f:443 initial socket-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:start @0.000s
+default	08:11:08.378587+0100	TheQuietFrame	[C16 IPv4#7f5dd58f:443 waiting socket-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:satisfied @0.000s, uuid: F6CC7433-A8E7-46A1-A0E2-8CCC392874B8
+default	08:11:08.378618+0100	TheQuietFrame	[C16 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:start_connect @0.000s
+default	08:11:08.378623+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C16] reporting state preparing
+default	08:11:08.378650+0100	TheQuietFrame	nw_flow_connected [C16 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] Transport protocol connected (quic-connection)
+default	08:11:08.378658+0100	TheQuietFrame	[C16 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:finish_transport @0.000s
+default	08:11:08.378714+0100	TheQuietFrame	boringssl_session_apply_protocol_options_for_transport_block_invoke_2(2323) [C16:1][0x1139bcf60] TLS configured [min_version(0x0304) max_version(0x0304) name(redacted) tickets(false) false_start(false) enforce_ev(false) enforce_ats(false) ats_non_pfs_ciphersuite_allowed(false) ech(false) pqtls(true), pake(false)]
+default	08:11:08.378751+0100	TheQuietFrame	boringssl_context_info_handler(2390) [C16:1][0x1139bcf60] Client handshake started
+default	08:11:08.378834+0100	TheQuietFrame	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	08:11:08.378930+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS client enter_early_data
+default	08:11:08.379137+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS client read_server_hello
+default	08:11:08.379390+0100	runningboardd	Acquiring assertion targeting [app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] from originator [app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] with description <RBSAssertionDescriptor| "com.apple.CFNetwork.StorageDB" ID:36-977-5936 target:977 attributes:[
+	<RBSDomainAttribute| domain:"com.apple.common" name:"FinishTaskUninterruptable" sourceEnvironment:"(null)">,
+	<RBSAcquisitionCompletionAttribute| policy:AfterApplication>
+	]>
+default	08:11:08.379488+0100	runningboardd	Assertion 36-977-5936 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]) will be created as inactive as start-time-defining assertions exist
+default	08:11:08.383287+0100	dasd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.386662+0100	IDSCredentialsAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.389276+0100	useractivityd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.390743+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] Set jetsam priority to 90 [0] flag[1]
+default	08:11:08.390755+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] Set darwin role to: NonUserInteractive
+default	08:11:08.390860+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] visiblity is no
+default	08:11:08.391293+0100	runningboardd	Inheritance changeset: <RBSInheritanceChangeSet| gained:(null) lost:{(
+    <RBSInheritance| environment:(none) name:com.apple.frontboard.visibility origID:36-37-5713 0>,
+    <RBSInheritance| environment:UIScene:com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.ignea.thequietframe-default name:com.apple.frontboard.visibility origID:36-37-5717 payload 12644952720676508247>
+)}>
+default	08:11:08.392396+0100	runningboardd	Calculated state for app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>: running-active (role: NonUserInteractive) (endowments: (null))
+default	08:11:08.393693+0100	CommCenter	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.395633+0100	audiomxd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.395845+0100	backboardd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.396032+0100	audiomxd	-CMSessionMgr- CMSessionMgrHandleApplicationStateChange:17730 Client com.ignea.thequietframe with session sid:0x77046, TheQuietFrame(977), 'auxi' [0x500000936520e00] with pid '977' is now BackgroundRunning. Background entitlement: NO ActiveLongFormVideoSession: NO IsLongFormVideoApp NO
+default	08:11:08.396060+0100	audiomxd	-CMSessionMgr- CMSessionMgrHandleApplicationStateChange: Client com.ignea.thequietframe with pid '977' is not allowed to play in the background AND does not continue AirPlaying video when device locks
+default	08:11:08.396104+0100	SpringBoard	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.396141+0100	audiomxd	          SSServerImp.cpp:1447  pid 977(TheQuietFrame)
+default	08:11:08.400492+0100	wifid	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.400546+0100	PerfPowerServices	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.400785+0100	symptomsd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.401007+0100	gamepolicyd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.401113+0100	watchdogd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.401787+0100	WirelessRadioManagerd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.402638+0100	TheQuietFrame	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	08:11:08.402645+0100	SpringBoard	[com.ignea.thequietframe] com.ignea.thequietframe application state changed to <RBSProcessState| task:running-active debug:none>
+default	08:11:08.402661+0100	SpringBoard	[com.ignea.thequietframe] Ignore becoming background for application without push registration
+default	08:11:08.403253+0100	dasd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.405100+0100	bluetoothd	SystemUI unknown identifier: 'sceneID:com.ignea.thequietframe-default' / 'com.ignea.thequietframe'
+default	08:11:08.407490+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client read_hello_retry_request
+default	08:11:08.407567+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client read_server_hello
+default	08:11:08.407891+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client read_encrypted_extensions
+default	08:11:08.408024+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client read_certificate_request
+default	08:11:08.409262+0100	locationd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.409436+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client read_server_certificate
+default	08:11:08.409511+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client read_server_certificate_verify
+default	08:11:08.409579+0100	TheQuietFrame	boringssl_context_evaluate_trust_async(1833) [C16:1][0x1139bcf60] Performing external trust evaluation
+default	08:11:08.409593+0100	TheQuietFrame	boringssl_context_evaluate_trust_async_external(1818) [C16:1][0x1139bcf60] Asyncing for external verify block
+default	08:11:08.409859+0100	TheQuietFrame	Connection 15: asked to evaluate TLS Trust
+default	08:11:08.409888+0100	TheQuietFrame	Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> auth completion disp=1 cred=0x0
+default	08:11:08.410167+0100	TheQuietFrame	(Trust 0x120030480) No pending evals, starting
+default	08:11:08.410298+0100	TheQuietFrame	[0x1139e3200] activating connection: mach=true listener=false peer=false name=com.apple.trustd
+default	08:11:08.410806+0100	TheQuietFrame	(Trust 0x120030480) Completed async eval kickoff
+default	08:11:08.411391+0100	IDSCredentialsAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.411537+0100	TheQuietFrame	(Trust 0x120030480) trustd returned 4
+default	08:11:08.411581+0100	TheQuietFrame	System Trust Evaluation yielded status(0)
+default	08:11:08.411604+0100	TheQuietFrame	(Trust 0x1200315c0) No pending evals, starting
+default	08:11:08.411638+0100	TheQuietFrame	[0x1139e2940] activating connection: mach=true listener=false peer=false name=com.apple.trustd
+default	08:11:08.411719+0100	TheQuietFrame	(Trust 0x1200315c0) Completed async eval kickoff
+default	08:11:08.411736+0100	TheQuietFrame	[0x1139e3200] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	08:11:08.412564+0100	TheQuietFrame	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	08:11:08.412615+0100	useractivityd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.412879+0100	TheQuietFrame	(Trust 0x1200315c0) trustd returned 4
+default	08:11:08.412904+0100	TheQuietFrame	Connection 15: TLS Trust result 0
+default	08:11:08.412909+0100	TheQuietFrame	boringssl_context_evaluate_trust_async_external_block_invoke_3(1773) [C16:1][0x1139bcf60] Returning from external verify block with result: true
+default	08:11:08.412919+0100	TheQuietFrame	boringssl_context_certificate_verify_callback(2014) [C16:1][0x1139bcf60] Certificate verification result: OK
+default	08:11:08.412997+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client read_server_finished
+default	08:11:08.413013+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client send_end_of_early_data
+default	08:11:08.413017+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client send_client_encrypted_extensions
+default	08:11:08.413022+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client send_client_certificate
+default	08:11:08.413078+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client complete_second_flight
+default	08:11:08.413161+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS 1.3 client done
+default	08:11:08.413166+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS client finish_client_handshake
+default	08:11:08.413171+0100	TheQuietFrame	boringssl_context_info_handler(2407) [C16:1][0x1139bcf60] Client handshake state: TLS client done
+default	08:11:08.413176+0100	TheQuietFrame	boringssl_context_info_handler(2396) [C16:1][0x1139bcf60] Client handshake done
+default	08:11:08.413347+0100	TheQuietFrame	nw_protocol_boringssl_signal_connected(895) [C16:1][0x1139bcf60] TLS connected [server(0) version(0x0304) ciphersuite(TLS_AES_256_GCM_SHA384) group(0x001d) signature_alg(0x0403) alpn(h3) resumed(0) offered_ticket(0) in_early_data(0) early_data_accepted(0) false_started(0) ocsp_received(0) sct_received(0) connect_time(35ms) flight_time(29ms) rtt(29ms) write_stalls(0) read_stalls(4) pake(0x0000)]
+default	08:11:08.413367+0100	TheQuietFrame	nw_flow_connected [C16 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] Output protocol connected (tls)
+default	08:11:08.413384+0100	TheQuietFrame	[C16 IPv4#7f5dd58f:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:finish_connect @0.035s
+default	08:11:08.413477+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C16] reporting state ready
+default	08:11:08.413484+0100	TheQuietFrame	[C16 IPv4#7f5dd58f:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:changed_viability @0.035s
+default	08:11:08.413491+0100	TheQuietFrame	[0x1139e2940] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	08:11:08.413913+0100	TheQuietFrame	quic_pmtud_restart [C15.1.1.1:2] [-fdece3fe7082bacf] PMTUD enabled, max PMTU: 1500, header size: 28, current PMTU 1228
+default	08:11:08.413923+0100	TheQuietFrame	quic_crypto_tls_ready_inner [C15.1.1.1:2] [-fdece3fe7082bacf] QUIC connection established in 35.686 ms, RTT 18.867 ms
+default	08:11:08.413939+0100	TheQuietFrame	nw_flow_connected [C15.1.1.1 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] Transport protocol connected (quic-connection)
+default	08:11:08.413944+0100	wifid	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.414052+0100	TheQuietFrame	[C15.1.1.1 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:finish_transport @0.114s
+default	08:11:08.414102+0100	TheQuietFrame	nw_flow_connected [C15.1.1.1 IPv4#7f5dd58f:443 in_progress channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] Output protocol connected (CFNetworkConnection-1889194415)
+default	08:11:08.414143+0100	TheQuietFrame	[C15.1.1.1 IPv4#7f5dd58f:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:child_finish_connect @0.114s
+default	08:11:08.414189+0100	TheQuietFrame	[C15.1.1 Hostname#90796f96:443 ready resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:child_finish_connect @0.114s
+default	08:11:08.414200+0100	TheQuietFrame	[C15.1 Hostname#90796f96:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:child_finish_connect @0.114s
+default	08:11:08.414252+0100	TheQuietFrame	[C15.1.1.1 IPv4#7f5dd58f:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:changed_viability @0.114s
+default	08:11:08.414334+0100	TheQuietFrame	[C15.1.1 Hostname#90796f96:443 ready resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:changed_viability @0.114s
+default	08:11:08.414349+0100	TheQuietFrame	[C15.1 Hostname#90796f96:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:changed_viability @0.114s
+default	08:11:08.414355+0100	TheQuietFrame	nw_flow_connected [C15 IPv4#7f5dd58f:443 in_progress parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] Output protocol connected (endpoint_flow)
+default	08:11:08.414424+0100	TheQuietFrame	[C15 IPv4#7f5dd58f:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:finish_connect @0.114s
+default	08:11:08.414470+0100	TheQuietFrame	nw_connection_report_state_with_handler_on_nw_queue [C15] reporting state ready
+default	08:11:08.414478+0100	TheQuietFrame	[C15 IPv4#7f5dd58f:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:changed_viability @0.115s
+default	08:11:08.414484+0100	TheQuietFrame	nw_connection_send_viability_changed_on_nw_queue [C15] viability_changed_handler(true)
+default	08:11:08.414549+0100	TheQuietFrame	quic_migration_path_event_block_invoke [C15.1.1.1:2] [-fdece3fe7082bacf] path 95bb4833cef4e1dd over en0 received event established
+default	08:11:08.414635+0100	TheQuietFrame	quic_migration_evaluate_primary [C15.1.1.1:2] [-fdece3fe7082bacf] promoted path 0x1209a56c0 over en0 to primary
+default	08:11:08.414661+0100	TheQuietFrame	nw_protocol_instance_report_ready [C15.1.1.1:2] Calling notify with interface <private> for flow_registration <private>
+default	08:11:08.414771+0100	TheQuietFrame	[C15.1.1.1 IPv4#7f5dd58f:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:migrated @0.115s, uuid: F6CC7433-A8E7-46A1-A0E2-8CCC392874B8
+default	08:11:08.414861+0100	TheQuietFrame	[C15.1.1 Hostname#90796f96:443 ready resolver (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:migrated @0.115s, uuid: 19B3741B-49A6-4E88-8D94-55BAA9AA2C76
+default	08:11:08.414879+0100	TheQuietFrame	[C15.1 Hostname#90796f96:443 ready transform (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:migrated @0.115s, uuid: 6FE7C249-82E8-4B33-96D2-98667CD9A2F1
+default	08:11:08.414885+0100	TheQuietFrame	[C15 IPv4#7f5dd58f:443 ready parent-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: path:migrated @0.115s, uuid: 6FE7C249-82E8-4B33-96D2-98667CD9A2F1
+default	08:11:08.414895+0100	TheQuietFrame	quic_stream_create_inbound [C15.1.1.1:2] [-fdece3fe7082bacf] creating inbound stream 3
+default	08:11:08.414983+0100	TheQuietFrame	quic_migration_evaluate [C15.1.1.1:2] [-fdece3fe7082bacf] evaluating path migration
+default	08:11:08.414990+0100	TheQuietFrame	quic_migration_evaluate_block_invoke [C15.1.1.1:2] [-fdece3fe7082bacf] path 95bb4833cef4e1dd state validated (0), ifname en0, primary? 1, initial? 1, fallback? 0, preferred? 0 lossy? 0
+default	08:11:08.414995+0100	TheQuietFrame	quic_migration_evaluate [C15.1.1.1:2] [-fdece3fe7082bacf] current path is usable, no strong fallback or we are probing
+default	08:11:08.414999+0100	TheQuietFrame	Connection 15: connected successfully
+default	08:11:08.415004+0100	TheQuietFrame	Connection 15: TLS handshake complete
+default	08:11:08.415030+0100	TheQuietFrame	Connection 15: ready C(N) E(N)
+default	08:11:08.415090+0100	wifid	-[WiFiUserInteractionMonitor setApplicationRunningState:foregroundState:andNetworkingState:forBundleId:]: com.ignea.thequietframe entered background
+default	08:11:08.415175+0100	TheQuietFrame	[C15] event: client:connection_reused @0.115s
+default	08:11:08.415232+0100	TheQuietFrame	Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> now using Connection 15
+default	08:11:08.415397+0100	TheQuietFrame	Task <4ED046F3-2ADF-4E1C-B4A6-A9AD6C7E55E0>.<44> now using Connection 15
+default	08:11:08.415563+0100	TheQuietFrame	Task <FDFB6C99-F8A4-48FF-B94C-3E692AC90E76>.<45> now using Connection 15
+default	08:11:08.415709+0100	TheQuietFrame	Task <3BC72BB7-1E76-431F-89CD-4743AD1389F7>.<46> now using Connection 15
+default	08:11:08.415919+0100	TheQuietFrame	Task <D371722A-9591-4658-A56B-1544B66196EB>.<47> now using Connection 15
+default	08:11:08.416388+0100	TheQuietFrame	Task <247FD60E-942E-4204-91E1-824A34D28A00>.<48> now using Connection 15
+default	08:11:08.416610+0100	TheQuietFrame	Task <23716A98-D65B-4B49-8C96-E3DB4D96A023>.<49> now using Connection 15
+default	08:11:08.416886+0100	TheQuietFrame	Connection 15: received viability advisory(Y)
+default	08:11:08.417129+0100	TheQuietFrame	0x1209a5f98 ID=0 Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> sent request, body N 0
+default	08:11:08.417135+0100	TheQuietFrame	0x1209a64d8 ID=4 Task <4ED046F3-2ADF-4E1C-B4A6-A9AD6C7E55E0>.<44> sent request, body N 0
+default	08:11:08.417140+0100	TheQuietFrame	0x1209a6698 ID=8 Task <FDFB6C99-F8A4-48FF-B94C-3E692AC90E76>.<45> sent request, body N 0
+default	08:11:08.417146+0100	TheQuietFrame	0x1209a6858 ID=12 Task <3BC72BB7-1E76-431F-89CD-4743AD1389F7>.<46> sent request, body N 0
+default	08:11:08.417162+0100	TheQuietFrame	0x1209a6a18 ID=16 Task <D371722A-9591-4658-A56B-1544B66196EB>.<47> sent request, body N 0
+default	08:11:08.417169+0100	TheQuietFrame	0x1209a6bd8 ID=20 Task <247FD60E-942E-4204-91E1-824A34D28A00>.<48> sent request, body N 0
+default	08:11:08.417175+0100	TheQuietFrame	0x1209a6d98 ID=24 Task <23716A98-D65B-4B49-8C96-E3DB4D96A023>.<49> sent request, body N 0
+default	08:11:08.419183+0100	gamepolicyd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.419464+0100	PerfPowerServices	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.420438+0100	SpringBoard	<XBApplicationSnapshotManifestImpl: 0x724166b80> [com.ignea.thequietframe] Snapshot data for <XBApplicationSnapshot: 0x729605dc0; …5AF514C1BBA0> [com.ignea.thequietframe] written to file: /private/var/mobile/Containers/Data/Application/ACAE4572-FE83-4421-85F5-CB584C3C4AAA/Library/SplashBoard/Snapshots/sceneID:com.ignea.thequietframe-default/29AA9F56-DF92-4D87-8DDF-5AF514C1BBA0@3x.ktx
+default	08:11:08.420506+0100	SpringBoard	<XBApplicationSnapshotManifestImpl: 0x724166b80> [com.ignea.thequietframe] Deleting snapshots: (
+    "<XBApplicationSnapshot: 0x72476f640; identifier: E08A5755-6CFD-45A4-98F1-FF544EBAA6BB; contentType: SceneContent; referenceSize: {440, 956}; interfaceOrientation: Portrait; userInterfaceStyle: Dark>",
+    "<XBApplicationSnapshot: 0x72476ef40; identifier: 67525057-3A6A-4057-81FE-13D6B92E35E5; variantID: downscaled; contentType: SceneContent; referenceSize: {440, 956}; interfaceOrientation: Portrait; userInterfaceStyle: Dark>"
+)
+default	08:11:08.420530+0100	SpringBoard	<XBApplicationSnapshotManifestImpl: 0x724166b80> [com.ignea.thequietframe] Deleting snapshot <XBApplicationSnapshot: 0x72476f640; …FF544EBAA6BB> [com.ignea.thequietframe] for reason: _contentType: SceneContent(0)
+default	08:11:08.420562+0100	SpringBoard	<XBApplicationSnapshotManifestImpl: 0x724166b80> [com.ignea.thequietframe] Deleting snapshot <XBApplicationSnapshot: 0x72476ef40; …13D6B92E35E5> [com.ignea.thequietframe] for reason: _contentType: SceneContent(0)
+default	08:11:08.420603+0100	SpringBoard	<XBApplicationSnapshotManifestImpl: 0x724166b80> [com.ignea.thequietframe] Deleting paths: <private>
+default	08:11:08.420660+0100	SpringBoard	[com.ignea.thequietframe] deleting old suspend snapshots using predicate: <XBApplicationSnapshotPredicate: 0x72d6d1e00> {
+    name = SBSuspendSnapshot;
+    contentTypeMask = SceneContent;
+}
+default	08:11:08.420711+0100	SpringBoard	<XBApplicationSnapshotManifestImpl: 0x724166b80> [com.ignea.thequietframe] Deleting snapshot <XBApplicationSnapshot: 0x724ca3480; …DFF20184148D> [com.ignea.thequietframe] for reason: _contentType: SceneContent(0)
+default	08:11:08.420753+0100	TheQuietFrame	boringssl_context_new_session_handler(1533) [C16:1][0x1139bcf60] Asyncing for session update block
+default	08:11:08.420789+0100	TheQuietFrame	boringssl_context_new_session_handler(1533) [C16:1][0x1139bcf60] Asyncing for session update block
+default	08:11:08.420814+0100	TheQuietFrame	nw_protocol_boringssl_signal_connected(895) [C16:1][0x1139bcf60] TLS connected [server(0) version(0x0304) ciphersuite(TLS_AES_256_GCM_SHA384) group(0x001d) signature_alg(0x0403) alpn(h3) resumed(0) offered_ticket(0) in_early_data(0) early_data_accepted(0) false_started(0) ocsp_received(0) sct_received(0) connect_time(35ms) flight_time(29ms) rtt(29ms) write_stalls(0) read_stalls(4) pake(0x0000)]
+default	08:11:08.420833+0100	TheQuietFrame	nw_flow_connected [C16 IPv4#7f5dd58f:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] Output protocol connected (tls)
+default	08:11:08.421010+0100	SpringBoard	[com.ignea.thequietframe] STOP liquidating the old
+default	08:11:08.421020+0100	SpringBoard	<SBSceneSnapshotRequestor: 0x72a49ea30; debugName: LCD> [sceneID:com.ignea.thequietframe-default] Snapshot request (0x725c0bca0) complete with error: 0
+default	08:11:08.421313+0100	TheQuietFrame	boringssl_context_new_session_handler_block_invoke(1536) [C16:1][0x1139bcf60] Returning from session update block
+default	08:11:08.421457+0100	TheQuietFrame	Snapshot request 0x120a14ed0 complete
+default	08:11:08.421474+0100	TheQuietFrame	boringssl_context_new_session_handler_block_invoke(1536) [C16:1][0x1139bcf60] Returning from session update block
+default	08:11:08.421571+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 13
+default	08:11:08.421578+0100	TheQuietFrame	Ending task with identifier 13 and description: <private>, _expireHandler: <__NSMallocBlock__: 0x1209ad7d0>
+default	08:11:08.421585+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 13: <private>)
+default	08:11:08.421886+0100	symptomsd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.422549+0100	watchdogd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.423250+0100	SpringBoard	Got response for <FBSceneSnapshotAction: 0x724186c80; sceneID:com.ignea.thequietframe-default>: success
+default	08:11:08.423399+0100	dasd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.423643+0100	TheQuietFrame	Push traits update to screen for new style 2, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:08.423659+0100	TheQuietFrame	Should not send trait collection or coordinate space update, interface style 2 -> 2, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:08.424069+0100	runningboardd	Invalidating assertion 36-37-5923 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]) from originator [osservice<com.apple.SpringBoard>:37]
+default	08:11:08.424082+0100	TheQuietFrame	[0x109254ee0] [keyboardFocus] Disabling event deferring records requested: adding recreation reason: detachedContext; for reason: _UIEventDeferringManager: 0x109254ee0: disabling keyboardFocus: context detached for window: 0x109144000; contextID: 0x57C09A85
+default	08:11:08.424729+0100	TheQuietFrame	Will add backgroundTask with taskName: <private>, expirationHandler: (null)
+default	08:11:08.424734+0100	TheQuietFrame	Reusing background assertion <BKSProcessAssertion: 0x10d036fd0>
+default	08:11:08.424737+0100	TheQuietFrame	Incrementing reference count for background assertion <private>
+default	08:11:08.424741+0100	TheQuietFrame	Created background task <private>.
+default	08:11:08.425371+0100	WirelessRadioManagerd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.426126+0100	TheQuietFrame	Target list changed:
+default	08:11:08.426734+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 9
+default	08:11:08.426742+0100	TheQuietFrame	Ending task with identifier 9 and description: <private>, _expireHandler: (null)
+default	08:11:08.426747+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 9: <private>)
+default	08:11:08.426871+0100	SpringBoard	[0x72e2a5d40:(FBSceneManager):sceneID:com.ignea.thequietframe-default] Scene action [Logical Deactivate][0xea55] completed with success: 1
+default	08:11:08.427088+0100	TheQuietFrame	sceneOfRecord: sceneID: sceneID:com.ignea.thequietframe-default  persistentID: 8842C8A8-7D7F-455D-9613-5CCB2840C463
+default	08:11:08.427119+0100	TheQuietFrame	Not push traits update to screen for new style 2, <UIWindowScene: 0x1036185a0> (8842C8A8-7D7F-455D-9613-5CCB2840C463)
+default	08:11:08.427459+0100	IDSCredentialsAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.431013+0100	locationd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.431489+0100	locationd	{"msg":"RBS #AppMonitor process monitor update handler invoked", "pid":977, "bundleID":"com.ignea.thequietframe", "state":"RunningScheduled"}
+default	08:11:08.431618+0100	locationd	{"msg":"RBS #AppMonitor Post Application State Change Notification", "notification":"BackgroundRunning", "pid":977, "bundleId":"com.ignea.thequietframe"}
+default	08:11:08.431787+0100	locationd	{"msg":"#Warning #ClientResolution the passed keyPath is not registered. Resolving to #nullCKP", "InputCKP":"icom.ignea.thequietframe:"}
+default	08:11:08.432184+0100	locationd	{"msg":"#CLIUA AppMonitor notification", "notification":"BackgroundRunning", "pid":977, "bundleId":"com.ignea.thequietframe", "ClientKey":"icom.ignea.thequietframe:"}
+default	08:11:08.432203+0100	locationd	{"msg":"#CLIUA Marking change", "clientKey":"icom.ignea.thequietframe:", "reason":"Decaying in-use status from process state", "AssertionLevel":"kCLClientInUseLevelDecayingUserEngagement", "coming":1}
+default	08:11:08.432219+0100	locationd	{"msg":"#CLIUA updating AssertionRecord", "ClientKey":"icom.ignea.thequietframe:", "AssertionLevel":"kCLClientInUseLevelDirectUserEngagement"}
+default	08:11:08.432230+0100	locationd	{"msg":"#CLIUA AssertionRecord updated", "ClientKey":"icom.ignea.thequietframe:", "AssertionLevel":"kCLClientInUseLevelDirectUserEngagement"}
+default	08:11:08.432246+0100	locationd	{"msg":"#CLIUA Marking change", "clientKey":"icom.ignea.thequietframe:", "reason":"Process state from RunningBoard", "AssertionLevel":"kCLClientInUseLevelDirectUserEngagement", "coming":0}
+default	08:11:08.432260+0100	locationd	{"msg":"#CLIUA updating AssertionRecord", "ClientKey":"icom.ignea.thequietframe:", "AssertionLevel":"kCLClientInUseLevelDirectUserEngagement"}
+default	08:11:08.432271+0100	locationd	{"msg":"#CLIUA AssertionRecord updated", "ClientKey":"icom.ignea.thequietframe:", "AssertionLevel":"kCLClientInUseLevelDecayingUserEngagement"}
+default	08:11:08.432281+0100	locationd	{"msg":"#CLIUA in-use level changed for client", "ClientKey":"icom.ignea.thequietframe:"}
+default	08:11:08.432290+0100	locationd	{"msg":"#Warning #ClientResolution the passed keyPath is not registered. Resolving to #nullCKP", "InputCKP":"icom.ignea.thequietframe:"}
+default	08:11:08.434199+0100	UserEventAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-Visible
+default	08:11:08.435257+0100	UserEventAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.439522+0100	SpringBoard	[0x72e2a5d40:(FBSceneManager):sceneID:com.ignea.thequietframe-default] Scene action [Forward Event][0x3f98] completed with success: 1
+default	08:11:08.443798+0100	TheQuietFrame	Ending background task with UIBackgroundTaskIdentifier: 14
+default	08:11:08.443805+0100	TheQuietFrame	Ending task with identifier 14 and description: <private>, _expireHandler: (null)
+default	08:11:08.443813+0100	TheQuietFrame	Decrementing reference count for assertion <private> (used by background task with identifier 14: <private>)
+default	08:11:08.443891+0100	TheQuietFrame	Will invalidate assertion: <BKSProcessAssertion: 0x10d036fd0> for task identifier: 14
+default	08:11:08.443984+0100	runningboardd	Invalidating assertion 36-977-5925 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]) from originator [app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]
+default	08:11:08.490439+0100	SpringBoard	<XBApplicationSnapshotManifestImpl: 0x724166b80> [com.ignea.thequietframe] Snapshot data for <XBApplicationSnapshot: 0x7247148c0; …4141456AB06E> [com.ignea.thequietframe] written to file: /private/var/mobile/Containers/Data/Application/ACAE4572-FE83-4421-85F5-CB584C3C4AAA/Library/SplashBoard/Snapshots/sceneID:com.ignea.thequietframe-default/downscaled/E4C36B4C-CF47-4850-9E72-4141456AB06E@3x.ktx
+default	08:11:08.495033+0100	runningboardd	Calculated state for app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>: running-active (role: NonUserInteractive) (endowments: (null))
+default	08:11:08.504440+0100	powerd	Process runningboardd.36 Released SystemIsActive "app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>36-37-5923:FBSceneSnapshotAction:sceneID:com.ignea.thequietframe-default" age:00:00:00  id:51539642488 [System: PrevIdle SysAct]
+default	08:11:08.505028+0100	SpringBoard	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.505119+0100	audiomxd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.505129+0100	CommCenter	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.505132+0100	backboardd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.506496+0100	TheQuietFrame	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	08:11:08.508260+0100	symptomsd	Data Usage for com.ignea.thequietframe on flow 822713 - WiFi in/out: 3289530/999664, WiFi delta_in/delta_out: 5502/8745, Cell in/out: 54556/27259, Cell delta_in/delta_out: 0/0, RNF: 0, subscriber tag: 0, total duration: 0.167
+default	08:11:08.509604+0100	dasd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.510039+0100	symptomsd	com.ignea.thequietframe: Foreground: false
+default	08:11:08.510090+0100	symptomsd	call _saveAndUnloadSelectState on com.ignea.thequietframe exiting foreground state
+default	08:11:08.513000+0100	gamepolicyd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.514380+0100	watchdogd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.514441+0100	symptomsd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.515072+0100	UserEventAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.515320+0100	locationd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.515697+0100	IDSCredentialsAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.516146+0100	useractivityd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.516478+0100	wifid	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.516592+0100	PerfPowerServices	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.517266+0100	WirelessRadioManagerd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.544226+0100	SpringBoard	[0x72e2a5d40:(FBSceneManager):sceneID:com.ignea.thequietframe-default] Scene state did change: XX-None[0].
+default	08:11:08.544276+0100	SpringBoard	[app<com.ignea.thequietframe>:977] Workspace state did change: FG-Active[90] --> XX-None[0] (assertion dropped).
+default	08:11:08.544331+0100	runningboardd	Invalidating assertion 36-37-5924 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]) from originator [osservice<com.apple.SpringBoard>:37]
+default	08:11:08.585988+0100	TheQuietFrame	quic_stream_create_inbound [C15.1.1.1:2] [-fdece3fe7082bacf] creating inbound stream 7 (out of order)
+default	08:11:08.586308+0100	TheQuietFrame	quic_stream_create_inbound [C15.1.1.1:2] [-fdece3fe7082bacf] creating inbound stream 11
+default	08:11:08.586920+0100	TheQuietFrame	0x1209a5f98 ID=0 Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> received response, status 200 content K
+default	08:11:08.587358+0100	TheQuietFrame	[0x1093d9900] activating connection: mach=true listener=false peer=false name=com.apple.trustd
+default	08:11:08.593589+0100	TheQuietFrame	[0x1093d9900] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+default	08:11:08.593652+0100	TheQuietFrame	Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> response ended
+default	08:11:08.593704+0100	TheQuietFrame	Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> done using Connection 15
+default	08:11:08.596982+0100	TheQuietFrame	Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> summary for task success {transaction_duration_ms=312, response_status=200, connection=15, protocol="h3", domain_lookup_duration_ms=6, connect_duration_ms=36, secure_connection_duration_ms=35, private_relay=false, request_start_ms=133, request_duration_ms=1, response_start_ms=305, response_duration_ms=7, request_bytes=364, request_throughput_kbps=1619, response_bytes=737, response_throughput_kbps=802, cache_hit=true}
+default	08:11:08.597002+0100	TheQuietFrame	Task <870B091C-4D12-4B3E-B925-5BE57C84A217>.<43> finished successfully
+default	08:11:08.599286+0100	TheQuietFrame	0x1209a6858 ID=12 Task <3BC72BB7-1E76-431F-89CD-4743AD1389F7>.<46> received response, status 200 content K
+default	08:11:08.599584+0100	TheQuietFrame	Task <3BC72BB7-1E76-431F-89CD-4743AD1389F7>.<46> response ended
+default	08:11:08.599661+0100	TheQuietFrame	Task <3BC72BB7-1E76-431F-89CD-4743AD1389F7>.<46> done using Connection 15
+default	08:11:08.599699+0100	TheQuietFrame	Task <3BC72BB7-1E76-431F-89CD-4743AD1389F7>.<46> summary for task success {transaction_duration_ms=297, response_status=200, connection=15, reused=1, reused_after_ms=0, request_start_ms=115, request_duration_ms=1, response_start_ms=294, response_duration_ms=3, request_bytes=360, request_throughput_kbps=2073, response_bytes=926, response_throughput_kbps=2264, cache_hit=true}
+default	08:11:08.599709+0100	TheQuietFrame	Task <3BC72BB7-1E76-431F-89CD-4743AD1389F7>.<46> finished successfully
+default	08:11:08.600564+0100	TheQuietFrame	0x1209a6698 ID=8 Task <FDFB6C99-F8A4-48FF-B94C-3E692AC90E76>.<45> received response, status 200 content K
+default	08:11:08.600630+0100	TheQuietFrame	Task <FDFB6C99-F8A4-48FF-B94C-3E692AC90E76>.<45> response ended
+default	08:11:08.600673+0100	TheQuietFrame	Task <FDFB6C99-F8A4-48FF-B94C-3E692AC90E76>.<45> done using Connection 15
+default	08:11:08.600698+0100	TheQuietFrame	Task <FDFB6C99-F8A4-48FF-B94C-3E692AC90E76>.<45> summary for task success {transaction_duration_ms=299, response_status=200, connection=15, reused=1, reused_after_ms=0, request_start_ms=116, request_duration_ms=1, response_start_ms=298, response_duration_ms=1, request_bytes=336, request_throughput_kbps=1782, response_bytes=523, response_throughput_kbps=3423, cache_hit=true}
+default	08:11:08.600738+0100	TheQuietFrame	Task <FDFB6C99-F8A4-48FF-B94C-3E692AC90E76>.<45> finished successfully
+default	08:11:08.630825+0100	TheQuietFrame	0x1209a6d98 ID=24 Task <23716A98-D65B-4B49-8C96-E3DB4D96A023>.<49> received response, status 304 content U
+default	08:11:08.631762+0100	TheQuietFrame	Task <23716A98-D65B-4B49-8C96-E3DB4D96A023>.<49> done using Connection 15
+default	08:11:08.631778+0100	TheQuietFrame	Task <23716A98-D65B-4B49-8C96-E3DB4D96A023>.<49> summary for task success {transaction_duration_ms=326, response_status=304, connection=15, reused=1, reused_after_ms=0, request_start_ms=111, request_duration_ms=0, response_start_ms=325, response_duration_ms=0, request_bytes=416, request_throughput_kbps=5003, response_bytes=100, response_throughput_kbps=0, cache_hit=true}
+default	08:11:08.631793+0100	TheQuietFrame	Task <23716A98-D65B-4B49-8C96-E3DB4D96A023>.<49> finished successfully
+default	08:11:08.647455+0100	runningboardd	Removed last relative-start-date-defining assertion for process app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>
+default	08:11:08.647459+0100	runningboardd	Activating delayed assertion 36-977-5936 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977])
+default	08:11:08.649621+0100	runningboardd	Calculated state for app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>: running-active (role: Background) (endowments: (null))
+default	08:11:08.649631+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] Set jetsam priority to 40 [0] flag[1]
+default	08:11:08.649662+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] Set darwin role to: Background
+default	08:11:08.649760+0100	powerd	Process runningboardd.36 Created SystemIsActive "app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>36-977-5936:com.apple.CFNetwork.StorageDB" age:00:00:00  id:51539642495 [System: PrevIdle SysAct]
+default	08:11:08.649835+0100	backboardd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.649900+0100	SpringBoard	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.649930+0100	CommCenter	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.649938+0100	audiomxd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.655261+0100	dasd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.655567+0100	UserEventAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.656147+0100	locationd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.656550+0100	IDSCredentialsAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.656799+0100	useractivityd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.657402+0100	wifid	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.657902+0100	PerfPowerServices	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.658376+0100	gamepolicyd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.658641+0100	symptomsd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.659295+0100	watchdogd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.659661+0100	WirelessRadioManagerd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-active-NotVisible
+default	08:11:08.661480+0100	TheQuietFrame	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, unknown-NotVisible
+default	08:11:08.716012+0100	symptomsd	Data Usage for com.ignea.thequietframe on flow 822713 - WiFi in/out: 3292394/1000114, WiFi delta_in/delta_out: 2864/450, Cell in/out: 54556/27259, Cell delta_in/delta_out: 0/0, RNF: 0, subscriber tag: 0, total duration: 0.374
+default	08:11:08.764842+0100	TheQuietFrame	0x1209a64d8 ID=4 Task <4ED046F3-2ADF-4E1C-B4A6-A9AD6C7E55E0>.<44> received response, status 304 content U
+default	08:11:08.765181+0100	TheQuietFrame	Task <4ED046F3-2ADF-4E1C-B4A6-A9AD6C7E55E0>.<44> done using Connection 15
+default	08:11:08.765388+0100	TheQuietFrame	Task <4ED046F3-2ADF-4E1C-B4A6-A9AD6C7E55E0>.<44> summary for task success {transaction_duration_ms=481, response_status=304, connection=15, reused=1, reused_after_ms=0, request_start_ms=131, request_duration_ms=1, response_start_ms=480, response_duration_ms=0, request_bytes=383, request_throughput_kbps=1892, response_bytes=75, response_throughput_kbps=1153, cache_hit=true}
+default	08:11:08.765400+0100	TheQuietFrame	Task <4ED046F3-2ADF-4E1C-B4A6-A9AD6C7E55E0>.<44> finished successfully
+default	08:11:08.774162+0100	TheQuietFrame	[C16 IPv4#7f5dd58f:443 ready channel-flow (satisfied (Path is satisfied), viable, interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate)] event: flow:receive_nexus @0.395s
+default	08:11:09.471642+0100	symptomsd	Data Usage for com.ignea.thequietframe on flow 822713 - WiFi in/out: 3292632/1000265, WiFi delta_in/delta_out: 238/151, Cell in/out: 54556/27259, Cell delta_in/delta_out: 0/0, RNF: 0, subscriber tag: 0, total duration: 1.123
+default	08:11:09.480050+0100	runningboardd	Invalidating assertion 36-977-5936 (target:[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]) from originator [app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977]
+default	08:11:09.548419+0100	powerd	Process runningboardd.36 Released SystemIsActive "app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>36-977-5936:com.apple.CFNetwork.StorageDB" age:00:00:00  id:51539642495 [System: PrevIdle SysAct]
+default	08:11:09.548429+0100	runningboardd	Calculated state for app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>: running-suspended (role: None) (endowments: (null))
+default	08:11:09.548738+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] Set jetsam priority to 0 [0] flag[1]
+default	08:11:09.548746+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] Suspending task.
+default	08:11:09.548861+0100	kernel	SK[5]: skmem_arena_mredirect          TheQuietFrame(977) "ska.necp.stats-2.TheQuietFrame.977" ar 0x0 flags 0x0 inactive 1 need_defunct 1 err 0
+default	08:11:09.549053+0100	kernel	SK[5]: skmem_arena_mredirect          TheQuietFrame(977) "ska.nexus.fsw_en0[30]_TheQuietFrame.977" ar 0x0 flags 0x0 inactive 1 need_defunct 1 err 0
+default	08:11:09.549192+0100	kernel	SK[5]: nx_fsw_dom_defunct_finalize    TheQuietFrame(977): ch 0x0 -/- nx 0x0 (com.apple.nexus.flowswitch:"fsw_en0[30]_TheQuietFrame.977":30:-1) err 0
+default	08:11:09.549309+0100	backboardd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.549417+0100	SpringBoard	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.549614+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] Shutdown sockets (SVC)
+default	08:11:09.549638+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] Set darwin role to: None
+default	08:11:09.549890+0100	SpringBoard	[app<com.ignea.thequietframe>:977] Setting process task state to: Suspended
+default	08:11:09.549901+0100	SpringBoard	Application process state changed for com.ignea.thequietframe: <SBApplicationProcessState: 0x7260dd8e0; pid: 977; taskState: Suspended; visibility: Background>
+default	08:11:09.549937+0100	runningboardd	[app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977] check if suspended process is holding locks
+default	08:11:09.550409+0100	SpringBoard	[com.ignea.thequietframe] com.ignea.thequietframe application state changed to <RBSProcessState| task:running-suspended debug:none>
+default	08:11:09.551727+0100	CommCenter	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.551856+0100	audiomxd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.551896+0100	audiomxd	-CMSessionMgr- CMSessionMgrHandleApplicationStateChange:17730 Client com.ignea.thequietframe with session sid:0x77046, TheQuietFrame(977), 'auxi' [0x500000936520e00] with pid '977' is now BackgroundTaskSuspended. Background entitlement: NO ActiveLongFormVideoSession: NO IsLongFormVideoApp NO
+default	08:11:09.551951+0100	audiomxd	-CMSessionMgr- CMSessionMgrHandleApplicationStateChange: Sending stop command to com.ignea.thequietframe with pid '977' because client is background suspended and there is no AirPlay video session for it
+default	08:11:09.551987+0100	audiomxd	          SSServerImp.cpp:1447  pid 977(TheQuietFrame)
+default	08:11:09.555602+0100	gamepolicyd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.556092+0100	watchdogd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.556788+0100	dasd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.557116+0100	locationd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.557285+0100	locationd	{"msg":"RBS #AppMonitor process monitor update handler invoked", "pid":977, "bundleID":"com.ignea.thequietframe", "state":"RunningSuspended"}
+default	08:11:09.557454+0100	locationd	{"msg":"RBS #AppMonitor Post Application State Change Notification", "notification":"BackgroundTaskSuspended", "pid":977, "bundleId":"com.ignea.thequietframe"}
+default	08:11:09.557548+0100	IDSCredentialsAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.557634+0100	locationd	{"msg":"#Warning #ClientResolution the passed keyPath is not registered. Resolving to #nullCKP", "InputCKP":"icom.ignea.thequietframe:"}
+default	08:11:09.557784+0100	locationd	{"msg":"#CLIUA AppMonitor notification", "notification":"BackgroundTaskSuspended", "pid":977, "bundleId":"com.ignea.thequietframe", "ClientKey":"icom.ignea.thequietframe:"}
+default	08:11:09.558119+0100	wifid	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.558223+0100	useractivityd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.558505+0100	symptomsd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.558653+0100	PerfPowerServices	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.558846+0100	WirelessRadioManagerd	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.559180+0100	UserEventAgent	Received state update for 977 (app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>, running-suspended-NotVisible
+default	08:11:09.806139+0100	SpringBoard	Verify background audio activity for com.ignea.thequietframe, Recording: 0
+default	08:11:09.891458+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:11:16.483127+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:11:18.433096+0100	locationd	{"msg":"#CLIUA Marking change", "clientKey":"icom.ignea.thequietframe:", "reason":"Decaying in-use status from process state", "AssertionLevel":"kCLClientInUseLevelDecayingUserEngagement", "coming":0}
+default	08:11:18.433119+0100	locationd	{"msg":"#CLIUA updating AssertionRecord", "ClientKey":"icom.ignea.thequietframe:", "AssertionLevel":"kCLClientInUseLevelDecayingUserEngagement"}
+default	08:11:18.433135+0100	locationd	{"msg":"#CLIUA AssertionRecord updated", "ClientKey":"icom.ignea.thequietframe:", "AssertionLevel":"kCLClientInUseLevelNotInUse"}
+default	08:11:18.433146+0100	locationd	{"msg":"#CLIUA in-use level changed for client", "ClientKey":"icom.ignea.thequietframe:"}
+default	08:11:18.433165+0100	locationd	{"msg":"#Warning #ClientResolution the passed keyPath is not registered. Resolving to #nullCKP", "InputCKP":"icom.ignea.thequietframe:"}
+default	08:11:20.353880+0100	kernel	memorystatus: freezing (general) pid 977 [TheQuietFrame] done, memorystatus_freeze_budget_pages_remaining 234381 froze 1495 pages
+default	08:11:22.681601+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:11:44.093353+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:11:49.217713+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:11:49.247270+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:11:49.264322+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:11:57.678685+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:11:57.708046+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:11:57.725580+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:12:08.482793+0100	CategoriesService	Performing iTunes lookup on behalf of com.apple.UsageTrackingAgent: (
+    "com.apple.donotdisturb",
+    "com.thequietframe.echoes",
+    "com.apple.ScreenTimeNotifications",
+    "com.apple.barcodesupport.nfc",
+    "com.apple.iCloud.FollowUp",
+    "com.apple.AudioAccessoryUserNotifications",
+    "com.apple.powerui.smartcharging"
+)
+default	08:12:08.688661+0100	CategoriesService	Performing iTunes lookup on behalf of com.apple.UsageTrackingAgent: (
+    "com.apple.iCloud.FollowUp",
+    "com.apple.ScreenTimeNotifications",
+    "com.apple.AudioAccessoryUserNotifications",
+    "com.apple.donotdisturb",
+    "com.thequietframe.echoes",
+    "com.apple.barcodesupport.nfc",
+    "com.apple.powerui.smartcharging"
+)
+default	08:12:08.830806+0100	CategoriesService	Performing iTunes lookup on behalf of com.apple.UsageTrackingAgent: (
+    "com.apple.iCloud.FollowUp",
+    "com.apple.ScreenTimeNotifications",
+    "com.apple.AudioAccessoryUserNotifications",
+    "com.apple.donotdisturb",
+    "com.thequietframe.echoes",
+    "com.apple.barcodesupport.nfc",
+    "com.apple.powerui.smartcharging"
+)
+default	08:12:09.245837+0100	runningboardd	Resolved pid 1093 to [xpcservice<com.apple.audio.AudioConverterService.HighCapacity([app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977])>{vt hash: 0}{definition:com.apple.audio.AudioConverterService.HighCapacity[standard][client]}:1093:1093]
+default	08:12:09.246282+0100	runningboardd	[xpcservice<com.apple.audio.AudioConverterService.HighCapacity([app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977])>{vt hash: 0}{definition:com.apple.audio.AudioConverterService.HighCapacity[standard][client]}:1093:1093] Memory Limits: active 2048 inactive 6
+ <private>
+default	08:12:09.246334+0100	runningboardd	[xpcservice<com.apple.audio.AudioConverterService.HighCapacity([app<com.ignea.thequietframe(FEEDEEEE-DDDD-CCCC-BBBB-0000000001F5)>:977])>{vt hash: 0}{definition:com.apple.audio.AudioConverterService.HighCapacity[standard][client]}:1093:1093] This process will be managed.
+default	08:12:09.847330+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:12:11.075268+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame
+default	08:12:20.833940+0100	kernel	necp_process_defunct_list: necp_update_client abort nexus error (2) for pid 977 TheQuietFrame

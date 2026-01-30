@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal, Image, Linking, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
-import { useState, useCallback } from 'react';
-import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X } from 'lucide-react-native';
+import { useState, useCallback, useEffect } from 'react';
+import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X, Bug, RefreshCw } from 'lucide-react-native';
 import { useTheme } from '../lib/ThemeContext';
 import { useEntitlementContext } from '@/lib/iap/useEntitlement';
 import Paywall from '@/components/Paywall';
@@ -11,6 +11,7 @@ import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, changeLanguage, getCurrentLanguage
 import { contentService } from '../lib/ContentService';
 import { cookieService } from '../lib/CookieService';
 import { cycleDevAccessState, type DevAccessState } from '@/lib/iap/devAccessOverride';
+import { getInstallId } from '@/lib/iap/installId';
 
 const THEMES = ['Dark', 'Light'];
 
@@ -37,7 +38,48 @@ export default function SettingsScreen() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<SupportedLanguage>(getCurrentLanguage());
   
-  const { isFullAccess, isLoading: entitlementLoading, expiresAt, restorePurchasesAction, devOverride, isDevMode, refresh: refreshEntitlement } = useEntitlementContext();
+  const { 
+    isFullAccess, 
+    isLoading: entitlementLoading, 
+    expiresAt, 
+    restorePurchasesAction, 
+    devOverride, 
+    isDevMode, 
+    refresh: refreshEntitlement,
+    error: entitlementError,
+    isGrace,
+    graceReason
+  } = useEntitlementContext();
+  
+  const [showDebugPanel, setShowDebugPanel] = useState(false);
+  const [debugInstallId, setDebugInstallId] = useState<string>('loading...');
+  const [debugTapCount, setDebugTapCount] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  
+  useEffect(() => {
+    getInstallId().then(id => setDebugInstallId(id));
+  }, []);
+  
+  const handleDebugRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    try {
+      await refreshEntitlement();
+      const id = await getInstallId();
+      setDebugInstallId(id);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [refreshEntitlement]);
+  
+  const handleVersionTap = useCallback(() => {
+    const newCount = debugTapCount + 1;
+    setDebugTapCount(newCount);
+    if (newCount >= 5) {
+      setShowDebugPanel(true);
+      setDebugTapCount(0);
+    }
+    setTimeout(() => setDebugTapCount(0), 2000);
+  }, [debugTapCount]);
   
   const handleDevAccessCycle = useCallback(async () => {
     if (!isDevMode) return;
@@ -394,8 +436,9 @@ export default function SettingsScreen() {
           </TouchableOpacity>
           <TouchableOpacity 
             onLongPress={handleDevAccessCycle}
+            onPress={handleVersionTap}
             delayLongPress={1000}
-            activeOpacity={isDevMode ? 0.6 : 1}
+            activeOpacity={0.6}
           >
             <Text style={[styles.versionText, { color: colors.textTertiary }]}>
               {t('settings.version')}
@@ -405,8 +448,89 @@ export default function SettingsScreen() {
                 DEV: {devOverride || 'none'}
               </Text>
             )}
+            {debugTapCount > 0 && (
+              <Text style={[styles.debugTapHint, { color: colors.textTertiary }]}>
+                {5 - debugTapCount} more taps for debug
+              </Text>
+            )}
           </TouchableOpacity>
         </View>
+
+        {/* Debug Panel - shown after 5 taps on version */}
+        {showDebugPanel && (
+          <View style={[styles.debugSection, { backgroundColor: colors.surface, borderColor: '#F59E0B' }]}>
+            <View style={styles.debugHeader}>
+              <View style={styles.debugHeaderLeft}>
+                <Bug size={18} color="#F59E0B" />
+                <Text style={[styles.debugTitle, { color: '#F59E0B' }]}>Debug Info</Text>
+              </View>
+              <TouchableOpacity onPress={() => setShowDebugPanel(false)}>
+                <X size={20} color={colors.textSecondary} />
+              </TouchableOpacity>
+            </View>
+            
+            <View style={styles.debugRow}>
+              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Install ID:</Text>
+              <Text style={[styles.debugValue, { color: colors.text }]} selectable>{debugInstallId}</Text>
+            </View>
+            
+            <View style={styles.debugRow}>
+              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Platform:</Text>
+              <Text style={[styles.debugValue, { color: colors.text }]}>{Platform.OS}</Text>
+            </View>
+            
+            <View style={styles.debugRow}>
+              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Full Access:</Text>
+              <Text style={[styles.debugValue, { color: isFullAccess ? '#22C55E' : '#EF4444' }]}>
+                {isFullAccess ? 'YES' : 'NO'}
+              </Text>
+            </View>
+            
+            <View style={styles.debugRow}>
+              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Loading:</Text>
+              <Text style={[styles.debugValue, { color: colors.text }]}>
+                {entitlementLoading ? 'YES' : 'NO'}
+              </Text>
+            </View>
+            
+            <View style={styles.debugRow}>
+              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Expires At:</Text>
+              <Text style={[styles.debugValue, { color: colors.text }]}>{expiresAt || 'null'}</Text>
+            </View>
+            
+            <View style={styles.debugRow}>
+              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Grace Period:</Text>
+              <Text style={[styles.debugValue, { color: colors.text }]}>
+                {isGrace ? `YES (${graceReason})` : 'NO'}
+              </Text>
+            </View>
+            
+            <View style={styles.debugRow}>
+              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Error:</Text>
+              <Text style={[styles.debugValue, { color: entitlementError ? '#EF4444' : colors.text }]}>
+                {entitlementError || 'none'}
+              </Text>
+            </View>
+            
+            <View style={styles.debugRow}>
+              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Dev Mode:</Text>
+              <Text style={[styles.debugValue, { color: colors.text }]}>
+                {isDevMode ? `YES (${devOverride || 'no override'})` : 'NO'}
+              </Text>
+            </View>
+            
+            <TouchableOpacity 
+              style={[styles.debugRefreshButton, { backgroundColor: '#F59E0B' }]}
+              onPress={handleDebugRefresh}
+              disabled={isRefreshing}
+            >
+              <RefreshCw size={16} color="#000" style={isRefreshing ? { opacity: 0.5 } : undefined} />
+              <Text style={styles.debugRefreshText}>
+                {isRefreshing ? 'Refreshing...' : 'Refresh Status'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
       </ScrollView>
     </SafeAreaView>
@@ -678,6 +802,67 @@ const styles = StyleSheet.create({
   },
   supportButtonText: {
     fontSize: 15,
+    fontWeight: '600',
+  },
+  debugTapHint: {
+    fontSize: 10,
+    textAlign: 'center',
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
+  debugSection: {
+    marginTop: 20,
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 2,
+  },
+  debugHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  debugHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  debugTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  debugRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
+  },
+  debugLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    flex: 1,
+  },
+  debugValue: {
+    fontSize: 12,
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+    flex: 2,
+    textAlign: 'right',
+  },
+  debugRefreshButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    marginTop: 16,
+  },
+  debugRefreshText: {
+    color: '#000',
+    fontSize: 14,
     fontWeight: '600',
   },
 });
