@@ -4,6 +4,22 @@ import { iapLog, generateFlowId } from './iosLogger';
 
 let ExpoIap: typeof import('expo-iap') | null = null;
 let isConnected = false;
+let lastConnectionError: string | null = null;
+let connectionAttempts = 0;
+
+export interface IAPDiagnostics {
+  isConnected: boolean;
+  connectionAttempts: number;
+  lastConnectionError: string | null;
+}
+
+export function getIAPDiagnostics(): IAPDiagnostics {
+  return {
+    isConnected,
+    connectionAttempts,
+    lastConnectionError,
+  };
+}
 
 async function getExpoIap() {
   if (Platform.OS === 'web') {
@@ -15,8 +31,18 @@ async function getExpoIap() {
   return ExpoIap;
 }
 
+const MAX_INIT_RETRIES = 3;
+const RETRY_DELAY_MS = 1000;
+
+async function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export async function initIAP(): Promise<() => Promise<void>> {
   const flowId = generateFlowId();
+  connectionAttempts++;
+  lastConnectionError = null;
+  
   try {
     if (Platform.OS === 'web') {
       console.log('[IAP] Skipping IAP init on web');
@@ -24,14 +50,49 @@ export async function initIAP(): Promise<() => Promise<void>> {
     }
 
     const iap = await getExpoIap();
-    if (!iap) return async () => {};
+    if (!iap) {
+      lastConnectionError = 'expo-iap module not available';
+      return async () => {};
+    }
 
-    console.log('[IAP] Initializing connection...');
-    iapLog.init.info('Starting IAP connection', { platform: Platform.OS }, flowId);
-    const connected = await iap.initConnection();
-    isConnected = !!connected;
-    console.log('[IAP] Connection initialized:', connected);
-    iapLog.init.info('Connection result', { connected: !!connected }, flowId);
+    // Try to connect with retries
+    let connected = false;
+    let retryAttempt = 0;
+    
+    while (!connected && retryAttempt < MAX_INIT_RETRIES) {
+      try {
+        console.log('[IAP] Initializing connection (attempt', connectionAttempts, ', retry', retryAttempt, ')...');
+        iapLog.init.info('Starting IAP connection', { platform: Platform.OS, attempt: connectionAttempts, retry: retryAttempt }, flowId);
+        
+        connected = !!(await iap.initConnection());
+        
+        if (!connected && retryAttempt < MAX_INIT_RETRIES - 1) {
+          const delay = RETRY_DELAY_MS * Math.pow(2, retryAttempt);
+          console.log('[IAP] Connection returned false, retrying in', delay, 'ms...');
+          iapLog.init.info('Connection false, retrying', { delay, retry: retryAttempt }, flowId);
+          await sleep(delay);
+        }
+      } catch (err: any) {
+        console.log('[IAP] Connection attempt failed:', err?.message);
+        if (retryAttempt < MAX_INIT_RETRIES - 1) {
+          const delay = RETRY_DELAY_MS * Math.pow(2, retryAttempt);
+          console.log('[IAP] Retrying in', delay, 'ms...');
+          await sleep(delay);
+        } else {
+          throw err;
+        }
+      }
+      retryAttempt++;
+    }
+    
+    isConnected = connected;
+    
+    if (!connected) {
+      lastConnectionError = `initConnection returned false after ${MAX_INIT_RETRIES} attempts`;
+    }
+    
+    console.log('[IAP] Connection initialized:', connected, '(after', retryAttempt, 'attempt(s))');
+    iapLog.init.info('Connection result', { connected, attempts: retryAttempt }, flowId);
     
     return async () => {
       try {
@@ -45,9 +106,43 @@ export async function initIAP(): Promise<() => Promise<void>> {
         console.error('[IAP] Error ending connection:', error);
       }
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('[IAP] Error initializing connection:', error);
+    lastConnectionError = error?.message || 'Unknown error';
+    iapLog.init.error('Connection failed', { error: lastConnectionError, attempt: connectionAttempts }, flowId);
     return async () => {};
+  }
+}
+
+export async function reinitIAP(): Promise<boolean> {
+  const flowId = generateFlowId();
+  console.log('[IAP] Forcing reconnection...');
+  iapLog.init.info('Force reconnect requested', { previouslyConnected: isConnected }, flowId);
+  
+  try {
+    const iap = await getExpoIap();
+    if (!iap) {
+      lastConnectionError = 'expo-iap module not available';
+      return false;
+    }
+    
+    // End existing connection first
+    if (isConnected) {
+      try {
+        await iap.endConnection();
+        isConnected = false;
+      } catch (e) {
+        console.log('[IAP] Error ending existing connection:', e);
+      }
+    }
+    
+    // Reinitialize
+    await initIAP();
+    return isConnected;
+  } catch (error: any) {
+    console.error('[IAP] Error during reinit:', error);
+    lastConnectionError = error?.message || 'Reinit failed';
+    return false;
   }
 }
 

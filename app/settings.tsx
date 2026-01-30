@@ -49,7 +49,10 @@ export default function SettingsScreen() {
     refresh: refreshEntitlement,
     error: entitlementError,
     isGrace,
-    graceReason
+    graceReason,
+    products,
+    reconnectIAP,
+    getIAPStatus,
   } = useEntitlementContext();
   
   const [showDebugPanel, setShowDebugPanel] = useState(false);
@@ -57,6 +60,7 @@ export default function SettingsScreen() {
   const [debugTapCount, setDebugTapCount] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
+  const [isReconnecting, setIsReconnecting] = useState(false);
   const [restoreDiagnostics, setRestoreDiagnostics] = useState<RestoreDiagnostics | null>(null);
   
   useEffect(() => {
@@ -88,6 +92,15 @@ export default function SettingsScreen() {
       setIsRestoring(false);
     }
   }, [restorePurchasesAction]);
+  
+  const handleReconnectIAP = useCallback(async () => {
+    setIsReconnecting(true);
+    try {
+      await reconnectIAP();
+    } finally {
+      setIsReconnecting(false);
+    }
+  }, [reconnectIAP]);
   
   // Update diagnostics when debug panel is shown
   useEffect(() => {
@@ -544,6 +557,37 @@ export default function SettingsScreen() {
               </Text>
             </View>
             
+            {/* IAP Connection Status */}
+            <View style={[styles.debugDiagnosticsSection, { marginTop: 12, borderColor: '#3B82F6' }]}>
+              <Text style={[styles.debugDiagnosticsTitle, { color: '#3B82F6' }]}>IAP Connection:</Text>
+              {(() => {
+                const iapStatus = getIAPStatus();
+                return (
+                  <>
+                    <Text style={[styles.debugDiagnosticsText, { color: iapStatus.isConnected ? '#22C55E' : '#EF4444', fontWeight: '600' }]}>
+                      Connected: {iapStatus.isConnected ? 'YES' : 'NO'}
+                    </Text>
+                    <Text style={[styles.debugDiagnosticsText, { color: products.length > 0 ? '#22C55E' : '#EF4444' }]}>
+                      Products Loaded: {products.length}
+                    </Text>
+                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary }]}>
+                      Connection Attempts: {iapStatus.connectionAttempts}
+                    </Text>
+                    {iapStatus.lastConnectionError && (
+                      <Text style={[styles.debugDiagnosticsText, { color: '#EF4444' }]}>
+                        Last Error: {iapStatus.lastConnectionError}
+                      </Text>
+                    )}
+                    {!iapStatus.isConnected && (
+                      <Text style={[styles.debugDiagnosticsText, { color: '#F59E0B', fontSize: 9, marginTop: 4 }]}>
+                        Products can't load without connection. Tap "Reconnect IAP" below.
+                      </Text>
+                    )}
+                  </>
+                );
+              })()}
+            </View>
+            
             {/* Restore Diagnostics Section */}
             {restoreDiagnostics && (
               <View style={styles.debugDiagnosticsSection}>
@@ -669,7 +713,7 @@ export default function SettingsScreen() {
             <TouchableOpacity 
               style={[styles.debugRefreshButton, { backgroundColor: '#F59E0B' }]}
               onPress={handleDebugRefresh}
-              disabled={isRefreshing || isRestoring}
+              disabled={isRefreshing || isRestoring || isReconnecting}
             >
               <RefreshCw size={16} color="#000" style={isRefreshing ? { opacity: 0.5 } : undefined} />
               <Text style={styles.debugRefreshText}>
@@ -679,11 +723,21 @@ export default function SettingsScreen() {
             <TouchableOpacity 
               style={[styles.debugRefreshButton, { backgroundColor: '#22C55E', marginTop: 8 }]}
               onPress={handleDebugRestore}
-              disabled={isRefreshing || isRestoring}
+              disabled={isRefreshing || isRestoring || isReconnecting}
             >
               <RefreshCw size={16} color="#000" style={isRestoring ? { opacity: 0.5 } : undefined} />
               <Text style={styles.debugRefreshText}>
                 {isRestoring ? 'Restoring...' : 'Restore Purchases'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.debugRefreshButton, { backgroundColor: '#3B82F6', marginTop: 8 }]}
+              onPress={handleReconnectIAP}
+              disabled={isRefreshing || isRestoring || isReconnecting}
+            >
+              <RefreshCw size={16} color="#FFF" style={isReconnecting ? { opacity: 0.5 } : undefined} />
+              <Text style={[styles.debugRefreshText, { color: '#FFF' }]}>
+                {isReconnecting ? 'Reconnecting...' : 'Reconnect IAP'}
               </Text>
             </TouchableOpacity>
           </View>

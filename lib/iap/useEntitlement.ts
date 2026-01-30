@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, createContext, useCont
 import { Platform, AppState, AppStateStatus } from 'react-native';
 import {
   initIAP,
+  reinitIAP,
   getProducts,
   purchaseSubscription,
   restorePurchases,
@@ -11,8 +12,10 @@ import {
   purchaseErrorListener,
   updateRestoreDiagnosticsVerify,
   updateRestoreDiagnosticsVerifyRequest,
+  getIAPDiagnostics,
   type ProductSubscription,
   type Purchase,
+  type IAPDiagnostics,
 } from './iap';
 import { getInstallId } from './installId';
 import { ensureSession, refreshSession } from './sessionManager';
@@ -92,6 +95,8 @@ export interface EntitlementActions {
   restorePurchasesAction: () => Promise<boolean>;
   refresh: () => Promise<void>;
   devSetAccess: (state: DevAccessState) => Promise<void>;
+  reconnectIAP: () => Promise<boolean>;
+  getIAPStatus: () => IAPDiagnostics;
 }
 
 function getBillingApiBase(): string {
@@ -1043,6 +1048,21 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
   }, [isDevMode, devSetAccess]);
 
+  const reconnectIAPAction = useCallback(async (): Promise<boolean> => {
+    console.log('[ENTITLEMENT] Reconnecting IAP...');
+    const success = await reinitIAP();
+    if (success) {
+      const fetchedProducts = await getProducts();
+      setProducts(fetchedProducts);
+      console.log('[ENTITLEMENT] Reconnected, products:', fetchedProducts.length);
+    }
+    return success;
+  }, []);
+
+  const getIAPStatusAction = useCallback((): IAPDiagnostics => {
+    return getIAPDiagnostics();
+  }, []);
+
   return {
     isFullAccess,
     isLoading,
@@ -1058,6 +1078,8 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     restorePurchasesAction,
     refresh,
     devSetAccess,
+    reconnectIAP: reconnectIAPAction,
+    getIAPStatus: getIAPStatusAction,
   };
 }
 
