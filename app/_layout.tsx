@@ -14,6 +14,9 @@ import { SwipeTabs, type SwipeTab } from '../components/SwipeTabs';
 import { InterruptionLayer } from '../components/InterruptionLayer';
 import { initAppStateListener, useAppStateListener } from '../lib/useAppState';
 import { EntitlementProvider } from '../lib/iap/useEntitlement';
+import * as ExpoSplashScreen from 'expo-splash-screen';
+
+ExpoSplashScreen.preventAutoHideAsync();
 
 const isWeb = Platform.OS === 'web';
 const isExpoGo = (): boolean => Constants.appOwnership === 'expo';
@@ -276,11 +279,26 @@ function ThemedApp() {
   const { colors } = useTheme();
   const [showInterruption, setShowInterruption] = useState(true);
   const [i18nReady, setI18nReady] = useState(false);
+  const [splashHidden, setSplashHidden] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     initI18n().then(() => setI18nReady(true));
   }, []);
+  
+  useEffect(() => {
+    if (i18nReady && !splashHidden) {
+      const timer = setTimeout(async () => {
+        try {
+          await ExpoSplashScreen.hideAsync();
+        } catch (e) {
+          console.warn('[Splash] Failed to hide splash screen:', e);
+        }
+        setSplashHidden(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [i18nReady, splashHidden]);
 
   useEffect(() => {
     const cleanup = initAppStateListener();
