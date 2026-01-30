@@ -452,6 +452,7 @@
     "thankYou": "Danke für deine Unterstützung von The Quiet Frame. Genieße vollen Zugang zu allen Funktionen.",
     "noPurchasesFound": "Keine Käufe zum Wiederherstellen gefunden",
     "noActiveSubscription": "Kein aktives Abonnement gefunden",
+    "iosRestoreEmpty": "Abonnement konnte nicht wiederhergestellt werden. Bitte melde dich in den Einstellungen von deiner Apple-ID ab und wieder an und versuche es erneut. Falls das Problem weiterhin besteht, kontaktiere den Support.",
     "purchaseFailed": "Kauf fehlgeschlagen",
     "restoreFailed": "Wiederherstellung der Käufe fehlgeschlagen",
     "checkFailed": "Überprüfung des Abonnementstatus fehlgeschlagen"

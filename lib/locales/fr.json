@@ -570,6 +570,7 @@
     "thankYou": "Merci de soutenir The Quiet Frame. Profitez de l'accès complet à toutes les fonctionnalités.",
     "noPurchasesFound": "Aucun achat trouvé à restaurer",
     "noActiveSubscription": "Aucun abonnement actif trouvé",
+    "iosRestoreEmpty": "Impossible de restaurer votre abonnement. Veuillez vous déconnecter et vous reconnecter à votre identifiant Apple dans les Réglages, puis réessayer. Si le problème persiste, contactez le support.",
     "purchaseFailed": "L'achat a échoué",
     "restoreFailed": "Échec de la restauration des achats",
     "checkFailed": "Échec de la vérification du statut d'abonnement"

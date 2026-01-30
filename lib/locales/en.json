@@ -571,6 +571,7 @@
     "thankYou": "Thank you for supporting The Quiet Frame. Enjoy full access to all features.",
     "noPurchasesFound": "No purchases found to restore",
     "noActiveSubscription": "No active subscriptions found",
+    "iosRestoreEmpty": "Unable to restore your subscription. Please try signing out and back into your Apple ID in Settings, then try again. If the issue persists, contact support.",
     "purchaseFailed": "Purchase failed",
     "restoreFailed": "Failed to restore purchases",
     "checkFailed": "Failed to check subscription status"

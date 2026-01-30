@@ -191,9 +191,32 @@ export async function restorePurchases(): Promise<Purchase[]> {
 
     console.log('[IAP] Restoring purchases...');
     iapLog.restore.info('Calling getAvailablePurchases', {}, flowId);
-    const purchases = await iap.getAvailablePurchases();
-    console.log('[IAP] Restored purchases count:', purchases.length);
-    iapLog.restore.info('Got purchases', { count: purchases.length }, flowId);
+    let purchases = await iap.getAvailablePurchases();
+    console.log('[IAP] getAvailablePurchases count:', purchases.length);
+    iapLog.restore.info('getAvailablePurchases result', { count: purchases.length }, flowId);
+    
+    // iOS fallback: try getActiveSubscriptions if getAvailablePurchases returns empty
+    if (purchases.length === 0 && Platform.OS === 'ios') {
+      console.log('[IAP] iOS: getAvailablePurchases empty, trying getActiveSubscriptions...');
+      iapLog.restore.info('iOS: Trying getActiveSubscriptions fallback', { skus: SUBSCRIPTION_SKUS }, flowId);
+      try {
+        const activeSubs = await iap.getActiveSubscriptions(SUBSCRIPTION_SKUS);
+        console.log('[IAP] iOS: getActiveSubscriptions returned:', activeSubs?.length ?? 0);
+        iapLog.restore.info('iOS: getActiveSubscriptions result', { count: activeSubs?.length ?? 0 }, flowId);
+        if (activeSubs && activeSubs.length > 0) {
+          // Map ActiveSubscription to our Purchase type
+          const mappedPurchases: Purchase[] = activeSubs.map((sub: any) => ({
+            productId: sub.productId,
+            transactionId: sub.transactionId || sub.originalTransactionIdIOS,
+            transactionReceipt: sub.transactionReceipt,
+          }));
+          purchases = mappedPurchases as any;
+        }
+      } catch (activeSubsErr: any) {
+        console.warn('[IAP] iOS: getActiveSubscriptions failed:', activeSubsErr?.message);
+        iapLog.restore.warn('iOS: getActiveSubscriptions failed', { error: activeSubsErr?.message }, flowId);
+      }
+    }
     
     if (purchases.length > 0) {
       console.log('[IAP] Restored purchases details:', JSON.stringify(purchases, null, 2));
@@ -205,7 +228,7 @@ export async function restorePurchases(): Promise<Purchase[]> {
         }, flowId);
       }
     } else {
-      iapLog.restore.warn('No purchases found in StoreKit', {}, flowId);
+      iapLog.restore.warn('No purchases found from any method', {}, flowId);
     }
     return purchases as Purchase[];
   } catch (error: any) {

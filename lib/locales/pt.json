@@ -452,6 +452,7 @@
     "thankYou": "Obrigado por apoiar The Quiet Frame. Aproveite o acesso completo a todos os recursos.",
     "noPurchasesFound": "Nenhuma compra encontrada para restaurar",
     "noActiveSubscription": "Nenhuma assinatura ativa encontrada",
+    "iosRestoreEmpty": "Não foi possível restaurar sua assinatura. Por favor, saia e entre novamente com seu ID Apple nas Configurações, depois tente novamente. Se o problema persistir, entre em contato com o suporte.",
     "purchaseFailed": "A compra falhou",
     "restoreFailed": "Falha ao restaurar compras",
     "checkFailed": "Falha ao verificar o status da assinatura"

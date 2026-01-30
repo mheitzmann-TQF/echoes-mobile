@@ -972,7 +972,12 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       
       if (purchases.length === 0) {
         console.log('[ENTITLEMENT] No purchases found in store');
-        setError('paywall.noPurchasesFound');
+        // iOS-specific error message to help users with StoreKit issues
+        if (Platform.OS === 'ios') {
+          setError('paywall.iosRestoreEmpty');
+        } else {
+          setError('paywall.noPurchasesFound');
+        }
         return false;
       }
       
