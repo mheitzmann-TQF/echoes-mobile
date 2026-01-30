@@ -565,6 +565,16 @@ export default function SettingsScreen() {
                         ID: {restoreDiagnostics.purchaseDetails.transactionId}
                       </Text>
                     )}
+                    {restoreDiagnostics.purchaseDetails.transactionIdSource && (
+                      <Text style={[styles.debugDiagnosticsText, { color: '#F59E0B', fontSize: 10 }]}>
+                        Source: {restoreDiagnostics.purchaseDetails.transactionIdSource}
+                      </Text>
+                    )}
+                    {restoreDiagnostics.purchaseDetails.rawObjectKeys && (
+                      <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 8 }]}>
+                        Keys: {restoreDiagnostics.purchaseDetails.rawObjectKeys}
+                      </Text>
+                    )}
                     <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.purchaseDetails.hasTransactionReceipt ? '#22C55E' : '#EF4444' }]}>
                       Receipt: {restoreDiagnostics.purchaseDetails.hasTransactionReceipt ? `YES (${restoreDiagnostics.purchaseDetails.receiptLength} bytes)` : 'MISSING'}
                     </Text>

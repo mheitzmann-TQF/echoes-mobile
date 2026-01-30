@@ -174,9 +174,11 @@ export interface RestoreDiagnostics {
     productId: string;
     hasTransactionId: boolean;
     transactionId?: string;
+    transactionIdSource?: string;
     hasTransactionReceipt: boolean;
     hasPurchaseToken: boolean;
     receiptLength?: number;
+    rawObjectKeys?: string;
   };
   verifyRequest?: {
     installId: string;
@@ -198,6 +200,8 @@ export interface RestoreDiagnostics {
 }
 
 let lastRestoreDiagnostics: RestoreDiagnostics | null = null;
+let lastTransactionIdSource: string = '';
+let lastRawObjectKeys: string = '';
 
 export function getLastRestoreDiagnostics(): RestoreDiagnostics | null {
   return lastRestoreDiagnostics;
@@ -298,12 +302,34 @@ export async function restorePurchases(): Promise<Purchase[]> {
         console.log('[IAP] iOS: getActiveSubscriptions returned:', activeSubs?.length ?? 0);
         iapLog.restore.info('iOS: getActiveSubscriptions result', { count: activeSubs?.length ?? 0 }, flowId);
         if (activeSubs && activeSubs.length > 0) {
+          // Log ALL fields from the first subscription to understand expo-iap structure
+          const firstSub = activeSubs[0] as any;
+          lastRawObjectKeys = Object.keys(firstSub).join(',');
+          console.log('[IAP] iOS: getActiveSubscriptions raw object keys:', lastRawObjectKeys);
+          console.log('[IAP] iOS: getActiveSubscriptions raw object:', JSON.stringify(firstSub, null, 2));
+          iapLog.restore.info('iOS: activeSubscription raw fields', {
+            keys: lastRawObjectKeys,
+            transactionId: firstSub.transactionId,
+            originalTransactionId: firstSub.originalTransactionId,
+            originalTransactionIdIOS: firstSub.originalTransactionIdIOS,
+            latestTransactionId: firstSub.latestTransactionId,
+            id: firstSub.id,
+          }, flowId);
+          
           // Map ActiveSubscription to our Purchase type
-          const mappedPurchases: Purchase[] = activeSubs.map((sub: any) => ({
-            productId: sub.productId,
-            transactionId: sub.transactionId || sub.originalTransactionIdIOS,
-            transactionReceipt: sub.transactionReceipt,
-          }));
+          // Priority: transactionId > latestTransactionId > id > originalTransactionIdIOS
+          // We want the CURRENT transaction, not the original
+          const mappedPurchases: Purchase[] = activeSubs.map((sub: any) => {
+            const source = sub.transactionId ? 'transactionId' : sub.latestTransactionId ? 'latestTransactionId' : sub.id ? 'id' : 'originalTransactionIdIOS';
+            const currentTransactionId = sub.transactionId || sub.latestTransactionId || sub.id || sub.originalTransactionIdIOS;
+            lastTransactionIdSource = `getActiveSubscriptions.${source}`;
+            console.log('[IAP] iOS: Mapped transactionId:', currentTransactionId, '(from:', source, ')');
+            return {
+              productId: sub.productId,
+              transactionId: currentTransactionId,
+              transactionReceipt: sub.transactionReceipt,
+            };
+          });
           purchases = mappedPurchases;
         }
       } catch (activeSubsErr: any) {
@@ -323,19 +349,35 @@ export async function restorePurchases(): Promise<Purchase[]> {
           console.log('[IAP] iOS: Checking currentEntitlement for:', sku);
           const entitlement = await iap.currentEntitlementIOS(sku);
           if (entitlement) {
+            const ent = entitlement as any;
+            lastRawObjectKeys = Object.keys(ent).join(',');
             console.log('[IAP] iOS: currentEntitlementIOS found entitlement for:', sku);
+            console.log('[IAP] iOS: currentEntitlementIOS raw object keys:', lastRawObjectKeys);
+            console.log('[IAP] iOS: currentEntitlementIOS raw object:', JSON.stringify(ent, null, 2));
             iapLog.restore.info('iOS: currentEntitlementIOS found', { 
-              productId: (entitlement as any).productId,
-              transactionId: (entitlement as any).transactionId
+              keys: lastRawObjectKeys,
+              productId: ent.productId,
+              transactionId: ent.transactionId,
+              originalTransactionId: ent.originalTransactionId,
+              originalTransactionIdIOS: ent.originalTransactionIdIOS,
+              latestTransactionId: ent.latestTransactionId,
+              id: ent.id,
             }, flowId);
             diagnostics.currentEntitlement.found = true;
-            diagnostics.currentEntitlement.productId = (entitlement as any).productId;
+            diagnostics.currentEntitlement.productId = ent.productId;
+            
+            // Priority: transactionId > latestTransactionId > id > originalTransactionIdIOS
+            // We want the CURRENT transaction, not the original
+            const source = ent.transactionId ? 'transactionId' : ent.latestTransactionId ? 'latestTransactionId' : ent.id ? 'id' : 'originalTransactionIdIOS';
+            const currentTransactionId = ent.transactionId || ent.latestTransactionId || ent.id || ent.originalTransactionIdIOS;
+            lastTransactionIdSource = `currentEntitlementIOS.${source}`;
+            console.log('[IAP] iOS: currentEntitlementIOS mapped transactionId:', currentTransactionId, '(from:', source, ')');
             
             // Map to Purchase type
             const mappedPurchase: Purchase = {
-              productId: (entitlement as any).productId || sku,
-              transactionId: (entitlement as any).transactionId || (entitlement as any).originalTransactionIdIOS,
-              transactionReceipt: (entitlement as any).transactionReceipt,
+              productId: ent.productId || sku,
+              transactionId: currentTransactionId,
+              transactionReceipt: ent.transactionReceipt,
             };
             purchases = [mappedPurchase];
             break; // Found one, no need to check others
@@ -361,9 +403,11 @@ export async function restorePurchases(): Promise<Purchase[]> {
         productId: firstPurchase.productId || 'unknown',
         hasTransactionId: !!firstPurchase.transactionId,
         transactionId: firstPurchase.transactionId || undefined,
+        transactionIdSource: lastTransactionIdSource || 'unknown',
         hasTransactionReceipt: !!firstPurchase.transactionReceipt,
         hasPurchaseToken: !!firstPurchase.purchaseToken,
         receiptLength: firstPurchase.transactionReceipt?.length || 0,
+        rawObjectKeys: lastRawObjectKeys || undefined,
       };
       
       console.log('[IAP] Restored purchases details:', JSON.stringify(purchases, null, 2));
