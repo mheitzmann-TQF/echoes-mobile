@@ -59,7 +59,7 @@
         {
           "backgroundColor": "#000000",
           "image": "./assets/splash.png",
-          "imageWidth": 200
+          "imageWidth": 1280
         }
       ]
     ],
