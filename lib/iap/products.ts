@@ -44,9 +44,8 @@ export const SUBSCRIPTION_SKUS = Platform.select({
   default: [],
 });
 
-export const HAS_TRIAL_OFFER = true;
-
-export const TRIAL_DAYS = 3;
+// Note: Trial/preview period is now dynamically controlled by the backend via previewDays
+// HAS_TRIAL_OFFER and TRIAL_DAYS constants have been removed - use previewDays from EntitlementContext
 
 export const PRICING = {
   monthly: {

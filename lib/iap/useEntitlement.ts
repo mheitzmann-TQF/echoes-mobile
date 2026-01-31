@@ -48,7 +48,8 @@ let moduleIAPCleanup: (() => Promise<void>) | null = null;
 let modulePurchaseUpdateSub: { remove: () => void } | null = null;
 let modulePurchaseErrorSub: { remove: () => void } | null = null;
 let moduleHookInstanceCount = 0;
-let modulePendingCheckStatus: Promise<{ entitlement: 'full' | 'free'; expiresAt: string | null }> | null = null;
+let modulePendingCheckStatus: Promise<{ entitlement: 'full' | 'free'; expiresAt: string | null; previewDays: number }> | null = null;
+let modulePreviewDays: number = 0;
 // Track when last successful verification happened to prevent stale status overwrites
 let moduleLastVerificationTime: number = 0;
 const VERIFICATION_PROTECTION_MS = 10000; // 10 seconds protection window
@@ -87,6 +88,7 @@ export interface EntitlementState {
   isDevMode: boolean;
   isGrace: boolean;
   graceReason: 'fresh_install' | 'prior_access' | 'none';
+  previewDays: number;
 }
 
 export interface EntitlementActions {
@@ -115,6 +117,7 @@ class BackendUnavailableError extends Error {
 async function checkEntitlementStatusInternal(installId: string, isRetry = false): Promise<{
   entitlement: 'full' | 'free';
   expiresAt: string | null;
+  previewDays: number;
 }> {
   console.log('[ENTITLEMENT] Checking status for installId:', installId, isRetry ? '(retry)' : '');
   
@@ -157,15 +160,20 @@ async function checkEntitlementStatusInternal(installId: string, isRetry = false
   console.log('[ENTITLEMENT] Status response:', data);
   // Normalize 'pro' to 'full' for consistent internal state
   const entitlement = (data.entitlement === 'pro' || data.entitlement === 'full') ? 'full' : 'free';
+  // Parse previewDays from source (defaults to 0 if not present)
+  const previewDays = typeof data.previewDays === 'number' ? data.previewDays : 0;
+  modulePreviewDays = previewDays;
   return {
     entitlement,
     expiresAt: data.expiresAt || null,
+    previewDays,
   };
 }
 
 async function checkEntitlementStatus(installId: string): Promise<{
   entitlement: 'full' | 'free';
   expiresAt: string | null;
+  previewDays: number;
 }> {
   if (modulePendingCheckStatus) {
     console.log('[ENTITLEMENT] Reusing pending status check');
@@ -361,6 +369,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   const [isDevMode] = useState(isDevOverrideAvailable());
   const [isGrace, setIsGrace] = useState(false);
   const [graceReason, setGraceReason] = useState<'fresh_install' | 'prior_access' | 'none'>('none');
+  const [previewDays, setPreviewDays] = useState<number>(modulePreviewDays);
   
   // DIAGNOSTIC: Log isDevMode decision
   console.log('[ENTITLEMENT:BOOT] isDevMode:', isDevMode);
@@ -431,6 +440,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         
         setIsFullAccess(hasAccess);
         setExpiresAt(status.expiresAt);
+        setPreviewDays(status.previewDays);
         setError(null);
         setIsGrace(false);
         setGraceReason('none');
@@ -586,6 +596,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
             const status = await checkEntitlementStatus(id);
             setIsFullAccess(status.entitlement === 'full');
             setExpiresAt(status.expiresAt);
+            setPreviewDays(status.previewDays);
             setIsLoading(false);
             console.log('[ENTITLEMENT] Backend returned:', status);
             // Skip StoreKit init in dev mode
@@ -614,6 +625,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
           hasAccess = status.entitlement === 'full';
           setIsFullAccess(hasAccess);
           setExpiresAt(status.expiresAt);
+          setPreviewDays(status.previewDays);
           setIsGrace(false);
           setGraceReason('none');
           await setAccessCache(status.entitlement, status.expiresAt);
@@ -1073,6 +1085,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     isDevMode,
     isGrace,
     graceReason,
+    previewDays,
     purchaseMonthly,
     purchaseYearly,
     restorePurchasesAction,

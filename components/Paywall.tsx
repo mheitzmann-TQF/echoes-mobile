@@ -12,7 +12,7 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Sparkles, Check, RotateCcw, X } from 'lucide-react-native';
 import { useEntitlementContext } from '@/lib/iap/useEntitlement';
-import { HAS_TRIAL_OFFER, TRIAL_DAYS, LEGAL_URLS, SUBSCRIPTION_IDS } from '@/lib/iap/products';
+import { LEGAL_URLS, SUBSCRIPTION_IDS } from '@/lib/iap/products';
 import type { ProductSubscription } from '@/lib/iap/iap';
 import { useTranslation } from 'react-i18next';
 
@@ -53,7 +53,11 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
     purchaseMonthly,
     purchaseYearly,
     restorePurchasesAction,
+    previewDays,
   } = useEntitlementContext();
+  
+  // Show trial messaging only when previewDays > 0
+  const hasTrialOffer = previewDays > 0;
 
   const [purchasing, setPurchasing] = useState<'monthly' | 'yearly' | null>(null);
   const [restoring, setRestoring] = useState(false);
@@ -200,7 +204,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
               <ActivityIndicator color="#FFFFFF" style={styles.planLoader} />
             ) : (
               <Text style={styles.planCta}>
-                {HAS_TRIAL_OFFER ? t('paywall.startAccess', { days: TRIAL_DAYS }) : t('paywall.subscribe')}
+                {hasTrialOffer ? t('paywall.startAccess', { days: previewDays }) : t('paywall.subscribe')}
               </Text>
             )}
           </TouchableOpacity>
@@ -221,15 +225,15 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
               <ActivityIndicator color="#FFFFFF" style={styles.planLoader} />
             ) : (
               <Text style={styles.planCta}>
-                {HAS_TRIAL_OFFER ? t('paywall.startAccess', { days: TRIAL_DAYS }) : t('paywall.subscribe')}
+                {hasTrialOffer ? t('paywall.startAccess', { days: previewDays }) : t('paywall.subscribe')}
               </Text>
             )}
           </TouchableOpacity>
         </View>
 
-        {HAS_TRIAL_OFFER && (
+        {hasTrialOffer && (
           <Text style={styles.accessNote}>
-            {t('paywall.accessNote', { days: TRIAL_DAYS, monthlyPrice, yearlyPrice })}
+            {t('paywall.accessNote', { days: previewDays, monthlyPrice, yearlyPrice })}
           </Text>
         )}
 
