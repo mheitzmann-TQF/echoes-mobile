@@ -177,14 +177,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
           </View>
         )}
         
-        {!isLoading && products.length === 0 && !error && (
-          <View style={[styles.errorBanner, { backgroundColor: 'rgba(245, 158, 11, 0.15)', borderColor: '#F59E0B' }]}>
-            <Text style={[styles.errorText, { color: '#F59E0B' }]}>
-              {t('paywall.storeConnectionIssue', { defaultValue: 'Unable to load subscription options. Please try again or check Settings → Debug → Reconnect IAP.' })}
-            </Text>
-          </View>
-        )}
-
+        
         <View style={styles.plansContainer}>
           <TouchableOpacity
             style={[
