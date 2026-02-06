@@ -21,7 +21,8 @@
         "backgroundColor": "#000000"
       },
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleDisplayName": "TQF"
       }
     },
     "android": {
