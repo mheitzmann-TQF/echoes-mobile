@@ -460,7 +460,7 @@ export default function HomeScreen() {
         getDailyPhoto().catch(() => null),
         api.getConsciousnessAnalysis(lang).catch(() => null),
         api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone).catch(() => null),
-        api.getImportantDates(lang, 0).catch(() => []),
+        api.getImportantDates(lang).catch(() => []),
       ]);
       
       if (photoData) {
@@ -571,8 +571,8 @@ export default function HomeScreen() {
         const mapped: Observance[] = importantDatesData.map((item: any, idx: number) => ({
           id: item.id || idx,
           date: item.date || '',
-          name: item.name || item.title || '',
-          tradition: item.tradition || item.calendar || '',
+          name: item.name || '',
+          tradition: item.culturalOrigin || item.tradition || '',
           region: item.region || '',
           description: item.description || '',
           category: item.category || '',

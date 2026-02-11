@@ -343,9 +343,9 @@ class EchoesAPI {
     }
   }
 
-  async getImportantDates(lang: string = 'en', days?: number): Promise<any[]> {
+  async getImportantDates(lang: string = 'en'): Promise<any[]> {
     try {
-      const endpoint = ContentEndpoints.importantDates(lang, days);
+      const endpoint = ContentEndpoints.importantDates(lang);
       console.log('📡 Fetching important dates...');
       
       const data = await fetchContentJson(endpoint);

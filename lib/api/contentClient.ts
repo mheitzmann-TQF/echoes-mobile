@@ -144,11 +144,7 @@ export const ContentEndpoints = {
   
   consciousnessRegionalBreakdown: () => `/api/consciousness-analysis/regional-breakdown`,
   
-  importantDates: (lang: string, days?: number) => {
-    let url = `/api/important-dates/upcoming?lang=${lang}`;
-    if (days !== undefined) url += `&days=${days}`;
-    return url;
-  },
+  importantDates: (lang: string) => `/api/important-dates/today?lang=${lang}`,
   
   livingCalendars: (lang: string) => `/api/sacred-geography/living-calendars?lang=${lang}`,
   
