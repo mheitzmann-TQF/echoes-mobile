@@ -357,6 +357,7 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState<any | null>(null);
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
+  const [natureFact, setNatureFact] = useState<{ category: string; fact: string } | null>(null);
 
   const translateCalendarContent = useCallback((content: string | undefined | null): string | null => {
     if (!content) return null;
@@ -494,6 +495,10 @@ export default function HomeScreen() {
           } : ctx.consciousness_index
         });
         
+        if (bundleData.data.nature_fact) {
+          setNatureFact(bundleData.data.nature_fact);
+        }
+        
       } else {
         setPlanetary(getMockPlanetaryData());
       }
@@ -627,6 +632,17 @@ export default function HomeScreen() {
           )}
 
           <CalendarCarousel calendars={calendars} onSelect={handleCalendarSelect} />
+
+          {natureFact && (
+            <View style={[styles.natureFactCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Text style={[styles.natureFactCategory, { color: colors.accent }]}>
+                {natureFact.category}
+              </Text>
+              <Text style={[styles.natureFactText, { color: colors.text }]}>
+                {natureFact.fact}
+              </Text>
+            </View>
+          )}
 
           <TodayObservances observances={observances} />
 
@@ -809,5 +825,23 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     lineHeight: 26,
     textAlign: 'left',
+  },
+  natureFactCard: {
+    marginHorizontal: 20,
+    marginTop: 16,
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+  },
+  natureFactCategory: {
+    fontSize: 11,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  natureFactText: {
+    fontSize: 15,
+    lineHeight: 23,
   },
 });

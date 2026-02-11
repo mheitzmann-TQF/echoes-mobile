@@ -76,6 +76,10 @@ export interface DailyBundleResponse {
         lng: number;
       };
     };
+    nature_fact?: {
+      category: string;
+      fact: string;
+    };
   };
 }
 
