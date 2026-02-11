@@ -564,7 +564,7 @@ const styles = StyleSheet.create({
   gaugeSubtitle: { fontSize: 10, marginTop: 4, textAlign: 'center' },
   gaugeSubtitleBelow: { fontSize: 11, marginTop: 8, textAlign: 'center', paddingHorizontal: 20, lineHeight: 16, maxWidth: 160 },
   narrativeSection: { alignItems: 'center', marginBottom: 32 },
-  narrativeSectionSpaced: { alignItems: 'center', marginTop: 16, marginBottom: 40 },
+  narrativeSectionSpaced: { alignItems: 'center', marginTop: 28, marginBottom: 28 },
   signalNoiseHint: { alignItems: 'center', marginBottom: 20, paddingHorizontal: 16 },
   signalNoiseText: { fontSize: 12, textAlign: 'center', fontStyle: 'italic', lineHeight: 18 },
   
