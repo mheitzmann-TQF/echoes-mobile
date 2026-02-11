@@ -326,7 +326,6 @@ export default function WisdomScreen() {
   const neutralPercent = 100 - transformationalPercent - destructivePercent;
   const hopeLevel = consciousness?.hope_level ?? 0;
   const articlesAnalyzed = consciousness?.articles_analyzed ?? 0;
-  const contentSources: string[] = consciousness?.content_sources ?? [];
   
   const hasFilteredData = filteredScore !== null && filteredScore > 0;
   // Data is only unavailable if BOTH main consciousness AND filtered data are missing/zero
@@ -428,15 +427,6 @@ export default function WisdomScreen() {
                   />
                 </View>
 
-                {contentSources.length > 0 && (
-                  <View style={styles.sourceTagsContainer}>
-                    {contentSources.map((source, idx) => (
-                      <View key={idx} style={[styles.sourceTag, { backgroundColor: colors.surfaceHighlight }]}>
-                        <Text style={[styles.sourceTagText, { color: colors.text }]}>{source}</Text>
-                      </View>
-                    ))}
-                  </View>
-                )}
 
                 {/* SECTION 2: INTEGRATION QUALITY — single gauge for integrative articles */}
                 {hasFilteredData && (
@@ -585,11 +575,6 @@ const styles = StyleSheet.create({
   analysisSummary: { marginTop: 24, paddingTop: 20, marginBottom: 32, gap: 12, borderTopWidth: 1 },
   articleCountRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   articleCountText: { fontSize: 14, fontWeight: '600' },
-  contentSourcesRow: { gap: 8 },
-  contentSourcesLabel: { fontSize: 12 },
-  sourceTagsContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  sourceTag: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 16 },
-  sourceTagText: { fontSize: 12, fontWeight: '500' },
   percentageRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   percentageLabel: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, width: 160 },
   percentageLabelText: { flexDirection: 'column' },
