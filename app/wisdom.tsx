@@ -399,18 +399,14 @@ export default function WisdomScreen() {
               </View>
             ) : (
               <>
-                {/* MEDIA REALITY - First gauge (red, misaligned) */}
-                <View style={styles.narrativeSection}>
-                  <TQFGauge 
-                    score={tqfScore} 
-                    size={140} 
-                    label={t('learn.rawScore')} 
-                    subtitle={t('learn.mediaRealityDesc').replace('{{count}}', formatNumberByLocale(articlesAnalyzed))}
-                    forceColor="#c9787a"
-                  />
+                {/* SECTION 1: THE LANDSCAPE — article count + percentage breakdown */}
+                <View style={styles.landscapeHeader}>
+                  <Text style={[styles.landscapeSectionLabel, { color: colors.textSecondary }]}>{t('learn.rawScore').toUpperCase()}</Text>
+                  <Text style={[styles.landscapeArticleCount, { color: colors.text }]}>
+                    {formatNumberByLocale(articlesAnalyzed)} {t('learn.articlesAnalyzed').toLowerCase()}
+                  </Text>
                 </View>
-                
-                {/* CONTENT BREAKDOWN - Shows why media is broken */}
+
                 <View style={styles.breakdownSection}>
                   <PercentageBar 
                     label={t('learn.destructive')} 
@@ -432,7 +428,17 @@ export default function WisdomScreen() {
                   />
                 </View>
 
-                {/* SIGNAL WITHIN - Filtered gauge (green) - moved before article count */}
+                {contentSources.length > 0 && (
+                  <View style={styles.sourceTagsContainer}>
+                    {contentSources.map((source, idx) => (
+                      <View key={idx} style={[styles.sourceTag, { backgroundColor: colors.surfaceHighlight }]}>
+                        <Text style={[styles.sourceTagText, { color: colors.text }]}>{source}</Text>
+                      </View>
+                    ))}
+                  </View>
+                )}
+
+                {/* SECTION 2: INTEGRATION QUALITY — single gauge for integrative articles */}
                 {hasFilteredData && (
                   <View style={styles.narrativeSectionSpaced}>
                     <TQFGauge 
@@ -444,37 +450,11 @@ export default function WisdomScreen() {
                     />
                   </View>
                 )}
-                
-                {/* ANALYSIS SUMMARY - Article count and content sources */}
-                <View style={[styles.analysisSummary, { borderTopColor: colors.border }]}>
-                  <View style={styles.articleCountRow}>
-                    <FileText size={16} color={colors.textSecondary} />
-                    <Text style={[styles.articleCountText, { color: colors.text }]}>
-                      {formatNumberByLocale(articlesAnalyzed)} {t('learn.articlesAnalyzed')}
-                    </Text>
-                  </View>
-                  {contentSources.length > 0 && (
-                    <View style={styles.sourceTagsContainer}>
-                      {contentSources.map((source, idx) => (
-                        <View key={idx} style={[styles.sourceTag, { backgroundColor: colors.surfaceHighlight }]}>
-                          <Text style={[styles.sourceTagText, { color: colors.text }]}>{source}</Text>
-                        </View>
-                      ))}
-                    </View>
-                  )}
-                </View>
 
                 {/* REGIONAL BREAKDOWN - Geographic distribution (compact) */}
                 {regionalData.length > 0 && (
                   <RegionalBreakdownCard regions={regionalData} t={t} />
                 )}
-                
-                {/* Narrative hint */}
-                <View style={styles.signalNoiseHint}>
-                  <Text style={[styles.signalNoiseText, { color: colors.textTertiary }]}>
-                    {t('learn.signalBeneathNoise')}
-                  </Text>
-                </View>
               </>
             )}
             
@@ -598,7 +578,10 @@ const styles = StyleSheet.create({
   signalNoiseHint: { alignItems: 'center', marginBottom: 20, paddingHorizontal: 16 },
   signalNoiseText: { fontSize: 12, textAlign: 'center', fontStyle: 'italic', lineHeight: 18 },
   
-  breakdownSection: { marginBottom: 32, gap: 20 },
+  landscapeHeader: { alignItems: 'center', marginBottom: 24 },
+  landscapeSectionLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 1.5, marginBottom: 8 },
+  landscapeArticleCount: { fontSize: 14, fontWeight: '500' },
+  breakdownSection: { marginBottom: 24, gap: 20 },
   analysisSummary: { marginTop: 24, paddingTop: 20, marginBottom: 32, gap: 12, borderTopWidth: 1 },
   articleCountRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   articleCountText: { fontSize: 14, fontWeight: '600' },
