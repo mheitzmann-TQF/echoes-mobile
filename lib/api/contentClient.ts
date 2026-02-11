@@ -1,8 +1,12 @@
+import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 const SOURCE_BASE_URL = 'https://source.thequietframe.com';
 
+const isWeb = Platform.OS === 'web';
+
 function getProxyBaseUrl(): string {
+  if (isWeb) return '';
   const expoConfig = Constants.expoConfig || Constants.manifest;
   const extra = (expoConfig as any)?.extra;
   return extra?.apiUrl || '';
@@ -29,6 +33,19 @@ export async function fetchContent(
       ...headers,
     },
   };
+
+  if (isWeb) {
+    const proxyUrl = endpoint.replace('/api/', '/api/proxy/');
+    console.log('[CONTENT] Fetching via proxy (web):', proxyUrl);
+    try {
+      const response = await fetch(proxyUrl, fetchOptions);
+      clearTimeout(timeoutId);
+      return response;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      throw new Error(`Failed to fetch: ${endpoint}`);
+    }
+  }
   
   try {
     const directUrl = `${SOURCE_BASE_URL}${endpoint}`;
@@ -41,22 +58,18 @@ export async function fetchContent(
       return response;
     }
     
-    // Fall through to proxy on failure
     console.log('[CONTENT] Direct failed, trying proxy');
   } catch (error) {
     console.log('[CONTENT] Direct fetch failed, trying proxy as fallback');
   }
   
-  // Fallback to proxy - only if a valid proxy base URL is configured
   const proxyBase = getProxyBaseUrl();
   
-  // Skip proxy fallback if no valid proxy URL (e.g., in production/TestFlight builds)
   if (!proxyBase) {
     console.log('[CONTENT] No proxy configured, cannot fallback');
     throw new Error(`Failed to fetch: ${endpoint}`);
   }
   
-  // Endpoint already starts with /api/, so replace /api/ with /api/proxy/
   const proxyUrl = `${proxyBase}${endpoint.replace('/api/', '/api/proxy/')}`;
   
   console.log('[CONTENT] Fetching via proxy:', proxyUrl);
