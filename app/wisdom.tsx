@@ -490,6 +490,12 @@ export default function WisdomScreen() {
             <ScrollView showsVerticalScrollIndicator={false}>
               <Text style={[styles.methodologyDesc, { color: colors.textSecondary }]}>{t('learn.methodologyIntro')}</Text>
 
+              <Text style={[styles.pipelineStep, { color: colors.textSecondary }]}>{t('learn.methodologyStep1')}</Text>
+              <Text style={[styles.pipelineStep, { color: colors.textSecondary }]}>{t('learn.methodologyStep2')}</Text>
+              <Text style={[styles.pipelineStep, { color: colors.textSecondary }]}>{t('learn.methodologyStep3')}</Text>
+              <Text style={[styles.pipelineStep, { color: colors.textSecondary }]}>{t('learn.methodologyStep4')}</Text>
+              <Text style={[styles.pipelineStep, { color: colors.textSecondary }]}>{t('learn.methodologyStep5')}</Text>
+
               <Text style={[styles.legendTitle, { color: colors.text }]}>{t('learn.methodologyLegendTitle')}</Text>
 
               <View style={styles.legendItem}>
@@ -612,7 +618,8 @@ const styles = StyleSheet.create({
   methodologyHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   methodologyTitle: { fontSize: 18, fontWeight: '700' },
   methodologyDesc: { fontSize: 14, lineHeight: 22, marginBottom: 20 },
-  legendTitle: { fontSize: 14, fontWeight: '600', marginBottom: 12 },
+  pipelineStep: { fontSize: 13, lineHeight: 20, marginBottom: 10 },
+  legendTitle: { fontSize: 14, fontWeight: '600', marginTop: 16, marginBottom: 12 },
   legendItem: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, marginBottom: 10 },
   legendDot: { width: 10, height: 10, borderRadius: 5, marginTop: 4 },
   legendText: { fontSize: 13, lineHeight: 20, flex: 1 },
