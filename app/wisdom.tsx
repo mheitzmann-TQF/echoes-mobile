@@ -488,45 +488,32 @@ export default function WisdomScreen() {
               </TouchableOpacity>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <Text style={[styles.methodologyDesc, { color: colors.textSecondary }]}>{t('learn.methodologyDesc')}</Text>
-              
-              <View style={styles.methodologySection}>
-                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.rawScore')}</Text>
-                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.mediaRealityExplainedDesc')}</Text>
+              <Text style={[styles.methodologyDesc, { color: colors.textSecondary }]}>{t('learn.methodologyIntro')}</Text>
+
+              <Text style={[styles.legendTitle, { color: colors.text }]}>{t('learn.methodologyLegendTitle')}</Text>
+
+              <View style={styles.legendItem}>
+                <View style={[styles.legendDot, { backgroundColor: '#ef4444' }]} />
+                <Text style={[styles.legendText, { color: colors.textSecondary }]}>{t('learn.methodologyReactive')}</Text>
               </View>
-              
-              <View style={styles.methodologySection}>
-                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.filteredScore')}</Text>
-                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.signalWithinExplainedDesc')}</Text>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendDot, { backgroundColor: '#f59e0b' }]} />
+                <Text style={[styles.legendText, { color: colors.textSecondary }]}>{t('learn.methodologyObservational')}</Text>
               </View>
-              
-              <View style={styles.methodologySection}>
-                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.transformationalExplained')}</Text>
-                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.transformationalExplainedDesc')}</Text>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendDot, { backgroundColor: '#10b981' }]} />
+                <Text style={[styles.legendText, { color: colors.textSecondary }]}>{t('learn.methodologyIntegrative')}</Text>
               </View>
-              
-              <View style={styles.methodologySection}>
-                <Text style={[styles.methodologySectionTitle, { color: colors.text }]}>{t('learn.destructiveExplained')}</Text>
-                <Text style={[styles.methodologySectionDesc, { color: colors.textSecondary }]}>{t('learn.destructiveExplainedDesc')}</Text>
-              </View>
-              
-              <View style={[styles.faqDivider, { backgroundColor: colors.border }]} />
-              <Text style={[styles.faqSectionTitle, { color: colors.text }]}>{t('learn.aboutThisData')}</Text>
-              
-              <View style={styles.faqItem}>
-                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq1Question')}</Text>
-                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq1Answer')}</Text>
-              </View>
-              
-              <View style={styles.faqItem}>
-                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq2Question')}</Text>
-                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq2Answer')}</Text>
-              </View>
-              
-              <View style={styles.faqItem}>
-                <Text style={[styles.faqQuestion, { color: colors.text }]}>{t('learn.faq3Question')}</Text>
-                <Text style={[styles.faqAnswer, { color: colors.textSecondary }]}>{t('learn.faq3Answer')}</Text>
-              </View>
+
+              <Text style={[styles.scoresTitle, { color: colors.text }]}>{t('learn.methodologyScoresTitle')}</Text>
+
+              <Text style={[styles.scoreLine, { color: colors.textSecondary }]}>{t('learn.methodologyLandscape')}</Text>
+              <Text style={[styles.scoreLine, { color: colors.textSecondary }]}>{t('learn.methodologyIntegrationQuality')}</Text>
+              <Text style={[styles.scoreLine, { color: colors.textSecondary }]}>{t('learn.methodologyHope')}</Text>
+              <Text style={[styles.scoreLine, { color: colors.textSecondary }]}>{t('learn.methodologyTrend')}</Text>
+
+              <View style={[styles.closingDivider, { backgroundColor: colors.border }]} />
+              <Text style={[styles.closingText, { color: colors.textSecondary }]}>{t('learn.methodologyClosing')}</Text>
             </ScrollView>
           </TouchableOpacity>
         </TouchableOpacity>
@@ -625,11 +612,14 @@ const styles = StyleSheet.create({
   methodologyHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   methodologyTitle: { fontSize: 18, fontWeight: '700' },
   methodologyDesc: { fontSize: 14, lineHeight: 22, marginBottom: 20 },
-  methodologySection: { marginBottom: 16 },
-  methodologySectionTitle: { fontSize: 14, fontWeight: '600', marginBottom: 4 },
-  methodologySectionDesc: { fontSize: 13, lineHeight: 20 },
-  methodologyCloseBtn: { paddingVertical: 12, borderRadius: 8, alignItems: 'center' },
-  methodologyCloseText: { fontSize: 15, fontWeight: '500' },
+  legendTitle: { fontSize: 14, fontWeight: '600', marginBottom: 12 },
+  legendItem: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, marginBottom: 10 },
+  legendDot: { width: 10, height: 10, borderRadius: 5, marginTop: 4 },
+  legendText: { fontSize: 13, lineHeight: 20, flex: 1 },
+  scoresTitle: { fontSize: 14, fontWeight: '600', marginTop: 20, marginBottom: 12 },
+  scoreLine: { fontSize: 13, lineHeight: 20, marginBottom: 8 },
+  closingDivider: { height: 1, marginTop: 16, marginBottom: 16 },
+  closingText: { fontSize: 13, lineHeight: 20, fontStyle: 'italic' },
   
   regionalSection: { marginBottom: 24, paddingTop: 8 },
   regionalHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
@@ -640,11 +630,6 @@ const styles = StyleSheet.create({
   regionCompactPercent: { fontSize: 12, fontWeight: '600' },
   analysisSummaryCompact: { marginBottom: 20, paddingHorizontal: 8, alignItems: 'center' },
   
-  faqDivider: { height: 1, marginVertical: 20 },
-  faqSectionTitle: { fontSize: 15, fontWeight: '600', marginBottom: 16 },
-  faqItem: { marginBottom: 16 },
-  faqQuestion: { fontSize: 13, fontWeight: '600', marginBottom: 4 },
-  faqAnswer: { fontSize: 13, lineHeight: 19 },
   
   cookieCard: { marginBottom: 24, borderRadius: 16, borderWidth: 1, flexDirection: 'row', overflow: 'hidden' },
   cookieAccent: { width: 4 },
