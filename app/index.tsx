@@ -647,6 +647,8 @@ export default function HomeScreen() {
 
           <CalendarCarousel calendars={calendars} onSelect={handleCalendarSelect} />
 
+          <TodayObservances observances={observances} />
+
           {natureFact && (
             <View style={[styles.natureFactCard, { backgroundColor: colors.surface, borderColor: colors.border, borderLeftColor: '#1abc9c', borderLeftWidth: 3 }]}>
               <Text style={[styles.natureFactText, { color: colors.text }]}>
@@ -654,8 +656,6 @@ export default function HomeScreen() {
               </Text>
             </View>
           )}
-
-          <TodayObservances observances={observances} />
 
         </ScrollView>
 
