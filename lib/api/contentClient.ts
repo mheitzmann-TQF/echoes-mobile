@@ -146,7 +146,7 @@ export const ContentEndpoints = {
   
   importantDates: (lang: string, days?: number) => {
     let url = `/api/important-dates/upcoming?lang=${lang}`;
-    if (days) url += `&days=${days}`;
+    if (days !== undefined) url += `&days=${days}`;
     return url;
   },
   

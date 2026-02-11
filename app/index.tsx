@@ -451,7 +451,7 @@ export default function HomeScreen() {
 
       // Fetch Bundle + Calendars + Photo + Consciousness + Instant
       const lang = getApiLang();
-      const [bundleData, calendarsData, photoData, consciousnessData, instantData] = await Promise.all([
+      const [bundleData, calendarsData, photoData, consciousnessData, instantData, importantDatesData] = await Promise.all([
         Promise.race([
           api.getDailyBundle(coordinates.lat, coordinates.lng, lang, timezone),
           timeoutPromise,
@@ -460,6 +460,7 @@ export default function HomeScreen() {
         getDailyPhoto().catch(() => null),
         api.getConsciousnessAnalysis(lang).catch(() => null),
         api.getInstantPlanetary(coordinates.lat, coordinates.lng, timezone).catch(() => null),
+        api.getImportantDates(lang, 0).catch(() => []),
       ]);
       
       if (photoData) {
@@ -564,6 +565,19 @@ export default function HomeScreen() {
       } else {
         setRawCalendars([]);
         setCalendars(getMockCalendars());
+      }
+
+      if (importantDatesData && Array.isArray(importantDatesData) && importantDatesData.length > 0) {
+        const mapped: Observance[] = importantDatesData.map((item: any, idx: number) => ({
+          id: item.id || idx,
+          date: item.date || '',
+          name: item.name || item.title || '',
+          tradition: item.tradition || item.calendar || '',
+          region: item.region || '',
+          description: item.description || '',
+          category: item.category || '',
+        }));
+        setObservances(mapped);
       }
 
     } catch (error) {
