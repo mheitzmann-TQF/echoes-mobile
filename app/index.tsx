@@ -634,10 +634,7 @@ export default function HomeScreen() {
           <CalendarCarousel calendars={calendars} onSelect={handleCalendarSelect} />
 
           {natureFact && (
-            <View style={[styles.natureFactCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Text style={[styles.natureFactCategory, { color: colors.accent }]}>
-                {natureFact.category}
-              </Text>
+            <View style={[styles.natureFactCard, { backgroundColor: colors.surface, borderColor: colors.border, borderLeftColor: '#4CAF50', borderLeftWidth: 3 }]}>
               <Text style={[styles.natureFactText, { color: colors.text }]}>
                 {natureFact.fact}
               </Text>
@@ -832,13 +829,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     borderWidth: 1,
-  },
-  natureFactCategory: {
-    fontSize: 11,
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    marginBottom: 8,
   },
   natureFactText: {
     fontSize: 15,
