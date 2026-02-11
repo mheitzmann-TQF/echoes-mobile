@@ -1,0 +1,191 @@
+Good.
+If it’s confusing to you, it will be confusing to everyone else.
+
+You’re trying to communicate something very simple:
+
+There is a lot of media.
+Most of it is reactive noise.
+A small portion is integrative.
+And even that small portion has a quality score.
+
+Right now the UI makes people think they need to interpret a system instead of understand a message.
+
+Let’s simplify the story.
+
+⸻
+
+What the screen currently says (cognitively)
+	•	53,271 articles
+	•	84% reactive
+	•	13% observational
+	•	3% integrative
+	•	Raw Landscape score: 14
+	•	Filtered Signal score: 78
+	•	1,598 “wisdom articles”
+
+That’s too many concepts competing.
+
+People are asking:
+	•	Is 14 bad?
+	•	Is 78 good?
+	•	What’s “Raw Landscape”?
+	•	What’s “Filtered Signal”?
+	•	Why are there two gauges?
+	•	What is being scored exactly?
+
+Your message is much simpler than your structure.
+
+⸻
+
+The Core Message (Boiled Down)
+
+You want this:
+
+1. Most media = reactive noise.
+2. Very little media = integrative signal.
+3. Even signal can be rated for depth/quality.
+
+That’s it.
+
+⸻
+
+A Simpler Framing
+
+Instead of two gauges and five conceptual layers, try this structure:
+
+⸻
+
+HEADLINE
+
+Global Media Climate
+
+Subheadline:
+Most coverage is reactive. Only a small fraction integrates.
+
+⸻
+
+SECTION 1 – The Landscape
+
+Out of 53,271 articles analyzed:
+	•	🔴 84% Reactive (conflict, fear, division)
+	•	⚪ 13% Observational (neutral reporting)
+	•	🟢 3% Integrative (solutions, connection)
+
+That’s the punch.
+
+No gauge needed.
+
+⸻
+
+SECTION 2 – The Signal
+
+Then:
+
+Wisdom Signal
+
+1,598 integrative articles were analyzed for quality.
+
+Average Integration Score: 78 / 100
+
+Short explanation:
+
+Integrative articles score based on depth, solution-orientation, and cross-perspective awareness.
+
+Now it’s clean:
+	•	Big pool → mostly noise.
+	•	Small pool → higher quality.
+	•	Score applies only to that small pool.
+
+⸻
+
+Why Your Current Version Feels Confusing
+
+1. “Raw Landscape” sounds abstract
+
+It’s actually just distribution.
+
+2. The 14 score is unclear
+
+What is 14 measuring?
+It looks like a rating, but it’s actually an index of reactivity density.
+
+People assume:
+14 = bad
+78 = good
+But they don’t know what the scale means.
+
+3. Two gauges = cognitive friction
+
+Two arcs compete for attention.
+Humans assume equal importance.
+
+But they’re not equal:
+	•	One describes composition.
+	•	One describes quality.
+
+⸻
+
+Even More Radical Simplification
+
+If you want the bold version:
+
+⸻
+
+Most Media is Reactive
+
+84% of global coverage is driven by conflict, fear, and division.
+
+Only 3% is integrative.
+
+⸻
+
+The Integrative Minority Scores 78/100 on Depth
+
+(1,598 articles analyzed)
+
+⸻
+
+That’s powerful.
+No metaphors. No abstraction.
+
+⸻
+
+If You Want To Keep the Visual Style
+
+Then change the logic:
+
+Replace:
+	•	“Raw Landscape: 14”
+	•	“Filtered Signal: 78”
+
+With:
+	•	“Media Reactivity: 84%”
+	•	“Wisdom Quality: 78/100”
+
+Now the labels explain themselves.
+
+⸻
+
+The Strategic Question
+
+Do you want this to feel:
+	•	Analytical?
+	•	Philosophical?
+	•	Or emotionally clear?
+
+Right now it’s analytical-abstract.
+Your message is philosophical-clear.
+
+Align those.
+
+⸻
+
+If you want, I can:
+	•	Rewrite the exact UI copy
+	•	Propose a new information hierarchy
+	•	Or redesign the conceptual model so it matches your Sherpa voice
+
+But first:
+
+Do you want this to feel like a dashboard
+or like a wake-up call?
