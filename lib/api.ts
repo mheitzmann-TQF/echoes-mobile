@@ -345,13 +345,15 @@ class EchoesAPI {
 
   async getImportantDates(lang: string = 'en'): Promise<any[]> {
     try {
-      const endpoint = ContentEndpoints.importantDates(lang);
-      console.log('📡 Fetching important dates...');
+      const endpoint = ContentEndpoints.todayEvents(lang);
+      console.log('📡 Fetching today events...');
       
       const data = await fetchContentJson(endpoint);
-      return Array.isArray(data) ? data : [];
+      if (Array.isArray(data)) return data;
+      if (data && Array.isArray(data.events)) return data.events;
+      return [];
     } catch (error) {
-      console.error('❌ Important dates error:', error);
+      console.error('❌ Today events error:', error);
       return [];
     }
   }

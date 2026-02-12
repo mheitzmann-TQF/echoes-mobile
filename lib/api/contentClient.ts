@@ -145,6 +145,8 @@ export const ContentEndpoints = {
   consciousnessRegionalBreakdown: () => `/api/consciousness-analysis/regional-breakdown`,
   
   importantDates: (lang: string, days?: number) => `/api/important-dates/upcoming?lang=${lang}${days ? `&days=${days}` : ''}`,
+
+  todayEvents: (lang: string) => `/api/echoes/today-events?lang=${lang}`,
   
   livingCalendars: (lang: string) => `/api/sacred-geography/living-calendars?lang=${lang}`,
   

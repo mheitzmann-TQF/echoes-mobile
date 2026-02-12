@@ -568,15 +568,16 @@ export default function HomeScreen() {
       }
 
       if (importantDatesData && Array.isArray(importantDatesData) && importantDatesData.length > 0) {
+        const langSuffix = lang.charAt(0).toUpperCase() + lang.slice(1).toLowerCase();
         const mapped: Observance[] = importantDatesData.map((item: any, idx: number) => ({
           id: item.id || idx,
-          date: item.date || '',
-          name: item.name || '',
-          tradition: item.culturalOrigin || item.tradition || '',
+          date: item.date || item.computedDate || '',
+          name: item[`name${langSuffix}`] || item.name || item.title || '',
+          tradition: item.culturalOrigin || item.culture || item.tradition || '',
           region: item.region || '',
-          description: item.description || '',
-          category: item.category || '',
-        }));
+          description: item[`description${langSuffix}`] || item.description || (item.descriptions && item.descriptions[lang]) || '',
+          category: item.category || item.type || '',
+        })).filter(o => o.name.trim().length > 0);
         setObservances(mapped);
       }
 
