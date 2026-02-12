@@ -46,8 +46,12 @@ function generateTQFPhotos(): TQFPhoto[] {
 
 function shouldShowTQF(): boolean {
   const today = new Date();
-  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-  return (seed % 100) < 20;
+  const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}-tqf`;
+  let hash = 0;
+  for (let i = 0; i < dateStr.length; i++) {
+    hash = ((hash << 5) - hash + dateStr.charCodeAt(i)) | 0;
+  }
+  return (Math.abs(hash) % 100) < 20;
 }
 
 export async function fetchPhotos(): Promise<TQFPhoto[]> {
