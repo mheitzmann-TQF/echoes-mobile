@@ -448,5 +448,6 @@
     "purchaseFailed": "A compra falhou",
     "restoreFailed": "Falha ao restaurar compras",
     "checkFailed": "Falha ao verificar o status da assinatura"
-  }
+  },
+  "natureNote": "Nota da Natureza"
 }

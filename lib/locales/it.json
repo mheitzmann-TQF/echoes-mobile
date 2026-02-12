@@ -545,5 +545,6 @@
     "purchaseFailed": "Acquisto fallito",
     "restoreFailed": "Ripristino degli acquisti fallito",
     "checkFailed": "Verifica dello stato dell'abbonamento fallita"
-  }
+  },
+  "natureNote": "Nota Natura"
 }

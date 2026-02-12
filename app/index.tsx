@@ -682,6 +682,9 @@ export default function HomeScreen() {
 
           {natureFact && (
             <View style={[styles.natureFactCard, { backgroundColor: colors.surface, borderColor: colors.border, borderLeftColor: '#1abc9c', borderLeftWidth: 3 }]}>
+              <Text style={[styles.natureFactTitle, { color: '#1abc9c' }]}>
+                {t('natureNote')}
+              </Text>
               <Text style={[styles.natureFactText, { color: colors.text }]}>
                 {natureFact.fact}
               </Text>
@@ -874,6 +877,13 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     borderWidth: 1,
+  },
+  natureFactTitle: {
+    fontSize: 13,
+    fontWeight: '600' as const,
+    textTransform: 'uppercase' as const,
+    letterSpacing: 1,
+    marginBottom: 8,
   },
   natureFactText: {
     fontSize: 15,

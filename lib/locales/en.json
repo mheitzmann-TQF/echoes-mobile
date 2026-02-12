@@ -567,5 +567,6 @@
     "purchaseFailed": "Purchase failed",
     "restoreFailed": "Failed to restore purchases",
     "checkFailed": "Failed to check subscription status"
-  }
+  },
+  "natureNote": "Nature Note"
 }

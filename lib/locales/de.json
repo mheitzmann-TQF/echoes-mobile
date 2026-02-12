@@ -448,5 +448,6 @@
     "purchaseFailed": "Kauf fehlgeschlagen",
     "restoreFailed": "Wiederherstellung der Käufe fehlgeschlagen",
     "checkFailed": "Überprüfung des Abonnementstatus fehlgeschlagen"
-  }
+  },
+  "natureNote": "Naturnotiz"
 }

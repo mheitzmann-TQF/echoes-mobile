@@ -566,5 +566,6 @@
     "purchaseFailed": "L'achat a échoué",
     "restoreFailed": "Échec de la restauration des achats",
     "checkFailed": "Échec de la vérification du statut d'abonnement"
-  }
+  },
+  "natureNote": "Note Nature"
 }
