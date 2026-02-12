@@ -251,16 +251,14 @@ function EventCard({ event }: { event: any }) {
         <Text style={[styles.eventDateMonth, { color: colors.textSecondary }]}>{eventDate.toLocaleDateString(undefined, { month: 'short' })}</Text>
       </View>
       <View style={styles.eventContent}>
-        <View style={styles.eventHeader}>
-          <Text style={[styles.eventName, { color: colors.text }]}>{event.name}</Text>
-          {event.origin && (
-            <View style={[styles.originBadge, { backgroundColor: getCategoryColor(event.displayCategory) + '20' }]}>
-              <Text style={[styles.originBadgeText, { color: getCategoryColor(event.displayCategory) }]}>
-                {event.origin}
-              </Text>
-            </View>
-          )}
-        </View>
+        <Text style={[styles.eventName, { color: colors.text }]}>{event.name}</Text>
+        {event.origin && (
+          <View style={[styles.originBadge, { backgroundColor: getCategoryColor(event.displayCategory) + '20', alignSelf: 'flex-start' }]}>
+            <Text style={[styles.originBadgeText, { color: getCategoryColor(event.displayCategory) }]}>
+              {event.origin}
+            </Text>
+          </View>
+        )}
         <Text style={[styles.eventDesc, { color: colors.textTertiary }]}>{event.description}</Text>
       </View>
       <Text style={[styles.eventTime, { color: colors.textSecondary }]}>{getTimeLabel()}</Text>
@@ -411,9 +409,6 @@ export default function UpcomingScreen() {
       return eventDate >= start && eventDate <= end;
     });
 
-    // Check if we have any astronomical events from API
-    const hasAstronomicalEvents = inRangeEvents.some(e => e.category === 'astronomical');
-    
     // Get the appropriate fallback based on band
     const getFallback = () => {
       if (band === 'soon') return getFallbackSoon(t);
@@ -421,25 +416,12 @@ export default function UpcomingScreen() {
       return getFallbackSeason(t);
     };
 
-    // Merge fallback astronomical events if none exist from API
-    let eventsWithFallbacks = inRangeEvents;
-    if (!hasAstronomicalEvents) {
-      console.log('🌟 No astronomical events from API, adding fallbacks for band:', band);
-      const fallbackAstro = getFallback().filter(e => e.category === 'astronomical');
-      // Add unique ids to avoid collisions
-      const fallbacksWithDates = fallbackAstro.map(e => ({
-        ...e,
-        date: (e as any).date || new Date(Date.now() + ((e as any).daysUntil || 0) * 24 * 60 * 60 * 1000)
-      }));
-      eventsWithFallbacks = [...inRangeEvents, ...fallbacksWithDates];
-    }
-
     // Now filter by category
-    const filtered = eventsWithFallbacks.filter(e => 
+    const filtered = inRangeEvents.filter(e => 
       category === 'all' || e.category === category
     );
 
-    // If still empty after all filtering, use full fallback
+    // Only use fallbacks if we have zero real events
     if (filtered.length === 0) {
       return getFallback().filter(e => category === 'all' || e.category === category);
     }
@@ -628,18 +610,11 @@ const styles = StyleSheet.create({
   eventContent: {
     flex: 1,
   },
-  eventHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-    gap: 8,
-  },
   eventName: {
     fontSize: 16,
     fontWeight: '600',
     color: '#FFFFFF',
-    flex: 1,
+    marginBottom: 3,
   },
   eventDesc: {
     fontSize: 13,
@@ -655,6 +630,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
+    marginBottom: 4,
   },
   originBadgeText: {
     fontSize: 10,
