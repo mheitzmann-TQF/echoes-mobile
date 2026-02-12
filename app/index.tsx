@@ -681,13 +681,15 @@ export default function HomeScreen() {
           <TodayObservances observances={observances} />
 
           {natureFact && (
-            <View style={[styles.natureFactCard, { backgroundColor: colors.surface, borderColor: colors.border, borderLeftColor: '#1abc9c', borderLeftWidth: 3 }]}>
-              <Text style={[styles.natureFactTitle, { color: '#1abc9c' }]}>
+            <View style={styles.natureFactSection}>
+              <Text style={[styles.natureFactSectionLabel, { color: colors.textTertiary }]}>
                 {t('natureNote')}
               </Text>
-              <Text style={[styles.natureFactText, { color: colors.text }]}>
-                {natureFact.fact}
-              </Text>
+              <View style={[styles.natureFactCard, { backgroundColor: colors.surface, borderColor: colors.border, borderLeftColor: '#1abc9c', borderLeftWidth: 3 }]}>
+                <Text style={[styles.natureFactText, { color: colors.text }]}>
+                  {natureFact.fact}
+                </Text>
+              </View>
             </View>
           )}
 
@@ -872,18 +874,20 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   natureFactCard: {
-    marginHorizontal: 20,
-    marginTop: 16,
     borderRadius: 16,
     padding: 20,
     borderWidth: 1,
   },
-  natureFactTitle: {
-    fontSize: 13,
+  natureFactSection: {
+    marginHorizontal: 20,
+    marginTop: 16,
+  },
+  natureFactSectionLabel: {
+    fontSize: 11,
     fontWeight: '600' as const,
-    textTransform: 'uppercase' as const,
     letterSpacing: 1,
-    marginBottom: 8,
+    textTransform: 'uppercase' as const,
+    marginBottom: 12,
   },
   natureFactText: {
     fontSize: 15,
