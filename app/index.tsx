@@ -184,7 +184,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 const photoStyles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    marginBottom: 32,
+    marginBottom: 24,
   },
   sectionLabel: {
     fontSize: 11,
@@ -326,14 +326,14 @@ function TodayObservances({ observances }: { observances: Observance[] }) {
 const observanceStyles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    marginBottom: 32,
+    marginBottom: 24,
   },
   sectionLabel: {
     fontSize: 11,
     fontWeight: '600',
     letterSpacing: 1,
     textTransform: 'uppercase',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   card: {
     padding: 16,
@@ -880,7 +880,7 @@ const styles = StyleSheet.create({
   },
   natureFactSection: {
     marginHorizontal: 20,
-    marginTop: 16,
+    marginBottom: 24,
   },
   natureFactSectionLabel: {
     fontSize: 11,

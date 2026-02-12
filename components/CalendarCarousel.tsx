@@ -60,7 +60,7 @@ export default function CalendarCarousel({ calendars, onSelect }: CalendarCarous
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginBottom: 16,
+    marginBottom: 24,
   },
   grid: {
     flexDirection: 'row',
