@@ -52,6 +52,7 @@ interface Observance {
   region: string;
   description: string;
   category: string;
+  subcategory: string;
 }
 
 // Components
@@ -262,6 +263,26 @@ function TodayObservances({ observances }: { observances: Observance[] }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   
+  const getObservanceColor = (obs: Observance) => {
+    const key = obs.subcategory || obs.category || 'cultural';
+    switch (key) {
+      case 'astronomical': return '#818CF8';
+      case 'quirky': return '#06B6D4';
+      case 'tradition': return '#F97316';
+      case 'historical': return '#A78BFA';
+      case 'superstition': return '#8B5CF6';
+      case 'remembrance': return '#3B82F6';
+      case 'feminine': return '#EC4899';
+      case 'religious': return '#3498db';
+      case 'natural': return '#27ae60';
+      case 'pagan': return '#9b59b6';
+      case 'indigenous': return '#e67e22';
+      case 'universal': return '#3B82F6';
+      case 'cultural': return '#F59E0B';
+      default: return colors.accent;
+    }
+  };
+
   if (!observances || observances.length === 0) {
     return null;
   }
@@ -271,26 +292,33 @@ function TodayObservances({ observances }: { observances: Observance[] }) {
       <Text style={[observanceStyles.sectionLabel, { color: colors.textTertiary }]}>
         {t('today.todaysObservances')}
       </Text>
-      {observances.map((obs) => (
-        <View 
-          key={obs.id} 
-          style={[observanceStyles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
-          data-testid={`observance-card-${obs.id}`}
-        >
-          <View style={observanceStyles.header}>
+      {observances.map((obs) => {
+        const accentColor = getObservanceColor(obs);
+        return (
+          <View 
+            key={obs.id} 
+            style={[observanceStyles.card, { backgroundColor: colors.surface, borderColor: colors.border, borderLeftWidth: 3, borderLeftColor: accentColor }]}
+            data-testid={`observance-card-${obs.id}`}
+          >
             <Text style={[observanceStyles.name, { color: colors.text }]}>{obs.name}</Text>
-            <Text style={[observanceStyles.tradition, { color: colors.textSecondary }]}>
-              {obs.tradition}
+            {obs.tradition ? (
+              <View style={[observanceStyles.badge, { backgroundColor: accentColor + '20' }]}>
+                <Text style={[observanceStyles.badgeText, { color: accentColor }]}>
+                  {obs.tradition}
+                </Text>
+              </View>
+            ) : null}
+            <Text style={[observanceStyles.description, { color: colors.textSecondary }]}>
+              {obs.description}
             </Text>
+            {obs.region ? (
+              <Text style={[observanceStyles.region, { color: colors.textTertiary }]}>
+                {obs.region}
+              </Text>
+            ) : null}
           </View>
-          <Text style={[observanceStyles.description, { color: colors.textSecondary }]}>
-            {obs.description}
-          </Text>
-          <Text style={[observanceStyles.region, { color: colors.textTertiary }]}>
-            {obs.region}
-          </Text>
-        </View>
-      ))}
+        );
+      })}
     </View>
   );
 }
@@ -313,33 +341,32 @@ const observanceStyles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 16,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-    gap: 12,
-  },
   name: {
     fontSize: 19,
     fontWeight: '600',
-    flex: 1,
     lineHeight: 24,
+    marginBottom: 4,
   },
-  tradition: {
-    fontSize: 11,
-    fontWeight: '500',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+  badge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    marginBottom: 6,
+  },
+  badgeText: {
+    fontSize: 10,
+    fontWeight: '600',
   },
   description: {
     fontSize: 14,
     lineHeight: 21,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   region: {
     fontSize: 11,
     lineHeight: 16,
+    marginTop: 2,
   },
 });
 
@@ -577,6 +604,7 @@ export default function HomeScreen() {
           region: item.region || '',
           description: item[`description${langSuffix}`] || item.description || (item.descriptions && item.descriptions[lang]) || '',
           category: item.category || item.type || '',
+          subcategory: item.subcategory || '',
         })).filter(o => o.name.trim().length > 0);
         if (mapped.length > 0) {
           setObservances(mapped);
