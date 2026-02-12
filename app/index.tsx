@@ -578,7 +578,9 @@ export default function HomeScreen() {
           description: item[`description${langSuffix}`] || item.description || (item.descriptions && item.descriptions[lang]) || '',
           category: item.category || item.type || '',
         })).filter(o => o.name.trim().length > 0);
-        setObservances(mapped);
+        if (mapped.length > 0) {
+          setObservances(mapped);
+        }
       }
 
     } catch (error) {
