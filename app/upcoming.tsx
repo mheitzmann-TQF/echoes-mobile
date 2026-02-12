@@ -226,10 +226,17 @@ function EventCard({ event }: { event: any }) {
   const getCategoryColor = (cat: string) => {
     switch (cat) {
       case 'astronomical': return '#818CF8';
-      case 'pagan': return '#9b59b6';
+      case 'quirky': return '#06B6D4';
+      case 'tradition': return '#F97316';
+      case 'historical': return '#A78BFA';
+      case 'superstition': return '#8B5CF6';
+      case 'remembrance': return '#3B82F6';
+      case 'feminine': return '#EC4899';
       case 'religious': return '#3498db';
       case 'natural': return '#27ae60';
+      case 'pagan': return '#9b59b6';
       case 'indigenous': return '#e67e22';
+      case 'universal': return '#3B82F6';
       case 'cultural': return '#F59E0B';
       default: return colors.accent;
     }
@@ -304,7 +311,7 @@ export default function UpcomingScreen() {
         if (apiEvents && apiEvents.length > 0) {
           const allEvents = apiEvents.map(e => ({ 
             ...e, 
-            displayCategory: e.category,
+            displayCategory: e.subcategory || e.category || 'cultural',
             category: normalizeCategory(e.category || 'cultural'),
             description: cleanTone(e.description || e.summary || '')
           }));
@@ -329,7 +336,7 @@ export default function UpcomingScreen() {
         }
       } catch (e) {
         console.error('Error loading events:', e);
-        setEvents(CORE_DATES.map(e => ({ ...e, category: 'cultural' })));
+        setEvents(CORE_DATES.map(e => ({ ...e, displayCategory: e.category, category: 'cultural' })));
       } finally {
         setLoading(false);
       }
