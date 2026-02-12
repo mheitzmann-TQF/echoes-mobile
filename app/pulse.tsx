@@ -1106,7 +1106,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   section: {
-    marginBottom: 32,
+    marginBottom: 24,
   },
   sectionLabel: {
     fontSize: 11,
@@ -1389,7 +1389,7 @@ const styles = StyleSheet.create({
   snapshotContainer: {
     flexDirection: 'row',
     gap: 10,
-    marginBottom: 28,
+    marginBottom: 24,
   },
   snapshotChip: {
     flex: 1,
