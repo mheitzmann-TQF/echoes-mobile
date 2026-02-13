@@ -37,6 +37,20 @@ function getLocalizedPrice(products: ProductSubscription[], sku: string, fallbac
   return fallback;
 }
 
+function getOfferToken(products: ProductSubscription[], sku: string): string | undefined {
+  const product = products.find((p: any) => p.productId === sku || p.id === sku);
+  if (!product) return undefined;
+  const offers = (product as any).subscriptionOffers || (product as any).subscriptionOfferDetails;
+  if (Array.isArray(offers) && offers.length > 0) {
+    const token = offers[0].offerToken || offers[0].offerIdToken;
+    if (token) {
+      console.log(`[Paywall] Found offerToken for ${sku}:`, token.substring(0, 20) + '...');
+    }
+    return token;
+  }
+  return undefined;
+}
+
 function getPeriodLabel(sku: string): string {
   if (sku.includes('yearly')) return 'year';
   return 'month';
@@ -95,13 +109,15 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
 
   const handlePurchaseMonthly = async () => {
     setPurchasing('monthly');
-    await purchaseMonthly();
+    const token = getOfferToken(products, SUBSCRIPTION_IDS.monthly);
+    await purchaseMonthly(token);
     setPurchasing(null);
   };
 
   const handlePurchaseYearly = async () => {
     setPurchasing('yearly');
-    await purchaseYearly();
+    const token = getOfferToken(products, SUBSCRIPTION_IDS.yearly);
+    await purchaseYearly(token);
     setPurchasing(null);
   };
 
