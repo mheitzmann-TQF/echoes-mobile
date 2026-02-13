@@ -254,6 +254,14 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
       return { success: false, error: 'Purchase cancelled' };
     }
     
+    if (error?.code === 'E_ALREADY_OWNED' || 
+        error?.message?.includes('ITEM_ALREADY_OWNED') ||
+        error?.message?.includes('already own')) {
+      console.log('[IAP] Item already owned, needs restore');
+      iapLog.purchase.warn('Item already owned', { sku, code: error?.code }, flowId);
+      return { success: false, error: 'ITEM_ALREADY_OWNED' };
+    }
+    
     return { success: false, error: error?.message || 'Purchase failed' };
   }
 }

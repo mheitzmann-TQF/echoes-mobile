@@ -224,6 +224,8 @@ async function verifyPurchaseWithBackendInternal(
         called: false,
         error: 'No session token',
       });
+      await finishTransaction(purchase).catch(() => {});
+      console.log('[ENTITLEMENT] Finished transaction despite no session (prevents blocking)');
       return { entitlement: 'free', expiresAt: null };
     }
     
@@ -253,6 +255,8 @@ async function verifyPurchaseWithBackendInternal(
       }
       console.error('[ENTITLEMENT] Session still invalid after refresh during verification');
       iapLog.verify.error('Session invalid after retry', {}, fid);
+      await finishTransaction(purchase).catch(() => {});
+      console.log('[ENTITLEMENT] Finished transaction despite auth failure (prevents blocking)');
       return { entitlement: 'free', expiresAt: null };
     }
     
@@ -267,6 +271,8 @@ async function verifyPurchaseWithBackendInternal(
         error: errorText.substring(0, 200),
         rawBody: errorText.substring(0, 500),
       });
+      await finishTransaction(purchase).catch(() => {});
+      console.log('[ENTITLEMENT] Finished transaction despite backend error (prevents blocking)');
       return { entitlement: 'free', expiresAt: null };
     }
     
@@ -309,6 +315,8 @@ async function verifyPurchaseWithBackendInternal(
       called: true,
       error: error?.message?.substring(0, 100) || 'exception',
     });
+    await finishTransaction(purchase).catch(() => {});
+    console.log('[ENTITLEMENT] Finished transaction despite exception (prevents blocking)');
     return { entitlement: 'free', expiresAt: null };
   }
 }
@@ -942,6 +950,34 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     console.log('[ENTITLEMENT] Dev access set to:', state);
   }, [isDevMode]);
 
+  const handleAlreadyOwned = useCallback(async (currentInstallId: string): Promise<boolean> => {
+    console.log('[ENTITLEMENT] Handling ITEM_ALREADY_OWNED - auto-restoring...');
+    try {
+      const purchases = await restorePurchases();
+      console.log('[ENTITLEMENT] Auto-restore found', purchases.length, 'purchases');
+      
+      for (const purchase of purchases) {
+        const verification = await verifyPurchaseWithBackend(currentInstallId, purchase);
+        if (verification.entitlement === 'full') {
+          console.log('[ENTITLEMENT] Auto-restore succeeded for:', purchase.productId);
+          setIsFullAccess(true);
+          setExpiresAt(verification.expiresAt);
+          setIsGrace(false);
+          setGraceReason('none');
+          return true;
+        }
+      }
+      
+      console.log('[ENTITLEMENT] Auto-restore: no active subscription found');
+      setError('paywall.noActiveSubscription');
+      return false;
+    } catch (err) {
+      console.error('[ENTITLEMENT] Auto-restore failed:', err);
+      setError('paywall.restoreFailed');
+      return false;
+    }
+  }, []);
+
   const purchaseMonthly = useCallback(async (offerToken?: string): Promise<boolean> => {
     if (isDevMode) {
       await devSetAccess('paid');
@@ -958,6 +994,9 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     const result = await purchaseSubscription(SUBSCRIPTION_IDS.monthly, offerToken);
     
     if (!result.success) {
+      if (result.error === 'ITEM_ALREADY_OWNED') {
+        return handleAlreadyOwned(currentInstallId);
+      }
       setError(result.error || 'Purchase failed');
       return false;
     }
@@ -970,7 +1009,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
     
     return false;
-  }, [isDevMode, devSetAccess]);
+  }, [isDevMode, devSetAccess, handleAlreadyOwned]);
 
   const purchaseYearly = useCallback(async (offerToken?: string): Promise<boolean> => {
     if (isDevMode) {
@@ -988,6 +1027,9 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     const result = await purchaseSubscription(SUBSCRIPTION_IDS.yearly, offerToken);
     
     if (!result.success) {
+      if (result.error === 'ITEM_ALREADY_OWNED') {
+        return handleAlreadyOwned(currentInstallId);
+      }
       setError(result.error || 'Purchase failed');
       return false;
     }
@@ -1000,7 +1042,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
     
     return false;
-  }, [isDevMode, devSetAccess]);
+  }, [isDevMode, devSetAccess, handleAlreadyOwned]);
 
   const restorePurchasesAction = useCallback(async (): Promise<boolean> => {
     console.log('[ENTITLEMENT] Restore purchases started');
