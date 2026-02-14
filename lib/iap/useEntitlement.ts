@@ -13,6 +13,7 @@ import {
   updateRestoreDiagnosticsVerify,
   updateRestoreDiagnosticsVerifyRequest,
   getIAPDiagnostics,
+  isStoreKitBusy,
   type ProductSubscription,
   type Purchase,
   type IAPDiagnostics,
@@ -657,80 +658,8 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
         }
 
         if (Platform.OS !== 'web') {
-          // iOS-SPECIFIC: If user doesn't have access, check StoreKit for existing subscriptions
-          // This recovers subscriptions that failed to verify originally or when backend is down
-          if (Platform.OS === 'ios' && !hasAccess) {
-            iapLog.restore.info('No access, checking StoreKit for iOS subscriptions', { backendSucceeded }, initFlowId);
-            console.log('[ENTITLEMENT] iOS: No access yet, checking StoreKit for existing subscriptions...');
-            
-            try {
-              // Ensure IAP is fully initialized before checking StoreKit
-              if (moduleIAPInitialized) {
-                iapLog.init.info('IAP already initialized', {}, initFlowId);
-              } else if (moduleIAPPromise) {
-                iapLog.init.info('Waiting for IAP init in progress', {}, initFlowId);
-                await moduleIAPPromise;
-              } else {
-                iapLog.init.info('Initializing IAP for StoreKit check', {}, initFlowId);
-                moduleIAPPromise = (async () => {
-                  moduleIAPCleanup = await initIAP();
-                  moduleIAPInitialized = true;
-                })();
-                await moduleIAPPromise;
-                moduleIAPPromise = null;
-              }
-              
-              const storeKitPurchases = await restorePurchases();
-              iapLog.restore.info('StoreKit returned', { count: storeKitPurchases.length }, initFlowId);
-              
-              if (storeKitPurchases.length > 0) {
-                console.log('[ENTITLEMENT] iOS: Found', storeKitPurchases.length, 'purchases in StoreKit, verifying...');
-                
-                for (const purchase of storeKitPurchases) {
-                  iapLog.verify.info('Verifying StoreKit purchase', {
-                    productId: purchase.productId,
-                    transactionId: purchase.transactionId
-                  }, initFlowId);
-                  
-                  const verification = await verifyPurchaseWithBackend(id, purchase);
-                  
-                  if (verification.entitlement === 'full') {
-                    iapLog.result.info('StoreKit verification SUCCESS', {
-                      entitlement: verification.entitlement,
-                      expiresAt: verification.expiresAt
-                    }, initFlowId);
-                    console.log('[ENTITLEMENT] iOS: StoreKit subscription verified successfully!');
-                    
-                    setIsFullAccess(true);
-                    setExpiresAt(verification.expiresAt);
-                    setIsGrace(false);
-                    setGraceReason('none');
-                    hasAccess = true;
-                    await setAccessCache('full', verification.expiresAt);
-                    break; // Found valid subscription, stop checking
-                  } else {
-                    iapLog.verify.warn('StoreKit purchase not entitled', {
-                      productId: purchase.productId,
-                      result: verification.entitlement
-                    }, initFlowId);
-                  }
-                }
-                
-                if (!hasAccess) {
-                  iapLog.result.info('No valid StoreKit subscription found', {}, initFlowId);
-                  console.log('[ENTITLEMENT] iOS: No valid subscription found in StoreKit');
-                }
-              } else {
-                iapLog.restore.info('No purchases in StoreKit', {}, initFlowId);
-                console.log('[ENTITLEMENT] iOS: No purchases found in StoreKit');
-              }
-            } catch (storeKitErr: any) {
-              iapLog.restore.error('StoreKit check failed', { message: storeKitErr?.message }, initFlowId);
-              console.error('[ENTITLEMENT] iOS: Error checking StoreKit:', storeKitErr);
-              // Non-fatal - continue with whatever status we have
-            }
-          }
-          // Module-level dedup for IAP initialization
+          // SINGLE IAP initialization - init once, then do product fetch, then StoreKit recovery
+          // This prevents overwhelming StoreKit with overlapping calls
           if (moduleIAPInitialized) {
             setProducts(moduleProducts);
             console.log('[ENTITLEMENT] Using cached IAP products');
@@ -741,6 +670,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
           } else {
             const doIAPInit = async () => {
               moduleIAPCleanup = await initIAP();
+              // initIAP now includes breathing delays, so StoreKit is settled
               const fetchedProducts = await getProducts();
               moduleProducts = fetchedProducts;
               setProducts(fetchedProducts);
@@ -875,6 +805,64 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
               moduleIAPPromise = null; // Allow retry on failure
             }
           }
+
+          // iOS-SPECIFIC: AFTER IAP is initialized, check StoreKit for existing subscriptions
+          // This recovers subscriptions that failed to verify originally or when backend is down
+          // Done AFTER init so we use the same connection (no double init)
+          if (Platform.OS === 'ios' && !hasAccess && moduleIAPInitialized) {
+            iapLog.restore.info('No access, checking StoreKit for iOS subscriptions', { backendSucceeded }, initFlowId);
+            console.log('[ENTITLEMENT] iOS: No access yet, checking StoreKit for existing subscriptions...');
+            
+            try {
+              const storeKitPurchases = await restorePurchases();
+              iapLog.restore.info('StoreKit returned', { count: storeKitPurchases.length }, initFlowId);
+              
+              if (storeKitPurchases.length > 0) {
+                console.log('[ENTITLEMENT] iOS: Found', storeKitPurchases.length, 'purchases in StoreKit, verifying...');
+                
+                for (const purchase of storeKitPurchases) {
+                  iapLog.verify.info('Verifying StoreKit purchase', {
+                    productId: purchase.productId,
+                    transactionId: purchase.transactionId
+                  }, initFlowId);
+                  
+                  const verification = await verifyPurchaseWithBackend(id, purchase);
+                  
+                  if (verification.entitlement === 'full') {
+                    iapLog.result.info('StoreKit verification SUCCESS', {
+                      entitlement: verification.entitlement,
+                      expiresAt: verification.expiresAt
+                    }, initFlowId);
+                    console.log('[ENTITLEMENT] iOS: StoreKit subscription verified successfully!');
+                    
+                    setIsFullAccess(true);
+                    setExpiresAt(verification.expiresAt);
+                    setIsGrace(false);
+                    setGraceReason('none');
+                    hasAccess = true;
+                    await setAccessCache('full', verification.expiresAt);
+                    break;
+                  } else {
+                    iapLog.verify.warn('StoreKit purchase not entitled', {
+                      productId: purchase.productId,
+                      result: verification.entitlement
+                    }, initFlowId);
+                  }
+                }
+                
+                if (!hasAccess) {
+                  iapLog.result.info('No valid StoreKit subscription found', {}, initFlowId);
+                  console.log('[ENTITLEMENT] iOS: No valid subscription found in StoreKit');
+                }
+              } else {
+                iapLog.restore.info('No purchases in StoreKit', {}, initFlowId);
+                console.log('[ENTITLEMENT] iOS: No purchases found in StoreKit');
+              }
+            } catch (storeKitErr: any) {
+              iapLog.restore.error('StoreKit check failed', { message: storeKitErr?.message }, initFlowId);
+              console.error('[ENTITLEMENT] iOS: Error checking StoreKit:', storeKitErr);
+            }
+          }
         }
       } catch (err) {
         console.error('[ENTITLEMENT] Initialization error:', err);
@@ -896,6 +884,11 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
 
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
       if (nextAppState === 'active' && moduleInstallIdReady && moduleInstallId) {
+        // Skip refresh if StoreKit is busy (init, purchase, or restore in progress)
+        if (isStoreKitBusy()) {
+          console.log('[ENTITLEMENT] Skipping foreground refresh - StoreKit operation in progress');
+          return;
+        }
         refresh();
       }
     };

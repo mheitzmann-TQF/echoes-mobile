@@ -7,6 +7,38 @@ let isConnected = false;
 let lastConnectionError: string | null = null;
 let connectionAttempts = 0;
 
+// StoreKit operation lock - prevents overlapping calls that overwhelm StoreKit
+let storeKitBusy = false;
+let storeKitQueue: Array<() => void> = [];
+
+async function acquireStoreKitLock(): Promise<void> {
+  if (!storeKitBusy) {
+    storeKitBusy = true;
+    return;
+  }
+  return new Promise((resolve) => {
+    storeKitQueue.push(() => {
+      storeKitBusy = true;
+      resolve();
+    });
+  });
+}
+
+function releaseStoreKitLock(): void {
+  if (storeKitQueue.length > 0) {
+    const next = storeKitQueue.shift();
+    next?.();
+  } else {
+    storeKitBusy = false;
+  }
+}
+
+export function isStoreKitBusy(): boolean {
+  return storeKitBusy;
+}
+
+const STOREKIT_BREATHING_DELAY_MS = 1500;
+
 export interface IAPDiagnostics {
   isConnected: boolean;
   connectionAttempts: number;
@@ -109,6 +141,9 @@ export async function initIAP(): Promise<() => Promise<void>> {
               console.log('[IAP] Could not finish pending transaction:', finishErr?.message);
             }
           }
+          // Breathing delay after cleanup - let StoreKit settle before any further calls
+          console.log(`[IAP] Letting StoreKit settle after cleanup (${STOREKIT_BREATHING_DELAY_MS}ms)...`);
+          await sleep(STOREKIT_BREATHING_DELAY_MS);
         } else {
           console.log('[IAP] No pending transactions to clear');
         }
@@ -116,6 +151,12 @@ export async function initIAP(): Promise<() => Promise<void>> {
         console.log('[IAP] Error checking pending transactions:', pendingErr?.message);
         iapLog.init.error('Pending transaction check failed', { error: pendingErr?.message }, flowId);
       }
+    }
+
+    // Breathing delay after init + cleanup before any product/purchase calls
+    if (connected) {
+      console.log(`[IAP] Post-init breathing delay (${STOREKIT_BREATHING_DELAY_MS}ms) before product fetch...`);
+      await sleep(STOREKIT_BREATHING_DELAY_MS);
     }
     
     return async () => {
@@ -180,27 +221,50 @@ export interface ProductSubscription {
   subscriptionOffers?: Array<{ offerToken: string }>;
 }
 
+const PRODUCT_FETCH_MAX_RETRIES = 3;
+const PRODUCT_FETCH_RETRY_DELAY_MS = 2000;
+
 export async function getProducts(): Promise<ProductSubscription[]> {
-  try {
-    if (Platform.OS === 'web' || !isConnected) {
-      console.log('[IAP] Cannot get products - not connected or on web');
-      return [];
-    }
-
-    const iap = await getExpoIap();
-    if (!iap) return [];
-
-    console.log('[IAP] Fetching products...', SUBSCRIPTION_SKUS);
-    const products = await iap.fetchProducts({
-      skus: SUBSCRIPTION_SKUS || [],
-      type: 'subs',
-    });
-    console.log('[IAP] Fetched products:', products?.length ?? 0);
-    return (products ?? []) as unknown as ProductSubscription[];
-  } catch (error) {
-    console.error('[IAP] Error fetching products:', error);
+  if (Platform.OS === 'web' || !isConnected) {
+    console.log('[IAP] Cannot get products - not connected or on web');
     return [];
   }
+
+  const iap = await getExpoIap();
+  if (!iap) return [];
+
+  for (let attempt = 1; attempt <= PRODUCT_FETCH_MAX_RETRIES; attempt++) {
+    try {
+      console.log(`[IAP] Fetching products (attempt ${attempt}/${PRODUCT_FETCH_MAX_RETRIES})...`, SUBSCRIPTION_SKUS);
+      const products = await iap.fetchProducts({
+        skus: SUBSCRIPTION_SKUS || [],
+        type: 'subs',
+      });
+
+      const count = products?.length ?? 0;
+      console.log(`[IAP] fetchProducts returned ${count} product(s) on attempt ${attempt}`);
+
+      if (count > 0) {
+        return (products ?? []) as unknown as ProductSubscription[];
+      }
+
+      if (attempt < PRODUCT_FETCH_MAX_RETRIES) {
+        console.log(`[IAP] Got 0 products, StoreKit may still be settling. Waiting ${PRODUCT_FETCH_RETRY_DELAY_MS}ms before retry...`);
+        await sleep(PRODUCT_FETCH_RETRY_DELAY_MS);
+      }
+    } catch (error: any) {
+      console.error(`[IAP] fetchProducts threw error on attempt ${attempt}:`, error?.message || error);
+      console.error(`[IAP] Error details - code: ${error?.code}, name: ${error?.name}`);
+
+      if (attempt < PRODUCT_FETCH_MAX_RETRIES) {
+        console.log(`[IAP] Waiting ${PRODUCT_FETCH_RETRY_DELAY_MS}ms before retry...`);
+        await sleep(PRODUCT_FETCH_RETRY_DELAY_MS);
+      }
+    }
+  }
+
+  console.warn(`[IAP] All ${PRODUCT_FETCH_MAX_RETRIES} product fetch attempts returned 0 products`);
+  return [];
 }
 
 export interface Purchase {
@@ -226,6 +290,8 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
     const iap = await getExpoIap();
     if (!iap) return { success: false, error: 'IAP module not available' };
 
+    // Wait for any in-flight StoreKit operations to complete
+    await acquireStoreKitLock();
     console.log('[IAP] Requesting subscription purchase:', sku);
     iapLog.purchase.info('Starting purchase', { sku, hasOfferToken: !!offerToken }, flowId);
 
@@ -270,6 +336,7 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
         rawLength: Array.isArray(purchaseResult) ? purchaseResult.length : -1,
         rawValue: JSON.stringify(purchaseResult)?.substring(0, 200)
       }, flowId);
+      releaseStoreKitLock();
       return { success: false, error: 'No purchase returned from store' };
     }
     
@@ -279,8 +346,10 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
       hasToken: !!(purchase as any).purchaseToken
     }, flowId);
     
+    releaseStoreKitLock();
     return { success: true, purchase: purchase as Purchase };
   } catch (error: any) {
+    releaseStoreKitLock();
     console.error('[IAP] Purchase error:', error);
     iapLog.purchase.error('Purchase failed', { 
       code: error?.code,
@@ -410,6 +479,9 @@ export async function restorePurchases(): Promise<Purchase[]> {
       lastRestoreDiagnostics = diagnostics;
       return [];
     }
+
+    // Wait for any in-flight StoreKit operations to complete
+    await acquireStoreKitLock();
 
     // iOS StoreKit 2 fix: Must populate product store before getAvailablePurchases works
     // This is NOT needed on Android - only iOS has this dependency
@@ -576,8 +648,10 @@ export async function restorePurchases(): Promise<Purchase[]> {
     }
     
     lastRestoreDiagnostics = diagnostics;
+    releaseStoreKitLock();
     return purchases;
   } catch (error: any) {
+    releaseStoreKitLock();
     console.error('[IAP] Error restoring purchases:', error);
     iapLog.restore.error('Restore failed', { message: error?.message }, flowId);
     lastRestoreDiagnostics = diagnostics;
