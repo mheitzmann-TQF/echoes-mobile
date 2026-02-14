@@ -1,0 +1,28 @@
+Great questions — let me answer each one based on the code:
+
+1. Can we check Apple for newer transactions?
+
+Yes — the server calls Apple's StoreKit Server API directly with the transaction ID. It first tries production, then falls back to sandbox. For that install ID, whatever Apple returns is what we relay. The server doesn't store or cache Apple's response beyond updating the entitlement record. If Apple only has that one expired transaction, that's all we'll see.
+
+2. What does migrated: true mean?
+
+Looking at the code, migrated is set to true when the transaction ID in the database is now linked to the current install ID. In your case, this install (c5075265...) previously had a manual grant (platform: manual_grant) that I set up. The verify endpoint matched the transaction to this install and returned migrated: true. It shouldn't interfere with new purchases — it's just an informational flag.
+
+3. Can we reset this install ID for fresh testing?
+
+Yes, I can clear the entitlement record entirely. Want me to delete the row for c5075265... so it starts completely clean — no prior transaction history?
+
+4. Does verify work with just a transactionId (no receipt)?
+
+Yes — the endpoint is designed for StoreKit 2. It takes just the transactionId, calls Apple's App Store Server API (/inApps/v1/transactions/{transactionId}), and decodes the signed transaction info from Apple's response. No receipt or JWS is needed from the app side. This is the correct StoreKit 2 flow.
+
+The core issue:
+
+You've likely diagnosed it correctly — this is a known StoreKit 2 sandbox limitation. When a sandbox subscription expires and all auto-renewals are exhausted, requestPurchase can return the old expired transaction instead of triggering a new purchase sheet. The sandbox doesn't always allow re-subscribing to the same product.
+
+Options to unblock testing:
+
+Use a different sandbox Apple ID — fresh account, fresh subscription cycle
+I can delete the entitlement record for this install so the server side is clean
+If possible, try the second product SKU (if you have yearly vs monthly) since it won't have expired sandbox history
+Want me to clear the database record for that install ID?
