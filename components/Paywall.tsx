@@ -108,23 +108,44 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
   const yearlyPrice = getLocalizedPrice(products, SUBSCRIPTION_IDS.yearly, '$79.90');
 
   const handlePurchaseMonthly = async () => {
+    console.log('[Paywall] Monthly purchase tapped');
     setPurchasing('monthly');
-    const token = getOfferToken(products, SUBSCRIPTION_IDS.monthly);
-    await purchaseMonthly(token);
-    setPurchasing(null);
+    try {
+      const token = getOfferToken(products, SUBSCRIPTION_IDS.monthly);
+      console.log('[Paywall] Calling purchaseMonthly, offerToken:', token ? 'yes' : 'none');
+      const result = await purchaseMonthly(token);
+      console.log('[Paywall] purchaseMonthly returned:', result);
+    } catch (err: any) {
+      console.error('[Paywall] purchaseMonthly threw:', err?.message || err);
+    } finally {
+      setPurchasing(null);
+    }
   };
 
   const handlePurchaseYearly = async () => {
+    console.log('[Paywall] Yearly purchase tapped');
     setPurchasing('yearly');
-    const token = getOfferToken(products, SUBSCRIPTION_IDS.yearly);
-    await purchaseYearly(token);
-    setPurchasing(null);
+    try {
+      const token = getOfferToken(products, SUBSCRIPTION_IDS.yearly);
+      console.log('[Paywall] Calling purchaseYearly, offerToken:', token ? 'yes' : 'none');
+      const result = await purchaseYearly(token);
+      console.log('[Paywall] purchaseYearly returned:', result);
+    } catch (err: any) {
+      console.error('[Paywall] purchaseYearly threw:', err?.message || err);
+    } finally {
+      setPurchasing(null);
+    }
   };
 
   const handleRestore = async () => {
     setRestoring(true);
-    await restorePurchasesAction();
-    setRestoring(false);
+    try {
+      await restorePurchasesAction();
+    } catch (err: any) {
+      console.error('[Paywall] restore threw:', err?.message || err);
+    } finally {
+      setRestoring(false);
+    }
   };
 
   const handleOpenTerms = () => {

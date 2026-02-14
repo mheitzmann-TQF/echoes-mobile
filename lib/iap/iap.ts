@@ -94,6 +94,30 @@ export async function initIAP(): Promise<() => Promise<void>> {
     console.log('[IAP] Connection initialized:', connected, '(after', retryAttempt, 'attempt(s))');
     iapLog.init.info('Connection result', { connected, attempts: retryAttempt }, flowId);
     
+    if (connected && Platform.OS === 'ios') {
+      try {
+        console.log('[IAP] Checking for pending iOS transactions to clear...');
+        const pendingPurchases = await iap.getAvailablePurchases();
+        if (pendingPurchases && pendingPurchases.length > 0) {
+          console.log('[IAP] Found', pendingPurchases.length, 'pending transaction(s), finishing them...');
+          iapLog.init.info('Clearing pending transactions', { count: pendingPurchases.length }, flowId);
+          for (const p of pendingPurchases) {
+            try {
+              await iap.finishTransaction({ purchase: p, isConsumable: false });
+              console.log('[IAP] Finished pending transaction:', (p as any).productId || (p as any).transactionId);
+            } catch (finishErr: any) {
+              console.log('[IAP] Could not finish pending transaction:', finishErr?.message);
+            }
+          }
+        } else {
+          console.log('[IAP] No pending transactions to clear');
+        }
+      } catch (pendingErr: any) {
+        console.log('[IAP] Error checking pending transactions:', pendingErr?.message);
+        iapLog.init.error('Pending transaction check failed', { error: pendingErr?.message }, flowId);
+      }
+    }
+    
     return async () => {
       try {
         const iapModule = await getExpoIap();
@@ -220,20 +244,33 @@ export async function purchaseSubscription(sku: string, offerToken?: string): Pr
     };
 
     iapLog.purchase.info('Calling requestPurchase', { args: JSON.stringify(purchaseArgs) }, flowId);
+    console.log('[IAP] requestPurchase args:', JSON.stringify(purchaseArgs));
     const purchaseResult = await iap.requestPurchase(purchaseArgs);
 
-    console.log('[IAP] Purchase successful:', purchaseResult);
-    iapLog.purchase.info('Purchase returned', { 
+    console.log('[IAP] requestPurchase raw result type:', typeof purchaseResult);
+    console.log('[IAP] requestPurchase raw result:', JSON.stringify(purchaseResult, null, 2));
+    iapLog.purchase.info('Purchase raw result', { 
+      type: typeof purchaseResult,
       isArray: Array.isArray(purchaseResult),
-      count: Array.isArray(purchaseResult) ? purchaseResult.length : 1
+      isNull: purchaseResult === null,
+      isUndefined: purchaseResult === undefined,
+      count: Array.isArray(purchaseResult) ? purchaseResult.length : (purchaseResult ? 1 : 0),
+      keys: purchaseResult && typeof purchaseResult === 'object' ? Object.keys(purchaseResult) : [],
+      raw: JSON.stringify(purchaseResult)?.substring(0, 500)
     }, flowId);
     
     // requestPurchase returns an array of purchases - extract the first one
     const purchase = Array.isArray(purchaseResult) ? purchaseResult[0] : purchaseResult;
     
     if (!purchase) {
-      iapLog.purchase.error('No purchase in result', {}, flowId);
-      return { success: false, error: 'No purchase returned' };
+      console.error('[IAP] No purchase in result! Raw:', JSON.stringify(purchaseResult));
+      iapLog.purchase.error('No purchase in result', { 
+        rawType: typeof purchaseResult,
+        rawIsArray: Array.isArray(purchaseResult),
+        rawLength: Array.isArray(purchaseResult) ? purchaseResult.length : -1,
+        rawValue: JSON.stringify(purchaseResult)?.substring(0, 200)
+      }, flowId);
+      return { success: false, error: 'No purchase returned from store' };
     }
     
     iapLog.purchase.info('Purchase success', { 
