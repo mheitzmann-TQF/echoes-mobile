@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState, useCallback, useEffect } from 'react';
-import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X, Bug, RefreshCw } from 'lucide-react-native';
+import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X, RefreshCw } from 'lucide-react-native';
 import { useTheme } from '../lib/ThemeContext';
 import { useEntitlementContext } from '@/lib/iap/useEntitlement';
 import Paywall from '@/components/Paywall';
@@ -10,9 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, changeLanguage, getCurrentLanguage, type SupportedLanguage } from '../lib/i18n';
 import { contentService } from '../lib/ContentService';
 import { cookieService } from '../lib/CookieService';
-import { cycleDevAccessState, type DevAccessState } from '@/lib/iap/devAccessOverride';
 import { getInstallId } from '@/lib/iap/installId';
-import { getLastRestoreDiagnostics, type RestoreDiagnostics } from '@/lib/iap/iap';
 
 const THEMES = ['Dark', 'Light'];
 
@@ -41,18 +39,9 @@ export default function SettingsScreen() {
   
   const { 
     isFullAccess, 
-    isLoading: entitlementLoading, 
     expiresAt, 
     restorePurchasesAction, 
-    devOverride, 
-    isDevMode, 
     refresh: refreshEntitlement,
-    error: entitlementError,
-    isGrace,
-    graceReason,
-    products,
-    reconnectIAP,
-    getIAPStatus,
   } = useEntitlementContext();
   
   const [showDebugPanel, setShowDebugPanel] = useState(false);
@@ -60,8 +49,6 @@ export default function SettingsScreen() {
   const [debugTapCount, setDebugTapCount] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
-  const [isReconnecting, setIsReconnecting] = useState(false);
-  const [restoreDiagnostics, setRestoreDiagnostics] = useState<RestoreDiagnostics | null>(null);
   
   useEffect(() => {
     getInstallId().then(id => setDebugInstallId(id));
@@ -73,8 +60,6 @@ export default function SettingsScreen() {
       await refreshEntitlement();
       const id = await getInstallId();
       setDebugInstallId(id);
-      // Get latest restore diagnostics after refresh
-      setRestoreDiagnostics(getLastRestoreDiagnostics());
     } finally {
       setIsRefreshing(false);
     }
@@ -86,28 +71,10 @@ export default function SettingsScreen() {
       await restorePurchasesAction();
       const id = await getInstallId();
       setDebugInstallId(id);
-      // Get latest restore diagnostics after restore
-      setRestoreDiagnostics(getLastRestoreDiagnostics());
     } finally {
       setIsRestoring(false);
     }
   }, [restorePurchasesAction]);
-  
-  const handleReconnectIAP = useCallback(async () => {
-    setIsReconnecting(true);
-    try {
-      await reconnectIAP();
-    } finally {
-      setIsReconnecting(false);
-    }
-  }, [reconnectIAP]);
-  
-  // Update diagnostics when debug panel is shown
-  useEffect(() => {
-    if (showDebugPanel) {
-      setRestoreDiagnostics(getLastRestoreDiagnostics());
-    }
-  }, [showDebugPanel]);
   
   const handleVersionTap = useCallback(() => {
     const newCount = debugTapCount + 1;
@@ -119,13 +86,6 @@ export default function SettingsScreen() {
     setTimeout(() => setDebugTapCount(0), 2000);
   }, [debugTapCount]);
   
-  const handleDevAccessCycle = useCallback(async () => {
-    if (!isDevMode) return;
-    const newState = await cycleDevAccessState();
-    console.log('[SETTINGS] Dev access cycled to:', newState);
-    await refreshEntitlement();
-  }, [isDevMode, refreshEntitlement]);
-
   const handleLanguageChange = async (lang: SupportedLanguage) => {
     // Clear all cached content when language changes
     contentService.clearCache();
@@ -473,19 +433,12 @@ export default function SettingsScreen() {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity 
-            onLongPress={handleDevAccessCycle}
             onPress={handleVersionTap}
-            delayLongPress={1000}
             activeOpacity={0.6}
           >
             <Text style={[styles.versionText, { color: colors.textTertiary }]}>
               {t('settings.version')}
             </Text>
-            {isDevMode && (
-              <Text style={[styles.devOverrideText, { color: devOverride ? colors.accent : colors.textTertiary }]}>
-                DEV: {devOverride || 'none'}
-              </Text>
-            )}
             {debugTapCount > 0 && (
               <Text style={[styles.debugTapHint, { color: colors.textTertiary }]}>
                 {5 - debugTapCount} more taps for diagnostics
@@ -498,10 +451,7 @@ export default function SettingsScreen() {
         {showDebugPanel && (
           <View style={[styles.debugSection, { backgroundColor: colors.surface, borderColor: '#F59E0B' }]}>
             <View style={styles.debugHeader}>
-              <View style={styles.debugHeaderLeft}>
-                <Bug size={18} color="#F59E0B" />
-                <Text style={[styles.debugTitle, { color: '#F59E0B' }]}>Diagnostics</Text>
-              </View>
+              <Text style={[styles.debugTitle, { color: '#F59E0B' }]}>Diagnostics</Text>
               <TouchableOpacity onPress={() => setShowDebugPanel(false)}>
                 <X size={20} color={colors.textSecondary} />
               </TouchableOpacity>
@@ -513,21 +463,9 @@ export default function SettingsScreen() {
             </View>
             
             <View style={styles.debugRow}>
-              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Platform:</Text>
-              <Text style={[styles.debugValue, { color: colors.text }]}>{Platform.OS}</Text>
-            </View>
-            
-            <View style={styles.debugRow}>
               <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Full Access:</Text>
               <Text style={[styles.debugValue, { color: isFullAccess ? '#22C55E' : '#EF4444' }]}>
                 {isFullAccess ? 'YES' : 'NO'}
-              </Text>
-            </View>
-            
-            <View style={styles.debugRow}>
-              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Loading:</Text>
-              <Text style={[styles.debugValue, { color: colors.text }]}>
-                {entitlementLoading ? 'YES' : 'NO'}
               </Text>
             </View>
             
@@ -536,184 +474,10 @@ export default function SettingsScreen() {
               <Text style={[styles.debugValue, { color: colors.text }]}>{expiresAt || 'null'}</Text>
             </View>
             
-            <View style={styles.debugRow}>
-              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Grace Period:</Text>
-              <Text style={[styles.debugValue, { color: colors.text }]}>
-                {isGrace ? `YES (${graceReason})` : 'NO'}
-              </Text>
-            </View>
-            
-            <View style={styles.debugRow}>
-              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Error:</Text>
-              <Text style={[styles.debugValue, { color: entitlementError ? '#EF4444' : colors.text }]}>
-                {entitlementError || 'none'}
-              </Text>
-            </View>
-            
-            <View style={styles.debugRow}>
-              <Text style={[styles.debugLabel, { color: colors.textSecondary }]}>Dev Mode:</Text>
-              <Text style={[styles.debugValue, { color: colors.text }]}>
-                {isDevMode ? `YES (${devOverride || 'no override'})` : 'NO'}
-              </Text>
-            </View>
-            
-            {/* IAP Connection Status */}
-            <View style={[styles.debugDiagnosticsSection, { marginTop: 12, borderColor: '#3B82F6' }]}>
-              <Text style={[styles.debugDiagnosticsTitle, { color: '#3B82F6' }]}>IAP Connection:</Text>
-              {(() => {
-                const iapStatus = getIAPStatus();
-                return (
-                  <>
-                    <Text style={[styles.debugDiagnosticsText, { color: iapStatus.isConnected ? '#22C55E' : '#EF4444', fontWeight: '600' }]}>
-                      Connected: {iapStatus.isConnected ? 'YES' : 'NO'}
-                    </Text>
-                    <Text style={[styles.debugDiagnosticsText, { color: products.length > 0 ? '#22C55E' : '#EF4444' }]}>
-                      Products Loaded: {products.length}
-                    </Text>
-                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary }]}>
-                      Connection Attempts: {iapStatus.connectionAttempts}
-                    </Text>
-                    {iapStatus.lastConnectionError && (
-                      <Text style={[styles.debugDiagnosticsText, { color: '#EF4444' }]}>
-                        Last Error: {iapStatus.lastConnectionError}
-                      </Text>
-                    )}
-                    {!iapStatus.isConnected && (
-                      <Text style={[styles.debugDiagnosticsText, { color: '#F59E0B', fontSize: 9, marginTop: 4 }]}>
-                        Products can't load without connection. Tap "Reconnect IAP" below.
-                      </Text>
-                    )}
-                  </>
-                );
-              })()}
-            </View>
-            
-            {/* Restore Diagnostics Section */}
-            {restoreDiagnostics && (
-              <View style={styles.debugDiagnosticsSection}>
-                <Text style={[styles.debugDiagnosticsTitle, { color: '#F59E0B' }]}>Restore Diagnostics:</Text>
-                <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary }]}>
-                  Time: {restoreDiagnostics.timestamp.split('T')[1]?.split('.')[0] || 'N/A'}
-                </Text>
-                <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.getAvailablePurchases.count > 0 ? '#22C55E' : '#EF4444' }]}>
-                  getAvailablePurchases: {restoreDiagnostics.getAvailablePurchases.tried ? `${restoreDiagnostics.getAvailablePurchases.count} found` : 'not tried'}
-                  {restoreDiagnostics.getAvailablePurchases.error ? ` (err: ${restoreDiagnostics.getAvailablePurchases.error.substring(0, 30)})` : ''}
-                </Text>
-                <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.getActiveSubscriptions.count > 0 ? '#22C55E' : (restoreDiagnostics.getActiveSubscriptions.tried ? '#EF4444' : colors.textSecondary) }]}>
-                  getActiveSubscriptions: {restoreDiagnostics.getActiveSubscriptions.tried ? `${restoreDiagnostics.getActiveSubscriptions.count} found` : 'not tried'}
-                  {restoreDiagnostics.getActiveSubscriptions.error ? ` (err: ${restoreDiagnostics.getActiveSubscriptions.error.substring(0, 30)})` : ''}
-                </Text>
-                <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.currentEntitlement.found ? '#22C55E' : (restoreDiagnostics.currentEntitlement.tried ? '#EF4444' : colors.textSecondary) }]}>
-                  currentEntitlement: {restoreDiagnostics.currentEntitlement.tried ? (restoreDiagnostics.currentEntitlement.found ? `found (${restoreDiagnostics.currentEntitlement.productId})` : 'not found') : 'not tried'}
-                  {restoreDiagnostics.currentEntitlement.error ? ` (err: ${restoreDiagnostics.currentEntitlement.error.substring(0, 30)})` : ''}
-                </Text>
-                <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.finalCount > 0 ? '#22C55E' : '#EF4444', fontWeight: '600' }]}>
-                  Final: {restoreDiagnostics.finalCount} purchase(s) found
-                </Text>
-                {restoreDiagnostics.finalCount === 0 && (
-                  <Text style={[styles.debugDiagnosticsText, { color: '#F59E0B', fontSize: 9, marginTop: 4 }]}>
-                    Tip: If you have an active subscription, try: Kill app → Reopen → Wait 30s → Tap "Restore Purchases"
-                  </Text>
-                )}
-                {restoreDiagnostics.purchaseDetails && (
-                  <>
-                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, marginTop: 4 }]}>
-                      Product: {restoreDiagnostics.purchaseDetails.productId}
-                    </Text>
-                    <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.purchaseDetails.hasTransactionId ? '#22C55E' : '#EF4444' }]}>
-                      TransactionId: {restoreDiagnostics.purchaseDetails.hasTransactionId ? 'YES' : 'MISSING'}
-                    </Text>
-                    {restoreDiagnostics.purchaseDetails.transactionId && (
-                      <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
-                        ID: {restoreDiagnostics.purchaseDetails.transactionId}
-                      </Text>
-                    )}
-                    {restoreDiagnostics.purchaseDetails.transactionIdSource && (
-                      <Text style={[styles.debugDiagnosticsText, { color: '#F59E0B', fontSize: 10 }]}>
-                        Source: {restoreDiagnostics.purchaseDetails.transactionIdSource}
-                      </Text>
-                    )}
-                    {restoreDiagnostics.purchaseDetails.rawObjectKeys && (
-                      <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 8 }]}>
-                        Keys: {restoreDiagnostics.purchaseDetails.rawObjectKeys}
-                      </Text>
-                    )}
-                    <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.purchaseDetails.hasTransactionReceipt ? '#22C55E' : '#EF4444' }]}>
-                      Receipt: {restoreDiagnostics.purchaseDetails.hasTransactionReceipt ? `YES (${restoreDiagnostics.purchaseDetails.receiptLength} bytes)` : 'MISSING'}
-                    </Text>
-                  </>
-                )}
-                {restoreDiagnostics.verifyRequest && (
-                  <>
-                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, marginTop: 8, fontWeight: '600' }]}>
-                      Verify Request Sent:
-                    </Text>
-                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
-                      installId: {restoreDiagnostics.verifyRequest.installId}
-                    </Text>
-                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
-                      platform: {restoreDiagnostics.verifyRequest.platform}, sku: {restoreDiagnostics.verifyRequest.sku}
-                    </Text>
-                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
-                      transactionId: {restoreDiagnostics.verifyRequest.transactionId || 'MISSING'}
-                    </Text>
-                    <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.verifyRequest.hasReceipt ? '#22C55E' : '#F59E0B', fontSize: 10 }]}>
-                      hasReceipt: {restoreDiagnostics.verifyRequest.hasReceipt ? 'YES' : 'NO'}
-                    </Text>
-                  </>
-                )}
-                {restoreDiagnostics.verifyResponse && (
-                  <>
-                    <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, marginTop: 8, fontWeight: '600' }]}>
-                      Verify Response:
-                    </Text>
-                    <Text style={[styles.debugDiagnosticsText, { color: restoreDiagnostics.verifyResponse.entitlement === 'full' ? '#22C55E' : '#EF4444' }]}>
-                      HTTP {restoreDiagnostics.verifyResponse.status || 'N/A'} → {restoreDiagnostics.verifyResponse.entitlement || 'error'}
-                    </Text>
-                    {restoreDiagnostics.verifyResponse.expiresAt && (
-                      <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 10 }]}>
-                        expiresAt: {restoreDiagnostics.verifyResponse.expiresAt}
-                      </Text>
-                    )}
-                    {restoreDiagnostics.verifyResponse.appleEnvironment && (
-                      <Text style={[styles.debugDiagnosticsText, { color: '#3B82F6', fontSize: 10 }]}>
-                        Apple Env: {restoreDiagnostics.verifyResponse.appleEnvironment}
-                      </Text>
-                    )}
-                    {restoreDiagnostics.verifyResponse.appleStatus && (
-                      <Text style={[styles.debugDiagnosticsText, { color: '#3B82F6', fontSize: 10 }]}>
-                        Apple Status: {restoreDiagnostics.verifyResponse.appleStatus}
-                      </Text>
-                    )}
-                    {restoreDiagnostics.verifyResponse.error && (
-                      <Text style={[styles.debugDiagnosticsText, { color: '#EF4444', fontSize: 10 }]}>
-                        Error: {restoreDiagnostics.verifyResponse.error}
-                      </Text>
-                    )}
-                    {restoreDiagnostics.verifyResponse.rawBody && (
-                      <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, fontSize: 9, marginTop: 4 }]}>
-                        Raw: {restoreDiagnostics.verifyResponse.rawBody}
-                      </Text>
-                    )}
-                  </>
-                )}
-                {!restoreDiagnostics.verifyResponse && restoreDiagnostics.finalCount > 0 && (
-                  <Text style={[styles.debugDiagnosticsText, { color: '#F59E0B', marginTop: 8 }]}>
-                    Verify: NOT CALLED (purchase found but not verified)
-                  </Text>
-                )}
-              </View>
-            )}
-            {!restoreDiagnostics && (
-              <Text style={[styles.debugDiagnosticsText, { color: colors.textSecondary, marginTop: 8 }]}>
-                No restore attempt yet. Tap Refresh to trigger restore.
-              </Text>
-            )}
-            
             <TouchableOpacity 
               style={[styles.debugRefreshButton, { backgroundColor: '#F59E0B' }]}
               onPress={handleDebugRefresh}
-              disabled={isRefreshing || isRestoring || isReconnecting}
+              disabled={isRefreshing || isRestoring}
             >
               <RefreshCw size={16} color="#000" style={isRefreshing ? { opacity: 0.5 } : undefined} />
               <Text style={styles.debugRefreshText}>
@@ -723,21 +487,11 @@ export default function SettingsScreen() {
             <TouchableOpacity 
               style={[styles.debugRefreshButton, { backgroundColor: '#22C55E', marginTop: 8 }]}
               onPress={handleDebugRestore}
-              disabled={isRefreshing || isRestoring || isReconnecting}
+              disabled={isRefreshing || isRestoring}
             >
               <RefreshCw size={16} color="#000" style={isRestoring ? { opacity: 0.5 } : undefined} />
               <Text style={styles.debugRefreshText}>
                 {isRestoring ? 'Restoring...' : 'Restore Purchases'}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.debugRefreshButton, { backgroundColor: '#3B82F6', marginTop: 8 }]}
-              onPress={handleReconnectIAP}
-              disabled={isRefreshing || isRestoring || isReconnecting}
-            >
-              <RefreshCw size={16} color="#FFF" style={isReconnecting ? { opacity: 0.5 } : undefined} />
-              <Text style={[styles.debugRefreshText, { color: '#FFF' }]}>
-                {isReconnecting ? 'Reconnecting...' : 'Reconnect IAP'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -960,12 +714,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: 'center',
   },
-  devOverrideText: {
-    fontSize: 10,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginTop: 4,
-  },
   // Subscription Styles
   subscriptionCard: {
     gap: 8,
@@ -1033,11 +781,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  debugHeaderLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
   debugTitle: {
     fontSize: 16,
     fontWeight: '700',
@@ -1075,21 +818,5 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 14,
     fontWeight: '600',
-  },
-  debugDiagnosticsSection: {
-    marginTop: 12,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(245, 158, 11, 0.3)',
-  },
-  debugDiagnosticsTitle: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginBottom: 6,
-  },
-  debugDiagnosticsText: {
-    fontSize: 11,
-    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
-    marginBottom: 3,
   },
 });

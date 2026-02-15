@@ -21,14 +21,6 @@ import {
 import { getInstallId } from './installId';
 import { ensureSession, refreshSession } from './sessionManager';
 import { SUBSCRIPTION_IDS } from './products';
-import Constants from 'expo-constants';
-import {
-  getDevAccessOverride,
-  setDevAccessOverride,
-  devStateToEntitlement,
-  isDevOverrideAvailable,
-  type DevAccessState,
-} from './devAccessOverride';
 import {
   getAccessCache,
   setAccessCache,
@@ -73,20 +65,12 @@ type StateUpdater = {
 };
 const moduleStateUpdaters: Set<StateUpdater> = new Set();
 
-function isDevBackendEnabled(): boolean {
-  const expoConfig = Constants.expoConfig || Constants.manifest;
-  const extra = (expoConfig as any)?.extra;
-  return extra?.devEnableEntitlementBackend === true;
-}
-
 export interface EntitlementState {
   isFullAccess: boolean;
   isLoading: boolean;
   products: ProductSubscription[];
   expiresAt: string | null;
   error: string | null;
-  devOverride: DevAccessState;
-  isDevMode: boolean;
   isGrace: boolean;
   graceReason: 'fresh_install' | 'prior_access' | 'none';
   previewDays: number;
@@ -97,7 +81,6 @@ export interface EntitlementActions {
   purchaseYearly: (offerToken?: string) => Promise<boolean>;
   restorePurchasesAction: () => Promise<boolean>;
   refresh: () => Promise<void>;
-  devSetAccess: (state: DevAccessState) => Promise<void>;
   reconnectIAP: () => Promise<boolean>;
   getIAPStatus: () => IAPDiagnostics;
 }
@@ -374,50 +357,14 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [installId, setInstallId] = useState<string | null>(null);
-  const [devOverride, setDevOverride] = useState<DevAccessState>(null);
-  const [isDevMode] = useState(isDevOverrideAvailable());
   const [isGrace, setIsGrace] = useState(false);
   const [graceReason, setGraceReason] = useState<'fresh_install' | 'prior_access' | 'none'>('none');
   const [previewDays, setPreviewDays] = useState<number>(modulePreviewDays);
-  
-  // DIAGNOSTIC: Log isDevMode decision
-  console.log('[ENTITLEMENT:BOOT] isDevMode:', isDevMode);
   
   // Local ref to track module state for this instance
   const installIdRef = useRef<string | null>(moduleInstallId);
 
   const refresh = useCallback(async () => {
-    if (isDevMode) {
-      const override = await getDevAccessOverride();
-      setDevOverride(override);
-      
-      if (override) {
-        const mapped = devStateToEntitlement(override);
-        if (mapped) {
-          setIsFullAccess(mapped.isFullAccess);
-          setExpiresAt(mapped.expiresAt);
-          setError(null);
-          setIsLoading(false);
-          console.log('[ENTITLEMENT] Dev mode using override:', override);
-          return;
-        }
-      }
-      
-      if (isDevBackendEnabled()) {
-        console.log('[ENTITLEMENT] Dev mode with backend enabled, calling API...');
-      } else {
-        const mapped = devStateToEntitlement('trial');
-        if (mapped) {
-          setIsFullAccess(mapped.isFullAccess);
-          setExpiresAt(mapped.expiresAt);
-          setError(null);
-          setIsLoading(false);
-          console.log('[ENTITLEMENT] Dev mode defaulting to trial');
-          return;
-        }
-      }
-    }
-    
     if (!moduleInstallIdReady) {
       console.log('[ENTITLEMENT] Not initialized yet, skipping refresh');
       return;
@@ -527,7 +474,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     
     modulePendingRefresh = doRefresh();
     return modulePendingRefresh;
-  }, [isDevMode]);
+  }, []);
 
   useEffect(() => {
     // Track hook instances for cleanup reference counting
@@ -582,47 +529,6 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
       }
       
       try {
-        
-        if (isDevMode) {
-          const override = await getDevAccessOverride();
-          setDevOverride(override);
-          
-          // If dev override is set, use it and skip everything
-          if (override) {
-            const mapped = devStateToEntitlement(override);
-            if (mapped) {
-              setIsFullAccess(mapped.isFullAccess);
-              setExpiresAt(mapped.expiresAt);
-              setIsLoading(false);
-              console.log('[ENTITLEMENT] Init dev mode with override:', override);
-              return;
-            }
-          }
-          
-          // Check if backend testing is enabled
-          if (isDevBackendEnabled()) {
-            console.log('[ENTITLEMENT] Init dev mode with backend enabled, calling API...');
-            const status = await checkEntitlementStatus(id);
-            setIsFullAccess(status.entitlement === 'full');
-            setExpiresAt(status.expiresAt);
-            setPreviewDays(status.previewDays);
-            setIsLoading(false);
-            console.log('[ENTITLEMENT] Backend returned:', status);
-            // Skip StoreKit init in dev mode
-            return;
-          } else {
-            // Default to trial when backend is disabled
-            const mapped = devStateToEntitlement('trial');
-            if (mapped) {
-              setIsFullAccess(mapped.isFullAccess);
-              setExpiresAt(mapped.expiresAt);
-              setIsLoading(false);
-              console.log('[ENTITLEMENT] Init dev mode defaulting to trial');
-              return;
-            }
-          }
-        }
-        
         let hasAccess = false;
         let backendSucceeded = false;
         const initFlowId = generateFlowId();
@@ -928,21 +834,6 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
   }, [installId, refresh]);
 
-  const devSetAccess = useCallback(async (state: DevAccessState): Promise<void> => {
-    if (!isDevMode) return;
-    
-    await setDevAccessOverride(state);
-    setDevOverride(state);
-    const effectiveState = state ?? 'trial';
-    const mapped = devStateToEntitlement(effectiveState);
-    if (mapped) {
-      setIsFullAccess(mapped.isFullAccess);
-      setExpiresAt(mapped.expiresAt);
-      setError(null);
-    }
-    console.log('[ENTITLEMENT] Dev access set to:', state);
-  }, [isDevMode]);
-
   const handleAlreadyOwned = useCallback(async (currentInstallId: string): Promise<boolean> => {
     console.log('[ENTITLEMENT] Handling ITEM_ALREADY_OWNED - auto-restoring...');
     try {
@@ -972,11 +863,6 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
   }, []);
 
   const purchaseMonthly = useCallback(async (offerToken?: string): Promise<boolean> => {
-    if (isDevMode) {
-      await devSetAccess('paid');
-      return true;
-    }
-    
     const currentInstallId = installIdRef.current;
     if (!currentInstallId) {
       console.log('[ENTITLEMENT] No installId available for purchase');
@@ -1002,14 +888,9 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
     
     return false;
-  }, [isDevMode, devSetAccess, handleAlreadyOwned]);
+  }, [handleAlreadyOwned]);
 
   const purchaseYearly = useCallback(async (offerToken?: string): Promise<boolean> => {
-    if (isDevMode) {
-      await devSetAccess('paid');
-      return true;
-    }
-    
     const currentInstallId = installIdRef.current;
     if (!currentInstallId) {
       console.log('[ENTITLEMENT] No installId available for purchase');
@@ -1035,16 +916,10 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     }
     
     return false;
-  }, [isDevMode, devSetAccess, handleAlreadyOwned]);
+  }, [handleAlreadyOwned]);
 
   const restorePurchasesAction = useCallback(async (): Promise<boolean> => {
     console.log('[ENTITLEMENT] Restore purchases started');
-    
-    if (isDevMode) {
-      console.log('[ENTITLEMENT] Dev mode - simulating restore');
-      await devSetAccess('paid');
-      return true;
-    }
     
     const currentInstallId = installIdRef.current;
     if (!currentInstallId) {
@@ -1093,7 +968,7 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     } finally {
       setIsLoading(false);
     }
-  }, [isDevMode, devSetAccess]);
+  }, []);
 
   const reconnectIAPAction = useCallback(async (): Promise<boolean> => {
     console.log('[ENTITLEMENT] Reconnecting IAP...');
@@ -1116,8 +991,6 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     products,
     expiresAt,
     error,
-    devOverride,
-    isDevMode,
     isGrace,
     graceReason,
     previewDays,
@@ -1125,7 +998,6 @@ export function useEntitlement(): EntitlementState & EntitlementActions {
     purchaseYearly,
     restorePurchasesAction,
     refresh,
-    devSetAccess,
     reconnectIAP: reconnectIAPAction,
     getIAPStatus: getIAPStatusAction,
   };
