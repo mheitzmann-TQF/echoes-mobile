@@ -488,7 +488,7 @@ export default function SettingsScreen() {
             )}
             {debugTapCount > 0 && (
               <Text style={[styles.debugTapHint, { color: colors.textTertiary }]}>
-                {5 - debugTapCount} more taps for debug
+                {5 - debugTapCount} more taps for diagnostics
               </Text>
             )}
           </TouchableOpacity>
@@ -500,7 +500,7 @@ export default function SettingsScreen() {
             <View style={styles.debugHeader}>
               <View style={styles.debugHeaderLeft}>
                 <Bug size={18} color="#F59E0B" />
-                <Text style={[styles.debugTitle, { color: '#F59E0B' }]}>Debug Info</Text>
+                <Text style={[styles.debugTitle, { color: '#F59E0B' }]}>Diagnostics</Text>
               </View>
               <TouchableOpacity onPress={() => setShowDebugPanel(false)}>
                 <X size={20} color={colors.textSecondary} />
