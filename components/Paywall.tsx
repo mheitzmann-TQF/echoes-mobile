@@ -274,6 +274,12 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
           </Text>
         )}
 
+        <Text style={styles.subscriptionDisclosure}>
+          {Platform.OS === 'ios'
+            ? t('paywall.subscriptionDisclosureIos', { monthlyPrice, yearlyPrice })
+            : t('paywall.subscriptionDisclosureAndroid', { monthlyPrice, yearlyPrice })}
+        </Text>
+
         <TouchableOpacity
           style={styles.restoreButton}
           onPress={handleRestore}
@@ -460,7 +466,15 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.4)',
     textAlign: 'center',
     lineHeight: 20,
+    marginBottom: 12,
+  },
+  subscriptionDisclosure: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.3)',
+    textAlign: 'center',
+    lineHeight: 16,
     marginBottom: 24,
+    paddingHorizontal: 8,
   },
   restoreButton: {
     flexDirection: 'row',

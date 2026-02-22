@@ -306,7 +306,6 @@
     "hope_high": "High",
     "hope_very_high": "Very High",
     "trend7d": "7-Day Trend",
-    "articlesAnalyzed": "Articles Analyzed",
     "methodology": "How it's measured",
     "methodologyIntro": "Every article passes through a multi-stage filter before it reaches you.",
     "methodologyStep1": "First, obvious noise is removed — clickbait, sensationalism, content too brief to carry meaning.",
@@ -566,7 +565,9 @@
     "iosRestoreEmpty": "Unable to restore your subscription. Please try signing out and back into your Apple ID in Settings, then try again. If the issue persists, contact support.",
     "purchaseFailed": "Purchase failed",
     "restoreFailed": "Failed to restore purchases",
-    "checkFailed": "Failed to check subscription status"
+    "checkFailed": "Failed to check subscription status",
+    "subscriptionDisclosureIos": "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after purchase.",
+    "subscriptionDisclosureAndroid": "Payment will be charged to your Google Play account at confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions in your Google Play Store account settings."
   },
   "natureNote": "Nature Note"
 }

@@ -447,7 +447,9 @@
     "iosRestoreEmpty": "Abonnement konnte nicht wiederhergestellt werden. Bitte melde dich in den Einstellungen von deiner Apple-ID ab und wieder an und versuche es erneut. Falls das Problem weiterhin besteht, kontaktiere den Support.",
     "purchaseFailed": "Kauf fehlgeschlagen",
     "restoreFailed": "Wiederherstellung der Käufe fehlgeschlagen",
-    "checkFailed": "Überprüfung des Abonnementstatus fehlgeschlagen"
+    "checkFailed": "Überprüfung des Abonnementstatus fehlgeschlagen",
+    "subscriptionDisclosureIos": "Die Zahlung wird bei Bestätigung des Kaufs deinem Apple-ID-Konto belastet. Das Abonnement verlängert sich automatisch, es sei denn, es wird mindestens 24 Stunden vor Ablauf des aktuellen Zeitraums gekündigt. Dein Konto wird innerhalb von 24 Stunden vor Ablauf des aktuellen Zeitraums für die Verlängerung belastet. Du kannst deine Abonnements nach dem Kauf in den Kontoeinstellungen im App Store verwalten und kündigen.",
+    "subscriptionDisclosureAndroid": "Die Zahlung wird bei Bestätigung des Kaufs deinem Google-Play-Konto belastet. Das Abonnement verlängert sich automatisch, es sei denn, es wird mindestens 24 Stunden vor Ablauf des aktuellen Zeitraums gekündigt. Dein Konto wird innerhalb von 24 Stunden vor Ablauf des aktuellen Zeitraums für die Verlängerung belastet. Du kannst deine Abonnements in den Kontoeinstellungen des Google Play Store verwalten und kündigen."
   },
   "natureNote": "Naturnotiz"
 }

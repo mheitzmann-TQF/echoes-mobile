@@ -565,7 +565,9 @@
     "iosRestoreEmpty": "Impossible de restaurer ton abonnement. Déconnecte-toi et reconnecte-toi à ton identifiant Apple dans les Réglages, puis réessaie. Si le problème persiste, contacte le support.",
     "purchaseFailed": "L'achat a échoué",
     "restoreFailed": "Échec de la restauration des achats",
-    "checkFailed": "Échec de la vérification du statut d'abonnement"
+    "checkFailed": "Échec de la vérification du statut d'abonnement",
+    "subscriptionDisclosureIos": "Le paiement sera débité de votre compte Apple ID lors de la confirmation de l'achat. L'abonnement se renouvelle automatiquement sauf s'il est annulé au moins 24 heures avant la fin de la période en cours. Votre compte sera débité pour le renouvellement dans les 24 heures précédant la fin de la période en cours. Vous pouvez gérer et annuler vos abonnements dans les réglages de votre compte sur l'App Store après l'achat.",
+    "subscriptionDisclosureAndroid": "Le paiement sera débité de votre compte Google Play lors de la confirmation de l'achat. L'abonnement se renouvelle automatiquement sauf s'il est annulé au moins 24 heures avant la fin de la période en cours. Votre compte sera débité pour le renouvellement dans les 24 heures précédant la fin de la période en cours. Vous pouvez gérer et annuler vos abonnements dans les paramètres de votre compte Google Play Store."
   },
   "natureNote": "Note Nature"
 }

@@ -15,7 +15,9 @@ import { Platform } from 'react-native';
  *    - Eligibility: New subscribers only
  * 4. Ensure products are "Ready to Submit" or approved
  * 5. Add Sandbox testers in Users and Access > Sandbox Testers
- * 6. Bundle ID must match: com.thequietframe.echoes
+ * 6. iOS Bundle ID: com.ignea.thequietframe
+ *    (Note: IAP product SKUs use the com.thequietframe.echoes prefix,
+ *     which is independent of the iOS bundle identifier)
  * 
  * Android (Google Play Console):
  * 1. Create subscription products:

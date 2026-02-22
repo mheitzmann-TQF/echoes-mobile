@@ -447,7 +447,9 @@
     "iosRestoreEmpty": "Não foi possível restaurar sua assinatura. Por favor, saia e entre novamente com seu ID Apple nas Configurações, depois tente novamente. Se o problema persistir, entre em contato com o suporte.",
     "purchaseFailed": "A compra falhou",
     "restoreFailed": "Falha ao restaurar compras",
-    "checkFailed": "Falha ao verificar o status da assinatura"
+    "checkFailed": "Falha ao verificar o status da assinatura",
+    "subscriptionDisclosureIos": "O pagamento será cobrado na sua conta Apple ID na confirmação da compra. A assinatura é renovada automaticamente, a menos que seja cancelada pelo menos 24 horas antes do final do período atual. Sua conta será cobrada pela renovação dentro de 24 horas antes do final do período atual. Você pode gerenciar e cancelar suas assinaturas nas configurações da sua conta na App Store após a compra.",
+    "subscriptionDisclosureAndroid": "O pagamento será cobrado na sua conta Google Play na confirmação da compra. A assinatura é renovada automaticamente, a menos que seja cancelada pelo menos 24 horas antes do final do período atual. Sua conta será cobrada pela renovação dentro de 24 horas antes do final do período atual. Você pode gerenciar e cancelar suas assinaturas nas configurações da sua conta Google Play Store."
   },
   "natureNote": "Nota da Natureza"
 }

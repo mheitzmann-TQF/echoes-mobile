@@ -544,7 +544,9 @@
     "iosRestoreEmpty": "Impossibile ripristinare il tuo abbonamento. Esci e accedi di nuovo al tuo ID Apple nelle Impostazioni, poi riprova. Se il problema persiste, contatta il supporto.",
     "purchaseFailed": "Acquisto fallito",
     "restoreFailed": "Ripristino degli acquisti fallito",
-    "checkFailed": "Verifica dello stato dell'abbonamento fallita"
+    "checkFailed": "Verifica dello stato dell'abbonamento fallita",
+    "subscriptionDisclosureIos": "Il pagamento verrà addebitato sul tuo account Apple ID alla conferma dell'acquisto. L'abbonamento si rinnova automaticamente a meno che non venga annullato almeno 24 ore prima della fine del periodo corrente. Il tuo account verrà addebitato per il rinnovo entro 24 ore prima della fine del periodo corrente. Puoi gestire e annullare i tuoi abbonamenti nelle impostazioni del tuo account sull'App Store dopo l'acquisto.",
+    "subscriptionDisclosureAndroid": "Il pagamento verrà addebitato sul tuo account Google Play alla conferma dell'acquisto. L'abbonamento si rinnova automaticamente a meno che non venga annullato almeno 24 ore prima della fine del periodo corrente. Il tuo account verrà addebitato per il rinnovo entro 24 ore prima della fine del periodo corrente. Puoi gestire e annullare i tuoi abbonamenti nelle impostazioni del tuo account Google Play Store."
   },
   "natureNote": "Nota Natura"
 }
