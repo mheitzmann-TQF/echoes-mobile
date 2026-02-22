@@ -1,6 +1,12 @@
 # Echoes - The Quiet Frame
 
-## Recent Changes (January 2026)
+## Recent Changes (February 2026)
+- **Version bump to 1.2.0** for fresh EAS build with IAP provisioning profile.
+- **Subscription disclosure text** added to Paywall (Apple-required auto-renewal terms, platform-specific for iOS/Android).
+- **Disclosure translations** added to all 6 supported languages.
+- **Fixed duplicate JSON key** in en.json (`articlesAnalyzed`).
+
+## Changes (January 2026)
 - **Dynamic Preview Period:** Preview days now controlled by backend `previewDays` field instead of hardcoded constants. Setting `previewDays: 0` hides all trial messaging (useful for internal testing).
 - **Removed Hardcoded Trial Constants:** `HAS_TRIAL_OFFER` and `TRIAL_DAYS` removed from products.ts - now fully backend-driven.
 - **iOS Splash Screen:** Removed (now solid black for faster loading).
