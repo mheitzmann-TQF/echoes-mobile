@@ -137,8 +137,8 @@ export const ContentEndpoints = {
   consciousness: () => `/api/consciousness/current`,
   
   consciousnessRawAnalysis: (lang?: string) => {
-    let url = `/api/consciousness-analysis/raw-analysis`;
-    if (lang) url += `?lang=${lang}`;
+    let url = `/api/consciousness-analysis/raw-analysis?period=daily`;
+    if (lang) url += `&lang=${lang}`;
     return url;
   },
   
