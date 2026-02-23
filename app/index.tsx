@@ -143,6 +143,11 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           </Text>
         )}
       </View>
+      <TouchableOpacity onPress={() => Linking.openURL('https://thequietframe.com/contribute')} data-testid="link-contribute-photo">
+        <Text style={[photoStyles.contributeLink, { color: colors.textTertiary }]}>
+          {t('today.yourPhotoBelongsHere')}
+        </Text>
+      </TouchableOpacity>
 
       <Modal
         visible={fullscreen}
@@ -243,6 +248,13 @@ const photoStyles = StyleSheet.create({
   creditLink: {
     fontSize: 11,
     textDecorationLine: 'underline',
+  },
+  contributeLink: {
+    fontSize: 11,
+    fontStyle: 'italic',
+    textAlign: 'center',
+    marginTop: 4,
+    marginHorizontal: 20,
   },
   fullscreenOverlay: {
     flex: 1,
