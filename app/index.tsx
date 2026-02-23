@@ -63,6 +63,7 @@ interface DailyPhotoData {
   url: string;
   photographer?: string;
   photographerUrl?: string;
+  source?: 'unsplash' | 'community' | 'tqf';
 }
 
 function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
@@ -82,7 +83,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
     Linking.openURL('https://unsplash.com');
   };
 
-  const isUnsplashPhoto = photo.photographerUrl?.includes('unsplash.com');
+  const source = photo.source || (photo.photographerUrl?.includes('unsplash.com') ? 'unsplash' : 'tqf');
 
   return (
     <View style={photoStyles.container}>
@@ -107,23 +108,34 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
         <Text style={[photoStyles.credit, { color: colors.textTertiary }]}>
           {t('today.photoBy')}{' '}
         </Text>
-        {photo.photographer ? (
+        {source === 'community' ? (
+          photo.photographer ? (
+            <>
+              <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
+                {photo.photographer}
+              </Text>
+              <Text style={[photoStyles.credit, { color: colors.textTertiary }]}>
+                {' — '}{t('today.tqfCommunity')}
+              </Text>
+            </>
+          ) : (
+            <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
+              {t('today.fromTqfCommunity')}
+            </Text>
+          )
+        ) : source === 'unsplash' && photo.photographer ? (
           <>
             <TouchableOpacity onPress={handlePhotographerPress} disabled={!photo.photographerUrl}>
               <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
                 {photo.photographer}
               </Text>
             </TouchableOpacity>
-            {isUnsplashPhoto && (
-              <>
-                <Text style={[photoStyles.credit, { color: colors.textTertiary }]}> {t('today.on')} </Text>
-                <TouchableOpacity onPress={handleUnsplashPress}>
-                  <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
-                    Unsplash
-                  </Text>
-                </TouchableOpacity>
-              </>
-            )}
+            <Text style={[photoStyles.credit, { color: colors.textTertiary }]}> {t('today.on')} </Text>
+            <TouchableOpacity onPress={handleUnsplashPress}>
+              <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
+                Unsplash
+              </Text>
+            </TouchableOpacity>
           </>
         ) : (
           <Text style={[photoStyles.creditLink, { color: colors.textSecondary }]}>
@@ -151,28 +163,37 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
             resizeMode="contain"
           />
           <View style={photoStyles.fullscreenCredit}>
-            {photo.photographer && (
-              <View style={photoStyles.fullscreenCreditRow}>
-                <Text style={photoStyles.fullscreenCreditText}>{t('today.photoBy')} </Text>
-                <TouchableOpacity 
-                  onPress={(e) => { e.stopPropagation(); handlePhotographerPress(); }}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                >
-                  <Text style={photoStyles.fullscreenCreditLink}>{photo.photographer}</Text>
-                </TouchableOpacity>
-                {isUnsplashPhoto && (
+            <View style={photoStyles.fullscreenCreditRow}>
+              <Text style={photoStyles.fullscreenCreditText}>{t('today.photoBy')} </Text>
+              {source === 'community' ? (
+                photo.photographer ? (
                   <>
-                    <Text style={photoStyles.fullscreenCreditText}> {t('today.on')} </Text>
-                    <TouchableOpacity 
-                      onPress={(e) => { e.stopPropagation(); handleUnsplashPress(); }}
-                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    >
-                      <Text style={photoStyles.fullscreenCreditLink}>Unsplash</Text>
-                    </TouchableOpacity>
+                    <Text style={photoStyles.fullscreenCreditLink}>{photo.photographer}</Text>
+                    <Text style={photoStyles.fullscreenCreditText}>{' — '}{t('today.tqfCommunity')}</Text>
                   </>
-                )}
-              </View>
-            )}
+                ) : (
+                  <Text style={photoStyles.fullscreenCreditLink}>{t('today.fromTqfCommunity')}</Text>
+                )
+              ) : source === 'unsplash' && photo.photographer ? (
+                <>
+                  <TouchableOpacity 
+                    onPress={(e) => { e.stopPropagation(); handlePhotographerPress(); }}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  >
+                    <Text style={photoStyles.fullscreenCreditLink}>{photo.photographer}</Text>
+                  </TouchableOpacity>
+                  <Text style={photoStyles.fullscreenCreditText}> {t('today.on')} </Text>
+                  <TouchableOpacity 
+                    onPress={(e) => { e.stopPropagation(); handleUnsplashPress(); }}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  >
+                    <Text style={photoStyles.fullscreenCreditLink}>Unsplash</Text>
+                  </TouchableOpacity>
+                </>
+              ) : (
+                <Text style={photoStyles.fullscreenCreditLink}>The Quiet Frame</Text>
+              )}
+            </View>
             <Text style={photoStyles.fullscreenHintText}>{t('today.tapToClose')}</Text>
           </View>
         </TouchableOpacity>
