@@ -253,7 +253,8 @@ const photoStyles = StyleSheet.create({
     fontSize: 11,
     fontStyle: 'italic',
     textAlign: 'center',
-    marginTop: 4,
+    marginTop: 14,
+    paddingVertical: 6,
     marginHorizontal: 20,
   },
   fullscreenOverlay: {
