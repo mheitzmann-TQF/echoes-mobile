@@ -376,6 +376,18 @@ export default function SettingsScreen() {
               </TouchableOpacity>
             </View>
           )}
+          {Platform.OS === 'ios' && (
+            <TouchableOpacity
+              style={[styles.redeemButton, { borderColor: colors.border }]}
+              onPress={async () => {
+                const { presentCodeRedemptionSheet } = await import('@/lib/iap/iap');
+                await presentCodeRedemptionSheet();
+              }}
+              data-testid="button-redeem-code"
+            >
+              <Text style={[styles.redeemButtonText, { color: colors.accent }]}>{t('settings.redeemCode')}</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Paywall Modal */}
@@ -751,6 +763,18 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  redeemButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 8,
+    borderWidth: 1,
+  },
+  redeemButtonText: {
+    fontSize: 15,
+    fontWeight: '500',
   },
   supportButton: {
     paddingVertical: 12,

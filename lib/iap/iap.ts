@@ -443,6 +443,26 @@ export function updateRestoreDiagnosticsVerify(verifyResult: {
   }
 }
 
+export async function presentCodeRedemptionSheet(): Promise<boolean> {
+  if (Platform.OS !== 'ios' || !isConnected) {
+    console.log('[IAP] Code redemption sheet only available on iOS when connected');
+    return false;
+  }
+
+  try {
+    const iap = await getExpoIap();
+    if (!iap) return false;
+
+    const { presentCodeRedemptionSheetIOS } = await import('expo-iap');
+    const result = await presentCodeRedemptionSheetIOS();
+    console.log('[IAP] Code redemption sheet result:', result);
+    return result;
+  } catch (error: any) {
+    console.error('[IAP] Error presenting code redemption sheet:', error);
+    return false;
+  }
+}
+
 export async function restorePurchases(): Promise<Purchase[]> {
   const flowId = generateFlowId();
   
