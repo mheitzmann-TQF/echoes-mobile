@@ -491,7 +491,7 @@ class ContentService {
           ...item,
           description: cleanTone(item.description || ''),
           category: 'astronomical',
-          origin: formatOrigin(item.culturalOrigin || item.origin, item.tradition, item.region) || 'Astronomical',
+          origin: 'Astronomical',
         }));
         
         setCache(cacheKey, labeled);
