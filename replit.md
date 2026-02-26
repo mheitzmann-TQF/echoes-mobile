@@ -118,9 +118,11 @@ The preview period is controlled entirely by the backend via the `previewDays` f
 This allows changing preview periods without app updates. The store's own free trials (Apple 3-day, Google 7-day) are separate and offered as additional benefits during subscription purchase.
 
 ### Product SKUs
-- **Bundle ID:** `com.ignea.thequietframe`
-- **Monthly:** `com.thequietframe.echoes.monthly` ($7.99/month)
-- **Yearly:** `com.thequietframe.echoes.yearly` ($79.99/year)
+- **iOS Bundle ID:** `com.ignea.thequietframe`
+- **iOS Monthly:** `com.thequietframe.monthly` ($7.99/month)
+- **iOS Annual:** `com.thequietframe.annual` ($79.99/year)
+- **Android Monthly:** `com.thequietframe.echoes.monthly` ($7.99/month)
+- **Android Yearly:** `com.thequietframe.echoes.yearly` ($79.99/year)
 
 Prices display in local currency when StoreKit/Google Play is connected (e.g., CHF for Swiss users).
 

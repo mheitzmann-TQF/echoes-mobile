@@ -7,8 +7,8 @@ import { Platform } from 'react-native';
  * iOS (App Store Connect):
  * 1. Create a Subscription Group called "Echoes Premium"
  * 2. Add products:
- *    - com.thequietframe.echoes.monthly ($7.99/month)
- *    - com.thequietframe.echoes.yearly ($79.99/year)
+ *    - com.thequietframe.monthly ($7.99/month)
+ *    - com.thequietframe.annual ($79.99/year)
  * 3. For each product, add Introductory Offer:
  *    - Type: Free Trial
  *    - Duration: 3 days
@@ -16,8 +16,6 @@ import { Platform } from 'react-native';
  * 4. Ensure products are "Ready to Submit" or approved
  * 5. Add Sandbox testers in Users and Access > Sandbox Testers
  * 6. iOS Bundle ID: com.ignea.thequietframe
- *    (Note: IAP product SKUs use the com.thequietframe.echoes prefix,
- *     which is independent of the iOS bundle identifier)
  * 
  * Android (Google Play Console):
  * 1. Create subscription products:
@@ -35,10 +33,20 @@ import { Platform } from 'react-native';
  * - Both platforms require development builds (not Expo Go)
  */
 
-export const SUBSCRIPTION_IDS = {
-  monthly: 'com.thequietframe.echoes.monthly',
-  yearly: 'com.thequietframe.echoes.yearly',
-} as const;
+export const SUBSCRIPTION_IDS = Platform.select({
+  ios: {
+    monthly: 'com.thequietframe.monthly',
+    yearly: 'com.thequietframe.annual',
+  },
+  android: {
+    monthly: 'com.thequietframe.echoes.monthly',
+    yearly: 'com.thequietframe.echoes.yearly',
+  },
+  default: {
+    monthly: 'com.thequietframe.monthly',
+    yearly: 'com.thequietframe.annual',
+  },
+})!;
 
 export const SUBSCRIPTION_SKUS = Platform.select({
   ios: [SUBSCRIPTION_IDS.monthly, SUBSCRIPTION_IDS.yearly],
