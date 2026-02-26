@@ -333,7 +333,7 @@ export default function SettingsScreen() {
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <Text style={[styles.sectionLabel, { color: colors.text }]}>{t('settings.subscription')}</Text>
           
-          {isFullAccess ? (
+          {isFullAccess && Platform.OS !== 'web' ? (
             <View style={styles.subscriptionCard}>
               <View style={styles.subscriptionHeader}>
                 <Crown size={20} color="#F59E0B" />
