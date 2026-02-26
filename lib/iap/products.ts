@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
  * 1. Create a Subscription Group called "Echoes Premium"
  * 2. Add products:
  *    - com.thequietframe.echoes.monthly ($7.99/month)
- *    - com.thequietframe.echoes.yearly ($79.90/year)
+ *    - com.thequietframe.echoes.yearly ($79.99/year)
  * 3. For each product, add Introductory Offer:
  *    - Type: Free Trial
  *    - Duration: 3 days
@@ -22,7 +22,7 @@ import { Platform } from 'react-native';
  * Android (Google Play Console):
  * 1. Create subscription products:
  *    - com.thequietframe.echoes.monthly ($7.99/month)
- *    - com.thequietframe.echoes.yearly ($79.90/year)
+ *    - com.thequietframe.echoes.yearly ($79.99/year)
  * 2. For each subscription, create a base plan with:
  *    - Free trial offer: 3 days
  * 3. Package name must match: com.thequietframe.echoes
@@ -53,7 +53,7 @@ export const PRICING = {
     period: 'month',
   },
   yearly: {
-    price: 79.90,
+    price: 79.99,
     currency: 'USD',
     period: 'year',
     savings: '2 months free',

@@ -105,7 +105,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
   }, [products]);
 
   const monthlyPrice = getLocalizedPrice(products, SUBSCRIPTION_IDS.monthly, '$7.99');
-  const yearlyPrice = getLocalizedPrice(products, SUBSCRIPTION_IDS.yearly, '$79.90');
+  const yearlyPrice = getLocalizedPrice(products, SUBSCRIPTION_IDS.yearly, '$79.99');
 
   const handlePurchaseMonthly = async () => {
     console.log('[Paywall] Monthly purchase tapped');

@@ -120,7 +120,7 @@ This allows changing preview periods without app updates. The store's own free t
 ### Product SKUs
 - **Bundle ID:** `com.ignea.thequietframe`
 - **Monthly:** `com.thequietframe.echoes.monthly` ($7.99/month)
-- **Yearly:** `com.thequietframe.echoes.yearly` ($79.90/year)
+- **Yearly:** `com.thequietframe.echoes.yearly` ($79.99/year)
 
 Prices display in local currency when StoreKit/Google Play is connected (e.g., CHF for Swiss users).
 
