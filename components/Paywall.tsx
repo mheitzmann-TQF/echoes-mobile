@@ -275,9 +275,9 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
         )}
 
         <Text style={styles.subscriptionDisclosure}>
-          {Platform.OS === 'ios'
-            ? t('paywall.subscriptionDisclosureIos', { monthlyPrice, yearlyPrice })
-            : t('paywall.subscriptionDisclosureAndroid', { monthlyPrice, yearlyPrice })}
+          {Platform.OS === 'android'
+            ? t('paywall.subscriptionDisclosureAndroid', { monthlyPrice, yearlyPrice })
+            : t('paywall.subscriptionDisclosureIos', { monthlyPrice, yearlyPrice })}
         </Text>
 
         <View style={styles.legalLinks}>
