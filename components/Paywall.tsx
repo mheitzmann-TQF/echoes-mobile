@@ -280,6 +280,16 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
             : t('paywall.subscriptionDisclosureAndroid', { monthlyPrice, yearlyPrice })}
         </Text>
 
+        <View style={styles.legalLinks}>
+          <TouchableOpacity onPress={handleOpenTerms} data-testid="link-terms">
+            <Text style={styles.legalLink}>{t('paywall.termsOfService')}</Text>
+          </TouchableOpacity>
+          <Text style={styles.legalDivider}>·</Text>
+          <TouchableOpacity onPress={handleOpenPrivacy} data-testid="link-privacy">
+            <Text style={styles.legalLink}>{t('paywall.privacyPolicy')}</Text>
+          </TouchableOpacity>
+        </View>
+
         <TouchableOpacity
           style={styles.restoreButton}
           onPress={handleRestore}
@@ -299,16 +309,6 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
         <Text style={styles.restoreNote}>
           {t('paywall.restoreNote')}
         </Text>
-
-        <View style={styles.legalLinks}>
-          <TouchableOpacity onPress={handleOpenTerms} data-testid="link-terms">
-            <Text style={styles.legalLink}>{t('paywall.termsOfService')}</Text>
-          </TouchableOpacity>
-          <Text style={styles.legalDivider}>·</Text>
-          <TouchableOpacity onPress={handleOpenPrivacy} data-testid="link-privacy">
-            <Text style={styles.legalLink}>{t('paywall.privacyPolicy')}</Text>
-          </TouchableOpacity>
-        </View>
 
         {onClose && (
           <TouchableOpacity 
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     color: '#FFFFFF',
-    marginTop: 10,
+    marginTop: 8,
     marginBottom: 6,
   },
   subtitle: {
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   features: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
   featureItem: {
     flexDirection: 'row',
@@ -402,12 +402,12 @@ const styles = StyleSheet.create({
   },
   plansContainer: {
     gap: 12,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   planCard: {
     backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 16,
-    padding: 16,
+    padding: 14,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.1)',
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   planPrice: {
-    fontSize: 32,
+    fontSize: 26,
     fontWeight: '700',
     color: '#FFFFFF',
   },
@@ -466,14 +466,14 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.4)',
     textAlign: 'center',
     lineHeight: 20,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   subscriptionDisclosure: {
     fontSize: 11,
     color: 'rgba(255,255,255,0.3)',
     textAlign: 'center',
     lineHeight: 16,
-    marginBottom: 24,
+    marginBottom: 12,
     paddingHorizontal: 8,
   },
   restoreButton: {
@@ -491,7 +491,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(255,255,255,0.3)',
     textAlign: 'center',
-    marginBottom: 24,
+    marginBottom: 12,
   },
   legalLinks: {
     flexDirection: 'row',
