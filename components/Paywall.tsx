@@ -156,7 +156,7 @@ export default function Paywall({ onClose, onSubscribed }: PaywallProps) {
     Linking.openURL(LEGAL_URLS.privacy);
   };
 
-  if (isFullAccess && Platform.OS !== 'web') {
+  if (isFullAccess) {
     return (
       <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
         <View style={styles.container}>
