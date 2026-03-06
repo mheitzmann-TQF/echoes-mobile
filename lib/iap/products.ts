@@ -7,8 +7,8 @@ import { Platform } from 'react-native';
  * iOS (App Store Connect):
  * 1. Create a Subscription Group called "Echoes Premium"
  * 2. Add products:
- *    - com.thequietframe.monthly2603 ($7.99/month)
- *    - com.thequietframe.annual2603 ($79.99/year)
+ *    - com.thequietframe.monthly.2603 ($7.99/month)
+ *    - com.thequietframe.annual.2603 ($79.99/year)
  * 3. For each product, add Introductory Offer:
  *    - Type: Free Trial
  *    - Duration: 3 days
@@ -35,16 +35,16 @@ import { Platform } from 'react-native';
 
 export const SUBSCRIPTION_IDS = Platform.select({
   ios: {
-    monthly: 'com.thequietframe.monthly2603',
-    yearly: 'com.thequietframe.annual2603',
+    monthly: 'com.thequietframe.monthly.2603',
+    yearly: 'com.thequietframe.annual.2603',
   },
   android: {
     monthly: 'com.thequietframe.echoes.monthly',
     yearly: 'com.thequietframe.echoes.yearly',
   },
   default: {
-    monthly: 'com.thequietframe.monthly2603',
-    yearly: 'com.thequietframe.annual2603',
+    monthly: 'com.thequietframe.monthly.2603',
+    yearly: 'com.thequietframe.annual.2603',
   },
 })!;
 
