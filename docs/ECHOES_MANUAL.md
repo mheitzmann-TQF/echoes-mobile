@@ -593,8 +593,8 @@ All entitlement decisions are made by the backend. The mobile app handles store 
 
 | Product | SKU | Price (USD) | Store Trial |
 |---------|-----|-------------|-------------|
-| Monthly (iOS) | `com.thequietframe.monthly2603` | $7.99/month | 3-day free |
-| Annual (iOS) | `com.thequietframe.annual2603` | $79.99/year | 3-day free |
+| Monthly (iOS) | `com.thequietframe.monthly-2603` | $7.99/month | 3-day free |
+| Annual (iOS) | `com.thequietframe.annual-2603` | $79.99/year | 3-day free |
 | Monthly (Android) | `com.thequietframe.echoes.monthly` | $7.99/month | 3-day free |
 | Yearly (Android) | `com.thequietframe.echoes.yearly` | $79.99/year | 3-day free |
 
