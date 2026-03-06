@@ -388,6 +388,13 @@ export default function SettingsScreen() {
               <Text style={[styles.redeemButtonText, { color: colors.accent }]}>{t('settings.redeemCode')}</Text>
             </TouchableOpacity>
           )}
+          <TouchableOpacity
+            style={[styles.redeemButton, { borderColor: colors.border }]}
+            onPress={() => Linking.openURL('https://thequietframe.com/terms')}
+            data-testid="button-terms-of-use"
+          >
+            <Text style={[styles.redeemButtonText, { color: colors.accent }]}>{t('settings.termsOfUse')}</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Paywall Modal */}
