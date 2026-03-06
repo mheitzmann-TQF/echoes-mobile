@@ -119,8 +119,8 @@ This allows changing preview periods without app updates. The store's own free t
 
 ### Product SKUs
 - **iOS Bundle ID:** `com.ignea.thequietframe`
-- **iOS Monthly:** `com.thequietframe.monthly` ($7.99/month)
-- **iOS Annual:** `com.thequietframe.annual` ($79.99/year)
+- **iOS Monthly:** `com.thequietframe.monthly2603` ($7.99/month)
+- **iOS Annual:** `com.thequietframe.annual2603` ($79.99/year)
 - **Android Monthly:** `com.thequietframe.echoes.monthly` ($7.99/month)
 - **Android Yearly:** `com.thequietframe.echoes.yearly` ($79.99/year)
 
