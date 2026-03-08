@@ -91,8 +91,9 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 
   const margin = 24;
   const creditSpace = 80;
+  const topPad = Math.max(insets.top, margin) + margin;
   const availVisualWidth = screenWidth - (margin * 2);
-  const availVisualHeight = screenHeight - insets.top - insets.bottom - creditSpace - (margin * 2);
+  const availVisualHeight = screenHeight - topPad - insets.bottom - creditSpace - margin;
   let imgWidth = availVisualHeight;
   let imgHeight = availVisualWidth;
   const scaleW = availVisualWidth / imgHeight;
@@ -218,7 +219,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           onPress={closeFullscreen}
           style={photoStyles.fullscreenOverlay}
         >
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: insets.top, paddingBottom: 0 }}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: topPad }}>
             <Animated.View style={{
               opacity: opacityAnim,
               width: containerWidth,
