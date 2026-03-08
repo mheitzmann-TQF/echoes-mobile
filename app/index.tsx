@@ -14,7 +14,7 @@ import {
   StatusBar,
   Animated,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
 import { format, Locale } from 'date-fns';
@@ -73,6 +73,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const { height: screenHeight } = Dimensions.get('window');
+  const insets = useSafeAreaInsets();
   const rotateAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
 
@@ -90,7 +91,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 
   const margin = 24;
   const creditSpace = 80;
-  const photoWidth = screenHeight - creditSpace - (margin * 2);
+  const photoWidth = screenHeight - creditSpace - insets.top - insets.bottom - (margin * 2);
   const photoHeight = screenWidth - (margin * 2);
 
   const openFullscreen = () => {
@@ -208,7 +209,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           onPress={closeFullscreen}
           style={photoStyles.fullscreenOverlay}
         >
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: insets.top + margin }}>
             <Animated.View style={{
               opacity: opacityAnim,
               width: photoHeight,
@@ -324,7 +325,7 @@ const photoStyles = StyleSheet.create({
   },
   fullscreenCreditBelow: {
     alignItems: 'center',
-    paddingBottom: 50,
+    paddingBottom: 40,
     gap: 8,
   },
   fullscreenCreditRow: {
