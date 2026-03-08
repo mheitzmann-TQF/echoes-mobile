@@ -89,7 +89,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
   const source = photo.source || (photo.photographerUrl?.includes('unsplash.com') ? 'unsplash' : 'tqf');
 
   const photoWidth = screenWidth;
-  const photoHeight = photoWidth * (4 / 5);
+  const photoHeight = photoWidth * (4 / 6);
 
   const openFullscreen = () => {
     setFullscreen(true);
