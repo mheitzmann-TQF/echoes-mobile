@@ -91,8 +91,12 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 
   const margin = 24;
   const creditSpace = 80;
-  const photoWidth = screenHeight - creditSpace - insets.top - insets.bottom - (margin * 2);
-  const photoHeight = screenWidth - (margin * 2);
+  const availVisualWidth = screenWidth - (margin * 2);
+  const availVisualHeight = screenHeight - insets.top - insets.bottom - creditSpace - (margin * 2);
+  const imgWidth = availVisualHeight;
+  const imgHeight = availVisualWidth;
+  const containerWidth = availVisualWidth;
+  const containerHeight = availVisualHeight;
 
   const openFullscreen = () => {
     setFullscreen(true);
@@ -209,19 +213,19 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           onPress={closeFullscreen}
           style={photoStyles.fullscreenOverlay}
         >
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: insets.top + margin }}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: insets.top, paddingBottom: 0 }}>
             <Animated.View style={{
               opacity: opacityAnim,
-              width: photoHeight,
-              height: photoWidth,
+              width: containerWidth,
+              height: containerHeight,
               alignItems: 'center',
               justifyContent: 'center',
             }}>
               <Animated.Image
                 source={{ uri: photo.url }}
                 style={{
-                  width: photoWidth,
-                  height: photoHeight,
+                  width: imgWidth,
+                  height: imgHeight,
                   borderRadius: 12,
                   transform: [{ rotate: rotation }],
                 }}
@@ -229,7 +233,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
               />
             </Animated.View>
           </View>
-          <Animated.View style={[photoStyles.fullscreenCreditBelow, { opacity: opacityAnim }]}>
+          <Animated.View style={[photoStyles.fullscreenCreditBelow, { opacity: opacityAnim, paddingBottom: Math.max(insets.bottom, 20) + 20 }]}>
             <View style={photoStyles.fullscreenCreditRow}>
               <Text style={photoStyles.fullscreenCreditText}>{t('today.photoBy')} </Text>
               {source === 'community' ? (
