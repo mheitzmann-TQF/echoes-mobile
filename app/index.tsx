@@ -88,8 +88,8 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 
   const source = photo.source || (photo.photographerUrl?.includes('unsplash.com') ? 'unsplash' : 'tqf');
 
-  const photoWidth = screenWidth;
-  const photoHeight = photoWidth * (4 / 6);
+  const photoWidth = screenHeight - 120;
+  const photoHeight = screenWidth;
 
   const openFullscreen = () => {
     setFullscreen(true);
@@ -98,12 +98,12 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
     Animated.parallel([
       Animated.timing(rotateAnim, {
         toValue: 1,
-        duration: 400,
+        duration: 800,
         useNativeDriver: true,
       }),
       Animated.timing(opacityAnim, {
         toValue: 1,
-        duration: 300,
+        duration: 700,
         useNativeDriver: true,
       }),
     ]).start();
@@ -113,12 +113,12 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
     Animated.parallel([
       Animated.timing(rotateAnim, {
         toValue: 0,
-        duration: 300,
+        duration: 500,
         useNativeDriver: true,
       }),
       Animated.timing(opacityAnim, {
         toValue: 0,
-        duration: 250,
+        duration: 400,
         useNativeDriver: true,
       }),
     ]).start(() => setFullscreen(false));
