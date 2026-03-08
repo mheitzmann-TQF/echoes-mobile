@@ -93,10 +93,15 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
   const creditSpace = 80;
   const availVisualWidth = screenWidth - (margin * 2);
   const availVisualHeight = screenHeight - insets.top - insets.bottom - creditSpace - (margin * 2);
-  const imgWidth = availVisualHeight;
-  const imgHeight = availVisualWidth;
-  const containerWidth = availVisualWidth;
-  const containerHeight = availVisualHeight;
+  let imgWidth = availVisualHeight;
+  let imgHeight = availVisualWidth;
+  const scaleW = availVisualWidth / imgHeight;
+  const scaleH = availVisualHeight / imgWidth;
+  const scale = Math.min(scaleW, scaleH, 1);
+  imgWidth = imgWidth * scale;
+  imgHeight = imgHeight * scale;
+  const containerWidth = imgHeight;
+  const containerHeight = imgWidth;
 
   const openFullscreen = () => {
     setFullscreen(true);
