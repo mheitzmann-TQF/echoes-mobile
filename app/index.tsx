@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   Modal,
   StatusBar,
+  Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -72,6 +73,8 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const { height: screenHeight } = Dimensions.get('window');
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const opacityAnim = useRef(new Animated.Value(0)).current;
 
   const handlePhotographerPress = () => {
     if (photo.photographerUrl) {
@@ -85,11 +88,52 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 
   const source = photo.source || (photo.photographerUrl?.includes('unsplash.com') ? 'unsplash' : 'tqf');
 
+  const photoWidth = screenWidth;
+  const photoHeight = photoWidth * (4 / 5);
+
+  const openFullscreen = () => {
+    setFullscreen(true);
+    rotateAnim.setValue(0);
+    opacityAnim.setValue(0);
+    Animated.parallel([
+      Animated.timing(rotateAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const closeFullscreen = () => {
+    Animated.parallel([
+      Animated.timing(rotateAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start(() => setFullscreen(false));
+  };
+
+  const rotation = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '90deg'],
+  });
+
   return (
     <View style={photoStyles.container}>
       <TouchableOpacity 
         activeOpacity={0.9} 
-        onPress={() => setFullscreen(true)}
+        onPress={openFullscreen}
         style={[photoStyles.imageWrapper, { backgroundColor: colors.surface, borderColor: colors.border }]}
       >
         {!imageLoaded && (
@@ -152,22 +196,35 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
       <Modal
         visible={fullscreen}
         transparent={true}
-        animationType="fade"
+        animationType="none"
         statusBarTranslucent={true}
-        onRequestClose={() => setFullscreen(false)}
+        onRequestClose={closeFullscreen}
       >
         <StatusBar hidden={true} />
         <TouchableOpacity 
           activeOpacity={1}
-          onPress={() => setFullscreen(false)}
+          onPress={closeFullscreen}
           style={photoStyles.fullscreenOverlay}
         >
-          <Image
-            source={{ uri: photo.url }}
-            style={{ width: screenWidth, height: screenHeight }}
-            resizeMode="contain"
-          />
-          <View style={photoStyles.fullscreenCredit}>
+          <Animated.View style={{
+            opacity: opacityAnim,
+            width: photoHeight,
+            height: photoWidth,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <Animated.Image
+              source={{ uri: photo.url }}
+              style={{
+                width: photoWidth,
+                height: photoHeight,
+                borderRadius: 12,
+                transform: [{ rotate: rotation }],
+              }}
+              resizeMode="cover"
+            />
+          </Animated.View>
+          <Animated.View style={[photoStyles.fullscreenCredit, { opacity: opacityAnim }]}>
             <View style={photoStyles.fullscreenCreditRow}>
               <Text style={photoStyles.fullscreenCreditText}>{t('today.photoBy')} </Text>
               {source === 'community' ? (
@@ -200,7 +257,7 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
               )}
             </View>
             <Text style={photoStyles.fullscreenHintText}>{t('today.tapToClose')}</Text>
-          </View>
+          </Animated.View>
         </TouchableOpacity>
       </Modal>
     </View>
