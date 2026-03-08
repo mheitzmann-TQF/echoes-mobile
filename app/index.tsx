@@ -88,8 +88,10 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
 
   const source = photo.source || (photo.photographerUrl?.includes('unsplash.com') ? 'unsplash' : 'tqf');
 
-  const photoWidth = screenHeight - 120;
-  const photoHeight = screenWidth;
+  const margin = 24;
+  const creditSpace = 80;
+  const photoWidth = screenHeight - creditSpace - (margin * 2);
+  const photoHeight = screenWidth - (margin * 2);
 
   const openFullscreen = () => {
     setFullscreen(true);
@@ -206,25 +208,27 @@ function PhotoOfTheDay({ photo }: { photo: DailyPhotoData }) {
           onPress={closeFullscreen}
           style={photoStyles.fullscreenOverlay}
         >
-          <Animated.View style={{
-            opacity: opacityAnim,
-            width: photoHeight,
-            height: photoWidth,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <Animated.Image
-              source={{ uri: photo.url }}
-              style={{
-                width: photoWidth,
-                height: photoHeight,
-                borderRadius: 12,
-                transform: [{ rotate: rotation }],
-              }}
-              resizeMode="cover"
-            />
-          </Animated.View>
-          <Animated.View style={[photoStyles.fullscreenCredit, { opacity: opacityAnim }]}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Animated.View style={{
+              opacity: opacityAnim,
+              width: photoHeight,
+              height: photoWidth,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Animated.Image
+                source={{ uri: photo.url }}
+                style={{
+                  width: photoWidth,
+                  height: photoHeight,
+                  borderRadius: 12,
+                  transform: [{ rotate: rotation }],
+                }}
+                resizeMode="cover"
+              />
+            </Animated.View>
+          </View>
+          <Animated.View style={[photoStyles.fullscreenCreditBelow, { opacity: opacityAnim }]}>
             <View style={photoStyles.fullscreenCreditRow}>
               <Text style={photoStyles.fullscreenCreditText}>{t('today.photoBy')} </Text>
               {source === 'community' ? (
@@ -317,23 +321,17 @@ const photoStyles = StyleSheet.create({
   fullscreenOverlay: {
     flex: 1,
     backgroundColor: '#000000',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  fullscreenCredit: {
-    position: 'absolute',
-    bottom: 50,
-    alignSelf: 'center',
+  fullscreenCreditBelow: {
     alignItems: 'center',
+    paddingBottom: 50,
     gap: 8,
   },
   fullscreenCreditRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.6)',
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 16,
   },
   fullscreenCreditText: {
     color: 'rgba(255,255,255,0.8)',
