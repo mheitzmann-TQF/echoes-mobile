@@ -1,6 +1,11 @@
 # Echoes - The Quiet Frame
 
-## Recent Changes (February 2026)
+## Recent Changes (March 2026)
+- **Fullscreen photo landscape rotation:** Tapping the daily photo opens a fullscreen view where the image rotates 90° into landscape with a slow, deliberate animation (800ms open, 500ms close). Photo is framed with equal black margins on all sides (24px), respecting safe areas on notched devices. Credits sit below the photo, never overlapping. Responsive sizing adapts to all screen aspect ratios (iPhone SE through Pro Max, Android).
+- **iOS product IDs updated:** `com.thequietframe.monthly.2603` and `com.thequietframe.annual.2603`.
+- **Terms of Use button** added to Settings subscription card, translated in all 6 languages, links to `thequietframe.com/terms`.
+
+## Changes (February 2026)
 - **Version bump to 1.2.0** for fresh EAS build with IAP provisioning profile.
 - **Subscription disclosure text** added to Paywall (Apple-required auto-renewal terms, platform-specific for iOS/Android).
 - **Disclosure translations** added to all 6 supported languages.
@@ -49,7 +54,7 @@ Global state is managed using React Contexts (e.g., `LocationContext`, `ThemeCon
 
 ### Tab Content Structure
 Each tab has a distinct purpose aligned with the content philosophy:
-- **Today (index.tsx):** Presence anchoring only — Daily Photo + Multi-Calendar View + Metrics Grid. No interpretive content.
+- **Today (index.tsx):** Presence anchoring only — Daily Photo (tap for fullscreen landscape rotation) + Multi-Calendar View + Metrics Grid. No interpretive content.
 - **Pulse (pulse.tsx):** Location-based impact patterns and observational context.
 - **Wisdom (wisdom.tsx):** Perspective & meaning — Cookie (reflection prompt) → Ancient Wisdom → Media Climate analysis. Order reflects journey from personal reflection to cultural wisdom to media awareness.
 - **Upcoming (upcoming.tsx):** Future patterns and observances.
