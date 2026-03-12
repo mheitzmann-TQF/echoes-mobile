@@ -341,7 +341,7 @@ export default function WisdomScreen() {
       >
         <View style={styles.pageHeader}>
           <Text style={[styles.pageTitle, { color: colors.text }]}>{t('learn.title')}</Text>
-          <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>{isFirstSession === false ? t('learn.subtitle') : isFirstSession === true ? t('microLabel.wisdom') : ''}</Text>
+          <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>{isFirstSession ? t('microLabel.wisdom') : t('learn.subtitle')}</Text>
         </View>
 
         {/* The Cookie - Daily reflection prompt */}
