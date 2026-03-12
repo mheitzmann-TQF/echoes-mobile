@@ -461,14 +461,14 @@
     "headline": "Cinco cosas. Un marco.",
     "todayDesc": "Dónde estás ahora. Lo que lleva el día.",
     "pulseDesc": "Las señales que lo forman. Lunar, solar, geomagnética, circadiana.",
-    "wisdomDesc": "Lo que vale guardar. Cartas eco y Cookie, nacidas de hoy.",
+    "wisdomDesc": "Tradiciones del calendario antiguo, leídas para hoy. La señal global de los medios.",
     "upcomingDesc": "Ciclos que vale la pena conocer con antelación.",
     "settingsDesc": "Tu lugar, tu idioma, tu tema.",
     "cta": "toca en cualquier lugar para empezar"
   },
   "microLabel": {
     "pulse": "Señales que dan forma al día — lunar, solar, geomagnética, circadiana. Sin prescripciones.",
-    "wisdom": "Cartas eco nacidas de las señales de hoy. Cookie es sabiduría antigua que encuentra este momento.",
+    "wisdom": "Tradiciones del calendario antiguo (hebreo, maya, chino y más) interpretadas para la fecha de hoy. A continuación: una lectura en vivo de las señales globales de los medios.",
     "upcoming": "Tres horizontes: Pronto (48h), Ciclo (14 días), Estación (90 días). Cambia arriba."
   }
 }

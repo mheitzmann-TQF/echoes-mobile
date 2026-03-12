@@ -579,14 +579,14 @@
     "headline": "Cinq choses. Un cadre.",
     "todayDesc": "Où tu es maintenant. Ce que la journée porte.",
     "pulseDesc": "Les signaux qui la façonnent. Lunaire, solaire, géomagnétique, circadien.",
-    "wisdomDesc": "Ce qu'il faut garder. Les cartes écho et Cookie, tirées d'aujourd'hui.",
+    "wisdomDesc": "Traditions calendaires anciennes, lues pour aujourd'hui. Le signal médiatique mondial.",
     "upcomingDesc": "Des cycles à connaître à l'avance.",
     "settingsDesc": "Ton lieu, ta langue, ton thème.",
     "cta": "touche n'importe où pour commencer"
   },
   "microLabel": {
     "pulse": "Les signaux qui façonnent aujourd'hui — lunaire, solaire, géomagnétique, circadien. Aucune prescription.",
-    "wisdom": "Des cartes écho issues des signaux du jour. Cookie est une sagesse ancienne qui rencontre ce moment.",
+    "wisdom": "Traditions calendaires anciennes (hébraïque, maya, chinoise et plus) interprétées pour la date d'aujourd'hui. En dessous : une lecture en direct des signaux médiatiques mondiaux.",
     "upcoming": "Trois horizons : Bientôt (48h), Cycle (14 jours), Saison (90 jours). Change en haut."
   }
 }

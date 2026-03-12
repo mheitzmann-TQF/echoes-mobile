@@ -461,14 +461,14 @@
     "headline": "Cinco coisas. Um enquadramento.",
     "todayDesc": "Onde você se encontra agora. O que o dia carrega.",
     "pulseDesc": "Os sinais que o moldam. Lunar, solar, geomagnético, circadiano.",
-    "wisdomDesc": "O que vale guardar. Cartas eco e Cookie, nascidas de hoje.",
+    "wisdomDesc": "Tradições do calendário antigo, lidas para hoje. O sinal global da mídia.",
     "upcomingDesc": "Ciclos que vale conhecer com antecedência.",
     "settingsDesc": "Seu lugar, seu idioma, seu tema.",
     "cta": "toque em qualquer lugar para começar"
   },
   "microLabel": {
     "pulse": "Sinais que moldam o dia — lunar, solar, geomagnético, circadiano. Sem prescrições.",
-    "wisdom": "Cartas eco nascidas dos sinais de hoje. Cookie é sabedoria antiga encontrando este momento.",
+    "wisdom": "Tradições do calendário antigo (hebraico, maia, chinês e mais) interpretadas para a data de hoje. Abaixo: uma leitura ao vivo dos sinais globais da mídia.",
     "upcoming": "Três horizontes: Em breve (48h), Ciclo (14 dias), Estação (90 dias). Mude no topo."
   }
 }

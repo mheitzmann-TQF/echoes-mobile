@@ -579,14 +579,14 @@
     "headline": "Five things. One frame.",
     "todayDesc": "Where you are right now. What the day carries.",
     "pulseDesc": "The signals shaping it. Lunar, solar, geomagnetic, circadian.",
-    "wisdomDesc": "What to hold. Echo cards and Cookie, drawn from today.",
+    "wisdomDesc": "Ancient calendar traditions, read for today. The global media signal.",
     "upcomingDesc": "Patterns worth knowing in advance.",
     "settingsDesc": "Your location, your language, your theme.",
     "cta": "tap anywhere to begin"
   },
   "microLabel": {
     "pulse": "Signals shaping today — lunar, solar, geomagnetic, circadian. No prescriptions.",
-    "wisdom": "Echo cards drawn from today's signals. Cookie is ancient wisdom meeting this moment.",
+    "wisdom": "Ancient calendar traditions (Hebrew, Mayan, Chinese, and more) interpreted for today's date. Below: a live read of global media signals.",
     "upcoming": "Three horizons: Soon (48h), Cycle (14 days), Season (90 days). Switch at the top."
   }
 }
