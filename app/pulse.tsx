@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useEntitlementContext } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
 import { useAppStateListener } from '../lib/useAppState';
-import { TabMicroLabel, type TabMicroLabelHandle } from '../components/TabMicroLabel';
+import { useFirstSession } from '../lib/useFirstSession';
 
 // Map API moon phase values to translation keys
 const getMoonPhaseKey = (phase: string): string => {
@@ -392,7 +392,7 @@ export default function FieldScreen() {
     timing: true
   });
 
-  const microLabelRef = useRef<TabMicroLabelHandle>(null);
+  const isFirstSession = useFirstSession('pulseIntroSeen');
 
   const toggleCard = (id: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -886,11 +886,9 @@ export default function FieldScreen() {
         <ScrollView
           contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}
-          onScrollBeginDrag={() => microLabelRef.current?.dismiss()}
         >
           <Text style={[styles.headerTitle, { color: colors.text }]}>{t('field.title')}</Text>
-          <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{t('field.subtitle')}</Text>
-          <TabMicroLabel ref={microLabelRef} seenKey="pulseIntroSeen" textKey="microLabel.pulse" />
+          <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{isFirstSession === true ? t('microLabel.pulse') : t('field.subtitle')}</Text>
 
           {/* Hero Timing Card - Primary action-oriented content */}
           <HeroTimingCard
