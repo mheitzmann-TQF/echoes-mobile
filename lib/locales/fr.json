@@ -574,5 +574,19 @@
     "subscriptionDisclosureIos": "Le paiement sera débité de votre compte Apple ID lors de la confirmation de l'achat. L'abonnement se renouvelle automatiquement sauf s'il est annulé au moins 24 heures avant la fin de la période en cours. Votre compte sera débité pour le renouvellement dans les 24 heures précédant la fin de la période en cours. Vous pouvez gérer et annuler vos abonnements dans les réglages de votre compte sur l'App Store après l'achat.",
     "subscriptionDisclosureAndroid": "Le paiement sera débité de votre compte Google Play lors de la confirmation de l'achat. L'abonnement se renouvelle automatiquement sauf s'il est annulé au moins 24 heures avant la fin de la période en cours. Votre compte sera débité pour le renouvellement dans les 24 heures précédant la fin de la période en cours. Vous pouvez gérer et annuler vos abonnements dans les paramètres de votre compte Google Play Store."
   },
-  "natureNote": "Note Nature"
+  "natureNote": "Note Nature",
+  "orientation": {
+    "headline": "Cinq choses. Un cadre.",
+    "todayDesc": "Où tu es maintenant. Ce que la journée porte.",
+    "pulseDesc": "Les signaux qui la façonnent. Lunaire, solaire, géomagnétique, circadien.",
+    "wisdomDesc": "Ce qu'il faut garder. Les cartes écho et Cookie, tirées d'aujourd'hui.",
+    "upcomingDesc": "Des cycles à connaître à l'avance.",
+    "settingsDesc": "Ton lieu, ta langue, ton thème.",
+    "cta": "touche n'importe où pour commencer"
+  },
+  "microLabel": {
+    "pulse": "Les signaux qui façonnent aujourd'hui — lunaire, solaire, géomagnétique, circadien. Aucune prescription.",
+    "wisdom": "Des cartes écho issues des signaux du jour. Cookie est une sagesse ancienne qui rencontre ce moment.",
+    "upcoming": "Trois horizons : Bientôt (48h), Cycle (14 jours), Saison (90 jours). Change en haut."
+  }
 }

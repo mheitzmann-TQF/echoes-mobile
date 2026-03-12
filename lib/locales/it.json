@@ -553,5 +553,19 @@
     "subscriptionDisclosureIos": "Il pagamento verrà addebitato sul tuo account Apple ID alla conferma dell'acquisto. L'abbonamento si rinnova automaticamente a meno che non venga annullato almeno 24 ore prima della fine del periodo corrente. Il tuo account verrà addebitato per il rinnovo entro 24 ore prima della fine del periodo corrente. Puoi gestire e annullare i tuoi abbonamenti nelle impostazioni del tuo account sull'App Store dopo l'acquisto.",
     "subscriptionDisclosureAndroid": "Il pagamento verrà addebitato sul tuo account Google Play alla conferma dell'acquisto. L'abbonamento si rinnova automaticamente a meno che non venga annullato almeno 24 ore prima della fine del periodo corrente. Il tuo account verrà addebitato per il rinnovo entro 24 ore prima della fine del periodo corrente. Puoi gestire e annullare i tuoi abbonamenti nelle impostazioni del tuo account Google Play Store."
   },
-  "natureNote": "Nota Natura"
+  "natureNote": "Nota Natura",
+  "orientation": {
+    "headline": "Cinque cose. Una cornice.",
+    "todayDesc": "Dove sei adesso. Ciò che il giorno porta con sé.",
+    "pulseDesc": "I segnali che lo modellano. Lunare, solare, geomagnetico, circadiano.",
+    "wisdomDesc": "Cosa vale tenere. Carte eco e Cookie, nate da oggi.",
+    "upcomingDesc": "Cicli che vale la pena conoscere in anticipo.",
+    "settingsDesc": "Il tuo luogo, la tua lingua, il tuo tema.",
+    "cta": "tocca ovunque per iniziare"
+  },
+  "microLabel": {
+    "pulse": "Segnali che modellano il giorno — lunare, solare, geomagnetico, circadiano. Nessuna prescrizione.",
+    "wisdom": "Carte eco nate dai segnali di oggi. Cookie è saggezza antica che incontra questo momento.",
+    "upcoming": "Tre orizzonti: Presto (48h), Ciclo (14 giorni), Stagione (90 giorni). Cambia in alto."
+  }
 }

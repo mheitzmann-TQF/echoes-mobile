@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useEntitlementContext } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
 import { useAppStateListener } from '../lib/useAppState';
+import { TabMicroLabel, type TabMicroLabelHandle } from '../components/TabMicroLabel';
 
 // Map API moon phase values to translation keys
 const getMoonPhaseKey = (phase: string): string => {
@@ -390,6 +391,8 @@ export default function FieldScreen() {
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({
     timing: true
   });
+
+  const microLabelRef = useRef<TabMicroLabelHandle>(null);
 
   const toggleCard = (id: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -880,9 +883,14 @@ export default function FieldScreen() {
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-        <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+          onScrollBeginDrag={() => microLabelRef.current?.dismiss()}
+        >
           <Text style={[styles.headerTitle, { color: colors.text }]}>{t('field.title')}</Text>
           <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{t('field.subtitle')}</Text>
+          <TabMicroLabel ref={microLabelRef} seenKey="pulseIntroSeen" textKey="microLabel.pulse" />
 
           {/* Hero Timing Card - Primary action-oriented content */}
           <HeroTimingCard

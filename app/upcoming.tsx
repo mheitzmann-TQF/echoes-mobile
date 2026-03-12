@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
@@ -9,6 +9,7 @@ import { cleanTone, getCategoryLabel, formatOrigin } from '../lib/labelize';
 import { Clock, Moon, Leaf, Sparkles, Globe, Star } from 'lucide-react-native';
 import { useEntitlementContext } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
+import { TabMicroLabel, type TabMicroLabelHandle } from '../components/TabMicroLabel';
 import { getApiLang } from '../lib/lang';
 
 const { width } = Dimensions.get('window');
@@ -286,6 +287,7 @@ export default function UpcomingScreen() {
   const [category, setCategory] = useState<Category>('all');
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const microLabelRef = useRef<TabMicroLabelHandle>(null);
 
   // Get translated date range label
   const getDateRangeLabel = (b: Band): string => {
@@ -448,11 +450,16 @@ export default function UpcomingScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+        onScrollBeginDrag={() => microLabelRef.current?.dismiss()}
+      >
         <View style={styles.header}>
           <Text style={[styles.headerTitle, { color: colors.text }]}>{t('upcoming.title')}</Text>
           <Text style={[styles.headerLabel, { color: colors.textSecondary }]}>{getDateRangeLabel(band)}</Text>
         </View>
+        <TabMicroLabel ref={microLabelRef} seenKey="upcomingIntroSeen" textKey="microLabel.upcoming" />
 
         {/* Band Control */}
         <BandControl value={band} onChange={setBand} />

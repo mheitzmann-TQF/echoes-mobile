@@ -41,7 +41,7 @@ let moduleIAPCleanup: (() => Promise<void>) | null = null;
 let modulePurchaseUpdateSub: { remove: () => void } | null = null;
 let modulePurchaseErrorSub: { remove: () => void } | null = null;
 let moduleHookInstanceCount = 0;
-let modulePendingCheckStatus: Promise<{ entitlement: 'full' | 'free'; expiresAt: string | null; previewDays: number }> | null = null;
+let modulePendingCheckStatus: Promise<{ entitlement: 'full' | 'free'; expiresAt: string | null; previewDays: number; isNewInstall: boolean }> | null = null;
 let modulePreviewDays: number = 0;
 // Track when last successful verification happened to prevent stale status overwrites
 let moduleLastVerificationTime: number = 0;
@@ -102,6 +102,7 @@ async function checkEntitlementStatusInternal(installId: string, isRetry = false
   entitlement: 'full' | 'free';
   expiresAt: string | null;
   previewDays: number;
+  isNewInstall: boolean;
 }> {
   console.log('[ENTITLEMENT] Checking status for installId:', installId, isRetry ? '(retry)' : '');
   
@@ -151,6 +152,7 @@ async function checkEntitlementStatusInternal(installId: string, isRetry = false
     entitlement,
     expiresAt: data.expiresAt || null,
     previewDays,
+    isNewInstall: data.isNewInstall === true,
   };
 }
 
@@ -158,6 +160,7 @@ async function checkEntitlementStatus(installId: string): Promise<{
   entitlement: 'full' | 'free';
   expiresAt: string | null;
   previewDays: number;
+  isNewInstall: boolean;
 }> {
   if (modulePendingCheckStatus) {
     console.log('[ENTITLEMENT] Reusing pending status check');

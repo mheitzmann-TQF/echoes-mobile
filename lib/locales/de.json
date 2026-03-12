@@ -456,5 +456,19 @@
     "subscriptionDisclosureIos": "Die Zahlung wird bei Bestätigung des Kaufs deinem Apple-ID-Konto belastet. Das Abonnement verlängert sich automatisch, es sei denn, es wird mindestens 24 Stunden vor Ablauf des aktuellen Zeitraums gekündigt. Dein Konto wird innerhalb von 24 Stunden vor Ablauf des aktuellen Zeitraums für die Verlängerung belastet. Du kannst deine Abonnements nach dem Kauf in den Kontoeinstellungen im App Store verwalten und kündigen.",
     "subscriptionDisclosureAndroid": "Die Zahlung wird bei Bestätigung des Kaufs deinem Google-Play-Konto belastet. Das Abonnement verlängert sich automatisch, es sei denn, es wird mindestens 24 Stunden vor Ablauf des aktuellen Zeitraums gekündigt. Dein Konto wird innerhalb von 24 Stunden vor Ablauf des aktuellen Zeitraums für die Verlängerung belastet. Du kannst deine Abonnements in den Kontoeinstellungen des Google Play Store verwalten und kündigen."
   },
-  "natureNote": "Naturnotiz"
+  "natureNote": "Naturnotiz",
+  "orientation": {
+    "headline": "Fünf Dinge. Ein Rahmen.",
+    "todayDesc": "Wo du jetzt bist. Was der Tag mit sich bringt.",
+    "pulseDesc": "Die Signale, die ihn prägen. Lunar, solar, geomagnetisch, zirkadian.",
+    "wisdomDesc": "Was es zu halten gilt. Echo-Karten und Cookie, aus dem heutigen Tag.",
+    "upcomingDesc": "Muster, die es sich lohnt im Voraus zu kennen.",
+    "settingsDesc": "Dein Ort, deine Sprache, dein Thema.",
+    "cta": "tippe irgendwo, um zu beginnen"
+  },
+  "microLabel": {
+    "pulse": "Signale, die den Tag prägen — lunar, solar, geomagnetisch, zirkadian. Keine Vorschriften.",
+    "wisdom": "Echo-Karten aus den Signalen des heutigen Tages. Cookie ist alte Weisheit, die diesen Moment trifft.",
+    "upcoming": "Drei Horizonte: Bald (48h), Zyklus (14 Tage), Saison (90 Tage). Oben wechseln."
+  }
 }

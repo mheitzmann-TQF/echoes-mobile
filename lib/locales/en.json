@@ -574,5 +574,19 @@
     "subscriptionDisclosureIos": "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after purchase.",
     "subscriptionDisclosureAndroid": "Payment will be charged to your Google Play account at confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions in your Google Play Store account settings."
   },
-  "natureNote": "Nature Note"
+  "natureNote": "Nature Note",
+  "orientation": {
+    "headline": "Five things. One frame.",
+    "todayDesc": "Where you are right now. What the day carries.",
+    "pulseDesc": "The signals shaping it. Lunar, solar, geomagnetic, circadian.",
+    "wisdomDesc": "What to hold. Echo cards and Cookie, drawn from today.",
+    "upcomingDesc": "Patterns worth knowing in advance.",
+    "settingsDesc": "Your location, your language, your theme.",
+    "cta": "tap anywhere to begin"
+  },
+  "microLabel": {
+    "pulse": "Signals shaping today — lunar, solar, geomagnetic, circadian. No prescriptions.",
+    "wisdom": "Echo cards drawn from today's signals. Cookie is ancient wisdom meeting this moment.",
+    "upcoming": "Three horizons: Soon (48h), Cycle (14 days), Season (90 days). Switch at the top."
+  }
 }

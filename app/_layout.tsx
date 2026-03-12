@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import Constants from 'expo-constants';
 import { SwipeTabs, type SwipeTab } from '../components/SwipeTabs';
 import { InterruptionLayer } from '../components/InterruptionLayer';
+import { OrientationCard, checkOrientationSeen } from '../components/OrientationCard';
 import { initAppStateListener, useAppStateListener } from '../lib/useAppState';
 import { EntitlementProvider } from '../lib/iap/useEntitlement';
 import * as ExpoSplashScreen from 'expo-splash-screen';
@@ -278,6 +279,7 @@ function ExpoRouterTabsNavigator() {
 function ThemedApp() {
   const { colors } = useTheme();
   const [showInterruption, setShowInterruption] = useState(true);
+  const [showOrientation, setShowOrientation] = useState(false);
   const [i18nReady, setI18nReady] = useState(false);
   const [splashHidden, setSplashHidden] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -285,6 +287,14 @@ function ThemedApp() {
   useEffect(() => {
     initI18n().then(() => setI18nReady(true));
   }, []);
+
+  useEffect(() => {
+    if (i18nReady) {
+      checkOrientationSeen().then((seen) => {
+        if (!seen) setShowOrientation(true);
+      });
+    }
+  }, [i18nReady]);
   
   useEffect(() => {
     if (i18nReady && !splashHidden) {
@@ -325,6 +335,10 @@ function ThemedApp() {
 
   if (showInterruption) {
     return <InterruptionLayer onComplete={() => setShowInterruption(false)} />;
+  }
+
+  if (showOrientation) {
+    return <OrientationCard onDismiss={() => setShowOrientation(false)} />;
   }
   
   if (shouldUseSwipeTabs) {

@@ -10,6 +10,7 @@ import Svg, { Circle, Path } from 'react-native-svg';
 import i18next from 'i18next';
 import { useEntitlementContext } from '../lib/iap/useEntitlement';
 import PausedOverlay from '../components/PausedOverlay';
+import { TabMicroLabel, type TabMicroLabelHandle } from '../components/TabMicroLabel';
 import AncientWisdomCard from '../components/AncientWisdomCard';
 import DynamicWisdomCardComponent from '../components/DynamicWisdomCard';
 import { cookieService } from '../lib/CookieService';
@@ -249,6 +250,7 @@ export default function WisdomScreen() {
   const [methodologyVisible, setMethodologyVisible] = useState(false);
   const [cookie, setCookie] = useState<string | null>(null);
   const [cookieLoading, setCookieLoading] = useState(true);
+  const microLabelRef = useRef<TabMicroLabelHandle>(null);
   
   // Track current language for proper re-fetching
   const currentLang = i18n.language?.split('-')[0]?.toLowerCase() || 'en';
@@ -333,11 +335,16 @@ export default function WisdomScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+        onScrollBeginDrag={() => microLabelRef.current?.dismiss()}
+      >
         <View style={styles.pageHeader}>
           <Text style={[styles.pageTitle, { color: colors.text }]}>{t('learn.title')}</Text>
           <Text style={[styles.pageSubtitle, { color: colors.textSecondary }]}>{t('learn.subtitle')}</Text>
         </View>
+        <TabMicroLabel ref={microLabelRef} seenKey="wisdomIntroSeen" textKey="microLabel.wisdom" />
 
         {/* The Cookie - Daily reflection prompt */}
         {!cookieLoading && cookie && (

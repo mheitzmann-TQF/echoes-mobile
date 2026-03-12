@@ -456,5 +456,19 @@
     "subscriptionDisclosureIos": "O pagamento será cobrado na sua conta Apple ID na confirmação da compra. A assinatura é renovada automaticamente, a menos que seja cancelada pelo menos 24 horas antes do final do período atual. Sua conta será cobrada pela renovação dentro de 24 horas antes do final do período atual. Você pode gerenciar e cancelar suas assinaturas nas configurações da sua conta na App Store após a compra.",
     "subscriptionDisclosureAndroid": "O pagamento será cobrado na sua conta Google Play na confirmação da compra. A assinatura é renovada automaticamente, a menos que seja cancelada pelo menos 24 horas antes do final do período atual. Sua conta será cobrada pela renovação dentro de 24 horas antes do final do período atual. Você pode gerenciar e cancelar suas assinaturas nas configurações da sua conta Google Play Store."
   },
-  "natureNote": "Nota da Natureza"
+  "natureNote": "Nota da Natureza",
+  "orientation": {
+    "headline": "Cinco coisas. Um enquadramento.",
+    "todayDesc": "Onde você se encontra agora. O que o dia carrega.",
+    "pulseDesc": "Os sinais que o moldam. Lunar, solar, geomagnético, circadiano.",
+    "wisdomDesc": "O que vale guardar. Cartas eco e Cookie, nascidas de hoje.",
+    "upcomingDesc": "Ciclos que vale conhecer com antecedência.",
+    "settingsDesc": "Seu lugar, seu idioma, seu tema.",
+    "cta": "toque em qualquer lugar para começar"
+  },
+  "microLabel": {
+    "pulse": "Sinais que moldam o dia — lunar, solar, geomagnético, circadiano. Sem prescrições.",
+    "wisdom": "Cartas eco nascidas dos sinais de hoje. Cookie é sabedoria antiga encontrando este momento.",
+    "upcoming": "Três horizontes: Em breve (48h), Ciclo (14 dias), Estação (90 dias). Mude no topo."
+  }
 }
