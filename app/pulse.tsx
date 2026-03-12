@@ -1048,36 +1048,6 @@ export default function FieldScreen() {
           />
         </View>
 
-        {/* Input Signals - styled like Wisdom tab sources */}
-        <View style={[styles.inputSignalsSection, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <View style={styles.inputSignalsHeader}>
-            <Zap size={16} color={colors.textSecondary} />
-            <Text style={[styles.inputSignalsTitle, { color: colors.text }]}>{t('field.inputSignals')}</Text>
-          </View>
-          <View style={styles.inputSignalsTags}>
-            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
-              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalMoon')}</Text>
-            </View>
-            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
-              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalSun')}</Text>
-            </View>
-            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
-              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalCoherence')}</Text>
-            </View>
-            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
-              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalGeo')}</Text>
-            </View>
-            <View style={[styles.inputSignalTag, { backgroundColor: colors.surfaceHighlight }]}>
-              <Text style={[styles.inputSignalTagText, { color: colors.text }]}>{t('field.signalSeasonal')}</Text>
-              <Text style={[styles.inputSignalTagValue, { color: colors.textSecondary }]}>{(() => {
-                const seasonMap: Record<string, string> = { winter: 'seasonWinter', spring: 'seasonSpring', summer: 'seasonSummer', autumn: 'seasonAutumn', fall: 'seasonAutumn' };
-                const season = instant?.seasonal?.season?.toLowerCase();
-                return season && seasonMap[season] ? t(`field.${seasonMap[season]}`) : t('field.active');
-              })()}</Text>
-            </View>
-          </View>
-        </View>
-
         </ScrollView>
       </SafeAreaView>
       {!isFullAccess && <PausedOverlay section="pulse" onRefreshEntitlement={refresh} />}
@@ -1256,44 +1226,7 @@ const styles = StyleSheet.create({
     height: 1,
     marginVertical: 16,
   },
-  inputSignalsSection: {
-    marginBottom: 24,
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-  },
-  inputSignalsHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 12,
-  },
-  inputSignalsTitle: {
-    fontSize: 13,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-  },
-  inputSignalsTags: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  inputSignalTag: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 16,
-  },
-  inputSignalTagText: {
-    fontSize: 12,
-    fontWeight: '500',
-    marginRight: 6,
-  },
-  inputSignalTagValue: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
+
   timingRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
