@@ -387,10 +387,7 @@ export default function FieldScreen() {
   const [companionContext, setCompanionContext] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
-  // Expanded states - timing expanded by default for immediate value
-  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({
-    timing: true
-  });
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
 
   const isFirstSession = useFirstSession('pulseIntroSeen');
 
