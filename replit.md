@@ -7,6 +7,9 @@
 - **iOS product IDs updated:** `com.thequietframe.monthly.2603` and `com.thequietframe.annual.2603`.
 - **Terms of Use button** added to Settings subscription card, translated in all 6 languages, links to `thequietframe.com/terms`.
 
+## Changes (March 2026 — continued)
+- **Version bump to 1.3.0** covering onboarding orientation card, tab micro-labels, Wisdom copy updates, Pulse UI cleanup, and subtitle flicker fix.
+
 ## Changes (February 2026)
 - **Version bump to 1.2.0** for fresh EAS build with IAP provisioning profile.
 - **Subscription disclosure text** added to Paywall (Apple-required auto-renewal terms, platform-specific for iOS/Android).
