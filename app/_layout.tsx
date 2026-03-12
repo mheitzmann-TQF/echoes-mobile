@@ -16,6 +16,7 @@ import { OrientationCard, checkOrientationSeen } from '../components/Orientation
 import { initAppStateListener, useAppStateListener } from '../lib/useAppState';
 import { EntitlementProvider } from '../lib/iap/useEntitlement';
 import * as ExpoSplashScreen from 'expo-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 ExpoSplashScreen.preventAutoHideAsync();
 
@@ -276,6 +277,8 @@ function ExpoRouterTabsNavigator() {
   );
 }
 
+const DEV_RESET_KEYS = ['orientationSeen', 'pulseIntroSeen', 'wisdomIntroSeen', 'upcomingIntroSeen'];
+
 function ThemedApp() {
   const { colors } = useTheme();
   const [showInterruption, setShowInterruption] = useState(true);
@@ -283,10 +286,25 @@ function ThemedApp() {
   const [i18nReady, setI18nReady] = useState(false);
   const [splashHidden, setSplashHidden] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [devResetDone, setDevResetDone] = useState(false);
 
   useEffect(() => {
-    initI18n().then(() => setI18nReady(true));
+    if (Platform.OS === 'web' && typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('reset') === '1') {
+        AsyncStorage.multiRemove(DEV_RESET_KEYS).finally(() => {
+          window.history.replaceState({}, '', window.location.pathname);
+          setDevResetDone(true);
+        });
+        return;
+      }
+    }
+    setDevResetDone(true);
   }, []);
+
+  useEffect(() => {
+    if (devResetDone) initI18n().then(() => setI18nReady(true));
+  }, [devResetDone]);
 
   useEffect(() => {
     if (i18nReady) {
