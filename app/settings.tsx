@@ -101,11 +101,11 @@ export default function SettingsScreen() {
     setShowLanguageModal(false);
   };
 
-  const APP_STORE_URL = 'https://apps.apple.com/app/the-quiet-frame/id6739661725';
+  const APP_STORE_URL = 'https://apps.apple.com/app/the-quiet-frame/id6758456981';
   const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.thequietframe.echoes';
 
   const handleShare = useCallback(async () => {
-    const fallbackMessage = 'The Quiet Frame — a small app about being present.\n\n📱 iOS: https://apps.apple.com/app/the-quiet-frame/id6739661725\n🤖 Android: https://play.google.com/store/apps/details?id=com.thequietframe.echoes';
+    const fallbackMessage = 'The Quiet Frame — a small app about being present.\n\n📱 iOS: https://apps.apple.com/app/the-quiet-frame/id6758456981\n🤖 Android: https://play.google.com/store/apps/details?id=com.thequietframe.echoes';
 
     if (Platform.OS === 'web') {
       try {
