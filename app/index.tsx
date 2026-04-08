@@ -974,8 +974,8 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   natureFactCard: {
-    borderRadius: 16,
-    padding: 20,
+    borderRadius: 12,
+    padding: 16,
     borderWidth: 1,
   },
   natureFactSection: {
@@ -990,7 +990,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   natureFactText: {
-    fontSize: 15,
-    lineHeight: 23,
+    fontSize: 14,
+    lineHeight: 21,
   },
 });
