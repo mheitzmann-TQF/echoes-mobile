@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal, Image, Linking, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal, Image, Linking, Platform, Share } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState, useCallback, useEffect } from 'react';
-import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X, RefreshCw } from 'lucide-react-native';
+import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X, RefreshCw, Share2, Star } from 'lucide-react-native';
+import * as StoreReview from 'expo-store-review';
 import { useTheme } from '../lib/ThemeContext';
 import { useEntitlementContext } from '@/lib/iap/useEntitlement';
 import Paywall from '@/components/Paywall';
@@ -95,6 +96,30 @@ export default function SettingsScreen() {
     setCurrentLanguage(lang);
     setShowLanguageModal(false);
   };
+
+  const APP_STORE_URL = 'https://apps.apple.com/app/the-quiet-frame/id6739661725';
+  const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.thequietframe.echoes';
+
+  const handleShare = useCallback(async () => {
+    try {
+      await Share.share({
+        message: 'The Quiet Frame — a small app about being present.\nhttps://thequietframe.com',
+        url: 'https://thequietframe.com',
+      });
+    } catch (_) {}
+  }, []);
+
+  const handleRate = useCallback(async () => {
+    try {
+      const available = await StoreReview.isAvailableAsync();
+      if (available) {
+        await StoreReview.requestReview();
+      } else {
+        const url = Platform.OS === 'ios' ? APP_STORE_URL : PLAY_STORE_URL;
+        await Linking.openURL(url);
+      }
+    } catch (_) {}
+  }, []);
 
   const handleSetLocation = () => {
     if (manualInput.trim()) {
@@ -433,6 +458,32 @@ export default function SettingsScreen() {
             data-testid="button-contact-support"
           >
             <Text style={[styles.supportButtonText, { color: colors.accent }]}>{t('settings.contactUs')}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Share & Rate */}
+        <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <TouchableOpacity
+            style={styles.row}
+            onPress={handleShare}
+            data-testid="button-share-app"
+          >
+            <View style={styles.tzHeader}>
+              <Share2 size={18} color={colors.accent} />
+              <Text style={[styles.label, { color: colors.text }]}>{t('settings.shareApp')}</Text>
+            </View>
+            <ChevronRight size={16} color={colors.textTertiary} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.row, { marginBottom: 0 }]}
+            onPress={handleRate}
+            data-testid="button-rate-app"
+          >
+            <View style={styles.tzHeader}>
+              <Star size={18} color={colors.accent} />
+              <Text style={[styles.label, { color: colors.text }]}>{t('settings.rateApp')}</Text>
+            </View>
+            <ChevronRight size={16} color={colors.textTertiary} />
           </TouchableOpacity>
         </View>
 
