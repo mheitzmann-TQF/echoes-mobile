@@ -1,9 +1,12 @@
 import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput, Modal, Image, Linking, Platform, Share } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X, RefreshCw } from 'lucide-react-native';
 import * as StoreReview from 'expo-store-review';
+import { captureRef } from 'react-native-view-shot';
+import * as Sharing from 'expo-sharing';
+import ShareCard from '@/components/ShareCard';
 import { useTheme } from '../lib/ThemeContext';
 import { useEntitlementContext } from '@/lib/iap/useEntitlement';
 import Paywall from '@/components/Paywall';
@@ -50,6 +53,7 @@ export default function SettingsScreen() {
   const [debugTapCount, setDebugTapCount] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
+  const shareCardRef = useRef<View>(null);
   
   useEffect(() => {
     getInstallId().then(id => setDebugInstallId(id));
@@ -101,13 +105,46 @@ export default function SettingsScreen() {
   const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.thequietframe.echoes';
 
   const handleShare = useCallback(async () => {
+    const fallbackMessage = 'The Quiet Frame — a small app about being present.\n\n📱 iOS: https://apps.apple.com/app/the-quiet-frame/id6739661725\n🤖 Android: https://play.google.com/store/apps/details?id=com.thequietframe.echoes';
+
+    if (Platform.OS === 'web') {
+      try {
+        await Share.share({ message: fallbackMessage });
+      } catch (error) {
+        console.warn('[Settings] Share failed:', error);
+      }
+      return;
+    }
+
     try {
-      await Share.share({
-        message: 'The Quiet Frame — a small app about being present.\n\n📱 iOS: https://apps.apple.com/app/the-quiet-frame/id6739661725\n🤖 Android: https://play.google.com/store/apps/details?id=com.thequietframe.echoes',
-        ...(Platform.OS === 'ios' ? { url: APP_STORE_URL } : {}),
+      const uri = await captureRef(shareCardRef, {
+        format: 'png',
+        quality: 1,
+        result: 'tmpfile',
       });
+
+      const canShare = await Sharing.isAvailableAsync();
+      if (canShare) {
+        await Sharing.shareAsync(uri, {
+          mimeType: 'image/png',
+          dialogTitle: 'Share The Quiet Frame',
+        });
+      } else {
+        await Share.share({
+          message: fallbackMessage,
+          ...(Platform.OS === 'ios' ? { url: APP_STORE_URL } : {}),
+        });
+      }
     } catch (error) {
-      console.warn('[Settings] Share failed:', error);
+      console.warn('[Settings] Share card failed, falling back to text:', error);
+      try {
+        await Share.share({
+          message: fallbackMessage,
+          ...(Platform.OS === 'ios' ? { url: APP_STORE_URL } : {}),
+        });
+      } catch (fallbackError) {
+        console.warn('[Settings] Share fallback also failed:', fallbackError);
+      }
     }
   }, []);
 
@@ -134,6 +171,11 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      {Platform.OS !== 'web' && (
+        <View style={styles.offScreen} pointerEvents="none">
+          <ShareCard ref={shareCardRef} />
+        </View>
+      )}
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={[styles.title, { color: colors.text }]}>{t('settings.title')}</Text>
         
@@ -570,6 +612,12 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
+  offScreen: {
+    position: 'absolute',
+    left: -9999,
+    top: -9999,
+    opacity: 0,
+  },
   container: {
     flex: 1,
   },
