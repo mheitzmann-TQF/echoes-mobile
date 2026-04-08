@@ -178,7 +178,7 @@ export default function SettingsScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       {Platform.OS !== 'web' && (
         <View style={styles.offScreen} pointerEvents="none">
-          <ShareCard ref={shareCardRef} />
+          <ShareCard ref={shareCardRef} tagline={t('settings.shareTagline')} />
         </View>
       )}
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>

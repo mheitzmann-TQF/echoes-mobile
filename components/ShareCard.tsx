@@ -1,7 +1,11 @@
 import React, { forwardRef } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-const ShareCard = forwardRef<View>((_, ref) => {
+interface ShareCardProps {
+  tagline?: string;
+}
+
+const ShareCard = forwardRef<View, ShareCardProps>(({ tagline }, ref) => {
   return (
     <View
       ref={ref}
@@ -17,7 +21,7 @@ const ShareCard = forwardRef<View>((_, ref) => {
       </View>
 
       <Text style={styles.title}>The Quiet Frame</Text>
-      <Text style={styles.tagline}>a small app about being present</Text>
+      <Text style={styles.tagline}>{tagline || 'a small app about being present'}</Text>
 
       <View style={styles.badgeRow}>
         <Image
