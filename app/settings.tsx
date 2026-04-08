@@ -104,9 +104,11 @@ export default function SettingsScreen() {
     try {
       await Share.share({
         message: 'The Quiet Frame — a small app about being present.\nhttps://thequietframe.com',
-        url: 'https://thequietframe.com',
+        ...(Platform.OS === 'ios' ? { url: 'https://thequietframe.com' } : {}),
       });
-    } catch (_) {}
+    } catch (error) {
+      console.warn('[Settings] Share failed:', error);
+    }
   }, []);
 
   const handleRate = useCallback(async () => {
@@ -118,7 +120,9 @@ export default function SettingsScreen() {
         const url = Platform.OS === 'ios' ? APP_STORE_URL : PLAY_STORE_URL;
         await Linking.openURL(url);
       }
-    } catch (_) {}
+    } catch (error) {
+      console.warn('[Settings] Rate failed:', error);
+    }
   }, []);
 
   const handleSetLocation = () => {
