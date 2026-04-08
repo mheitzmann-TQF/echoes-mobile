@@ -103,8 +103,8 @@ export default function SettingsScreen() {
   const handleShare = useCallback(async () => {
     try {
       await Share.share({
-        message: 'The Quiet Frame — a small app about being present.\nhttps://thequietframe.com',
-        ...(Platform.OS === 'ios' ? { url: 'https://thequietframe.com' } : {}),
+        message: 'The Quiet Frame — a small app about being present.\n\n📱 iOS: https://apps.apple.com/app/the-quiet-frame/id6739661725\n🤖 Android: https://play.google.com/store/apps/details?id=com.thequietframe.echoes',
+        ...(Platform.OS === 'ios' ? { url: APP_STORE_URL } : {}),
       });
     } catch (error) {
       console.warn('[Settings] Share failed:', error);
