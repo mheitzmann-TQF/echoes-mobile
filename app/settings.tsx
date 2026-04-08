@@ -134,6 +134,7 @@ export default function SettingsScreen() {
           await Sharing.shareAsync(uri, {
             mimeType: 'image/png',
             dialogTitle: 'Share The Quiet Frame',
+            UTI: 'public.png',
           });
         } else {
           await Share.share({ message: fallbackMessage });

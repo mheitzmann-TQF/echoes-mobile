@@ -3,7 +3,7 @@
 ## Recent Changes (April 2026)
 - **Version bump to 1.4.0** covering Share & Rate card in Settings.
 - **Share & Rate card:** Card-format section with italic header ("Enjoying it?") and two buttons (Share / Rate) placed above the Support card. Share triggers native share sheet; Rate triggers StoreReview with store URL fallback. Translated in all 6 languages.
-- **Visual share card:** On native (iOS/Android), Share button generates a branded 1080×1080 PNG image with TQF tree logo, app name, tagline, and official App Store + Google Play badges, then shares via native share sheet. Falls back to text-only on web. Uses `react-native-view-shot` and `expo-sharing`. Component: `components/ShareCard.tsx`.
+- **Visual share card:** On native (iOS/Android), Share button generates a branded 1080×1080 PNG image with TQF tree logo, app name, tagline, and official App Store + Google Play badges, then shares via native share sheet. iOS includes both image + text; Android shares image only (platform limitation — Android share intents don't reliably support mixed image+text payloads). Falls back to text-only on web. Uses `react-native-view-shot` and `expo-sharing`. Component: `components/ShareCard.tsx`.
 
 ## Changes (March 2026)
 - **First-launch orientation:** Full-screen orientation card shown on first install only. Lists all 5 tabs with one-line descriptions in the user's language. Tap anywhere to dismiss permanently (stored in AsyncStorage `orientationSeen`). Appears after the interruption layer. Supported in all 6 languages. Backend's `isNewInstall` field parsed from `/api/billing/status` (source team adding `firstStatusAt` column to `appSessions`).
