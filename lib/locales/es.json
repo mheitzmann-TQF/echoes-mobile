@@ -420,9 +420,10 @@
     "contactUs": "Contáctanos",
     "about": "Acerca de",
     "partOf": "Parte de",
-    "shareApp": "Compartir The Quiet Frame",
-    "rateApp": "Valorar The Quiet Frame",
-    "version": "The Quiet Frame v1.3.0"
+    "enjoyingIt": "¿Te gusta?",
+    "shareApp": "Compartir",
+    "rateApp": "Valorar",
+    "version": "The Quiet Frame v1.4.0"
   },
   "paywall": {
     "continue": "Continuar con The Quiet Frame",

@@ -538,9 +538,10 @@
     "contactUs": "Nous contacter",
     "about": "À propos",
     "partOf": "Partie de",
-    "shareApp": "Partager The Quiet Frame",
-    "rateApp": "Évaluer The Quiet Frame",
-    "version": "The Quiet Frame v1.3.0"
+    "enjoyingIt": "Vous aimez ?",
+    "shareApp": "Partager",
+    "rateApp": "Évaluer",
+    "version": "The Quiet Frame v1.4.0"
   },
   "paywall": {
     "continue": "Continuer avec The Quiet Frame",

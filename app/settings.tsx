@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, TextInput
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '../lib/LocationContext';
 import { useState, useCallback, useEffect } from 'react';
-import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X, RefreshCw, Share2, Star } from 'lucide-react-native';
+import { MapPin, Clock, ChevronRight, Check, Sparkles, Crown, Globe, X, RefreshCw } from 'lucide-react-native';
 import * as StoreReview from 'expo-store-review';
 import { useTheme } from '../lib/ThemeContext';
 import { useEntitlementContext } from '@/lib/iap/useEntitlement';
@@ -452,6 +452,25 @@ export default function SettingsScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Share & Rate */}
+        <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={[styles.sectionLabel, { color: colors.text, fontStyle: 'italic' }]}>{t('settings.enjoyingIt')}</Text>
+          <TouchableOpacity
+            style={[styles.supportButton, { backgroundColor: colors.surfaceHighlight, marginTop: 0 }]}
+            onPress={handleShare}
+            data-testid="button-share-app"
+          >
+            <Text style={[styles.supportButtonText, { color: colors.accent }]}>{t('settings.shareApp')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.supportButton, { backgroundColor: colors.surfaceHighlight }]}
+            onPress={handleRate}
+            data-testid="button-rate-app"
+          >
+            <Text style={[styles.supportButtonText, { color: colors.accent }]}>{t('settings.rateApp')}</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Support Section */}
         <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <Text style={[styles.sectionLabel, { color: colors.text }]}>{t('settings.support')}</Text>
@@ -462,32 +481,6 @@ export default function SettingsScreen() {
             data-testid="button-contact-support"
           >
             <Text style={[styles.supportButtonText, { color: colors.accent }]}>{t('settings.contactUs')}</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Share & Rate */}
-        <View style={[styles.section, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <TouchableOpacity
-            style={styles.row}
-            onPress={handleShare}
-            data-testid="button-share-app"
-          >
-            <View style={styles.tzHeader}>
-              <Share2 size={18} color={colors.accent} />
-              <Text style={[styles.label, { color: colors.text }]}>{t('settings.shareApp')}</Text>
-            </View>
-            <ChevronRight size={16} color={colors.textTertiary} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.row, { marginBottom: 0 }]}
-            onPress={handleRate}
-            data-testid="button-rate-app"
-          >
-            <View style={styles.tzHeader}>
-              <Star size={18} color={colors.accent} />
-              <Text style={[styles.label, { color: colors.text }]}>{t('settings.rateApp')}</Text>
-            </View>
-            <ChevronRight size={16} color={colors.textTertiary} />
           </TouchableOpacity>
         </View>
 

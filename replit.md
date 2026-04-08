@@ -1,6 +1,10 @@
 # Echoes - The Quiet Frame
 
-## Recent Changes (March 2026)
+## Recent Changes (April 2026)
+- **Version bump to 1.4.0** covering Share & Rate card in Settings.
+- **Share & Rate card:** Card-format section with italic header ("Enjoying it?") and two buttons (Share / Rate) placed above the Support card. Share triggers native share sheet; Rate triggers StoreReview with store URL fallback. Translated in all 6 languages.
+
+## Changes (March 2026)
 - **First-launch orientation:** Full-screen orientation card shown on first install only. Lists all 5 tabs with one-line descriptions in the user's language. Tap anywhere to dismiss permanently (stored in AsyncStorage `orientationSeen`). Appears after the interruption layer. Supported in all 6 languages. Backend's `isNewInstall` field parsed from `/api/billing/status` (source team adding `firstStatusAt` column to `appSessions`).
 - **Tab micro-labels:** One-line contextual description shown on first visit to Pulse, Wisdom, and Upcoming tabs. Fades out after 6 seconds or on scroll. Never reappears (AsyncStorage keys: `pulseIntroSeen`, `wisdomIntroSeen`, `upcomingIntroSeen`). All 6 languages supported.
 - **Fullscreen photo landscape rotation:** Tapping the daily photo opens a fullscreen view where the image rotates 90° into landscape with a slow, deliberate animation (800ms open, 500ms close). Photo is framed with equal black margins on all sides (24px), respecting safe areas on notched devices. Credits sit below the photo, never overlapping. Responsive sizing adapts to all screen aspect ratios (iPhone SE through Pro Max, Android).
