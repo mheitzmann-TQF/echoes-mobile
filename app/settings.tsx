@@ -123,17 +123,21 @@ export default function SettingsScreen() {
         result: 'tmpfile',
       });
 
-      const canShare = await Sharing.isAvailableAsync();
-      if (canShare) {
-        await Sharing.shareAsync(uri, {
-          mimeType: 'image/png',
-          dialogTitle: 'Share The Quiet Frame',
-        });
-      } else {
+      if (Platform.OS === 'ios') {
         await Share.share({
           message: fallbackMessage,
-          ...(Platform.OS === 'ios' ? { url: APP_STORE_URL } : {}),
+          url: uri,
         });
+      } else {
+        const canShare = await Sharing.isAvailableAsync();
+        if (canShare) {
+          await Sharing.shareAsync(uri, {
+            mimeType: 'image/png',
+            dialogTitle: 'Share The Quiet Frame',
+          });
+        } else {
+          await Share.share({ message: fallbackMessage });
+        }
       }
     } catch (error) {
       console.warn('[Settings] Share card failed, falling back to text:', error);
