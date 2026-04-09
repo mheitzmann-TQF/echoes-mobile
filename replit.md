@@ -1,7 +1,7 @@
 # Echoes - The Quiet Frame
 
 ## Recent Changes (April 2026)
-- **Version bump to 1.4.0** covering Share & Rate card in Settings.
+- **Version bump to 1.4.1** covering Share & Rate card in Settings, translated share tagline, corrected Apple App Store ID, and expo-sharing SDK compatibility fix.
 - **Share & Rate card:** Card-format section with italic header ("Enjoying it?") and two buttons (Share / Rate) placed above the Support card. Share triggers native share sheet; Rate triggers StoreReview with store URL fallback. Translated in all 6 languages.
 - **Visual share card:** On native (iOS/Android), Share button generates a branded 1080×1080 PNG image with TQF tree logo, app name, tagline, and official App Store + Google Play badges, then shares via native share sheet. iOS includes both image + text; Android shares image only (platform limitation — Android share intents don't reliably support mixed image+text payloads). Falls back to text-only on web. Uses `react-native-view-shot` and `expo-sharing`. Component: `components/ShareCard.tsx`.
 
